@@ -1,0 +1,379 @@
+﻿using COServer.Database;
+using COServer.EventsLib;
+using COServer.Game.MsgNpc;
+using COServer.Game.MsgServer;
+using COServer.Game.MsgServer.AttackHandler;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace COServer.Game.MsgTournaments
+{
+    public class MsgSchedules
+    {
+        public static Time32 Stamp = Time32.Now.AddMilliseconds(KernelThread.TournamentsStamp);
+        public static Dictionary<TournamentType, ITournament> Tournaments = new Dictionary<TournamentType, ITournament>();
+        public static ITournament CurrentTournament;
+        #region PoleDomination
+        internal static MsgPoleDomination PoleDomination;
+        internal static MsgPoleDominationBI PoleDominationBI;
+        internal static MsgPoleDominationDC PoleDominationDC;
+        internal static MsgPoleDominationPC PoleDominationPC;
+        #endregion
+        internal static ExtremeFlagWar _ExtremeFlagWar;
+        internal static EliteGuildWar _EliteGuildWar;
+        internal static FirePoleWar _FirePoleWar;
+        internal static MsgGuildWar GuildWar;
+        internal static MsgClassPKWar ClassPkWar;
+        internal static MsgCouples CouplesPKWar;
+        internal static MsgPkWar PkWar;
+        internal static MsgDisCity DisCity;
+        internal static MsgMonster.BossesBase Bosses;
+        internal static MsgSquama Squama;
+        internal static Ss_Fb _Ss_Fb;
+        internal static ConquerPk _ConquerPk;
+        internal static LastMan _LastMan;
+        internal static Get5Out _Get5Out;
+        internal static LuckyBox _LuckyBox;
+        internal static NobilityWar _NobilityWar;
+        internal static GenderWar _GenderWar;
+        internal static Top_Black _Top_Black;
+        internal static FirstKiller _FirstKiller;
+        internal static ArenaDuel _ArenaDuel;
+        internal static MsgCityWarAnimation CityWarAnimation;
+        internal static MsgCityWar CityWar;
+        internal static MsgDragonIsland DragonIsland;
+        internal static ProjectControl PlayerTop;
+        public static bool SpawnDevil = false;
+        internal static void Create()
+        {
+            #region PoleDomination
+            PoleDomination = new MsgPoleDomination();
+            PoleDominationBI = new MsgPoleDominationBI();
+            PoleDominationDC = new MsgPoleDominationDC();
+            PoleDominationPC = new MsgPoleDominationPC();
+            #endregion
+            _ExtremeFlagWar = new ExtremeFlagWar();
+            _EliteGuildWar = new EliteGuildWar();
+            _FirePoleWar = new FirePoleWar();
+            _Ss_Fb = new Ss_Fb();
+            _ConquerPk = new ConquerPk();
+            _LastMan = new LastMan();
+            _NobilityWar = new NobilityWar();
+            _GenderWar = new GenderWar();
+            _LuckyBox = new LuckyBox();
+            _Get5Out = new Get5Out();
+            _Top_Black = new Top_Black();
+            _FirstKiller = new FirstKiller();
+            _ArenaDuel = new ArenaDuel();
+            Tournaments.Add(TournamentType.None, new MsgNone(TournamentType.None));
+            Tournaments.Add(TournamentType.TreasureThief, new MsgTreasureChests(TournamentType.TreasureThief));
+            Tournaments.Add(TournamentType.DBShower, new MsgDBShower(TournamentType.DBShower));
+            CurrentTournament = Tournaments[TournamentType.None];
+            GuildWar = new MsgGuildWar();
+            ClassPkWar = new MsgClassPKWar(ProcesType.Dead);
+            PkWar = new MsgPkWar();
+            CouplesPKWar = new MsgCouples();
+            DisCity = new MsgDisCity();
+            Squama = new MsgSquama();
+            CityWarAnimation = new MsgCityWarAnimation();
+            DragonIsland = new MsgDragonIsland(ProcesType.Dead);
+            MsgBroadcast.Create();
+            PlayerTop = new ProjectControl();
+        }
+        internal static void SendInvitation(string Name, ushort X, ushort Y, ushort map, ushort DinamicID, int Seconds, Game.MsgServer.MsgStaticMessage.Messages messaj = Game.MsgServer.MsgStaticMessage.Messages.None)
+        {
+            string Message = " " + Name + " is about to begin! Will you join it?";
+            using (var rec = new ServerSockets.RecycledPacket())
+            {
+                var stream = rec.GetStream();
+                Program.SendGlobalPackets.Enqueue(new MsgMessage($"{Name} has started!", MsgMessage.MsgColor.yellow, MsgMessage.ChatMode.TopLeftSystem).GetArray(rec.GetStream()));
+
+                var packet = new Game.MsgServer.MsgMessage(Message, MsgServer.MsgMessage.MsgColor.yellow, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream);
+                foreach (var client in Database.Server.GamePoll.Values)
+                {
+                    client.Send(packet);
+                    client.Player.MessageBox(Message, new Action<Client.GameClient>(user => user.Teleport(X, Y, map, DinamicID)), null, Seconds, messaj);
+                }
+            }
+            Program.DiscordAPI.Enqueue($"Total Online: {Server.GamePoll.Count} - Max Online: {KernelThread.GetMaxOnline()}");
+        }
+
+        internal unsafe static void SendSysMesage(string Messaj, Game.MsgServer.MsgMessage.ChatMode ChatType = Game.MsgServer.MsgMessage.ChatMode.TopLeft
+           , Game.MsgServer.MsgMessage.MsgColor color = Game.MsgServer.MsgMessage.MsgColor.white, bool SendScren = false)
+        {
+            using (var rec = new ServerSockets.RecycledPacket())
+            {
+                var stream = rec.GetStream();
+                var packet = new Game.MsgServer.MsgMessage(Messaj, color, ChatType).GetArray(stream);
+                foreach (var client in Database.Server.GamePoll.Values)
+                    client.Send(packet);
+            }
+        }
+        static List<string> SystemMsgs = new List<string>() {
+            "Guild War will begin at 13:00 on Saturdays, and will end at 13:00 on Sundays.",
+            "Selling/Buying gears for real money or for items in other servers or just the attempt of doing it is forbidden and will result in a permanent ban.",
+            "Join our discord server to be in touch with the community and suggest/report stuff.",
+            "You can check all of our scheduled events on our website! Make sure you don't miss any of them!",
+            "Administrators have [GM/PM] in their names, do not trust anyone else claiming to be a [GM].",
+            "Make sure you keep yourself updated about the server and all the changes introduced! These can be seen on our website!",
+            "Thanks for supporting CoPrivate! We will keep on working to provide the best for our players!",
+            "Talk to CoPrivateGuide NPC in Twin City for information about the game.",
+            "Remember to vote! By voting you're helping to increase the community and you can earn some cool rewards for it!",
+            "Top Weekly Voter will receive 500 CPs."
+        };
+        internal static void CheckUp(Time32 clock)
+        {
+            if (clock > Stamp)
+            {
+
+                try
+                {
+                    DateTime Now64 = DateTime.Now;
+                    if (!Database.Server.FullLoading)
+                        return;
+                    if ((Now64.Hour == 7 && Now64.Minute == 30 || Now64.Hour == 17 && Now64.Minute == 30))
+                        DisCity.Open();
+                    CurrentTournament.CheckUp();
+                    DisCity.CheckUp();
+                    PkWar.CheckUp();
+                    CouplesPKWar.CheckUp();
+                    _Ss_Fb.CheckUp();
+                    _ConquerPk.CheckUp();
+                    _LastMan.CheckUp();
+                    _NobilityWar.CheckUp();
+                    _FirePoleWar.CheckUp();
+                    _GenderWar.CheckUp();
+                    _ExtremeFlagWar.CheckUp();
+                    _EliteGuildWar.CheckUp();
+                    _ArenaDuel.CheckUp();
+                    PoleDomination.CheckUp();
+                    PoleDominationPC.CheckUp();
+                    PoleDominationDC.CheckUp();
+                    PoleDominationBI.CheckUp();
+                    if (Now64.Hour == 20 && Now64.Minute == 0 && Now64.Second == 0)
+                    {
+                        Squama.Open();
+                    }
+                    Game.MsgMonster.BossesBase.BossesTimer();
+                    if (DateTime.Now.Hour == 21 && DateTime.Now.Minute == 1 || DateTime.Now.Hour == 9 && DateTime.Now.Minute == 1)
+                        CityWar.Open();
+                    CityWar.CheckUp(Now64);
+                    if (Now64.Minute % 10 == 0 && Now64.Second > 58 && CurrentTournament.Process == ProcesType.Dead)
+                    {
+                        var rndMsg = SystemMsgs[Program.GetRandom.Next(0, SystemMsgs.Count)];
+                        using (var rec = new ServerSockets.RecycledPacket())
+                        {
+                            var stream = rec.GetStream();
+                            Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage(rndMsg, "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
+                        }
+                    }
+                    if (Now64 > EventManager.TimeEvent.AddMilliseconds(1800000))
+                    {
+                        EventManager.TimeEvent = Now64;
+                        EventManager.CountEvent++;
+                        switch (EventManager.CountEvent)
+                        {
+                            case 2:
+                                {
+                                    EventsLib.EventManager.freezewar.LastSpawn = DateTime.Now;
+                                    EventsLib.EventManager.freezewar.senton = DateTime.Now;
+                                    EventsLib.EventManager.SetEvent(EventsLib.EventManager.freezewar.name,
+                                        EventsLib.EventManager.freezewar.map);
+                                    EventsLib.EventManager.freezewar.SendInvitation();
+                                    break;
+                                }
+                            case 3:
+                                {
+                                    EventsLib.EventManager.guildsdm.senton = DateTime.Now;
+                                    EventsLib.EventManager.SetEvent(EventsLib.EventManager.guildsdm.name,
+                                        EventsLib.EventManager.guildsdm.map);
+                                    EventsLib.EventManager.guildsdm.SendInvitation();
+                                    break;
+                                }
+                            //case 4:
+                            //    {
+                            //        EventsLib.EventManager.passthebombEv.LastSpawn = DateTime.Now;
+                            //        EventsLib.EventManager.passthebombEv.senton = DateTime.Now;
+                            //        EventsLib.EventManager.SetEvent(EventsLib.EventManager.passthebombEv.name,
+                            //            EventsLib.EventManager.passthebombEv.map);
+                            //        EventsLib.EventManager.passthebombEv.SendInvitation();
+                            //        break;
+                            //    }
+                            case 6:
+                                {
+                                    EventsLib.EventManager.kingofthehill.LastSpawn = DateTime.Now;
+                                    EventsLib.EventManager.kingofthehill.senton = DateTime.Now;
+                                    EventsLib.EventManager.SetEvent(EventsLib.EventManager.kingofthehill.name,
+                                        EventsLib.EventManager.kingofthehill.map);
+                                    EventsLib.EventManager.kingofthehill.SendInvitation();
+                                    break;
+                                }
+                            case 7:
+                                {
+                                    EventsLib.EventManager.ctb.LastSpawn = DateTime.Now;
+                                    EventsLib.EventManager.ctb.senton = DateTime.Now;
+                                    EventsLib.EventManager.SetEvent(EventsLib.EventManager.ctb.name,
+                                        EventsLib.EventManager.ctb.map);
+                                    EventsLib.EventManager.ctb.SendInvitation();
+                                    break;
+                                }
+                            case 8:
+                                {
+                                    EventsLib.EventManager.deathmatch.LastSpawn = DateTime.Now;
+                                    EventsLib.EventManager.deathmatch.senton = DateTime.Now;
+                                    EventsLib.EventManager.SetEvent(EventsLib.EventManager.deathmatch.name,
+                                        EventsLib.EventManager.deathmatch.map);
+                                    EventsLib.EventManager.deathmatch.SendInvitation();
+                                    break;
+                                }
+                            case 9:
+                                {
+                                    EventsLib.EventManager.killthecaptain.LastSpawn = DateTime.Now;
+                                    EventsLib.EventManager.killthecaptain.senton = DateTime.Now;
+                                    EventsLib.EventManager.SetEvent(EventsLib.EventManager.killthecaptain.name,
+                                        EventsLib.EventManager.killthecaptain.map);
+                                    EventsLib.EventManager.killthecaptain.SendInvitation();
+                                    break;
+                                }
+                            case 10:
+                                {
+                                    EventsLib.EventManager.killhunted.LastSpawn = DateTime.Now;
+                                    EventsLib.EventManager.killhunted.senton = DateTime.Now;
+                                    EventsLib.EventManager.SetEvent(EventsLib.EventManager.killhunted.name,
+                                        EventsLib.EventManager.killhunted.map);
+                                    EventsLib.EventManager.killhunted.SendInvitation();
+                                    break;
+                                }
+                            case 11:
+                                {
+                                    EventsLib.EventManager.teamfreezewar.LastSpawn = DateTime.Now;
+                                    EventsLib.EventManager.teamfreezewar.senton = DateTime.Now;
+                                    EventsLib.EventManager.SetEvent(EventsLib.EventManager.teamfreezewar.name,
+                                        EventsLib.EventManager.teamfreezewar.map);
+                                    EventsLib.EventManager.teamfreezewar.SendInvitation();
+                                    break;
+                                }
+                            case 12:
+                                {
+                                    EventsLib.EventManager.dragonwar.LastSpawn = DateTime.Now;
+                                    EventsLib.EventManager.dragonwar.senton = DateTime.Now;
+                                    EventsLib.EventManager.SetEvent(EventsLib.EventManager.dragonwar.name,
+                                        EventsLib.EventManager.dragonwar.map);
+                                    EventsLib.EventManager.dragonwar.SendInvitation();
+                                    break;
+                                }
+                            default:
+                                EventManager.CountEvent = 0;
+                                break;
+                        }
+                    }
+                    #region Days
+
+                    if (Now64.DayOfWeek == DayOfWeek.Friday)
+                    {
+                        if (Now64.Hour == 20 && (Now64.Minute >= 0 && Now64.Minute <= 19))
+                        {
+                            if (PkWar.AllowJoin() == false)
+                            {
+                                PkWar.Open();
+                            }
+                        }
+                    }
+                    if (Now64.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        #region GuildWar
+                        if (Now64.Hour >= 10 && Now64.Hour < 13)
+                        {
+                            if (GuildWar.Proces == ProcesType.Dead)
+                            {
+
+                                GuildWar.Start();
+                            }
+                            if (GuildWar.Proces == ProcesType.Idle)
+                            {
+                                if (Now64 > GuildWar.StampRound)
+                                    GuildWar.Began();
+                            }
+                            if (GuildWar.Proces != ProcesType.Dead)
+                            {
+                                if (DateTime.Now > GuildWar.StampShuffleScore)
+                                {
+                                    GuildWar.ShuffleGuildScores();
+                                }
+                            }
+                            if (Now64.Hour == MsgGuildWar.FlameActive)
+                            {
+                                if (GuildWar.FlamesQuest.ActiveFlame10 == false)
+                                {
+                                    SendSysMesage("The Flame Stone 9 is Active now. Light up the Flame Stone (62,59) near the Stone Pole in the Guild City.", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.white);
+                                    GuildWar.FlamesQuest.ActiveFlame10 = true;
+                                }
+                            }
+                            else if (GuildWar.SendInvitation == false && Now64.Hour == 9)
+                            {
+                                SendInvitation("GuildWar", 200, 254, 1038, 0, 60, MsgServer.MsgStaticMessage.Messages.GuildWar);
+                                GuildWar.SendInvitation = true;
+                            }
+
+                        }
+                        else if (Now64.Hour >= 13 && Now64.Minute == 0 && Now64.Second < 5)
+                        {
+                            if (GuildWar.Proces == ProcesType.Alive || GuildWar.Proces == ProcesType.Idle)
+                                GuildWar.CompleteEndGuildWar();
+                        }
+                        #endregion
+                    }
+                    if (Now64.Minute == 30)
+                    {
+                        if (CurrentTournament.Process == ProcesType.Dead)
+                        {
+                            CurrentTournament = Tournaments[TournamentType.TreasureThief];
+                            CurrentTournament.Open();
+                            Console.WriteLine("Started Tournament " + CurrentTournament.Type.ToString(), ConsoleColor.Yellow);
+                            Program.DiscordAPI.Enqueue("``Tournament " + CurrentTournament.Type.ToString() + " has started!``");
+
+                        }
+                    }
+                    #region ClassPK
+                    if (Now64.DayOfWeek == DayOfWeek.Monday)
+                    {
+                        if (Now64.Hour == 18 && Now64.Minute == 0)
+                        {
+                            ClassPkWar.Start();
+                        }
+                        if (Now64.Hour == 18 && Now64.Minute >= 10)
+                        {
+                            foreach (var war in ClassPkWar.PkWars)
+                                foreach (var map in war)
+                                {
+                                    var players_in_map = Database.Server.GamePoll.Values.Where(e => e.Player.DynamicID == map.DinamicID && e.Player.Alive);
+                                    if (players_in_map.Count() == 1)
+                                    {
+                                        var winner = players_in_map.SingleOrDefault();
+                                        using (var rec = new ServerSockets.RecycledPacket())
+                                        {
+                                            var stream = rec.GetStream();
+                                            map.GetMyReward(winner, stream);
+                                        }
+                                    }
+                                }
+                        }
+                    }
+                    #endregion
+
+                    #endregion
+                    if (Now64.DayOfWeek == DayOfWeek.Saturday && Now64.Hour == 14 && Now64.Minute == 0)
+                    {
+                        CouplesPKWar.Open();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.SaveException(e);
+                }
+                Stamp.Value = clock.Value + KernelThread.TournamentsStamp;
+            }
+        }
+    }
+}
