@@ -3706,27 +3706,27 @@ namespace COServer.Game.MsgServer
                 {
                     switch (item.ITEM_ID)
                     {
-                        case 720374:
-                            {
-                                if (Program.FreePkMap.Contains(client.Player.Map))
-                                {
-                                    client.SendSysMesage("You can not use Auto Hunting in this map.");
-                                    break;
-                                }
-                                client.ActiveNpc = 987977854;
-                                Game.MsgNpc.Dialog dialog = new Game.MsgNpc.Dialog(client, stream);
-                                dialog.Text("Enjoy your Auto Hunt.\n");
-                                if (!client.Player.Robot)
-                                    dialog.AddOption("Start Auto Hunting.", 1);
+                        //case 720374:
+                        //    {
+                        //        if (Program.FreePkMap.Contains(client.Player.Map))
+                        //        {
+                        //            client.SendSysMesage("You can not use Auto Hunting in this map.");
+                        //            break;
+                        //        }
+                        //        client.ActiveNpc = 987977854;
+                        //        Game.MsgNpc.Dialog dialog = new Game.MsgNpc.Dialog(client, stream);
+                        //        dialog.Text("Enjoy your Auto Hunt.\n");
+                        //        if (!client.Player.Robot)
+                        //            dialog.AddOption("Start Auto Hunting.", 1);
 
-                                else dialog.AddOption("Stop Auto Hunting.", 2);
-                                TimeSpan Time = client.Player.ExpireVip - DateTime.Now;
-                                dialog.Text(string.Format("VIP Time Left: {0} Days {1} Hours {2} Minutes {3} Seconds .", Time.Days ,Time.Hours , Time.Minutes , Time.Seconds));
-                                dialog.AddOption("Set Hunting Items.", 3);
-                                dialog.AddAvatar(0);
-                                dialog.FinalizeDialog();
-                                break;
-                            }
+                        //        else dialog.AddOption("Stop Auto Hunting.", 2);
+                        //        TimeSpan Time = client.Player.ExpireVip - DateTime.Now;
+                        //        dialog.Text(string.Format("VIP Time Left: {0} Days {1} Hours {2} Minutes {3} Seconds .", Time.Days ,Time.Hours , Time.Minutes , Time.Seconds));
+                        //        dialog.AddOption("Set Hunting Items.", 3);
+                        //        dialog.AddAvatar(0);
+                        //        dialog.FinalizeDialog();
+                        //        break;
+                        //    }
                         case Database.ItemType.MoonBox:
                             {
                                 if (client.Inventory.HaveSpace(1))

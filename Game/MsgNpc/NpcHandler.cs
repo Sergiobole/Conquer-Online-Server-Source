@@ -7371,16 +7371,16 @@ namespace COServer.Game.MsgNpc
                         dialog.Option("I want to level up.", 101);
                         //dialog.Option("Vote.", 7);
                         //dialog.Option("Vote Rewards", 70);
-                        dialog.AddOption("Give me Auto Hunt item.", 55);
+                        //dialog.AddOption("Give me Auto Hunt item.", 55);
                         dialog.Option("Next.", 32);
                         dialog.AddAvatar(71).FinalizeDialog();
                         break;
                     }
-                case 55:
-                    {
-                        client.Inventory.Add(stream, 720374, 1, 0, 0, 0, 0, 0, true);
-                        break;
-                    }
+                //case 55:
+                //    {
+                //        client.Inventory.Add(stream, 720374, 1, 0, 0, 0, 0, 0, true);
+                //        break;
+                //    }
                 case 101:
                     {
                         client.Teleport(050, 057, 1004);

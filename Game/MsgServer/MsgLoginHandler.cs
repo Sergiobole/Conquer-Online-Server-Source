@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Xml.Linq;
 
 namespace COServer.Game.MsgServer
 {
@@ -15,6 +17,7 @@ namespace COServer.Game.MsgServer
             return stream;
         }
     }
+
     public unsafe struct MsgLoginHandler
     {
         
@@ -131,9 +134,9 @@ namespace COServer.Game.MsgServer
 
 
                     MsgTournaments.MsgSchedules.PkWar.AddTop(client);
-                 // Welcome Messages.
+                 //Welcome Messages.
                     client.SendSysMesage("Welcome to CoPrivate - The Shouting Zone.", MsgMessage.ChatMode.Talk);
-                 // client.SendSysMesage("Online players will receive 1 Online Point for every hour they're online.", MsgMessage.ChatMode.Talk);
+                    client.SendSysMesage("Online players will receive 1 Online Point for every hour they're online.", MsgMessage.ChatMode.Talk);
                     client.SendSysMesage("New players should speak with CoPrivateGuide NPC (438,377) in Twin City.", MsgMessage.ChatMode.Talk);
 
                     if (client.Player.VipLevel >= 6)
@@ -144,16 +147,30 @@ namespace COServer.Game.MsgServer
                         int hour_left = (int)(timer1.TotalHours - Now2.TotalHours);
                         int left_minutes = (int)(timer1.TotalMinutes - Now2.TotalMinutes);
                         if (days_left > 0)
+                        {
                             client.SendSysMesage("Your VIP " + client.Player.VipLevel + " will expire in: " + days_left + " days.", MsgMessage.ChatMode.System);
+                        }
                         else if (hour_left > 0)
+                        {
                             client.SendSysMesage("Your VIP " + client.Player.VipLevel + " will expire in: " + hour_left + " hours.", MsgMessage.ChatMode.System);
+                        }
                         else if (left_minutes > 0)
+                        {
                             client.SendSysMesage("Your VIP " + client.Player.VipLevel + " will expire in: " + left_minutes + " minutes.", MsgMessage.ChatMode.System);
+                        }
 
-                    }
+                        // Mensagem em amarelo com a quantidade de dias VIP restantes
+                        Game.MsgServer.MsgMessage msg = new MsgServer.MsgMessage(
+                            "VIP Expire: " + days_left + " Days.",
+                            MsgServer.MsgMessage.MsgColor.yellow,
+                            MsgServer.MsgMessage.ChatMode.ContinueRightCorner
+                        );
 
 
-                    if (Database.AtributesStatus.IsTrojan(client.Player.Class)
+                        client.Send(msg.GetArray(packet));
+
+
+                        if (Database.AtributesStatus.IsTrojan(client.Player.Class)
                         || Database.AtributesStatus.IsTrojan(client.Player.FirstClass)
                         || Database.AtributesStatus.IsTrojan(client.Player.SecondClass))
                     {
@@ -202,7 +219,10 @@ namespace COServer.Game.MsgServer
 
                     client.ClientFlag &= ~Client.ServerFlag.AcceptLogin;
                     client.ClientFlag |= Client.ServerFlag.LoginFull;
-                }
+                    }
+                }  
+
+
                 catch (Exception e)
                 {
                     Console.WriteLine(e.ToString());
