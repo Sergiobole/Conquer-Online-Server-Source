@@ -546,6 +546,7 @@
   <ItemGroup>
     <EmbeddedResource Include="BahaaPanels\AccountsForm.resx">
       <DependentUpon>AccountsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="BahaaPanels\Controlpanel.resx">
       <DependentUpon>Controlpanel.cs</DependentUpon>
