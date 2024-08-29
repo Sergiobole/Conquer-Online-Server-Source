@@ -747,14 +747,11 @@ namespace COServer.Client
                         }
                     }
                 }
-                if (DateTime.Now > client.LastOnlineStamp.AddHours(1))
+                if (DateTime.Now > client.LastOnlineStamp.AddMinutes(1))
                 {
                     client.LastOnlineStamp = DateTime.Now;
                     client.Player.OnlinePoints++;
-                    var xrand = new System.Random();
-                    uint value = (uint)xrand.Next(1, 20);
-                    client.Player.ConquerPoints += value;
-                    client.SendSysMesage("You've earned " + value + " CPs for staying online for 1 hour.");
+                    client.SendSysMesage($"You have earned 1 OnlinePoints, your total is: {client.Player.OnlinePoints}");
                 }
             }
 

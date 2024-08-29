@@ -2359,18 +2359,6 @@ namespace COServer.Game.MsgServer
                                 }
                             case "tele":
                                 {
-                                    /*string Maps = "";
-                                     foreach (var amap in Role.GameMap.MapContents)
-                                    {
-                                          Console.Write(amap.Key + " / ");
-                                        Maps += amap.Key;
-                                        Maps += Environment.NewLine;
-
-                                         System.IO.StreamWriter SW = new System.IO.StreamWriter(@"C:\PacketSniffing\PMaps" + 1 + ".txt", true);
-                                          SW.WriteLine(Maps);
-                                          SW.Flush();
-                                          SW.Close();
-                                    }*/
                                     client.TerainMask = 0;
                                     uint mapid = 0;
                                     if (!uint.TryParse(data[1], out mapid))
@@ -2392,17 +2380,32 @@ namespace COServer.Game.MsgServer
                                     }
                                     if (mapid == 1601)
                                     {
-                                        client.SendSysMesage("You can`t go there, it's Sempers office.");
+                                        client.SendSysMesage("You can't go there, it's Semper's office.");
                                         break;
                                     }
                                     uint DinamicID = 0;
                                     if (!uint.TryParse(data[4], out DinamicID))
                                     {
-                                        client.SendSysMesage("Invlid DinamicID !");
+                                        client.SendSysMesage("Invalid DinamicID!");
                                         break;
                                     }
+
+                                    // Verifica se o jogador possui flags específicas ou está em um mapa específico
+                                    if (client.Player.ContainFlag(MsgUpdate.Flags.FlashingName) || client.Player.ContainFlag(MsgUpdate.Flags.BlackName))
+                                        break;
+                                    if (client.Player.Map == 6000 || client.Player.DynamicID != 0 || client.Player.Alive == false)
+                                        return false;
+
                                     client.Teleport(X, Y, mapid, DinamicID);
-                                    //client.Teleport(X, Y, mapid);
+                                    break;
+
+                                    // Verifica se o jogador possui flags específicas ou está em um mapa específico
+                                    if (client.Player.ContainFlag(MsgUpdate.Flags.FlashingName) || client.Player.ContainFlag(MsgUpdate.Flags.BlackName))
+                                        break;
+                                    if (client.Player.Map == 6000 || client.Player.DynamicID != 0 || client.Player.Alive == false)
+                                        return false;
+
+                                    client.Teleport(X, Y, mapid, DinamicID);
                                     break;
                                 }
                             case "effectfloor":

@@ -245,165 +245,74 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        dialog.AddText("How could i help you about the OnlinePoint system?\n You have [ " + client.Player.OnlinePoints + " ] online points.")
-                        .AddOption("Exchange a new garment", 1)
-                        .AddOption("HouseToken", 20)
-                        .AddOption("Just passing by.", 255)
-                        .AddAvatar(3).FinalizeDialog();
+                        // Exibe o diálogo inicial com os pontos online do usuário e uma opção para trocar por um token VIP de 7 dias
+                        dialog.AddText($"Hello, you will earn 1 OnlinePoint for every minute you stay online.\nYou have [ {client.Player.OnlinePoints} ] OnlinePoints.").AddAvatar(7);
+                        dialog.AddOption("7-Days VIP Token 7000", 1);
+                        dialog.AddOption("30-Days VIP Token", 2);
+                        dialog.AddOption("Okay", 255);
+                        dialog.FinalizeDialog();
                         break;
                     }
                 case 1:
                     {
+                        // Verifica se há espaço suficiente no inventário para o novo item
                         if (!client.Inventory.HaveSpace(1))
                         {
-                            dialog.AddText("Please make 1 more space in your inventory.");
-                            dialog.AddOption("Let me check.", 255).AddAvatar(7);
+                            dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
+                            dialog.AddOption("Let me check.", 255);
                             dialog.FinalizeDialog();
                             break;
                         }
-                        dialog.AddText("Which garment you need?\nGarment Cost : 30000 Online points.\nYour current online points [ " + client.Player.OnlinePoints + " ].");
-                        byte page = Option;
-                        int tocount = (int)Math.Min(Database.ItemType.TopGarments.Count, (page * 7));
-                        for (int x = page - 1; x < tocount; x++)
-                        {
-                            var garment = Database.ItemType.TopGarments[x];
-                            Database.ItemType.DBItem DBInfo;
-                            if (Database.ItemType.Garments.TryGetValue(garment, out DBInfo))
-                            {
-                                dialog.AddOption("" + DBInfo.Name + "", (byte)(100 + x));
-                            }
 
+                        // Verifica se o jogador tem pontos online suficientes para trocar pelo VIP de 7 dias
+                        if (client.Player.OnlinePoints >= 7000)
+                        {
+                            // Deduz os pontos online e adiciona o VIP de 7 dias ao inventário
+                            client.Player.OnlinePoints -= 7000;
+                            client.Inventory.Add(stream, 780000, 1, 0, 0, 0, 0, 0, true);
+                            dialog.AddText("You have successfully exchanged 7000 Online Points for a 7-Days VIP Token.").AddAvatar(7);
                         }
-                        dialog.AddOption("Next Page", (byte)(page + 1));
-                        dialog.AddAvatar(3);
+                        else
+                        {
+                            dialog.AddText("You do not have Online Points.\nYou need 7000 Online Points to exchange for a 7-Days VIP Token.").AddAvatar(7);
+                        }
+
+                        dialog.AddOption("Okay", 255);
                         dialog.FinalizeDialog();
                         break;
                     }
-                #region House Token
-                case 20:
+                case 2:
                     {
-                        dialog.AddText("Which house token you need?\n Your current online points [ " + client.Player.OnlinePoints + " ].")
-                        .AddOption("House 2 20k", 21)
-                        .AddOption("House 3 30k", 22)
-                        .AddOption("House 4 40k", 23)
-                        .AddOption("House 5 50k", 24)
-                        .AddOption("Just passing by.", 255)
-                        .AddAvatar(3).FinalizeDialog();
-                        break;
-                    }
-                case 21://House 2 20k
-                case 22://House 3 30k
-                case 23://House 4 40k
-                case 24://House 5 50k
-                    {
-                        uint UpgradeCert_Id = 0;
-                        uint cost = 0;
-                        if (Option == 21)
-                        {
-                            UpgradeCert_Id = Database.ItemType.UpgradeCert_2;
-                            cost = 20000;
-                        }
-                        else if (Option == 22)
-                        {
-                            UpgradeCert_Id = Database.ItemType.UpgradeCert_3;
-                            cost = 30000;
-                        }
-                        else if (Option == 23)
-                        {
-                            UpgradeCert_Id = Database.ItemType.UpgradeCert_4;
-                            cost = 40000;
-                        }
-                        else
-                        {
-                            UpgradeCert_Id = Database.ItemType.UpgradeCert_5;
-                            cost = 50000;
-                        }
-                        if (client.Player.OnlinePoints >= cost)
-                        {
-                            if (client.Inventory.HaveSpace(1))
-                            {
-                                client.Player.OnlinePoints -= cost;
-                                client.Inventory.Add(stream, UpgradeCert_Id, 1);
-
-                            }
-                            else
-                            {
-                                dialog.AddText("Please make 1 more space in your inventory.")
-                                    .AddOption("Let me check.", 255)
-                                    .AddAvatar(3).FinalizeDialog();
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            dialog.AddText("Sorry, but you don`t have enough Online Points.")
-                                  .AddOption("Oh, okay.", 255)
-                                  .AddAvatar(3).FinalizeDialog();
-                            break;
-                        }
-                        break;
-                    }
-                #endregion
-                default:
-                    {
-                        if (Option < 100)
-                        {
-                            dialog.AddText("Which Garment you need? \n Page [ " + Option + " ].");
-                            byte page = Option;
-                            int tocount = (int)Math.Min(Database.ItemType.TopGarments.Count, (page * 7));
-                            for (int x = (page - 1) * 7; x < tocount; x++)
-                            {
-                                var garment = Database.ItemType.TopGarments[x];
-                                Database.ItemType.DBItem DBInfo;
-                                if (Database.ItemType.Garments.TryGetValue(garment, out DBInfo))
-                                {
-                                    dialog.AddOption("" + DBInfo.Name + "", (byte)(100 + x));
-                                }
-                            }
-                            if (page < 9)
-                                dialog.AddOption("Next Page", (byte)(page + 1));
-                            dialog.AddAvatar(7);
-                            dialog.FinalizeDialog();
-                        }
-                        else //get garment.
-                        {
-                            client.Player.BuyItemS = Database.ItemType.TopGarments[Option - 100];
-                            Database.ItemType.DBItem DBInfo;
-                            if (Database.ItemType.Garments.TryGetValue(client.Player.BuyItemS, out DBInfo))
-                            {
-                                dialog.AddText("Are you sure you wanna buy this Garment (" + DBInfo.Name + ")?!");
-                                dialog.AddOption("Sure.", 250);
-                                dialog.AddOption("Let me check.", 255);
-                                dialog.AddAvatar(7);
-                                dialog.FinalizeDialog();
-                            }
-                        }
-                        break;
-                    }
-                case 250:
-                    {
+                        // Verifica se há espaço suficiente no inventário para o novo item
                         if (!client.Inventory.HaveSpace(1))
                         {
-                            dialog.AddText("Please make 1 more space in your inventory.");
+                            dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
                             dialog.AddOption("Let me check.", 255);
-                            dialog.AddAvatar(7);
                             dialog.FinalizeDialog();
                             break;
                         }
-                        if (client.Player.BuyItemS != 0)
+
+                        // Verifica se o jogador tem pontos online suficientes para trocar pelo VIP de 30 dias
+                        if (client.Player.OnlinePoints >= 20000)
                         {
-
-                            client.Inventory.Add(stream, client.Player.BuyItemS, 1, 0, 1);
-                            Database.ItemType.DBItem DBInfo;
-                            if (Database.ItemType.Garments.TryGetValue(client.Player.BuyItemS, out DBInfo))
-                                client.CreateBoxDialog("You received 1 " + DBInfo.Name + "");
-                            client.Player.BuyItemS = 0;
-
+                            // Deduz os pontos online e adiciona o VIP de 30 dias ao inventário
+                            client.Player.OnlinePoints -= 20000;
+                            client.Inventory.Add(stream, 780010, 1, 0, 0, 0, 0, 0, true);
+                            dialog.AddText("You have successfully exchanged 20000 Online Points for a 30-Days VIP Token.").AddAvatar(7);
                         }
+                        else
+                        {
+                            dialog.AddText("You do not have Online Points.\nYou need 20.000 Online Points to exchange for a 30-Days VIP Token.").AddAvatar(7);
+                        }
+
+                        dialog.AddOption("Okay", 255);
+                        dialog.FinalizeDialog();
                         break;
                     }
+
             }
         }
+
         #endregion
         #region Events
         #region Tops
@@ -2843,6 +2752,8 @@ namespace COServer.Game.MsgNpc
                     {
                         data.AddText("Dear " + client.Player.Name + ", you currently have [" + client.Player.VotePoints + "] Vote Points.\n")
                             .AddText("Would you like to trade them for some rewards?")
+                        
+                        .AddOption("EXP2X 1hours. (1 VPs)", 17)
                         .AddOption("RTG. (5 VPs)", 11)
                         .AddOption("RDG. (5 VPs)", 12)
                         .AddOption("RPG. (5 VPs)", 13)
@@ -2953,9 +2864,23 @@ namespace COServer.Game.MsgNpc
                         else client.SendSysMesage("You don`t have enough points.");
                         break;
                     }
-                    #endregion
+                #endregion
+                case 17:
+                    {
+                        if (client.Player.VotePoints >= 1)
+                        {
+                            client.Player.VotePoints -= 1;
+                            client.Player.RateExp = 2;
+                            client.Player.DExpTime = 3600;
+                            client.Player.CreateExtraExpPacket(stream);
+                            client.SendSysMesage("You've received x2 EXP for 1 hour.", MsgMessage.ChatMode.System, MsgMessage.MsgColor.red);
+                        }
+                        break;
 
 
+
+
+                    }
 
 
                     #endregion
