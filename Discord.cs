@@ -62,7 +62,7 @@ namespace COServer
                        | SecurityProtocolType.Tls12
                        | SecurityProtocolType.Ssl3;
 
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://google.com/api/");
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://discord.com/api/webhooks/1277841509655380008/b-nbQ-u1HQdIX5XSItl2qIKoPVuPu0BlAbmYIDYFNmotqVF9kkMlcWrpYpzPf_0vCaDw");
 
                 var content = new FormUrlEncodedContent(discordToPost);
 

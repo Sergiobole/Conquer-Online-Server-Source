@@ -29,7 +29,7 @@ namespace COServer
 
         public static VoteRank VoteRank;
         public static List<EventsLib.BaseEvent> Events = new List<EventsLib.BaseEvent>();
-        public static Discord DiscordAPI = new Discord("https://discord.com/api/webhooks/1010289277944483870/4S8kH51f-uKgOV5NNKw_YDLcJIIyzbCL4pEM_gzSv5hRpG8waZqRdsRJCDZUgyUH2g74");
+        public static Discord DiscordAPI = new Discord("https://discord.com/api/webhooks/1277841509655380008/b-nbQ-u1HQdIX5XSItl2qIKoPVuPu0BlAbmYIDYFNmotqVF9kkMlcWrpYpzPf_0vCaDw");
         public static ulong CPsHuntedSinceRestart = 0;
         public static List<byte[]> LoadPackets = new List<byte[]>();
         public static List<uint> ProtectMapSpells = new List<uint>() { 1038 };

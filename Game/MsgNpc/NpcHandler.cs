@@ -247,7 +247,7 @@ namespace COServer.Game.MsgNpc
                     {
                         // Exibe o diálogo inicial com os pontos online do usuário e uma opção para trocar por um token VIP de 7 dias
                         dialog.AddText($"Hello, you will earn 1 OnlinePoint for every minute you stay online.\nYou have [ {client.Player.OnlinePoints} ] OnlinePoints.").AddAvatar(7);
-                        dialog.AddOption("7-Days VIP Token 7000", 1);
+                        dialog.AddOption("7-Days VIP Token", 1);
                         dialog.AddOption("30-Days VIP Token", 2);
                         dialog.AddOption("Okay", 255);
                         dialog.FinalizeDialog();
@@ -18011,7 +18011,7 @@ namespace COServer.Game.MsgNpc
                     }
                 case 2:
                     {
-                        data.AddText("It costs 1 DragonBall for the first socket and 5 DragonBalls for the second!")
+                        data.AddText("It costs 1 DragonBalls for the first socket and 5 DragonBalls for the second!")
                        .AddOption("Left Weapon.", 15)
                        .AddOption("Right Weapon.", 14)
                        .AddAvatar(63).FinalizeDialog();
@@ -18019,7 +18019,7 @@ namespace COServer.Game.MsgNpc
                     }
                 case 1:
                     {
-                        data.AddText("It costs 12 DragonBalls for the first socket and 7 StarDrills for second. If you consider yourself lucky try Tough Drill!")
+                        data.AddText("It costs 1 Meteor. If you consider yourself lucky try!)")
                         .AddOption("Headgear.", 11)
                         .AddOption("Necklace/Bag.", 12)
                         .AddOption("Armor.", 13)
@@ -18101,73 +18101,99 @@ namespace COServer.Game.MsgNpc
                                     {
                                         if (DataItem.SocketOne == Role.Flags.Gem.NoSocket)
                                         {
-
+                                            // Verifica novamente se o primeiro socket do item de dados está vazio (parece redundante)
                                             if (DataItem.SocketOne == Role.Flags.Gem.NoSocket)
                                             {
-                                                if (client.Inventory.Contain(Database.ItemType.DragonBall, 12))
+                                                // Verifica se o inventário do cliente contém 1 Meteor
+                                                if (client.Inventory.Contain(Database.ItemType.Meteor, 1))
                                                 {
-                                                    DataItem.SocketOne = Role.Flags.Gem.EmptySocket;
-                                                    DataItem.Mode = Role.Flags.ItemMode.Update;
-                                                    DataItem.Send(client, stream);
-                                                    if (DataItem.Position != 0)
-                                                        client.Equipment.QueryEquipment();
+                                                    // Gera um número aleatório entre 1 e 700
+                                                    Random random = new Random();
+                                                    int chance = random.Next(1, 700);
 
-                                                    client.Inventory.Remove(Database.ItemType.DragonBall, 12, stream);
+                                                    // Remove 1 Meteor do inventário do cliente
+                                                    client.Inventory.Remove(Database.ItemType.Meteor, 1, stream);
+
+                                                    // Verifica se o número gerado é 1 (1 em 700 de chance)
+                                                    if (chance == 1)
+                                                    {
+                                                        // Define o primeiro socket do item de dados como um socket vazio
+                                                        DataItem.SocketOne = Role.Flags.Gem.EmptySocket;
+                                                        // Atualiza o modo do item de dados para indicar que foi atualizado
+                                                        DataItem.Mode = Role.Flags.ItemMode.Update;
+                                                        // Envia a atualização do item de dados para o cliente
+                                                        DataItem.Send(client, stream);
+
+                                                        // Se a posição do item de dados não for zero, consulta o equipamento do cliente
+                                                        if (DataItem.Position != 0)
+                                                            client.Equipment.QueryEquipment();
+
+                                                        // Informa ao cliente que o socket foi aberto com sucesso
+                                                        client.SendSysMesage("Congratulations! You have successfully opened a socket with a 0.14% chance!");
+                                                        Program.DiscordAPI.Enqueue($"``Congratulations! {client.Player.Name} You have successfully opened a socket with a 0.14% chance!``");
+                                                    }
+                                                    else
+                                                    {
+                                                        // Informa ao cliente que a tentativa falhou
+                                                        client.SendSysMesage("Failed to open a socket. You had a 0.14% chance.");
+                                                    }
                                                 }
                                                 else
                                                 {
-                                                    client.SendSysMesage("Sorry, you don't have 12 DragonBalls!");
+                                                    // Envia uma mensagem de erro para o cliente se ele não tiver 1 Meteor
+                                                    client.SendSysMesage("Sorry, you don't have 1 Meteor!");
                                                 }
                                             }
                                             else
                                             {
+                                                // Envia uma mensagem de erro para o cliente se o item já tiver um socket
                                                 client.SendSysMesage("This item already has one socket!");
                                             }
                                         }
+                                        // Verifica se o segundo socket do item de dados está vazio
                                         else if (DataItem.SocketTwo == Role.Flags.Gem.NoSocket)
                                         {
-                                            if (client.Inventory.Contain(Database.ItemType.ToughDrill, 1))
+                                            // Verifica se o inventário do cliente contém 2000 Meteors
+                                            if (client.Inventory.Contain(Database.ItemType.Meteor, 1))
                                             {
-                                                if (Role.Core.Rate(5))
+                                                // Gera um número aleatório entre 1 e 2000
+                                                Random random = new Random();
+                                                int chance = random.Next(1, 2000);
+
+                                                // Verifica se o número gerado é 1 (1 em 2000 de chance)
+                                                if (chance == 1)
                                                 {
+                                                    // Define o segundo socket do item de dados como um socket vazio
                                                     DataItem.SocketTwo = Role.Flags.Gem.EmptySocket;
+                                                    // Atualiza o modo do item de dados para indicar que foi atualizado
                                                     DataItem.Mode = Role.Flags.ItemMode.Update;
+                                                    // Envia a atualização do item de dados para o cliente
                                                     DataItem.Send(client, stream);
+
+                                                    // Se a posição do item de dados não for zero, consulta o equipamento do cliente
                                                     if (DataItem.Position != 0)
                                                         client.Equipment.QueryEquipment();
-                                                    client.Inventory.Remove(Database.ItemType.ToughDrill, 1, stream);
-                                                    data.AddText("Congratulations! You've opened a 2nd socket in your item! ").AddOption("Thank you so much!", 255).FinalizeDialog();
-                                                    Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + client.Player.Name + " has opened a 2nd socket in their " + Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID) + " with only one Tough Drill!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
 
+                                                    // Remove 12 DragonBalls do inventário do cliente
+                                                    client.Inventory.Remove(Database.ItemType.Meteor, 1, stream);
+
+                                                    // Informa ao cliente que o socket foi aberto com sucesso
+                                                    data.AddText("Congratulations! You've opened a 2nd socket in your item with a 0.05% chance!").AddOption("Thank you so much!", 255).FinalizeDialog();
+                                                    Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + client.Player.Name + " has opened a 2nd socket in their " + Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID), Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
+                                                    Program.DiscordAPI.Enqueue($"``Congratulations! {client.Player.Name} You have successfully opened a second socket with a 0.14% chance!``");
                                                 }
                                                 else
                                                 {
-                                                    if (client.Inventory.Contain(Database.ItemType.ToughDrill, 1))
-                                                    {
-                                                        client.Inventory.Remove(Database.ItemType.ToughDrill, 1, stream);
-                                                        client.Inventory.Add(stream, Database.ItemType.StarDrill, 1);
-                                                        data.AddText("You're unlucky, you've failed and got 1 Star Drill in return.").AddOption("Yikes.", 255).FinalizeDialog();
-                                                    }
+                                                    // Se a tentativa falhar, remove meteor e informa ao cliente
+                                                    client.Inventory.Remove(Database.ItemType.Meteor, 1, stream);
+                                                    client.SendSysMesage("You're unlucky, you've failed to open the socket. You had a 0.05% chance.");
                                                 }
                                             }
-                                            if (client.Inventory.Contain(Database.ItemType.StarDrill, 7))
+                                            else
                                             {
-                                                DataItem.SocketTwo = Role.Flags.Gem.EmptySocket;
-                                                DataItem.Mode = Role.Flags.ItemMode.Update;
-                                                DataItem.Send(client, stream);
-                                                if (DataItem.Position != 0)
-                                                    client.Equipment.QueryEquipment();
-
-                                                client.Inventory.Remove(Database.ItemType.StarDrill, 7, stream);
-                                                data.AddText("Congratulations! You've opened a 2nd socket in your item! ").AddOption("Thank you so much!", 255).FinalizeDialog();
-                                                Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + client.Player.Name + " has opened a 2nd socket in their " + Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID) + " .", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
-
+                                                // Envia uma mensagem de erro para o cliente se ele não tiver meteor
+                                                client.SendSysMesage("Sorry, you don't have 1 Meteors");
                                             }
-                                            //else
-                                            //{
-                                            //    client.SendSysMesage("Sorry you need 7 star drill!");
-                                            //    return;
-                                            //}
                                         }
                                     }
                                 }
