@@ -17,6 +17,7 @@ namespace COServer
             {
                 using (var conn = new MySqlConnection(ConnectionString))
                 {
+                    Console.WriteLine($" Username :{username}");
                     using (var cmd = new MySqlCommand("select item_number from payments where username=@u and claimed=0"
                         , conn))
                     {

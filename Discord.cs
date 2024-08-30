@@ -62,7 +62,7 @@ namespace COServer
                        | SecurityProtocolType.Tls12
                        | SecurityProtocolType.Ssl3;
 
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://discord.com/api/webhooks/1277841509655380008/b-nbQ-u1HQdIX5XSItl2qIKoPVuPu0BlAbmYIDYFNmotqVF9kkMlcWrpYpzPf_0vCaDw");
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://discord.com/api/webhooks/1278873234552389667/_H87R46AocADp1yrdxPNgxfOppibkBuxinlF25D714GZG96Jue_9gkMUvZ0clIFNowLh");
 
                 var content = new FormUrlEncodedContent(discordToPost);
 

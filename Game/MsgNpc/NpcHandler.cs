@@ -2463,133 +2463,16 @@ namespace COServer.Game.MsgNpc
                         if (!client.Inventory.HaveSpace(1))
                         {
                             data.AddText("Please make 1 more space in your inventory.")
-                 .AddOption("Let me check.", 255)
-                 .AddAvatar(63).FinalizeDialog();
-                            break;
+                        .AddOption("Let me check.", 255)
+                        .AddAvatar(63).FinalizeDialog();
+                        break;
                         }
                         var prizes = PayPalHandler.getItems(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Prizes: " + prizes.Count);
                         foreach (var item in prizes)
                         {
                             switch (item.Key)
                             {
-                                case 1:
-                                    {
-                                        string ItemName = "1000CPS+1MGold";
-                                        client.Player.ConquerPoints += 1000;
-                                        client.Player.Money += 1000000;
-                                        client.CreateBoxDialog("You've received " + ItemName + ". Thank you for your support.");
-                                        PayPalHandler.logDonation(client.AccountName(client.Player.Name), client.Player.Name, item.Value + " " + ItemName + ".");
-                                        string amessaj = "";
-                                        if (Role.Core.IsBoy(client.Player.Body))
-                                            amessaj = "his";
-                                        else if (Role.Core.IsGirl(client.Player.Body))
-                                            amessaj = "her";
-                                        Console.WriteLine(client.Player.Name + "! claimed " + amessaj + " " + ItemName + " bought from our donation page. Thanks for supporting our server.");
-
-                                        break;
-                                    }
-                                case 2:
-                                    {
-                                        string ItemName = "5000CPS+5MGold";
-                                        client.Player.ConquerPoints += 5000;
-                                        client.Player.Money += 5000000;
-
-                                        client.CreateBoxDialog("You've received " + ItemName + ". Thank you for your support.");
-                                        PayPalHandler.logDonation(client.AccountName(client.Player.Name), client.Player.Name, item.Value + " " + ItemName + ".");
-                                        string amessaj = "";
-                                        if (Role.Core.IsBoy(client.Player.Body))
-                                            amessaj = "his";
-                                        else if (Role.Core.IsGirl(client.Player.Body))
-                                            amessaj = "her";
-                                        Console.WriteLine(client.Player.Name + "! claimed " + amessaj + " " + ItemName + " bought from our donation page. Thanks for supporting our server.");
-
-                                        break;
-                                    }
-                                case 3:
-                                    {
-                                        string ItemName = "10000CPS+10MGold";
-                                        client.Player.ConquerPoints += 10000;
-                                        client.Player.Money += 10000000;
-
-                                        client.CreateBoxDialog("You've received " + ItemName + ". Thank you for your support.");
-                                        PayPalHandler.logDonation(client.AccountName(client.Player.Name), client.Player.Name, item.Value + " " + ItemName + ".");
-                                        string amessaj = "";
-                                        if (Role.Core.IsBoy(client.Player.Body))
-                                            amessaj = "his";
-                                        else if (Role.Core.IsGirl(client.Player.Body))
-                                            amessaj = "her";
-                                        Console.WriteLine(client.Player.Name + "! claimed " + amessaj + " " + ItemName + " bought from our donation page. Thanks for supporting our server.");
-
-                                        break;
-                                    }
-                                case 4:
-                                    {
-                                        string ItemName = "20000CPS+20MGold";
-                                        client.Player.ConquerPoints += 20000;
-                                        client.Player.Money += 20000000;
-
-                                        client.CreateBoxDialog("You've received " + ItemName + ". Thank you for your support.");
-                                        PayPalHandler.logDonation(client.AccountName(client.Player.Name), client.Player.Name, item.Value + " " + ItemName + ".");
-                                        string amessaj = "";
-                                        if (Role.Core.IsBoy(client.Player.Body))
-                                            amessaj = "his";
-                                        else if (Role.Core.IsGirl(client.Player.Body))
-                                            amessaj = "her";
-                                        Console.WriteLine(client.Player.Name + "! claimed " + amessaj + " " + ItemName + " bought from our donation page. Thanks for supporting our server.");
-
-                                        break;
-                                    }
-                                case 5:
-                                    {
-                                        string ItemName = "30000CPS+30MGold";
-                                        client.Player.ConquerPoints += 30000;
-                                        client.Player.Money += 30000000;
-
-                                        client.CreateBoxDialog("You've received " + ItemName + ". Thank you for your support.");
-                                        PayPalHandler.logDonation(client.AccountName(client.Player.Name), client.Player.Name, item.Value + " " + ItemName + ".");
-                                        string amessaj = "";
-                                        if (Role.Core.IsBoy(client.Player.Body))
-                                            amessaj = "his";
-                                        else if (Role.Core.IsGirl(client.Player.Body))
-                                            amessaj = "her";
-                                        Console.WriteLine(client.Player.Name + "! claimed " + amessaj + " " + ItemName + " bought from our donation page. Thanks for supporting our server.");
-
-                                        break;
-                                    }
-                                case 6:
-                                    {
-                                        string ItemName = "40000CPS+40MGold";
-                                        client.Player.ConquerPoints += 40000;
-                                        client.Player.Money += 40000000;
-
-                                        client.CreateBoxDialog("You've received " + ItemName + ". Thank you for your support.");
-                                        PayPalHandler.logDonation(client.AccountName(client.Player.Name), client.Player.Name, item.Value + " " + ItemName + ".");
-                                        string amessaj = "";
-                                        if (Role.Core.IsBoy(client.Player.Body))
-                                            amessaj = "his";
-                                        else if (Role.Core.IsGirl(client.Player.Body))
-                                            amessaj = "her";
-                                        Console.WriteLine(client.Player.Name + "! claimed " + amessaj + " " + ItemName + " bought from our donation page. Thanks for supporting our server.");
-
-                                        break;
-                                    }
-                                case 7:
-                                    {
-                                        string ItemName = "50000CPS+50MGold";
-                                        client.Player.ConquerPoints += 50000;
-                                        client.Player.Money += 50000000;
-
-                                        client.CreateBoxDialog("You've received " + ItemName + ". Thank you for your support.");
-                                        PayPalHandler.logDonation(client.AccountName(client.Player.Name), client.Player.Name, item.Value + " " + ItemName + ".");
-                                        string amessaj = "";
-                                        if (Role.Core.IsBoy(client.Player.Body))
-                                            amessaj = "his";
-                                        else if (Role.Core.IsGirl(client.Player.Body))
-                                            amessaj = "her";
-                                        Console.WriteLine(client.Player.Name + "! claimed " + amessaj + " " + ItemName + " bought from our donation page. Thanks for supporting our server.");
-
-                                        break;
-                                    }
                                 case 8:
                                     {
                                         string ItemName = "30DayVIP";
@@ -2605,11 +2488,10 @@ namespace COServer.Game.MsgNpc
 
                                         break;
                                     }
-                                case 9:
+                                case 10:
                                     {
-                                        string ItemName = "20k Cps";
-                                        client.Player.ConquerPoints += 20000;
-
+                                        string ItemName = "GoldPrize";
+                                        client.Inventory.Add(stream, 2100075, 1);
                                         client.CreateBoxDialog("You've received " + ItemName + ". Thank you for your support.");
                                         PayPalHandler.logDonation(client.AccountName(client.Player.Name), client.Player.Name, item.Value + " " + ItemName + ".");
                                         string amessaj = "";
@@ -2621,41 +2503,11 @@ namespace COServer.Game.MsgNpc
 
                                         break;
                                     }
-                                case 10:
+                                case 9:
                                     {
                                         string ItemName = "VIP-7DAY";
                                         client.Inventory.Add(stream, 780000, 1);
                                         client.CreateBoxDialog("You've received " + ItemName + ". Thank you for your support.");
-                                        PayPalHandler.logDonation(client.AccountName(client.Player.Name), client.Player.Name, item.Value + " " + ItemName + ".");
-                                        string amessaj = "";
-                                        if (Role.Core.IsBoy(client.Player.Body))
-                                            amessaj = "his";
-                                        else if (Role.Core.IsGirl(client.Player.Body))
-                                            amessaj = "her";
-                                        Console.WriteLine(client.Player.Name + "! claimed " + amessaj + " " + ItemName + " bought from our donation page. Thanks for supporting our server.");
-
-                                        break;
-                                    }
-                                case 11:
-                                    {
-                                        string ItemName = "+4Stone";
-                                        client.Inventory.Add(stream, 73000, 1);
-                                        client.CreateBoxDialog("You have received " + ItemName + ". Thank you for your support.");
-                                        PayPalHandler.logDonation(client.AccountName(client.Player.Name), client.Player.Name, item.Value + " " + ItemName + ".");
-                                        string amessaj = "";
-                                        if (Role.Core.IsBoy(client.Player.Body))
-                                            amessaj = "his";
-                                        else if (Role.Core.IsGirl(client.Player.Body))
-                                            amessaj = "her";
-                                        Console.WriteLine(client.Player.Name + "! claimed " + amessaj + " " + ItemName + " bought from our donation page. Thanks for supporting our server.");
-
-                                        break;
-                                    }
-                                case 12:
-                                    {
-                                        string ItemName = "Level-137";
-                                        client.Player.Level = (137);
-                                        client.CreateBoxDialog("You have received Level 137 " + " Thank you for your support.");
                                         PayPalHandler.logDonation(client.AccountName(client.Player.Name), client.Player.Name, item.Value + " " + ItemName + ".");
                                         string amessaj = "";
                                         if (Role.Core.IsBoy(client.Player.Body))
@@ -7303,8 +7155,7 @@ namespace COServer.Game.MsgNpc
                     }
                 case 55:
                     {
-                        TimeSpan Time = client.Player.ExpireVip - DateTime.Now;
-                        if (Time.TotalSeconds <= 0)
+                     
                         client.Inventory.Add(stream, 720374, 1, 0, 0, 0, 0, 0, true);
                         break;
                     }
@@ -18111,7 +17962,7 @@ namespace COServer.Game.MsgNpc
                                                 {
                                                     // Gera um número aleatório entre 1 e 700
                                                     Random random = new Random();
-                                                    int chance = random.Next(1, 700);
+                                                    int chance = random.Next(1, 1);
 
                                                     // Remove 1 Meteor do inventário do cliente
                                                     client.Inventory.Remove(Database.ItemType.Meteor, 1, stream);
@@ -18132,7 +17983,7 @@ namespace COServer.Game.MsgNpc
 
                                                         // Informa ao cliente que o socket foi aberto com sucesso
                                                         client.SendSysMesage("Congratulations! You have successfully opened a socket with a 0.14% chance!");
-                                                        Program.DiscordAPI.Enqueue($"``Congratulations! {client.Player.Name} You have successfully opened a socket with a 0.14% chance!``");
+                                                        Program.DiscordAPIsocket.Enqueue($"``Congratulations! {client.Player.Name} You have successfully opened a socket with a 0.14% chance!``");
                                                     }
                                                     else
                                                     {
@@ -18160,7 +18011,7 @@ namespace COServer.Game.MsgNpc
                                             {
                                                 // Gera um número aleatório entre 1 e 2000
                                                 Random random = new Random();
-                                                int chance = random.Next(1, 2000);
+                                                int chance = random.Next(1, 1);
 
                                                 // Verifica se o número gerado é 1 (1 em 2000 de chance)
                                                 if (chance == 1)
@@ -18182,7 +18033,8 @@ namespace COServer.Game.MsgNpc
                                                     // Informa ao cliente que o socket foi aberto com sucesso
                                                     data.AddText("Congratulations! You've opened a 2nd socket in your item with a 0.05% chance!").AddOption("Thank you so much!", 255).FinalizeDialog();
                                                     Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + client.Player.Name + " has opened a 2nd socket in their " + Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID), Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
-                                                    Program.DiscordAPI.Enqueue($"``Congratulations! {client.Player.Name} You have successfully opened a second socket with a 0.14% chance!``");
+                                                    Program.DiscordAPIsocket.Enqueue($"``Congratulations! {client.Player.Name} You have successfully opened a second socket with a 0.05% chance!``");
+
                                                 }
                                                 else
                                                 {

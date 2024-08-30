@@ -104,7 +104,7 @@ namespace COServer.Game.MsgTournaments
                 if (Winner.Name != "None" && Winner.Score != 100)
                     msg = "Congratulations to " + Winner.Name + ", they've won the PoleDomination of BI with a score of " + Winner.Score.ToString();
                 else msg = "PoleDomination of BI has ended with no winner.";
-                //Program.DiscordAPI.Enqueue("``{msg}``");
+                Program.DiscordAPIevents.Enqueue($"``{msg}``");
 
                 var stream = rec.GetStream();
                 Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage(msg, MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.System).GetArray(stream));

@@ -96,7 +96,10 @@ namespace COServer.Game.MsgTournaments
                     client.Player.MessageBox(Message, new Action<Client.GameClient>(user => user.Teleport(X, Y, map, DinamicID)), null, Seconds, messaj);
                 }
             }
-            Program.DiscordAPI.Enqueue($"Total Online: {Server.GamePoll.Count} - Max Online: {KernelThread.GetMaxOnline()}");
+
+            // Envia uma mensagem para o Discord informando que o evento começou
+            Program.DiscordAPIevents.Enqueue($"``{Name} has started!``");
+            Program.DiscordAPI.Enqueue($"``Total Online: {Server.GamePoll.Count} - Max Online: {KernelThread.GetMaxOnline()}``");
         }
 
         internal unsafe static void SendSysMesage(string Messaj, Game.MsgServer.MsgMessage.ChatMode ChatType = Game.MsgServer.MsgMessage.ChatMode.TopLeft
@@ -331,7 +334,7 @@ namespace COServer.Game.MsgTournaments
                             CurrentTournament = Tournaments[TournamentType.TreasureThief];
                             CurrentTournament.Open();
                             Console.WriteLine("Started Tournament " + CurrentTournament.Type.ToString(), ConsoleColor.Yellow);
-                            Program.DiscordAPI.Enqueue("``Tournament " + CurrentTournament.Type.ToString() + " has started!``");
+                            
 
                         }
                     }

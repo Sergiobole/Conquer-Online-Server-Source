@@ -29,7 +29,10 @@ namespace COServer
 
         public static VoteRank VoteRank;
         public static List<EventsLib.BaseEvent> Events = new List<EventsLib.BaseEvent>();
-        public static Discord DiscordAPI = new Discord("https://discord.com/api/webhooks/1277841509655380008/b-nbQ-u1HQdIX5XSItl2qIKoPVuPu0BlAbmYIDYFNmotqVF9kkMlcWrpYpzPf_0vCaDw");
+        public static Discord DiscordAPI = new Discord("https://discord.com/api/webhooks/1279059333186850906/tXJNrPK4ANgx1KUmPBnwQSyBiIV1nUyoFUTBNV67DWgoGeTeUaBpM1U737lwBFiWm4HV");
+        public static Discord DiscordAPIsocket = new Discord("https://discord.com/api/webhooks/1279057888546914349/HV7GvJDn_dVM1sEgW5K2yCd76AghtitDm32TKmxZrnGiFXMWj644nfPEooahcPJGsunE");
+        public static Discord DiscordAPIevents = new Discord("https://discord.com/api/webhooks/1279064456009220131/prtX5o2LB7fyF1c_rg82NASmYi1QR4A_KcPaNJ8Oj0ApSM3r_bNMkvLtSPYBuwtIzp9B");
+        public static Discord DiscordAPIworld = new Discord("https://discord.com/api/webhooks/1279070520423223387/j6jdhxqLh6T1B5B4ZXgg89eIQ6PJZowwQY65XDjflguIV2OM_xoWhXAK95lb_zDeLiEl");
         public static ulong CPsHuntedSinceRestart = 0;
         public static List<byte[]> LoadPackets = new List<byte[]>();
         public static List<uint> ProtectMapSpells = new List<uint>() { 1038 };
@@ -167,7 +170,7 @@ namespace COServer
                 System.Console.WriteLine("  ");
                 System.Console.WriteLine("  ");
                 Console.WriteLine("The server is ready for incoming connections!\n", ConsoleColor.Green);
-                DiscordAPI.Enqueue("``CoPrivate is now online, you can login!``");
+                DiscordAPI.Enqueue("``CoGolden is now online, you can login!``");
                 using (Database.MySqlCommand cmd = new Database.MySqlCommand(Database.MySqlCommandType.SELECT).Select("configuration"))
                 {
                     using (Database.MySqlReader r = new Database.MySqlReader(cmd))

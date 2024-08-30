@@ -1,4 +1,7 @@
-﻿using System;
+﻿using COServer.Client;
+using COServer.Game.MsgServer.AttackHandler.ReceiveAttack;
+using MySql.Data.MySqlClient.Memcached;
+using System;
 using System.Collections.Concurrent;
 using System.Linq;
 
@@ -74,10 +77,8 @@ namespace COServer.Game.MsgServer
                                             broadcast.SpentCPs += 5;
                                             user.Player.ConquerPoints -= 5;
 
-
                                             if (MsgTournaments.MsgBroadcast.Broadcasts[c - 1].SpentCPs <= broadcast.SpentCPs)
                                             {
-
                                                 MsgTournaments.MsgBroadcast.Broadcasts[c] = MsgTournaments.MsgBroadcast.Broadcasts[c - 1];
                                                 MsgTournaments.MsgBroadcast.Broadcasts[c - 1] = broadcast;
                                             }
@@ -85,6 +86,8 @@ namespace COServer.Game.MsgServer
                                             {
                                                 MsgTournaments.MsgBroadcast.Broadcasts[c] = broadcast;
                                             }
+
+                                      
                                         }
                                     }
                                     break;
@@ -202,25 +205,26 @@ namespace COServer.Game.MsgServer
                         }
                     case BroadTyp.BroadcastMessage:
                         {
+                            // Verifica se o número máximo de broadcasts foi atingido
                             if (MsgTournaments.MsgBroadcast.Broadcasts.Count == MsgTournaments.MsgBroadcast.MaxBroadcasts)
                             {
                                 user.SendSysMesage("You can't send any broadcasts for now, the limit has been reached, please wait.");
                                 break;
                             }
 
-                            if (Strings == null)
-                                break;
-                            if (Strings.Length == 0)
-                                return;
-                            if (Strings[0] == null)
+                            // Verifica se a string de mensagem é nula ou vazia
+                            if (Strings == null || Strings.Length == 0 || Strings[0] == null)
                                 break;
 
+                            // Verifica se o usuário está em uma negociação
                             if (user.InTrade)
                                 break;
 
+                            // Verifica se o usuário tem pontos de conquista suficientes
                             if (user.Player.ConquerPoints >= 5)
                             {
                                 DateTime value;
+                                // Verifica se o usuário está no dicionário de broadcasters e se o tempo de espera passou
                                 if (Broadcasters.TryGetValue(user.Player.UID, out value))
                                 {
                                     if (DateTime.Now < value.AddSeconds(5))
@@ -231,22 +235,21 @@ namespace COServer.Game.MsgServer
                                     Broadcasters[user.Player.UID] = DateTime.Now;
                                 }
                                 else
+                                {
                                     Broadcasters.TryAdd(user.Player.UID, DateTime.Now);
+                                }
                                 user.Player.ConquerPoints -= 5;
 
+                                // Cria uma nova mensagem de broadcast
+                                MsgTournaments.MsgBroadcast.BroadcastStr broadcast = new MsgTournaments.MsgBroadcast.BroadcastStr
+                                {
+                                    EntityID = user.Player.UID,
+                                    EntityName = user.Player.Name,
+                                    ID = MsgTournaments.MsgBroadcast.BroadcastCounter.Next,
+                                    Message = Strings[0].Length > 80 ? Strings[0].Remove(80) : Strings[0]
+                                };
 
-                                MsgTournaments.MsgBroadcast.BroadcastStr broadcast = new MsgTournaments.MsgBroadcast.BroadcastStr();
-                                broadcast.EntityID = user.Player.UID;
-
-                                broadcast.EntityName = user.Player.Name;
-
-
-                                broadcast.ID = MsgTournaments.MsgBroadcast.BroadcastCounter.Next;
-                                if (Strings[0].Length > 80)
-                                    Strings[0] = Strings[0].Remove(80);
-
-
-                                broadcast.Message = Strings[0];
+                                // Verifica se é o primeiro broadcast
                                 if (MsgTournaments.MsgBroadcast.Broadcasts.Count == 0)
                                 {
                                     if (MsgTournaments.MsgBroadcast.CurrentBroadcast.EntityID == 1)
@@ -256,15 +259,19 @@ namespace COServer.Game.MsgServer
                                         Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage(Strings[0], "ALLUSERS", user.Player.Name, MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.BroadcastMessage).GetArray(stream));
 
                                         user.Send(stream.BroadcastCreate(BroadTyp.BroadcastMessage, dwParam, Strings));
-
                                         break;
                                     }
                                 }
 
+                                // Adiciona o broadcast à lista de broadcasts
                                 MsgTournaments.MsgBroadcast.Broadcasts.Add(broadcast);
                                 dwParam = (uint)MsgTournaments.MsgBroadcast.Broadcasts.Count;
 
+                                // Envia a mensagem de broadcast para o jogador
                                 user.Send(stream.BroadcastCreate(BroadTyp.BroadcastMessage, dwParam, Strings));
+
+                                // Envia a mensagem de broadcast para a API do Discord com o nome do jogador
+                                Program.DiscordAPIworld.Enqueue($"`` Broadcast from {user.Player.Name}: {broadcast.Message} `` ");
                                 break;
                             }
 

@@ -35,6 +35,7 @@ namespace COServer.Game.MsgTournaments
                 Mode = ProcesType.Alive;
                 MsgSchedules.SendInvitation(Title, 353, 317, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.Ss_Fb);
                 MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
+
                 FinishTimer = DateTime.Now.AddMinutes(FinishMinutes);
             }
         }
