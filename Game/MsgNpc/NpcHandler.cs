@@ -8,6 +8,11 @@ using COServer.EventsLib;
 using static COServer.EventsLib.BaseEvent;
 using COServer.Game.MsgTournaments;
 using COServer.Database;
+using MySql.Data.MySqlClient;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.IO;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+
 
 namespace COServer.Game.MsgNpc
 {
@@ -2447,6 +2452,9 @@ namespace COServer.Game.MsgNpc
         public static void PrizeOfficer(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
         {
             Dialog data = new Dialog(client, stream);
+
+            int foundsToTransfer = -1; 
+
             switch (Option)
             {
                 case 0:
@@ -2462,79 +2470,312 @@ namespace COServer.Game.MsgNpc
                     {
                         if (!client.Inventory.HaveSpace(1))
                         {
-                            data.AddText("Please make 1 more space in your inventory.")
+                         data.AddText("Please make 1 more space in your inventory.")
                         .AddOption("Let me check.", 255)
                         .AddAvatar(63).FinalizeDialog();
-                        break;
+                            break;
                         }
-                        var prizes = PayPalHandler.getItems(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Prizes: " + prizes.Count);
-                        foreach (var item in prizes)
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds <= 0)
                         {
-                            switch (item.Key)
-                            {
-                                case 8:
-                                    {
-                                        string ItemName = "30DayVIP";
-                                        client.Inventory.Add(stream, 780010, 1);
-                                        client.CreateBoxDialog("You've received " + ItemName + ". Thank you for your support.");
-                                        PayPalHandler.logDonation(client.AccountName(client.Player.Name), client.Player.Name, item.Value + " " + ItemName + ".");
-                                        string amessaj = "";
-                                        if (Role.Core.IsBoy(client.Player.Body))
-                                            amessaj = "his";
-                                        else if (Role.Core.IsGirl(client.Player.Body))
-                                            amessaj = "her";
-                                        Console.WriteLine(client.Player.Name + "! claimed " + amessaj + " " + ItemName + " bought from our donation page. Thanks for supporting our server.");
-
-                                        break;
-                                    }
-                                case 10:
-                                    {
-                                        string ItemName = "GoldPrize";
-                                        client.Inventory.Add(stream, 2100075, 1);
-                                        client.CreateBoxDialog("You've received " + ItemName + ". Thank you for your support.");
-                                        PayPalHandler.logDonation(client.AccountName(client.Player.Name), client.Player.Name, item.Value + " " + ItemName + ".");
-                                        string amessaj = "";
-                                        if (Role.Core.IsBoy(client.Player.Body))
-                                            amessaj = "his";
-                                        else if (Role.Core.IsGirl(client.Player.Body))
-                                            amessaj = "her";
-                                        Console.WriteLine(client.Player.Name + "! claimed " + amessaj + " " + ItemName + " bought from our donation page. Thanks for supporting our server.");
-
-                                        break;
-                                    }
-                                case 9:
-                                    {
-                                        string ItemName = "VIP-7DAY";
-                                        client.Inventory.Add(stream, 780000, 1);
-                                        client.CreateBoxDialog("You've received " + ItemName + ". Thank you for your support.");
-                                        PayPalHandler.logDonation(client.AccountName(client.Player.Name), client.Player.Name, item.Value + " " + ItemName + ".");
-                                        string amessaj = "";
-                                        if (Role.Core.IsBoy(client.Player.Body))
-                                            amessaj = "his";
-                                        else if (Role.Core.IsGirl(client.Player.Body))
-                                            amessaj = "her";
-                                        Console.WriteLine(client.Player.Name + "! claimed " + amessaj + " " + ItemName + " bought from our donation page. Thanks for supporting our server.");
-
-                                        break;
-                                    }
-                            }
-                        }
-                        if (prizes.Count == 0)
-                        {
-                            data.AddText("You have nothing to claim.");
-                            data.AddOption("Thanks.", 255);
+                            data.AddText("You don't have enough founds");
+                            data.AddOption("Okay.", 255);
                             data.AddAvatar(63).FinalizeDialog();
                         }
                         else
                         {
-                            data.AddText("You've claimed your donation reward.");
-                            data.AddOption("Thanks.", 255);
+                            data.AddText(string.Format("You have {0} founds", totalFounds));
+                            data.AddOption("1 - 7 Day VIP = 7 Founds", 2);
+                            data.AddOption("2 - 30 Day VIP = 20 Founds", 3);
+                            data.AddOption("3 - GoldPrizes = 50 Founds", 4);
+                            //data.AddOption("4 - Transfer Founds", 5);
                             data.AddAvatar(63).FinalizeDialog();
                         }
                         break;
                     }
-                    #endregion
+                #endregion
+                case 2:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+                                
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 7)
+                        {
+
+                            const string ConnectionString = "Server=localhost;username=root;password=11112222;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 7
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 7);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário
+                                {
+                                    client.Inventory.Add(stream, 780000, 1, 0, 0, 0, 0, 0, true);
+
+                                    data.AddText("You have successfully exchanged 7 FoundsPoints for a 7-Days VIP Token.")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Vip 7-Days``");
+
+                                    break;
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+                case 3:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+                                
+                            return; // Use return instead of break to exit the method
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 20)
+                        {
+                            const string ConnectionString = "Server=localhost;username=root;password=11112222;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 20
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 20);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário
+                                {
+                                    client.Inventory.Add(stream, 780010, 1, 0, 0, 0, 0, 0, true);
+                                    data.AddText("You have successfully exchanged 20 FoundsPoints for a 30-Days VIP Token.")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Vip 30 Days``");
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+
+                case 4:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+
+                            return; // Use return instead of break to exit the method
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 50)
+                        {
+                            const string ConnectionString = "Server=localhost;username=root;password=11112222;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 50
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 50);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário 
+                                {
+                                    client.Inventory.Add(stream, 2100075, 1, 0, 0, 0, 0, 0, true);
+                                    data.AddText("You have successfully exchanged 50 FoundsPoints for a Gold-Prize.")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Gold-Prize``");
+                                }   
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+
+
+
+
+
+                case 5:
+                    {
+                        data.AddText("Insert the ammount of founds that you want to transfer to another player.");
+                        data.AddInput("Ammount founds: ", 6).AddAvatar(6).FinalizeDialog();
+
+
+
+                        break;
+                    }
+                case 6:
+                    {
+                        foundsToTransfer = int.Parse(Input);
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+
+                        if (foundsToTransfer > totalFounds)
+                        {
+                            data.AddText(string.Format("Sorry, you only have {0} founds.", totalFounds));
+                            data.AddOption("Okay", 255);
+                            data.AddAvatar(63).FinalizeDialog();
+                        }
+                        else
+                        {
+                            data.AddText("Please enter the name of the player that you want to send founds.")
+                                .AddInput("Player name:", 7).AddAvatar(6).FinalizeDialog();
+
+
+                        }
+
+                        break;
+                    }
+                case 7:
+                    {
+                        string name = Input;
+
+                        Console.WriteLine($"Inserted name: {name}");
+
+                        if (name.Length > 0 && name != null)
+                        {
+                            const string ConnectionString = "Server=localhost;username=root;password=11112222;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("insert into payments (username, txn_id, claimed, founds, payment_gross, mc_gross, payer_id, payment_status, points, token) values (@username, @txn_id, @claimed, @founds, @payment_gross, @mc_gross, @payer_id, @payment_status, @points, @token)"
+                                        , conn))
+                                    {
+                                        conn.Open();
+
+                                        // username, txn_id, claimed, founds, payment_gross, mc_gross, payer_id, payment_status, points, token
+                                        cmd.Parameters.AddWithValue("@username", name);
+                                        cmd.Parameters.AddWithValue("@txn_id", "1234");
+                                        cmd.Parameters.AddWithValue("@claimed", 0);
+                                        cmd.Parameters.AddWithValue("@founds", foundsToTransfer);
+                                        cmd.Parameters.AddWithValue("@payment_gross", 1.0);
+                                        cmd.Parameters.AddWithValue("@mc_gross", "1234");
+                                        cmd.Parameters.AddWithValue("@payer_id", "1");
+                                        cmd.Parameters.AddWithValue("@payment_status", "Transfer");
+                                        cmd.Parameters.AddWithValue("@points", 12);
+                                        cmd.Parameters.AddWithValue("@token", "123");
+
+                                        Console.WriteLine($"Final query: ${cmd.CommandText}");
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("update payments set founds = @founds where founds = @founds and username = @username"
+                                    , conn))
+                                    {
+                                        conn.Open();
+
+                                        cmd.Parameters.AddWithValue("@founds", Math.Min((totalFounds - foundsToTransfer), 0));
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.ToString());
+                            }
+                        }
+
+                        break;
+                    }
             }
         }
         #endregion

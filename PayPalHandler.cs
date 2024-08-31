@@ -10,15 +10,16 @@ namespace COServer
     public class PayPalHandler
     {
         public const string ConnectionString = "Server=localhost;username=root;password=11112222;database=zq;";
-        public static Dictionary<int, int> getItems(string username)
+        public static int getFounds(string username)
         {
-            Dictionary<int, int> items = new Dictionary<int, int>();// key : item_number and value : count 
+            int founds = 0;
+
             try
             {
                 using (var conn = new MySqlConnection(ConnectionString))
                 {
                     Console.WriteLine($" Username :{username}");
-                    using (var cmd = new MySqlCommand("select item_number from payments where username=@u and claimed=0"
+                    using (var cmd = new MySqlCommand("select founds from payments where username=@u"
                         , conn))
                     {
                         conn.Open();
@@ -27,19 +28,9 @@ namespace COServer
                         {
                             while (reader.Read())
                             {
-                                int r = int.Parse(reader.GetString("item_number"));
-                                if (items.ContainsKey(r))
-                                    items[r]++;
-                                else items.Add(r, 1);
+                                founds = int.Parse(reader.GetString("founds"));
                             }
                         }
-                    }
-
-                    using (var cmd = new MySqlCommand("update payments set claimed=1 where username=@u"
-                        , conn))
-                    {
-                        cmd.Parameters.AddWithValue("@u", username);
-                        cmd.ExecuteNonQuery();
                     }
                 }
             }
@@ -47,7 +38,8 @@ namespace COServer
             {
                 Console.WriteLine(e.ToString());
             }
-            return items;
+
+            return founds;
         }
 
         public static void logDonation(string user, string name, string log)
