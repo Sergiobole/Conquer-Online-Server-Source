@@ -19,7 +19,7 @@ namespace COServer.Bots
 	{
 		private int JumpSpeed = 0;
 		private int Accuracy = 0;
-		private string Name = "CoPrivate";
+		private string Name = "CoGolden";
 
 		private DateTime LastAtttack = DateTime.Now;
 

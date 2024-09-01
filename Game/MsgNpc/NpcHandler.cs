@@ -1005,33 +1005,33 @@ namespace COServer.Game.MsgNpc
         #endregion
         #region GenderWar
         #region Join
-        [NpcAttribute(NpcID.GenderWarJoin)]
-        public static void GenderWarJoin(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
-        {
-            Dialog data = new Dialog(client, stream);
-            switch (Option)
-            {
-                case 0:
-                    {
-                        data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Top GenderWar For All Classes Every Day\n")
-                            .AddText("Working From [11:00] To [11:9] PM \nThe Winner Get [ Top Gender and 100,000 Silver ]")
-                            .AddOption("Okey ,Enter Me.", 1)
-                            .AddOption("I will come later. ", 255)
-                            .AddAvatar(63).FinalizeDialog();
-                        break;
-                    }
-                case 1:
-                    {
-                        if (!MsgSchedules._GenderWar.AllowJoin(client, stream))
-                        {
-                            data.AddText("Come back in the right time at [11:00] To [11:09] PM.")
-                                .AddOption("I see. ", 255)
-                                .AddAvatar(63).FinalizeDialog();
-                        }
-                        break;
-                    }
-            }
-        }
+        //[NpcAttribute(NpcID.GenderWarJoin)]
+        //public static void GenderWarJoin(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        //{
+        //    Dialog data = new Dialog(client, stream);
+        //    switch (Option)
+        //    {
+        //        case 0:
+        //            {
+        //                data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Top GenderWar For All Classes Every Day\n")
+        //                    .AddText("Working From [11:00] To [11:9] PM \nThe Winner Get [ Top Gender and 100,000 Silver ]")
+        //                    .AddOption("Okey ,Enter Me.", 1)
+        //                    .AddOption("I will come later. ", 255)
+        //                    .AddAvatar(63).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 1:
+        //            {
+        //                if (!MsgSchedules._GenderWar.AllowJoin(client, stream))
+        //                {
+        //                    data.AddText("Come back in the right time at [11:00] To [11:09] PM.")
+        //                        .AddOption("I see. ", 255)
+        //                        .AddAvatar(63).FinalizeDialog();
+        //                }
+        //                break;
+        //            }
+        //    }
+        //}
         #endregion
         #region Winner
         [NpcAttribute(NpcID.GenderWarWinner)]
@@ -1967,7 +1967,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
 
-                        data.AddText("Welcome to CoPrivate Bank, you can withdraw your Meteors and DragonBalls that were stored in your VIP Bank here.");
+                        data.AddText("Welcome to CoGolden Bank, you can withdraw your Meteors and DragonBalls that were stored in your VIP Bank here.");
                         data.AddOption("Withdraw.", 2);
                         data.FinalizeDialog();
 
@@ -7381,9 +7381,9 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        dialog.Text("I'm here to help players throughout their experience while playing CoPrivate!\n");
+                        dialog.Text("I'm here to help players throughout their experience while playing CoGolden!\n");
                         dialog.Text("I'll give my best on answering the most common questions, but I must advise you to either contact a PM or");
-                        dialog.Text(" visit CoPrivate.net or our Discord server for more information!\n");
+                        dialog.Text(" visit CoGolden.com or our Discord server for more information!\n");
                         dialog.Text("So, what do you want to know?\n");
                         dialog.Option("How to get started?", 1);
                         dialog.Option("I want to level up.", 101);
@@ -7486,9 +7486,9 @@ namespace COServer.Game.MsgNpc
                     }
                 case 32:
                     {
-                        dialog.Text("I'm here to help players throughout their experience while playing CoPrivate!\n");
+                        dialog.Text("I'm here to help players throughout their experience while playing CoGolden!\n");
                         dialog.Text("I'll give my best on answering the most common questions, but I must advise you to either contact a PM or");
-                        dialog.Text(" visit CoPrivate.net or our Discord server for more information!\n");
+                        dialog.Text(" visit CoGolden.com or our Discord server for more information!\n");
                         dialog.Text("So, what do you want to know?\n");
                         dialog.Option("Quests.", 30);
                         dialog.Option("VIP.", 31);
@@ -7503,7 +7503,7 @@ namespace COServer.Game.MsgNpc
                     }
                 case 100:
                     {
-                        dialog.Text("I'm here to help players throughout their experience while playing CoPrivate!\n");
+                        dialog.Text("I'm here to help players throughout their experience while playing CoGolden!\n");
                         dialog.Text("I'll give my best on answering the most common questions, but I must advise you to either contact a PM or");
                         dialog.Text(" visit CoPrivate.net or our Discord server for more information!\n");
                         dialog.Text("So, what do you want to know?\n");
@@ -7558,7 +7558,7 @@ namespace COServer.Game.MsgNpc
                 #endregion
                 case 31:
                     {
-                        dialog.AddText("We're offering VIP through our website Donation page. In case you want to know more about it you should check out CoPrivate.net.\n")
+                        dialog.AddText("We're offering VIP through our website Donation page. In case you want to know more about it you should check out CoGolden.com\n")
                               .AddText("VIP has several benefits such as auto-packing Meteors, DragonBalls, dropped item notifications on +1 and blessed items, no ores while mining, and among other benefits! Check our website for more information!\n")
                               .AddOption("Thanks!", 255).AddAvatar(71).FinalizeDialog();
                         break;
@@ -7566,7 +7566,7 @@ namespace COServer.Game.MsgNpc
                 case 30:
                     {
                         dialog.AddText("We have all the original Conquer Online quests, and a lot of them you have to do to get certain in-game items.\n")
-                              .AddText("We hope you enjoy yourself here at CoPrivate.")
+                              .AddText("We hope you enjoy yourself here at CoGolden")
                               .AddOption("Thanks!", 255).AddAvatar(71).FinalizeDialog();
                         break;
                     }
@@ -8853,7 +8853,7 @@ namespace COServer.Game.MsgNpc
                     }
                 case 111:
                     {
-                           data.AddText("You`ll be another hero in the world of CoPrivate!\n")
+                           data.AddText("You`ll be another hero in the world of CoGolden!\n")
                                .AddText("Would you like to learn something about your class promotion and quests?");
                         if (client.Player.Class == 100)
                             data.AddOption("Get promoted.", 1);
@@ -18518,7 +18518,7 @@ namespace COServer.Game.MsgNpc
                                 data.AddAvatar(102).FinalizeDialog();
                                 break;
                             }
-                            data.AddText("Demons are taking control over CoPrivate.\n");
+                            data.AddText("Demons are taking control over CoGolden.\n");
                             data.AddText("My family is the only one that can make a contract with humans to purify the world from these demons.\n");
                             data.AddText("I can give you two ExpBalls as a reward for doing it, but you can only do it once per day.\n");
                             data.AddText("What would you like to do?");
@@ -19316,8 +19316,8 @@ namespace COServer.Game.MsgNpc
                         else
                         {
                             data.AddText("Sorry, you don`t have 5 +1 Stones.")
-                  .AddOption("My~bad.", 255)
-                  .AddAvatar(7).FinalizeDialog();
+                            .AddOption("My~bad.", 255)
+                            .AddAvatar(7).FinalizeDialog();
                         }
 
                         break;

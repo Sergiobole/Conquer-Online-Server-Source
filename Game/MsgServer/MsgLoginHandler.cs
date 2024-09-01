@@ -135,9 +135,9 @@ namespace COServer.Game.MsgServer
 
                     MsgTournaments.MsgSchedules.PkWar.AddTop(client);
                  //Welcome Messages.
-                    client.SendSysMesage("Welcome to CoPrivate - The Shouting Zone.", MsgMessage.ChatMode.Talk);
+                    client.SendSysMesage("Welcome to CoGolden.", MsgMessage.ChatMode.Talk);
                     client.SendSysMesage("Online players will receive 1 Online Point for every hour they're online.", MsgMessage.ChatMode.Talk);
-                    client.SendSysMesage("New players should speak with CoPrivateGuide NPC (438,377) in Twin City.", MsgMessage.ChatMode.Talk);
+                    client.SendSysMesage("New players should speak with CoGoldenGuide NPC (438,377) in Twin City.", MsgMessage.ChatMode.Talk);
 
                     if (client.Player.VipLevel >= 6)
                     {

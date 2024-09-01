@@ -2182,6 +2182,12 @@ namespace COServer.Game.MsgServer
                             }
                         case 1060101://fireofheal
                             {
+                        break;
+
+
+                    
+
+
                                 if (client.Player.Level < 84)
                                 {
 #if Arabic
@@ -3708,24 +3714,20 @@ namespace COServer.Game.MsgServer
                     {
                         case 720374:
                             {
-                                TimeSpan Time = client.Player.ExpireVip - DateTime.Now;
-
-                                if (Time.TotalSeconds <= 0)
-                                {
-                                    client.SendSysMesage("Your VIP has expired. Please visit our website to renew your VIP status.");
-                                    break;
-                                }
-
                                 if (Program.FreePkMap.Contains(client.Player.Map))
                                 {
-                                    client.SendSysMesage("You can not use Auto Hunting in this map.");
+                                    client.SendSysMesage("You can not use AutoLevelUp in this map.");
                                     break;
                                 }
-
                                 client.ActiveNpc = 987977854;
                                 Game.MsgNpc.Dialog dialog = new Game.MsgNpc.Dialog(client, stream);
+                                dialog.Text("Enjoy your AutoLevelUp.\n");
+                                if (!client.Player.Robot)
+                                    dialog.AddOption("Start AutoLevelUp", 1);
 
-                                dialog.Text(string.Format("VIP Time Left: {0} Days {1} Hours {2} Minutes {3} Seconds.", Time.Days, Time.Hours, Time.Minutes, Time.Seconds));
+                                else dialog.AddOption("Stop AutoLevelUp.", 2);
+                                TimeSpan Time = client.Player.ExpireVip - DateTime.Now;
+                                dialog.Text(string.Format("VIP Time Left: {0} Days {1} Hours {2} Minutes {3} Seconds .", Time.Days, Time.Hours, Time.Minutes, Time.Seconds));
                                 dialog.AddOption("Set Hunting Items.", 3);
                                 dialog.AddAvatar(0);
                                 dialog.FinalizeDialog();
@@ -3885,7 +3887,7 @@ namespace COServer.Game.MsgServer
                                     client.Inventory.Add(stream, 152209, 1, 6, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);//bag
                                     //152066
                                 }
-                                client.CreateBoxDialog("Welcome to CoPrivate!");
+                                client.CreateBoxDialog("Welcome to CoGolden!");
                                 break;
                             }
                         case 723584:
