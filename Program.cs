@@ -110,7 +110,7 @@ namespace COServer
             public static string IPAddres = "192.168.200.101";
             public static ushort GamePort = 5816;
             public static string ServerName = "CoPrivate";
-            public static string OfficialWebSite = "CoPrivate.net";
+            public static string OfficialWebSite = "cogolden.com";
             public static ushort Port_BackLog;
             public static ushort Port_ReceiveSize = 4096;
             public static ushort Port_SendSize = 4096;//8191
@@ -743,7 +743,7 @@ namespace COServer
                 return false;
             if (name.ToLower().Contains("semperfoo"))
                 return false;
-            if (name.ToLower().Contains("CoPrivate"))
+            if (name.ToLower().Contains("CoGolden"))
                 return false;
             if (name.ToLower().Contains("fuckers"))
                 return false;

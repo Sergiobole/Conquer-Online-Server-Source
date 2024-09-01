@@ -458,7 +458,7 @@ namespace COServer.Role
             }
             if (Owner.Player.Robot)
             {
-                Owner.SendSysMesage("[Auto Hunt] " + text);
+                Owner.SendSysMesage("[AutoLevelUp] " + text);
                 return;
             }
             using (var rec = new ServerSockets.RecycledPacket())
@@ -1101,7 +1101,7 @@ namespace COServer.Role
                         using (var rec = new ServerSockets.RecycledPacket())
                         {
                             var stream = rec.GetStream();
-                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage(Name + " has been captured by " + MyKillerName + " and sent to jail! CoPrivate is now safer!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.System).GetArray(stream));
+                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage(Name + " has been captured by " + MyKillerName + " and sent to jail! CoGolen is now safer!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.System).GetArray(stream));
                         }
                     }
                 }
