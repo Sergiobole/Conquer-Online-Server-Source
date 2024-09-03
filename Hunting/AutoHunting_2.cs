@@ -29,7 +29,7 @@ namespace COServer.Game
             {
                 if (client != null && client.Player.Robot && client.Map != null && client.Player.View != null && client.Player != null && client.Player.HitPoints > 0)
                 {
-                    if (DateTime.Now >= client.Player.RobotAttack.AddMilliseconds(1000))
+                    if (DateTime.Now >= client.Player.RobotAttack.AddMilliseconds(10000))
                     {
                         int Count = client.Player.View.Roles(Role.MapObjectType.Monster).Count();
                         if (Count > 0)
@@ -38,6 +38,7 @@ namespace COServer.Game
                             {
                                 var cordes = client.Map.RandomJump(client.Player.X, client.Player.Y, 16);
                                 ushort X = cordes.Item1, Y = cordes.Item2;
+                                
 
                                 using (var rec = new ServerSockets.RecycledPacket())
                                 {

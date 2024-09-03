@@ -252,8 +252,10 @@ namespace COServer.Game.MsgNpc
                     {
                         // Exibe o diálogo inicial com os pontos online do usuário e uma opção para trocar por um token VIP de 7 dias
                         dialog.AddText($"Hello, you will earn 1 OnlinePoint for every minute you stay online.\nYou have [ {client.Player.OnlinePoints} ] OnlinePoints.").AddAvatar(7);
-                        dialog.AddOption("7-Days VIP Token", 1);
-                        dialog.AddOption("30-Days VIP Token", 2);
+                        dialog.AddOption("1 - 7 Days VIP", 1);
+                        dialog.AddOption("2 - 30 Days VIP", 2);                  
+                        dialog.AddOption("3 - DBScroll", 3);
+                        dialog.AddOption("4 - MoonBox", 4);
                         dialog.AddOption("Okay", 255);
                         dialog.FinalizeDialog();
                         break;
@@ -274,12 +276,12 @@ namespace COServer.Game.MsgNpc
                         {
                             // Deduz os pontos online e adiciona o VIP de 7 dias ao inventário
                             client.Player.OnlinePoints -= 7000;
-                            client.Inventory.Add(stream, 780000, 1, 0, 0, 0, 0, 0, true);
-                            dialog.AddText("You have successfully exchanged 7000 Online Points for a 7-Days VIP Token.").AddAvatar(7);
+                            client.Inventory.Add(stream, 780000, 1, 0, 0, 0, 0, 0, false);
+                            dialog.AddText("You have successfully exchanged 7.000 Online Points for a 7-Days VIP Token.").AddAvatar(7);
                         }
                         else
                         {
-                            dialog.AddText("You do not have Online Points.\nYou need 7000 Online Points to exchange for a 7-Days VIP Token.").AddAvatar(7);
+                            dialog.AddText("You do not have Online Points.\nYou need 7.000 Online Points to exchange for a 7-Days VIP Token.").AddAvatar(7);
                         }
 
                         dialog.AddOption("Okay", 255);
@@ -302,12 +304,68 @@ namespace COServer.Game.MsgNpc
                         {
                             // Deduz os pontos online e adiciona o VIP de 30 dias ao inventário
                             client.Player.OnlinePoints -= 20000;
-                            client.Inventory.Add(stream, 780010, 1, 0, 0, 0, 0, 0, true);
-                            dialog.AddText("You have successfully exchanged 20000 Online Points for a 30-Days VIP Token.").AddAvatar(7);
+                            client.Inventory.Add(stream, 780010, 1, 0, 0, 0, 0, 0, false);
+                            dialog.AddText("You have successfully exchanged 20.000 Online Points for a 30-Days VIP Token.").AddAvatar(7);
                         }
                         else
                         {
                             dialog.AddText("You do not have Online Points.\nYou need 20.000 Online Points to exchange for a 30-Days VIP Token.").AddAvatar(7);
+                        }
+
+                        dialog.AddOption("Okay", 255);
+                        dialog.FinalizeDialog();
+                        break;
+                    }
+                case 3:
+                    {
+                        // Verifica se há espaço suficiente no inventário para o novo item
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
+                            dialog.AddOption("Let me check.", 255);
+                            dialog.FinalizeDialog();
+                            break;
+                        }
+
+                        // Verifica se o jogador tem pontos online suficientes
+                        if (client.Player.OnlinePoints >= 1000)
+                        {
+                            // Deduz os pontos online e adiciona o item 
+                            client.Player.OnlinePoints -= 1000;
+                            client.Inventory.Add(stream, 720028, 1, 0, 0, 0, 0, 0, false);
+                            dialog.AddText("You have successfully exchanged 1.000 Online Points for a DbScroll.").AddAvatar(7);
+                        }
+                        else
+                        {
+                            dialog.AddText("You do not have Online Points.\nYou need 1.000 Online Points to exchange for a DbScroll.").AddAvatar(7);
+                        }
+
+                        dialog.AddOption("Okay", 255);
+                        dialog.FinalizeDialog();
+                        break;
+                    }
+                case 4:
+                    {
+                        // Verifica se há espaço suficiente no inventário para o novo item
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
+                            dialog.AddOption("Let me check.", 255);
+                            dialog.FinalizeDialog();
+                            break;
+                        }
+
+                        // Verifica se o jogador tem pontos online suficientes
+                        if (client.Player.OnlinePoints >= 2000)
+                        {
+                            // Deduz os pontos online e adiciona o item 
+                            client.Player.OnlinePoints -= 2000;
+                            client.Inventory.Add(stream, 721030, 1, 0, 0, 0, 0, 0, false);
+                            dialog.AddText("You have successfully exchanged 2.000 Online Points for a MoonBox.").AddAvatar(7);
+                        }
+                        else
+                        {
+                            dialog.AddText("You do not have Online Points.\nYou need 2.000 Online Points to exchange for a MoonBox.").AddAvatar(7);
                         }
 
                         dialog.AddOption("Okay", 255);
@@ -1150,80 +1208,80 @@ namespace COServer.Game.MsgNpc
         }
         #endregion
         #endregion
-        #region FirePole
-        #region Join
-        [NpcAttribute(NpcID.FirePoleJoin)]
-        public static void FirePoleJoin(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
-        {
-            Dialog data = new Dialog(client, stream);
-            switch (Option)
-            {
-                case 0:
-                    {
-                        data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Fire Stone For All Classes Every day\n")
-                            .AddText("Working From [6:35] To [6:50] AM and PM \nThe Winner Get [ Top Fire Pole and 100,000 Silver ]")
-                            .AddOption("Okey ,Enter Me.", 1)
-                            .AddOption("Event Rules", 2)
-                            .AddOption("I will come later. ", 255)
-                            .AddAvatar(63).FinalizeDialog();
-                        break;
-                    }
-                case 1:
-                    {
-                        if (!MsgSchedules._FirePoleWar.AllowJoin(client, stream))
-                        {
-                            data.AddText("Come back in the right time at [6:35] To [6:50] AM and PM.")
-                                .AddOption("I see. ", 255)
-                                .AddAvatar(63).FinalizeDialog();
-                        }
-                        break;
-                    }
-                case 2:
-                    {
-                        data.AddText("1- Only one guild will win\n2- Only the participent who will claim rewards.\n")
-                            .AddText("3- All will be going on as i will say, Fire pole is at (96,83)\n4-The first guild which")
-                            .AddText(" dominate it will survive a firegaint.\n5- After firegaint spawened signing up will be closed\n")
-                            .AddText("6- Reviving by waters is enabled there")
-                            .AddOption("I got. ", 255)
-                            .AddAvatar(63).FinalizeDialog();
-                        break;
-                    }
-            }
-        }
-        #endregion
-        #region Out
-        [NpcAttribute(NpcID.FirePoleOut)]
-        public static void FirePoleOut(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
-        {
-            Dialog data = new Dialog(client, stream);
-            switch (Option)
-            {
-                case 0:
-                    {
-                        data.AddText("Hello , do you want to teleport to twincity?")
-                            .AddOption("Teleport~to~Twin~City.", 2)
-                            .AddOption("Ah. wait", 255)
-                            .AddAvatar(154).FinalizeDialog();
-                        break;
-                    }
-                case 2:
-                    {
-                        data.AddText("You wana to teleport back to TwinCity? You are sure?")
-                            .AddOption("Yes", 3)
-                            .AddOption("Ah no.", 255)
-                            .AddAvatar(154).FinalizeDialog();
-                        break;
-                    }
-                case 3:
-                    {
-                        client.Player.HitPoints = (int)client.Status.MaxHitpoints;
-                        client.Teleport(428, 378, 1002, 0);
-                        break;
-                    }
-            }
-        }
-        #endregion
-        #endregion
+        //#region FirePole
+        //#region Join
+        //[NpcAttribute(NpcID.FirePoleJoin)]
+        //public static void FirePoleJoin(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        //{
+        //    Dialog data = new Dialog(client, stream);
+        //    switch (Option)
+        //    {
+        //        case 0:
+        //            {
+        //                data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Fire Stone For All Classes Every day\n")
+        //                    .AddText("Working From [6:35] To [6:50] AM and PM \nThe Winner Get [ Top Fire Pole and 100,000 Silver ]")
+        //                    .AddOption("Okey ,Enter Me.", 1)
+        //                    .AddOption("Event Rules", 2)
+        //                    .AddOption("I will come later. ", 255)
+        //                    .AddAvatar(63).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 1:
+        //            {
+        //                if (!MsgSchedules._FirePoleWar.AllowJoin(client, stream))
+        //                {
+        //                    data.AddText("Come back in the right time at [6:35] To [6:50] AM and PM.")
+        //                        .AddOption("I see. ", 255)
+        //                        .AddAvatar(63).FinalizeDialog();
+        //                }
+        //                break;
+        //            }
+        //        case 2:
+        //            {
+        //                data.AddText("1- Only one guild will win\n2- Only the participent who will claim rewards.\n")
+        //                    .AddText("3- All will be going on as i will say, Fire pole is at (96,83)\n4-The first guild which")
+        //                    .AddText(" dominate it will survive a firegaint.\n5- After firegaint spawened signing up will be closed\n")
+        //                    .AddText("6- Reviving by waters is enabled there")
+        //                    .AddOption("I got. ", 255)
+        //                    .AddAvatar(63).FinalizeDialog();
+        //                break;
+        //            }
+        //    }
+        //}
+        //#endregion
+        //#region Out
+        //[NpcAttribute(NpcID.FirePoleOut)]
+        //public static void FirePoleOut(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        //{
+        //    Dialog data = new Dialog(client, stream);
+        //    switch (Option)
+        //    {
+        //        case 0:
+        //            {
+        //                data.AddText("Hello , do you want to teleport to twincity?")
+        //                    .AddOption("Teleport~to~Twin~City.", 2)
+        //                    .AddOption("Ah. wait", 255)
+        //                    .AddAvatar(154).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 2:
+        //            {
+        //                data.AddText("You wana to teleport back to TwinCity? You are sure?")
+        //                    .AddOption("Yes", 3)
+        //                    .AddOption("Ah no.", 255)
+        //                    .AddAvatar(154).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 3:
+        //            {
+        //                client.Player.HitPoints = (int)client.Status.MaxHitpoints;
+        //                client.Teleport(428, 378, 1002, 0);
+        //                break;
+        //            }
+        //    }
+        //}
+        //#endregion
+        //#endregion
         #region ExtremeFlag
         #region Join
         [NpcAttribute(NpcID.ExtremeFlagJoin)]
@@ -2531,7 +2589,7 @@ namespace COServer.Game.MsgNpc
 
                                 // Adiciona o item ao inventário
                                 {
-                                    client.Inventory.Add(stream, 780000, 1, 0, 0, 0, 0, 0, true);
+                                    client.Inventory.Add(stream, 780000, 1, 0, 0, 0, 0, 0, false);
 
                                     data.AddText("You have successfully exchanged 7 FoundsPoints for a 7-Days VIP Token.")
                                         .AddOption("Thanks.", 255)
@@ -2595,7 +2653,7 @@ namespace COServer.Game.MsgNpc
 
                                 // Adiciona o item ao inventário
                                 {
-                                    client.Inventory.Add(stream, 780010, 1, 0, 0, 0, 0, 0, true);
+                                    client.Inventory.Add(stream, 780010, 1, 0, 0, 0, 0, 0, false);
                                     data.AddText("You have successfully exchanged 20 FoundsPoints for a 30-Days VIP Token.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
@@ -2657,7 +2715,7 @@ namespace COServer.Game.MsgNpc
 
                                 // Adiciona o item ao inventário 
                                 {
-                                    client.Inventory.Add(stream, 2100075, 1, 0, 0, 0, 0, 0, true);
+                                    client.Inventory.Add(stream, 2100075, 1, 0, 0, 0, 0, 0, false);
                                     data.AddText("You have successfully exchanged 50 FoundsPoints for a Gold-Prize.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
@@ -2826,7 +2884,7 @@ namespace COServer.Game.MsgNpc
                     {
                         if (Database.VoteSystem.CanVote(client))
                         {
-                            client.SendSysMesage("https://www.xtremetop100.com/in.php?site=1132373219", MsgMessage.ChatMode.WebSite, MsgMessage.MsgColor.red, false);
+                            client.SendSysMesage("https://www.xtremetop100.com/in.php?site=1132376247", MsgMessage.ChatMode.WebSite, MsgMessage.MsgColor.red, false);
                             client.Player.StartVote = true;
                             client.Player.StartVoteStamp = Time32.Now.AddSeconds(30);
                             client.SendSysMesage("Please wait for the system to check your vote.");
@@ -2846,14 +2904,14 @@ namespace COServer.Game.MsgNpc
                         data.AddText("Dear " + client.Player.Name + ", you currently have [" + client.Player.VotePoints + "] Vote Points.\n")
                             .AddText("Would you like to trade them for some rewards?")
                         
-                        .AddOption("EXP2X 1hours. (1 VPs)", 17)
-                        .AddOption("RTG. (5 VPs)", 11)
-                        .AddOption("RDG. (5 VPs)", 12)
-                        .AddOption("RPG. (5 VPs)", 13)
-                        .AddOption("RVG. (5 VPs)", 14)
-                        .AddOption("RMG. (5 VPs)", 15)
-                        .AddOption("RRG. (5 VPs)", 16)
-                        .AddOption("No thanks.", 255)
+                        .AddOption("1 - 2xExp (1 VPs)", 17)
+                        .AddOption("2 - RTG. (5 VPs)", 11)
+                        .AddOption("3 - RDG. (5 VPs)", 12)
+                        .AddOption("4 - RPG. (5 VPs)", 13)
+                        .AddOption("5 - RVG. (5 VPs)", 14)
+                        .AddOption("6 - RMG. (5 VPs)", 15)
+                        .AddOption("7 - RRG. (5 VPs)", 16)
+                        .AddOption("Next.", 32)
                         .AddAvatar(3).FinalizeDialog();
                         break;
                     }
@@ -2975,7 +3033,46 @@ namespace COServer.Game.MsgNpc
 
                     }
 
+                case 32:
+                    {
+                        data.AddText("Dear " + client.Player.Name + ", you currently have [" + client.Player.VotePoints + "] Vote Points.\n")
+                            .AddText("Would you like to trade them for some rewards?")
 
+                        .AddOption("1 - MeteorScroll. (1 VPs)", 25)
+                        .AddOption("2 - Moonbox. (5 VPs)", 26)
+                        .AddOption("Finish.", 255)
+                        .AddAvatar(3).FinalizeDialog();
+                        break;
+                    }
+                case 25:
+                    {
+                        if (client.Player.VotePoints >= 1)
+                        {
+                            if (client.Inventory.HaveSpace(1))
+                            {
+                                client.Player.VotePoints -= 1;
+                                client.Inventory.Add(stream, 720027);//MeteorScroll
+                            }
+                            else client.SendSysMesage("You don`t have enough space in your inventory.");
+                        }
+                        else client.SendSysMesage("You don`t have enough points.");
+                        break;
+                    }
+
+                case 26:
+                    {
+                        if (client.Player.VotePoints >= 1)
+                        {
+                            if (client.Inventory.HaveSpace(1))
+                            {
+                                client.Player.VotePoints -= 1;
+                                client.Inventory.Add(stream, 721030);//MoonBox
+                            }
+                            else client.SendSysMesage("You don`t have enough space in your inventory.");
+                        }
+                        else client.SendSysMesage("You don`t have enough points.");
+                        break;
+                    }
                     #endregion
             }
         }

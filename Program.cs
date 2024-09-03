@@ -33,7 +33,7 @@ namespace COServer
         public static Discord DiscordAPIsocket = new Discord("https://discord.com/api/webhooks/1279057888546914349/HV7GvJDn_dVM1sEgW5K2yCd76AghtitDm32TKmxZrnGiFXMWj644nfPEooahcPJGsunE");
         public static Discord DiscordAPIevents = new Discord("https://discord.com/api/webhooks/1279064456009220131/prtX5o2LB7fyF1c_rg82NASmYi1QR4A_KcPaNJ8Oj0ApSM3r_bNMkvLtSPYBuwtIzp9B");
         public static Discord DiscordAPIworld = new Discord("https://discord.com/api/webhooks/1279070520423223387/j6jdhxqLh6T1B5B4ZXgg89eIQ6PJZowwQY65XDjflguIV2OM_xoWhXAK95lb_zDeLiEl");
-        public static Discord DiscordAPIfoundslog = new Discord("https://discord.com/api/webhooks/1279263998776184854/nWlYvIVmrBiwHXWAG6ixfowtHhmYsh7ZOUkukfAZsGoZRYe9w9BEZHapKPfQ2-Dy58Px");
+        public static Discord DiscordAPIfoundslog = new Discord("https://discord.com/api/webhooks/1280114216195461154/z-1mIZ0yhrFwBkyxWsjdRqW8BGVtBdPySRb5KV_HMV5Hd_Jni4RhZHfuroctZ40Fsa8u");
         public static ulong CPsHuntedSinceRestart = 0;
         public static List<byte[]> LoadPackets = new List<byte[]>();
         public static List<uint> ProtectMapSpells = new List<uint>() { 1038 };
@@ -106,7 +106,7 @@ namespace COServer
         public static class ServerConfig
         {
             public static string CO2Folder = "";
-            public static string XtremeTopLink = "https://www.xtremetop100.com/in.php?site=1132366631";
+            public static string XtremeTopLink = "https://www.xtremetop100.com/in.php?site=1132376247";
             public static string IPAddres = "192.168.200.101";
             public static ushort GamePort = 5816;
             public static string ServerName = "CoPrivate";

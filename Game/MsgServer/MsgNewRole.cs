@@ -145,6 +145,7 @@ namespace COServer.Game.MsgServer
                                 Database.ServerDatabase.SaveClient(client);
                                 MsgTournaments.MsgSchedules.SendSysMesage("Welcome " + client.Player.Name + " to CoGolden.", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.white);
                                 Console.WriteLine(client.Player.Name + " has created a new account IP [" + client.Socket.RemoteIp + "]");
+                                Program.DiscordAPIfoundslog.Enqueue($"``NovoPlayer! {client.Player.Name}!``");
                                 return;
                             }
                         }

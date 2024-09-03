@@ -3721,14 +3721,25 @@ namespace COServer.Game.MsgServer
                                 }
                                 client.ActiveNpc = 987977854;
                                 Game.MsgNpc.Dialog dialog = new Game.MsgNpc.Dialog(client, stream);
-                                dialog.Text("Enjoy your AutoLevelUp.\n");
-                                if (!client.Player.Robot)
-                                    dialog.AddOption("Start AutoLevelUp", 1);
 
-                                else dialog.AddOption("Stop AutoLevelUp.", 2);
-                                TimeSpan Time = client.Player.ExpireVip - DateTime.Now;
-                                dialog.Text(string.Format("VIP Time Left: {0} Days {1} Hours {2} Minutes {3} Seconds .", Time.Days, Time.Hours, Time.Minutes, Time.Seconds));
-                                dialog.AddOption("Set Hunting Items.", 3);
+                                if (client.Player.ExpireVip <= DateTime.Now)
+                                {
+                                    dialog.Text("Your VIP has expired. Please purchase VIP to continue.\n");
+                                    dialog.AddOption("Purchase VIP", 4); // Adicione a opção de compra de VIP
+                                }
+                                else
+                                {
+                                    dialog.Text("Enjoy your AutoLevelUp.\n");
+                                    if (!client.Player.Robot)
+                                        dialog.AddOption("Start AutoLevelUp", 1);
+                                    else
+                                        dialog.AddOption("Stop AutoLevelUp.", 2);
+
+                                    TimeSpan Time = client.Player.ExpireVip - DateTime.Now;
+                                    dialog.Text(string.Format("VIP Time Left: {0} Days {1} Hours {2} Minutes {3} Seconds.", Time.Days, Time.Hours, Time.Minutes, Time.Seconds));
+                                    dialog.AddOption("Set Hunting Items.", 3);
+                                }
+
                                 dialog.AddAvatar(0);
                                 dialog.FinalizeDialog();
                                 break;

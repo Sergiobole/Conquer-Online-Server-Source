@@ -700,19 +700,32 @@ namespace COServer.Database
         public unsafe static void SaveDatabase()
         {
             if (!FullLoading)
+            {
+                Console.WriteLine("SaveDatabase - !FullLoading");
                 return;
+            }
+
             try
             {
                 try
                 {
                     Save(new Action(Role.Instance.Associate.Save));
                 }
-                catch (Exception e) { Console.SaveException(e); }
+                catch (Exception e)
+                {
+                    Console.WriteLine(string.Format("SaveDatabase - Exception(Associate) {0}", e.Message)); 
+                    Console.SaveException(e); 
+                }
                 try
                 {
                     Save(new Action(Database.GuildTable.Save));
                 }
-                catch (Exception e) { Console.SaveException(e); }
+                catch (Exception e) 
+                {
+                    Console.WriteLine(string.Format("SaveDatabase - Exception(GuildTable) {0}", e.Message));
+                    Console.SaveException(e); 
+                }
+
                 WindowsAPI.IniFile IniFile = new WindowsAPI.IniFile("");
                 IniFile.FileName = System.IO.Directory.GetCurrentDirectory() + "\\shell.ini";
                 IniFile.Write<uint>("Database", "ItemUID", ITEM_Counter.Count);
@@ -742,7 +755,11 @@ namespace COServer.Database
                 Save(new Action(Role.Statue.Save));
                 Save(new Action(Role.KOBoard.KOBoardRanking.Save));
             }
-            catch (Exception e) { Console.WriteException(e); }
+            catch (Exception e)
+            {
+                Console.WriteLine(string.Format("SaveDatabase - Exception(ALL) {0}", e.Message));
+                Console.WriteException(e); 
+            }
         }
         public static void Save(Action obj)
         {
@@ -750,7 +767,11 @@ namespace COServer.Database
             {
                 obj.Invoke();
             }
-            catch (Exception e) { Console.SaveException(e); }
+            catch (Exception e) 
+            {
+                Console.WriteLine(string.Format("SaveDatabase - Exception(SAVE) {0}", e.Message)); 
+                Console.SaveException(e); 
+            }
         }
         public static void LoadPortals()
         {
