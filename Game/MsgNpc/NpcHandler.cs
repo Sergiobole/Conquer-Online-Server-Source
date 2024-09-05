@@ -12,6 +12,7 @@ using MySql.Data.MySqlClient;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using System.Xml.Linq;
 
 
 namespace COServer.Game.MsgNpc
@@ -2548,6 +2549,8 @@ namespace COServer.Game.MsgNpc
                             data.AddOption("1 - 7 Day VIP = 7 Founds", 2);
                             data.AddOption("2 - 30 Day VIP = 20 Founds", 3);
                             data.AddOption("3 - GoldPrizes = 50 Founds", 4);
+                            data.AddOption("4 - Garmets", 23);
+
                             //data.AddOption("4 - Transfer Founds", 5);
                             data.AddAvatar(63).FinalizeDialog();
                         }
@@ -2679,7 +2682,6 @@ namespace COServer.Game.MsgNpc
 
                         break;
                     }
-
                 case 4:
                     {
                         if (!client.Inventory.HaveSpace(1))
@@ -2741,11 +2743,6 @@ namespace COServer.Game.MsgNpc
 
                         break;
                     }
-
-
-
-
-
                 case 5:
                     {
                         data.AddText("Insert the ammount of founds that you want to transfer to another player.");
@@ -2777,6 +2774,35 @@ namespace COServer.Game.MsgNpc
                         break;
                     }
                 case 7:
+                case 23:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                           .AddOption("Let me check.", 255)
+                           .AddAvatar(63).FinalizeDialog();
+                            break;
+                        }
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+
+                        if (totalFounds <= 0)
+                        {
+                            data.AddText("You don't have enough founds");
+                            data.AddOption("Okay.", 255);
+                            data.AddAvatar(63).FinalizeDialog();
+                        }
+                        else
+                        {
+                            data.AddText(string.Format("You have found {0} items! All gamerts have 255 HP, and -7 Bless costs 30 Founds.", totalFounds));
+                            data.AddOption("1 - WhiteReaper     ", 30);
+                            data.AddOption("2 - MikeKill        ", 31);
+                            data.AddOption("3 - WealthyArab(B)  ", 32);
+                            data.AddOption("Okay.", 255);
+                            data.AddAvatar(63).FinalizeDialog();
+                        }
+                        break;
+                    }
+
                     {
                         string name = Input;
 
@@ -2834,6 +2860,199 @@ namespace COServer.Game.MsgNpc
 
                         break;
                     }
+                case 30:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 20)
+                        {
+
+                            const string ConnectionString = "Server=localhost;username=root;password=11112222;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 30
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 30);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário
+                                {
+                                    client.Inventory.Add(stream, 183755, 0, 0, 7, 255, 0, 0, false);
+
+                                    data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIGarmetLog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
+
+                                    break;
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+                case 31:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 20)
+                        {
+
+                            const string ConnectionString = "Server=localhost;username=root;password=11112222;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 30
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 30);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário
+                                {
+                                    client.Inventory.Add(stream, 199735, 0, 0, 7, 255, 0, 0, false);
+
+                                    data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIGarmetLog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
+
+                                    break;
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+                case 32:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 20)
+                        {
+
+                            const string ConnectionString = "Server=localhost;username=root;password=11112222;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 30
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 30);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário
+                                {
+                                    client.Inventory.Add(stream, 182015, 0, 0, 7, 255, 0, 0, false);
+
+                                    data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIGarmetLog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
+
+                                    break;
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+
             }
         }
         #endregion
@@ -2904,7 +3123,7 @@ namespace COServer.Game.MsgNpc
                         data.AddText("Dear " + client.Player.Name + ", you currently have [" + client.Player.VotePoints + "] Vote Points.\n")
                             .AddText("Would you like to trade them for some rewards?")
                         
-                        .AddOption("1 - 2xExp (1 VPs)", 17)
+                        .AddOption("1 - 3xExp (1 VPs)", 17)
                         .AddOption("2 - RTG. (5 VPs)", 11)
                         .AddOption("3 - RDG. (5 VPs)", 12)
                         .AddOption("4 - RPG. (5 VPs)", 13)
@@ -3020,17 +3239,15 @@ namespace COServer.Game.MsgNpc
                     {
                         if (client.Player.VotePoints >= 1)
                         {
-                            client.Player.VotePoints -= 1;
-                            client.Player.RateExp = 2;
-                            client.Player.DExpTime = 3600;
-                            client.Player.CreateExtraExpPacket(stream);
-                            client.SendSysMesage("You've received x2 EXP for 1 hour.", MsgMessage.ChatMode.System, MsgMessage.MsgColor.red);
+                            if (client.Inventory.HaveSpace(1))
+                            {
+                                client.Player.VotePoints -= 1;
+                                client.Inventory.Add(stream, 720393);//ExpPill
+                            }
+                            else client.SendSysMesage("You don`t have enough space in your inventory.");
                         }
+                        else client.SendSysMesage("You don`t have enough points.");
                         break;
-
-
-
-
                     }
 
                 case 32:

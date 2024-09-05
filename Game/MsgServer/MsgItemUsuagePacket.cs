@@ -10230,7 +10230,7 @@ namespace COServer.Game.MsgServer
                                     }
                                 }
                                 break;
-                            }
+                            }                      
                     }
                 }
             }
