@@ -29,12 +29,12 @@ namespace COServer
 
         public static VoteRank VoteRank;
         public static List<EventsLib.BaseEvent> Events = new List<EventsLib.BaseEvent>();
-        public static Discord DiscordAPI = new Discord("https://discord.com/api/webhooks/1279059333186850906/tXJNrPK4ANgx1KUmPBnwQSyBiIV1nUyoFUTBNV67DWgoGeTeUaBpM1U737lwBFiWm4HV");
-        public static Discord DiscordAPIsocket = new Discord("https://discord.com/api/webhooks/1279057888546914349/HV7GvJDn_dVM1sEgW5K2yCd76AghtitDm32TKmxZrnGiFXMWj644nfPEooahcPJGsunE");
-        public static Discord DiscordAPIevents = new Discord("https://discord.com/api/webhooks/1279064456009220131/prtX5o2LB7fyF1c_rg82NASmYi1QR4A_KcPaNJ8Oj0ApSM3r_bNMkvLtSPYBuwtIzp9B");
-        public static Discord DiscordAPIworld = new Discord("https://discord.com/api/webhooks/1279070520423223387/j6jdhxqLh6T1B5B4ZXgg89eIQ6PJZowwQY65XDjflguIV2OM_xoWhXAK95lb_zDeLiEl");
-        public static Discord DiscordAPIfoundslog = new Discord("https://discord.com/api/webhooks/1280114216195461154/z-1mIZ0yhrFwBkyxWsjdRqW8BGVtBdPySRb5KV_HMV5Hd_Jni4RhZHfuroctZ40Fsa8u");
-        public static Discord DiscordAPIGarmetLog = new Discord("https://discord.com/api/webhooks/1280114219274211409/ykpPtC_LECMTugnd6kIg395pgudjXg9vDRhzB-VGfSX_OaGqq_D0VclB8iOJJzf-xPRy");
+        public static Discord DiscordAPI = new Discord("https://discord.com/api/webhooks/1279059333186850906/tXJNrPK4ANgx1KUmPBnwQSyBiIV1nUyoFUTBNV67DWgoGeTeUaBpM1U737lwBFiWm4HV111");
+        public static Discord DiscordAPIsocket = new Discord("https://discord.com/api/webhooks/1279057888546914349/HV7GvJDn_dVM1sEgW5K2yCd76AghtitDm32TKmxZrnGiFXMWj644nfPEooahcPJGsunE111");
+        public static Discord DiscordAPIevents = new Discord("https://discord.com/api/webhooks/1279064456009220131/prtX5o2LB7fyF1c_rg82NASmYi1QR4A_KcPaNJ8Oj0ApSM3r_bNMkvLtSPYBuwtIzp9B111");
+        public static Discord DiscordAPIworld = new Discord("https://discord.com/api/webhooks/1279070520423223387/j6jdhxqLh6T1B5B4ZXgg89eIQ6PJZowwQY65XDjflguIV2OM_xoWhXAK95lb_zDeLiEl11");
+        public static Discord DiscordAPIfoundslog = new Discord("https://discord.com/api/webhooks/1280114216195461154/z-1mIZ0yhrFwBkyxWsjdRqW8BGVtBdPySRb5KV_HMV5Hd_Jni4RhZHfuroctZ40Fsa8u1");
+        public static Discord DiscordAPIGarmetLog = new Discord("https://discord.com/api/webhooks/1280114219274211409/ykpPtC_LECMTugnd6kIg395pgudjXg9vDRhzB-VGfSX_OaGqq_D0VclB8iOJJzf-xPR11y");
         public static ulong CPsHuntedSinceRestart = 0;
         public static List<byte[]> LoadPackets = new List<byte[]>();
         public static List<uint> ProtectMapSpells = new List<uint>() { 1038 };
@@ -108,7 +108,7 @@ namespace COServer
         {
             public static string CO2Folder = "";
             public static string XtremeTopLink = "https://www.xtremetop100.com/in.php?site=1132376247";
-            public static string IPAddres = "192.168.200.101";
+            public static string IPAddres = "144.217.173.221";
             public static ushort GamePort = 5816;
             public static string ServerName = "CoPrivate";
             public static string OfficialWebSite = "cogolden.com";
@@ -116,7 +116,7 @@ namespace COServer
             public static ushort Port_ReceiveSize = 4096;
             public static ushort Port_SendSize = 4096;//8191
             //Database
-            public static string DbLocation = "";
+            public static string DbLocation = "Database5103";
 
             public static uint ExpRateSpell = 5;
             public static uint ExpRateProf = 5;
@@ -209,28 +209,48 @@ namespace COServer
         public static Time32 SaveDBStamp = Time32.Now.AddMilliseconds(KernelThread.SaveDatabaseStamp);
         public static Time32 ResetStamp = Time32.Now.AddMilliseconds(KernelThread.ResetDayStamp);
 
-        public static void SaveDBPayers(Time32 clock)
+        public static void SaveDBPayers(Time32 clock, bool forceSave = false)
         {
-            if (clock > SaveDBStamp)
+            // Verifica se o tempo atual excedeu o timestamp de salvamento ou se o salvamento foi forçado
+            if (clock > SaveDBStamp || forceSave)
             {
+                // Verifica se o servidor está totalmente carregado antes de prosseguir
                 if (Database.Server.FullLoading)
                 {
-                    foreach (var user in Database.Server.GamePoll.Values)
+                    try
                     {
-                        if ((user.ClientFlag & Client.ServerFlag.LoginFull) == Client.ServerFlag.LoginFull)
+                        // Itera sobre todos os usuários conectados
+                        foreach (var user in Database.Server.GamePoll.Values)
                         {
-                            user.ClientFlag |= Client.ServerFlag.QueuesSave;
-                            Database.ServerDatabase.LoginQueue.TryEnqueue(user);
+                            // Verifica se o usuário está logado completamente
+                            if ((user.ClientFlag & Client.ServerFlag.LoginFull) == Client.ServerFlag.LoginFull)
+                            {
+                                // Marca o usuário para salvamento e adiciona na fila de login
+                                user.ClientFlag |= Client.ServerFlag.QueuesSave;
+                                Database.ServerDatabase.LoginQueue.TryEnqueue(user);
+                            }
                         }
+
+                        // Chama o método de salvamento do banco de dados
+                        Database.Server.SaveDatabase();
+                        Console.WriteLine("Database has been saved!", ConsoleColor.Magenta);
                     }
-                    Database.Server.SaveDatabase();
-                    Console.WriteLine("Database has been saved! " ,ConsoleColor.Magenta);
+                    catch (Exception e)
+                    {
+                        // Loga qualquer exceção ocorrida durante o processo de salvamento
+                        Console.WriteLine($"SaveDBPayers - Exception: {e.Message}");
+                        Console.SaveException(e);
+                    }
                 }
-                SaveDBStamp.Value = clock.Value + KernelThread.SaveDatabaseStamp;
+
+                // Atualiza o timestamp para o próximo salvamento, exceto se o salvamento foi forçado
+                if (!forceSave)
+                {
+                    SaveDBStamp.Value = clock.Value + KernelThread.SaveDatabaseStamp;
+                }
             }
-
-
         }
+
         public unsafe static void ConsoleCMD(string cmd)
         {
             try
@@ -553,174 +573,251 @@ namespace COServer
                 byte[] buffer = new byte[36];
                 bool extra = false;
                 string text = System.Text.ASCIIEncoding.ASCII.GetString(obj.DHKeyBuffer.buffer, 0, obj.DHKeyBuffer.Length());
+
+                // Log for debugging the DH key buffer content
+                Console.WriteLine($"DHKeyBuffer content: {text}");
+
                 if (!text.EndsWith("TQClient"))
                 {
+                    Console.WriteLine("Extra data detected. Copying additional 36 bytes from EncryptedDHKeyBuffer.");
                     System.Buffer.BlockCopy(obj.EncryptedDHKeyBuffer.buffer, obj.EncryptedDHKeyBuffer.Length() - 36, buffer, 0, 36);
                     extra = true;
                 }
+
                 string key;
                 if (Stream.GetHandshakeReplyKey(out key))
                 {
+                    Console.WriteLine("Handshake key received. Setting DH key.");
                     obj.SetDHKey = true;
                     obj.Game.Cryptography = obj.Game.DHKeyExchance.HandleClientKeyPacket(key, obj.Game.Cryptography);
                 }
                 else
                 {
+                    Console.WriteLine("Failed to receive handshake key. Disconnecting.");
                     obj.Disconnect();
                     return;
                 }
+
                 if (extra)
                 {
-
+                    Console.WriteLine("Processing extra data.");
                     Stream.Seek(0);
                     obj.Game.Cryptography.Decrypt(buffer);
                     fixed (byte* ptr = buffer)
                         Stream.memcpy(Stream.Memory, ptr, 36);
                     Stream.Size = buffer.Length;
-                    //Stream.Size = buffer.Length;
                     Stream.Seek(2);
                     ushort PacketID = Stream.ReadUInt16();
+
+                    Console.WriteLine($"Packet ID: {PacketID}");
 
                     Action<Client.GameClient, ServerSockets.Packet> hinvoker;
                     if (MsgInvoker.TryGetInvoker(PacketID, out hinvoker))
                     {
+                        Console.WriteLine("Invoking packet handler.");
                         hinvoker(obj.Game, Stream);
-                        Console.WriteLine("Packet ID : " + PacketID);
                     }
                     else
                     {
+                        Console.WriteLine($"DH KEY: Packet ID not found - {PacketID}. Disconnecting.");
                         obj.Disconnect();
-
-                        Console.WriteLine("DH KEY Not found the packet ----> " + PacketID);
-
                     }
                 }
-
             }
-            catch (Exception e) { Console.WriteException(e); }
+            catch (Exception e)
+            {
+                // Log the exception with more details
+                Console.WriteLine($"Exception in CreateDHKey: {e.Message}\nStackTrace: {e.StackTrace}");
+                obj.Disconnect();
+            }
         }
         public unsafe static void Game_Disconnect(ServerSockets.SecuritySocket obj)
         {
+            // Verifica se o objeto de jogo e o jogador estão presentes
             if (obj.Game != null && obj.Game.Player != null)
             {
                 try
                 {
                     Client.GameClient client;
+
+                    // Tenta obter o cliente associado ao UID do jogador no dicionário GamePoll
                     if (Database.Server.GamePoll.TryGetValue(obj.Game.Player.UID, out client))
                     {
+                        // Verifica se o cliente está marcado como "LoginFull"
                         if ((client.ClientFlag & Client.ServerFlag.LoginFull) == Client.ServerFlag.LoginFull)
                         {
-                            Console.WriteLine(client.Player.Name + " has logged out.", ConsoleColor.Red);
+                            Console.WriteLine($"[{DateTime.Now}] {client.Player.Name} has logged out.", ConsoleColor.Red);
+
+                            // Verifica se o jogador tem amigos associados
                             if (client.Player.Associate.Associat.ContainsKey(Role.Instance.Associate.Friends))
                             {
                                 foreach (var fr in client.Player.Associate.Associat[Role.Instance.Associate.Friends].Values)
                                 {
                                     Client.GameClient gameClient;
+
+                                    // Tenta obter o cliente de jogo do amigo no dicionário GamePoll
                                     if (Database.Server.GamePoll.TryGetValue(fr.UID, out gameClient))
                                     {
+                                        // Envia uma mensagem para o amigo informando que o jogador fez logout
                                         gameClient.SendSysMesage("Your friend " + client.Player.Name + " has logged off.", (Game.MsgServer.MsgMessage.ChatMode)2005);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"[{DateTime.Now}] Friend with UID {fr.UID} not found in GamePoll.");
                                     }
                                 }
                             }
+
                             using (var rec = new ServerSockets.RecycledPacket())
                             {
                                 var stream = rec.GetStream();
 
                                 try
                                 {
+                                    // Remove a flag de XPList, se presente
                                     if (client.Player.ContainFlag(MsgUpdate.Flags.XPList))
                                     {
                                         client.Player.RemoveFlag(MsgUpdate.Flags.XPList);
                                     }
+
+                                    // Limpa todas as flags do jogador
                                     client.Player.ClearFlags();
+
+                                    // Desfaz todos os bots que estão no mesmo mapa ou no mesmo ID dinâmico do jogador
                                     foreach (var bot in Bots.BotProcessring.Bots.Values.Where(x => x.Bot.Player.Map == client.Player.Map || x.Bot.Player.DynamicID == client.Player.DynamicID))
                                     {
                                         if (bot != null)
+                                        {
                                             bot.Dispose();
+                                            Console.WriteLine($"[{DateTime.Now}] Bot disposed in map {client.Player.Map} or dynamic ID {client.Player.DynamicID}.");
+                                        }
                                     }
+
+                                    // Remove o cliente do time, se estiver em um
                                     if (client.Team != null)
+                                    {
                                         client.Team.Remove(client, true);
+                                        Console.WriteLine($"[{DateTime.Now}] Client removed from team.");
+                                    }
 
+                                    // Para o cliente se estiver vendendo
                                     if (client.IsVendor)
+                                    {
                                         client.MyVendor.StopVending(stream);
+                                        Console.WriteLine($"[{DateTime.Now}] Vendor stopped.");
+                                    }
 
+                                    // Fecha o comércio se estiver em um
                                     if (client.InTrade)
+                                    {
                                         client.MyTrade.CloseTrade();
+                                        Console.WriteLine($"[{DateTime.Now}] Trade closed.");
+                                    }
 
+                                    // Define o status de offline para o membro da guilda, se existir
                                     if (client.Player.MyGuildMember != null)
+                                    {
                                         client.Player.MyGuildMember.IsOnline = false;
+                                        Console.WriteLine($"[{DateTime.Now}] Guild member set offline.");
+                                    }
 
+                                    // Desanexa o pet, se existir
                                     if (client.Pet != null)
+                                    {
                                         client.Pet.DeAtach(stream);
+                                        Console.WriteLine($"[{DateTime.Now}] Pet detached.");
+                                    }
 
-
+                                    // Para e limpa a interação do jogador com objetos, se existir
                                     if (client.Player.ObjInteraction != null)
                                     {
                                         client.Player.InteractionEffect.AtkType = Game.MsgServer.MsgAttackPacket.AttackID.InteractionStopEffect;
-
                                         InteractQuery action = InteractQuery.ShallowCopy(client.Player.InteractionEffect);
-
                                         client.Send(stream.InteractionCreate(&action));
 
                                         client.Player.ObjInteraction.Player.OnInteractionEffect = false;
                                         client.Player.ObjInteraction.Player.ObjInteraction = null;
+                                        Console.WriteLine($"[{DateTime.Now}] Interaction stopped.");
                                     }
 
-
+                                    // Limpa a visão do jogador
                                     client.Player.View.Clear(stream);
-
-
+                                    Console.WriteLine($"[{DateTime.Now}] Player view cleared.");
                                 }
                                 catch (Exception e)
                                 {
-                                    Console.WriteException(e);
+                                    // Exibe qualquer exceção ocorrida durante a limpeza
+                                    Console.WriteLine($"[{DateTime.Now}] Exception during cleanup: {e}");
                                     client.Player.View.Clear(stream);
                                 }
                                 finally
                                 {
+                                    // Atualiza as flags do cliente para indicar desconexão e enfileira para salvar
                                     client.ClientFlag &= ~Client.ServerFlag.LoginFull;
                                     client.ClientFlag |= Client.ServerFlag.Disconnect;
                                     client.ClientFlag |= Client.ServerFlag.QueuesSave;
                                     Database.ServerDatabase.LoginQueue.TryEnqueue(client);
+                                    Console.WriteLine($"[{DateTime.Now}] Client flags updated and enqueued for saving.");
                                 }
 
                                 try
                                 {
+                                    // Executa ações adicionais na desconexão
                                     client.Player.Associate.OnDisconnect(stream, client);
 
-                                    //remove mentor and apprentice
+                                    // Remove mentor e aprendiz associados
                                     if (client.Player.MyMentor != null)
                                     {
                                         Client.GameClient me;
                                         client.Player.MyMentor.OnlineApprentice.TryRemove(client.Player.UID, out me);
                                         client.Player.MyMentor = null;
+                                        Console.WriteLine($"[{DateTime.Now}] Mentor association removed.");
                                     }
                                     client.Player.Associate.Online = false;
                                     lock (client.Player.Associate.MyClient)
                                         client.Player.Associate.MyClient = null;
                                     foreach (var clien in client.Player.Associate.OnlineApprentice.Values)
+                                    {
                                         clien.Player.SetMentorBattlePowers(0, 0);
+                                        Console.WriteLine($"[{DateTime.Now}] Mentor battle powers reset for apprentice.");
+                                    }
                                     client.Player.Associate.OnlineApprentice.Clear();
                                     client.Map?.Denquer(client);
-                                    //done remove
+                                    Console.WriteLine($"[{DateTime.Now}] Client denqueued from map.");
                                 }
-                                catch (Exception e) { Console.WriteLine(e.ToString()); }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine($"[{DateTime.Now}] Exception during additional disconnect actions: {e}");
+                                }
                             }
                         }
-
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[{DateTime.Now}] Client with UID {obj.Game.Player.UID} not found in GamePoll.");
                     }
                 }
-                catch (Exception e) { Console.WriteLine(e.ToString()); }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"[{DateTime.Now}] General exception: {e}");
+                }
             }
             else if (obj.Game != null)
             {
+                // Se o objeto de jogo estiver presente, mas o jogador não estiver, remove o cliente do GamePoll
                 if (obj.Game.ConnectionUID != 0)
                 {
                     Client.GameClient client;
-                    Database.Server.GamePoll.TryRemove(obj.Game.ConnectionUID, out client);
+                    if (Database.Server.GamePoll.TryRemove(obj.Game.ConnectionUID, out client))
+                    {
+                        Console.WriteLine($"[{DateTime.Now}] Client with UID {obj.Game.ConnectionUID} removed from GamePoll.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[{DateTime.Now}] Failed to remove client with UID {obj.Game.ConnectionUID} from GamePoll.");
+                    }
                 }
             }
-
         }
         public static bool NameStrCheck(string name, bool ExceptedSize = true)
         {
