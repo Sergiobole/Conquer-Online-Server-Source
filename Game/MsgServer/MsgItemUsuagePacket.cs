@@ -3716,7 +3716,7 @@ namespace COServer.Game.MsgServer
                             {
                                 if (Program.FreePkMap.Contains(client.Player.Map))
                                 {
-                                    client.SendSysMesage("You can not use AutoLevelUp in this map.");
+                                    client.SendSysMesage("You can not use this feature in this map.");
                                     break;
                                 }
                                 client.ActiveNpc = 987977854;
@@ -3725,18 +3725,15 @@ namespace COServer.Game.MsgServer
                                 if (client.Player.ExpireVip <= DateTime.Now)
                                 {
                                     dialog.Text("Your VIP has expired. Please purchase VIP to continue.\n");
-                                    dialog.AddOption("Purchase VIP", 4); // Adicione a opção de compra de VIP
+                                    dialog.AddOption("Purchase VIP", 4); // Opção para compra de VIP
                                 }
                                 else
                                 {
-                                    dialog.Text("Enjoy your AutoLevelUp.\n");
-                                    if (!client.Player.Robot)
-                                        dialog.AddOption("Start AutoLevelUp", 1);
-                                    else
-                                        dialog.AddOption("Stop AutoLevelUp.", 2);
-
+                                    // Apenas mostra o tempo de VIP restante
                                     TimeSpan Time = client.Player.ExpireVip - DateTime.Now;
                                     dialog.Text(string.Format("VIP Time Left: {0} Days {1} Hours {2} Minutes {3} Seconds.", Time.Days, Time.Hours, Time.Minutes, Time.Seconds));
+
+                                    // Mantém a opção de configurar itens de caça
                                     dialog.AddOption("Set Hunting Items.", 3);
                                 }
 

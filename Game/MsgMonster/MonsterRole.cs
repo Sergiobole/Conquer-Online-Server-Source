@@ -249,60 +249,50 @@ namespace COServer.Game.MsgMonster
                         DropItemID(killer, 1088000, stream, 6);
 
                     #region Egg [Quest]
-                    uint EggCouler = (uint)Program.GetRandom.Next(1, 4);
-                    if (killer.MobsKilled > 150)
+                    uint EggCouler = (uint)Program.GetRandom.Next(1, 3);
+                    if (killer.MobsKilled > 10000)
                     {
                         switch (EggCouler)
                         {
-                            #region YellowEgg
+                            #region VertEgg
                             case 1:
                                 {
                                     if (killer.Player.VipLevel >= 6)
                                     {
-                                        killer.Inventory.Add(stream, 720004, 1);
+                                        killer.Inventory.Add(stream, 729935, 1);
                                     }
-                                    else DropItemID(killer, 720004, stream, 6);
+                                    else DropItemID(killer, 729935, stream, 6);
                                     killer.MobsKilled = 0;
                                     break;
                                 }
                             #endregion
-                            #region GreenEgg
+                            #region PurpleEgg
                             case 2:
                                 {
                                     if (killer.Player.VipLevel >= 6)
                                     {
-                                        killer.Inventory.Add(stream, 720005, 1);
+                                        killer.Inventory.Add(stream, 729936, 1);
                                     }
                                     else
-                                        DropItemID(killer, 720005, stream, 6);
+                                        DropItemID(killer, 729936, stream, 6);
                                     killer.MobsKilled = 0;
                                     break;
                                 }
                             #endregion
-                            #region WhiteEgg
+                            #region RubyEgg
                             case 3:
                                 {
                                     if (killer.Player.VipLevel >= 6)
                                     {
-                                        killer.Inventory.Add(stream, 720006, 1);
+                                        killer.Inventory.Add(stream, 729937, 1);
                                     }
                                     else
-                                        DropItemID(killer, 720006, stream, 6);
+                                        DropItemID(killer, 729937, stream, 6);
                                     killer.MobsKilled = 0;
                                     break;
                                 }
                             #endregion
-                            default:
-                                {
-                                    if (killer.Player.VipLevel >= 6)
-                                    {
-                                        killer.Inventory.Add(stream, 720006, 1);
-                                    }
-                                    else
-                                        DropItemID(killer, 720006, stream, 6);
-                                    killer.MobsKilled = 0;
-                                    break;
-                                }
+
                         }
                     }
                     #endregion

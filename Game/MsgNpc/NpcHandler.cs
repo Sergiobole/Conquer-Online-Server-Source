@@ -76,7 +76,7 @@ namespace COServer.Game.MsgNpc
                     }
                 case 1:
                     {
-                        dialog.AddText("Hello " + client.Player.Name + " i need from you 3 differrent egg to get your prize \nAre you have [ YellowEgg, GreenEgg, WhiteEgg ] ?")
+                        dialog.AddText("Hello " + client.Player.Name + " i need from you 3 differrent egg to get your prize \nAre you have [ VertEgg, PurpleEgg, RubyEgg] ?")
                          .AddOption("Yes~I~have.", 2)
                          .AddOption("Just passing by.")
                          .AddAvatar(63).FinalizeDialog();
@@ -84,29 +84,30 @@ namespace COServer.Game.MsgNpc
                     }
                 case 2:
                     {
-                        if (!client.Inventory.Contain(720004, 1))
+                        if (!client.Inventory.Contain(729935, 1))
                         {
-                            client.CreateBoxDialog("Sorry, you do not have YellowEgg");
+                            client.CreateBoxDialog("Sorry, you do not have VertEgg");
                             break;
                         }
-                        else if (!client.Inventory.Contain(720005, 1))
+                        else if (!client.Inventory.Contain(729936, 1))
                         {
-                            client.CreateBoxDialog("Sorry, you do not have GreenEgg");
+                            client.CreateBoxDialog("Sorry, you do not have PurpleEgg");
                             break;
                         }
-                        else if (!client.Inventory.Contain(720006, 1))
+                        else if (!client.Inventory.Contain(729937, 1))
                         {
-                            client.CreateBoxDialog("Sorry, you do not have WhiteEgg");
+                            client.CreateBoxDialog("Sorry, you do not have RubyEgg");
                             break;
                         }
+                       
                         else
                         {
-                            if (client.Inventory.Contain(720004, 1) && client.Inventory.Contain(720005, 1) && client.Inventory.Contain(720006, 1))
+                            if (client.Inventory.Contain(729935, 1) && client.Inventory.Contain(729936, 1) && client.Inventory.Contain(729937, 1))
                             {
-                                client.Inventory.Remove(720004, 1, stream);
-                                client.Inventory.Remove(720005, 1, stream);
-                                client.Inventory.Remove(720006, 1, stream);
-                                switch (Program.GetRandom.Next(1, 8))
+                                client.Inventory.Remove(729935, 1, stream);
+                                client.Inventory.Remove(729936, 1, stream);
+                                client.Inventory.Remove(729937, 1, stream);
+                                switch (Program.GetRandom.Next(1, 7))
                                 {
                                     case 1:
                                         {
@@ -115,37 +116,32 @@ namespace COServer.Game.MsgNpc
                                         }
                                     case 2:
                                         {
-                                            client.Inventory.Add(stream, ItemType.Stone_2, 1);
+                                            client.Inventory.Add(stream, ItemType.Meteor, 1);
                                             break;
                                         }
                                     case 3:
                                         {
-                                            client.Inventory.Add(stream, ItemType.Stone_3, 1);
+                                            client.Inventory.Add(stream, ItemType.DragonBall, 1);
                                             break;
                                         }
                                     case 4:
                                         {
-                                            client.Inventory.Add(stream, ItemType.Stone_4, 1);
+                                            client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
                                             break;
                                         }
                                     case 5:
                                         {
-                                            client.Inventory.Add(stream, ItemType.Stone_5, 1);
+                                            client.Inventory.Add(stream, ItemType.DragonBallScroll, 1);
                                             break;
                                         }
                                     case 6:
                                         {
-                                            client.Inventory.Add(stream, ItemType.Stone_6, 1);
+                                            client.Inventory.Add(stream, ItemType.MoonBox, 1);
                                             break;
                                         }
                                     case 7:
                                         {
-                                            client.Inventory.Add(stream, ItemType.Stone_7, 1);
-                                            break;
-                                        }
-                                    case 8:
-                                        {
-                                            client.Inventory.Add(stream, ItemType.Stone_8, 1);
+                                            client.Inventory.Add(stream, ItemType.Stone_2, 1);
                                             break;
                                         }
                                 }
@@ -257,6 +253,8 @@ namespace COServer.Game.MsgNpc
                         dialog.AddOption("2 - 30 Days VIP", 2);                  
                         dialog.AddOption("3 - DBScroll", 3);
                         dialog.AddOption("4 - MoonBox", 4);
+                        dialog.AddOption("5 - MetScroll", 5);
+
                         dialog.AddOption("Okay", 255);
                         dialog.FinalizeDialog();
                         break;
@@ -367,6 +365,34 @@ namespace COServer.Game.MsgNpc
                         else
                         {
                             dialog.AddText("You do not have Online Points.\nYou need 2.000 Online Points to exchange for a MoonBox.").AddAvatar(7);
+                        }
+
+                        dialog.AddOption("Okay", 255);
+                        dialog.FinalizeDialog();
+                        break;
+                    }
+                case 5:
+                    {
+                        // Verifica se há espaço suficiente no inventário para o novo item
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
+                            dialog.AddOption("Let me check.", 255);
+                            dialog.FinalizeDialog();
+                            break;
+                        }
+
+                        // Verifica se o jogador tem pontos online suficientes
+                        if (client.Player.OnlinePoints >= 500)
+                        {
+                            // Deduz os pontos online e adiciona o item 
+                            client.Player.OnlinePoints -= 500;
+                            client.Inventory.Add(stream, 720027, 1, 0, 0, 0, 0, 0, false);
+                            dialog.AddText("You have successfully exchanged 500 Online Points for a MetScroll.").AddAvatar(7);
+                        }
+                        else
+                        {
+                            dialog.AddText("You do not have Online Points.\nYou need 500 Online Points to exchange for a MetScroll.").AddAvatar(7);
                         }
 
                         dialog.AddOption("Okay", 255);
@@ -2517,8 +2543,9 @@ namespace COServer.Game.MsgNpc
             switch (Option)
             {
                 case 0:
-                    {
-                        data.AddText("You may claim your Donation reward from me.")
+                    {   
+                        data.AddText("Welcome to purchase funds, please visit official website CoGolden.\nGood luck on your journeys!\n")
+                            .AddText("You may claim your Donation reward from me.")
                         .AddOption("Claim my reward!", 1)
                         .AddOption("Just passing by.", 255)
                         .AddAvatar(63).FinalizeDialog();
@@ -2539,7 +2566,8 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds <= 0)
                         {
-                            data.AddText("You don't have enough founds");
+                            data.AddText("You don't have enough founds\n");
+                            data.AddText("To purchase funds, please visit official website CoGolden.");
                             data.AddOption("Okay.", 255);
                             data.AddAvatar(63).FinalizeDialog();
                         }
@@ -3070,9 +3098,9 @@ namespace COServer.Game.MsgNpc
 
                         data.AddText("You're eligible to vote!\n")
                             .AddText("Please remember you may only vote once every 12 hours.")
-                            .AddOption("Vote.", 41)
-                            .AddOption("Check rank.", 70)
-                            .AddOption("Exchange points.", 60)
+                            .AddOption("1 - Vote.", 41)
+                            .AddOption("2 - Check rank.", 70)
+                            .AddOption("3 - Exchange points.", 60)
                             .AddOption("I`ll think about it.", 255)
                             .AddAvatar(3)
                             .FinalizeDialog();
@@ -7699,11 +7727,11 @@ namespace COServer.Game.MsgNpc
                         dialog.Text("I'll give my best on answering the most common questions, but I must advise you to either contact a PM or");
                         dialog.Text(" visit CoGolden.com or our Discord server for more information!\n");
                         dialog.Text("So, what do you want to know?\n");
-                        dialog.Option("How to get started?", 1);
-                        dialog.Option("I want to level up.", 101);
+                        dialog.Option("1 - How to get started?", 1);
+                        dialog.Option("2 - I want to level up.", 101);
                         //dialog.Option("Vote.", 7);
                         //dialog.Option("Vote Rewards", 70);
-                        dialog.AddOption("Give me Vip-AutoLoot.", 55);
+                        dialog.AddOption("3 - Give me Vip-AutoLoot.", 55);
                         dialog.Option("Next.", 32);
                         dialog.AddAvatar(71).FinalizeDialog();
                         break;
@@ -18025,7 +18053,7 @@ namespace COServer.Game.MsgNpc
                         data.AddText("I devote all my life to the research of eternity, and finally I know the secret of rebirth!\n")
                             .AddText("What would you like to know?")
                             .AddOption("1st~Rebirth.", 1)
-                            //   .AddOption("2nd~Rebirth.", 4)
+                            .AddOption("2nd~Rebirth.", 4)
                             .AddOption("What's a CelestialStone?", 10)
                             .AddOption("Distribute the attributes?", 12)
                              .AddOption("Powerful skills?", 13)
@@ -18517,7 +18545,7 @@ namespace COServer.Game.MsgNpc
                                                 {
                                                     // Gera um número aleatório entre 1 e 700
                                                     Random random = new Random();
-                                                    int chance = random.Next(1, 1);
+                                                    int chance = random.Next(1, 700);
 
                                                     // Remove 1 Meteor do inventário do cliente
                                                     client.Inventory.Remove(Database.ItemType.Meteor, 1, stream);
@@ -18543,7 +18571,7 @@ namespace COServer.Game.MsgNpc
                                                     else
                                                     {
                                                         // Informa ao cliente que a tentativa falhou
-                                                        client.SendSysMesage("Failed to open a socket. You had a 0.14% chance.");
+                                                        client.SendSysMesage("Failed to open a socket.");
                                                     }
                                                 }
                                                 else
@@ -18566,7 +18594,7 @@ namespace COServer.Game.MsgNpc
                                             {
                                                 // Gera um número aleatório entre 1 e 2000
                                                 Random random = new Random();
-                                                int chance = random.Next(1, 1);
+                                                int chance = random.Next(1, 2000);
 
                                                 // Verifica se o número gerado é 1 (1 em 2000 de chance)
                                                 if (chance == 1)
@@ -18595,7 +18623,7 @@ namespace COServer.Game.MsgNpc
                                                 {
                                                     // Se a tentativa falhar, remove meteor e informa ao cliente
                                                     client.Inventory.Remove(Database.ItemType.Meteor, 1, stream);
-                                                    client.SendSysMesage("You're unlucky, you've failed to open the socket. You had a 0.05% chance.");
+                                                    client.SendSysMesage("You're unlucky, you've failed to open the socket.");
                                                 }
                                             }
                                             else

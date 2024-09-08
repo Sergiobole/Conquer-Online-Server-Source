@@ -334,7 +334,7 @@ namespace COServer.Game.MsgTournaments
                             CurrentTournament = Tournaments[TournamentType.TreasureThief];
                             CurrentTournament.Open();
                             Console.WriteLine("Started Tournament " + CurrentTournament.Type.ToString(), ConsoleColor.Yellow);
-                            
+
 
                         }
                     }

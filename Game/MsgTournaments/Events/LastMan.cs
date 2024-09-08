@@ -7,7 +7,7 @@ namespace COServer.Game.MsgTournaments
 {
     public class LastMan
     {
-        public const int RewardConquerPoints = 10000, FinishMinutes = 1;
+        public const int RewardConquerPoints = 2000, FinishMinutes = 1;
         public const uint Map = 1844;
         private ProcesType Mode;
         private DateTime FinishTimer = new DateTime();

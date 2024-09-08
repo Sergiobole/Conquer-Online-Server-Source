@@ -455,14 +455,14 @@ namespace COServer.ServerSockets
             {
                 if (!_socket.ConnectFull)
                     return false;
-#if !TEST
+
                 if (_socket.OnSend.Count > 2500)
                 {
                     Console.WriteLine("the sync is " + _socket.OnSend.Count + "");
                     _socket.Disconnect();
                     return false;
                 }
-#endif
+
                 SocketError sError = SocketError.Success;
                 int ret = 0;
                 if (_socket.packet != null)
@@ -603,7 +603,6 @@ namespace COServer.ServerSockets
                     }
                     try
                     {
-
                         WindowsAPI.ws2_32.shutdown(Connection.Handle, WindowsAPI.ws2_32.ShutDownFlags.SD_BOTH);
                         WindowsAPI.ws2_32.closesocket(Connection.Handle);
                         Connection.Dispose();
