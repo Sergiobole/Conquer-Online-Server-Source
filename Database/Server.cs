@@ -106,9 +106,9 @@ namespace COServer.Database
             NameUsed = new List<int>();
 
             WindowsAPI.IniFile IniFile = new WindowsAPI.IniFile(System.IO.Directory.GetCurrentDirectory() + "\\shell.ini", true);
-            Program.ServerConfig.IPAddres = IniFile.ReadString("ServerInfo", "AddresIP", "18.117.250.40");
+            Program.ServerConfig.IPAddres = IniFile.ReadString("ServerInfo", "AddresIP", "192.168.200.101");
             Program.ServerConfig.GamePort = IniFile.ReadUInt16("ServerInfo", "Game_Port", 5816);
-            Program.ServerConfig.ServerName = IniFile.ReadString("ServerInfo", "ServerName", "Insomania");
+            Program.ServerConfig.ServerName = IniFile.ReadString("ServerInfo", "ServerName", "CoPrivate");
             Program.ServerConfig.OfficialWebSite = IniFile.ReadString("ServerInfo", "WebSite", "");
 
             Program.ServerConfig.Port_BackLog = IniFile.ReadUInt16("InternetPort", "BackLog", 100);
