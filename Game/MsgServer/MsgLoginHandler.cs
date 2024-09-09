@@ -168,7 +168,7 @@ namespace COServer.Game.MsgServer
 
 
                         client.Send(msg.GetArray(packet));
-
+                    }
 
                         if (Database.AtributesStatus.IsTrojan(client.Player.Class)
                         || Database.AtributesStatus.IsTrojan(client.Player.FirstClass)
@@ -219,7 +219,6 @@ namespace COServer.Game.MsgServer
 
                     client.ClientFlag &= ~Client.ServerFlag.AcceptLogin;
                     client.ClientFlag |= Client.ServerFlag.LoginFull;
-                    }
                 }  
 
 
