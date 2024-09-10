@@ -359,7 +359,7 @@ namespace COServer.Game.MsgNpc
                         {
                             // Deduz os pontos online e adiciona o item 
                             client.Player.OnlinePoints -= 2000;
-                            client.Inventory.Add(stream, 721030, 1, 0, 0, 0, 0, 0, false);
+                            client.Inventory.Add(stream, 721080, 1, 0, 0, 0, 0, 0, false);
                             dialog.AddText("You have successfully exchanged 2.000 Online Points for a MoonBox.").AddAvatar(7);
                         }
                         else
@@ -12415,53 +12415,48 @@ namespace COServer.Game.MsgNpc
                         break;
                     }
                 case 1:
-                    {
-                        if (client.Player.GuildID == MsgSchedules.GuildWar.Winner.GuildID
+                    if (client.Player.GuildID == MsgSchedules.GuildWar.Winner.GuildID
                             && client.Player.MyGuild != null
                             && MsgSchedules.GuildWar.Proces == ProcesType.Dead)
+                    {
+                        // Verificar se é o líder da guilda
+                        if (client.Player.GuildRank == Role.Flags.GuildMemberRank.GuildLeader && MsgSchedules.GuildWar.Winner.LeaderReward > 0
+                             && !MsgSchedules.GuildWar.RewardLeader.Contains(client.Player.UID))
+                        {
+                            if (!client.Inventory.HaveSpace(3))
+                            {
+                                data.AddText("Please make more space in your inventory.")
+                                    .AddOption("Let me check.", 255).AddAvatar(110).FinalizeDialog();
+                                break;
+                            }
+
+                            MsgSchedules.GuildWar.RewardLeader.Add(client.Player.UID);
+                            MsgSchedules.GuildWar.Winner.LeaderReward -= 1;
+                            client.Player.ConquerPoints += MsgGuildWar.GuildWarScrore.ConquerPointsReward;
+                            client.Inventory.Add(stream, 2100085, 1); // GoldTrophy
+                            client.Player.AddFlag(MsgServer.MsgUpdate.Flags.TopGuildLeader, Role.StatusFlagsBigVector32.PermanentFlag, false);
+                            Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("" + client.Player.Name + " , Guild Leader from " + client.Player.MyGuild.GuildName + " was rewarded with " + MsgGuildWar.GuildWarScrore.ConquerPointsReward.ToString() + " CPs, and a Gold Trophy for winning Guild War.", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                            data.AddText("You've got 20,000 CPs.")
+                                .AddOption("Thank you.", 255).AddAvatar(110).FinalizeDialog();
+                        }
+                        // Verificar se é o vice-líder da guilda
+                        else if (client.Player.GuildRank == Role.Flags.GuildMemberRank.DeputyLeader && MsgSchedules.GuildWar.Winner.DeputiLeaderReward > 0
+                            && !MsgSchedules.GuildWar.RewardDeputiLeader.Contains(client.Player.UID))
                         {
 
-                            if (client.Player.GuildRank == Role.Flags.GuildMemberRank.GuildLeader && MsgSchedules.GuildWar.Winner.LeaderReward > 0
-                                 && !MsgSchedules.GuildWar.RewardLeader.Contains(client.Player.UID))
-                            {
-                                if (!client.Inventory.HaveSpace(3))
-                                {
-                                    data.AddText("Please make more space in your inventory.")
-                                        .AddOption("Let me check.", 255).AddAvatar(110).FinalizeDialog();
-                                    break;
-                                }
-
-                                MsgSchedules.GuildWar.RewardLeader.Add(client.Player.UID);
-                                MsgSchedules.GuildWar.Winner.LeaderReward -= 1;
-                                client.Player.ConquerPoints += MsgGuildWar.GuildWarScrore.ConquerPointsReward;
-                                client.Inventory.Add(stream, 2100085, 1);//GoldTrophy
-                                client.Player.AddFlag(MsgServer.MsgUpdate.Flags.TopGuildLeader, Role.StatusFlagsBigVector32.PermanentFlag, false);
-                                Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("" + client.Player.Name + " , Guild Leader from " + client.Player.MyGuild.GuildName + " was rewarded with " + MsgGuildWar.GuildWarScrore.ConquerPointsReward.ToString() + " CPs, and a Gold Trophy for winning Guild War.", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.TopLeft).GetArray(stream));
-                                data.AddText("You've got 20,000 CPs.")
+                            MsgSchedules.GuildWar.RewardDeputiLeader.Add(client.Player.UID);
+                            MsgSchedules.GuildWar.Winner.DeputiLeaderReward -= 1;
+                            client.Player.AddFlag(MsgServer.MsgUpdate.Flags.TopDeputyLeader, Role.StatusFlagsBigVector32.PermanentFlag, false);
+                                data.AddText("You have received a special flag as Deputy Leader.")
                                     .AddOption("Thank you.", 255).AddAvatar(110).FinalizeDialog();
                             }
-                            //Remove the 1,000 CPs reward that goes to every Guild member. Search for:  "You've received 1,000 CPs for helping your Guild win Guild War!"
-                            //else if (client.Player.GuildRank == Role.Flags.GuildMemberRank.Member)
-                            //{
-                            //    client.Player.ConquerPoints += 1000;
-                            //    data.AddText("You've received 1,000 CPs for helping your Guild win Guild War!")
-                            //        .AddOption("Okay,~thank~you.", 255).AddAvatar(110).FinalizeDialog();
-                            //}
-                            else
+                        }
+                        else
                             {
                                 data.AddText("Only the Guild Leader or Deputy Leader can claim the reward!")
                                     .AddOption("Okay.", 255).AddAvatar(110).FinalizeDialog();
                             }
-                        }
-                        else
-                        {
-                            data.AddText("Your guild hasn't dominated the Guild Area.")
-                                .AddOption("Okay.", 255).AddAvatar(110).FinalizeDialog();
-                        }
-
-
-                        break;
-                    }
+                    break;
             }
         }
 
