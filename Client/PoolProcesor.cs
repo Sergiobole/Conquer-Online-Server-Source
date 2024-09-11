@@ -747,11 +747,18 @@ namespace COServer.Client
                         }
                     }
                 }
-                if (DateTime.Now > client.LastOnlineStamp.AddMinutes(1))
+                // Verifica se já se passaram mais de 10 minutos desde o último timestamp de login
+                if (DateTime.Now > client.LastOnlineStamp.AddMinutes(10))
                 {
+                    // Atualiza o timestamp do último login para o horário atual
                     client.LastOnlineStamp = DateTime.Now;
-                    client.Player.OnlinePoints++;
-                    client.SendSysMesage($"You have earned 1 OnlinePoints, your total is: {client.Player.OnlinePoints}");
+
+                    // Incrementa os pontos online do jogador em 10
+                    client.Player.OnlinePoints += 10;
+
+                    // Envia uma mensagem ao jogador informando que ele ganhou 10 pontos online
+                    // e mostra o total de pontos online atualizado
+                    client.SendSysMesage($"You have earned 10 OnlinePoints, your total is: {client.Player.OnlinePoints}");
                 }
             }
 

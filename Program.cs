@@ -108,7 +108,7 @@ namespace COServer
         {
             public static string CO2Folder = "";
             public static string XtremeTopLink = "https://www.xtremetop100.com/in.php?site=1132376247";
-            public static string IPAddres = "192.168.200.102";
+            public static string IPAddres = "144.217.173.221";
             public static ushort GamePort = 5816;
             public static string ServerName = "CoPrivate";
             public static string OfficialWebSite = "cogolden.com";

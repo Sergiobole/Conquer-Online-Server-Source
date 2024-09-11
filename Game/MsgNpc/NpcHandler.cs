@@ -145,24 +145,6 @@ namespace COServer.Game.MsgNpc
                                             break;
                                         }
                                 }
-                                //if (Role.Core.Rate(0.25))
-                                //    client.Inventory.Add(stream, ItemType.Stone_1, 1);
-                                //else if (Role.Core.Rate(0.15))
-                                //    client.Inventory.Add(stream, ItemType.Stone_2, 1);
-                                //else if (Role.Core.Rate(0.05))
-                                //    client.Inventory.Add(stream, ItemType.Stone_3, 1);
-                                //else if (Role.Core.Rate(0.015))
-                                //    client.Inventory.Add(stream, ItemType.Stone_4, 1);
-                                //else if (Role.Core.Rate(0.0015))
-                                //    client.Inventory.Add(stream, ItemType.Stone_5, 1);
-                                //else if (Role.Core.Rate(0.0005))
-                                //    client.Inventory.Add(stream, ItemType.Stone_6, 1);
-                                //else if (Role.Core.Rate(0.00025))
-                                //    client.Inventory.Add(stream, ItemType.Stone_7, 1);
-                                //else if (Role.Core.Rate(0.00005))
-                                //    client.Inventory.Add(stream, ItemType.Stone_8, 1);
-                                //else
-                                //    client.Inventory.Add(stream, ItemType.Stone_1, 1);
                             }
                             else
                             {
@@ -2542,46 +2524,30 @@ namespace COServer.Game.MsgNpc
 
             switch (Option)
             {
-                case 0:
-                    {   
-                        data.AddText("Welcome to purchase funds, please visit official website CoGolden.\nGood luck on your journeys!\n")
-                            .AddText("You may claim your Donation reward from me.")
-                        .AddOption("Claim my reward!", 1)
-                        .AddOption("Just passing by.", 255)
-                        .AddAvatar(63).FinalizeDialog();
-                        break;
-                    }
                 #region donation points
-                case 1:
+                case 0:
                     {
                         if (!client.Inventory.HaveSpace(1))
                         {
-                         data.AddText("Please make 1 more space in your inventory.")
-                        .AddOption("Let me check.", 255)
-                        .AddAvatar(63).FinalizeDialog();
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63).FinalizeDialog();
                             break;
                         }
+
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Founds: " + totalFounds);
 
-                        if (totalFounds <= 0)
-                        {
-                            data.AddText("You don't have enough founds\n");
-                            data.AddText("To purchase funds, please visit official website CoGolden.");
-                            data.AddOption("Okay.", 255);
-                            data.AddAvatar(63).FinalizeDialog();
-                        }
-                        else
-                        {
-                            data.AddText(string.Format("You have {0} founds", totalFounds));
-                            data.AddOption("1 - 7 Day VIP = 7 Founds", 2);
-                            data.AddOption("2 - 30 Day VIP = 20 Founds", 3);
-                            data.AddOption("3 - GoldPrizes = 50 Founds", 4);
-                            data.AddOption("4 - Garmets", 23);
+                        // Mostra os fundos disponíveis e as opções de compra
+                        
+                        data.AddText(string.Format("You have {0} founds, Buy Founds in CoGolden.com!", totalFounds));
+                        data.AddOption("1 - 7 Day VIP = 7 Founds", 2);
+                        data.AddOption("2 - 30 Day VIP = 20 Founds", 3);
+                        data.AddOption("3 - GoldPrizes = 50 Founds", 4);
+                        data.AddOption("4 - Garmets -7 255HP = 30 Founds", 23);
+                        // data.AddOption("5 - Transfer Founds", 5); // Se precisar dessa opção, descomente esta linha
 
-                            //data.AddOption("4 - Transfer Founds", 5);
-                            data.AddAvatar(63).FinalizeDialog();
-                        }
+                        data.AddAvatar(63).FinalizeDialog();
                         break;
                     }
                 #endregion
@@ -7464,8 +7430,44 @@ namespace COServer.Game.MsgNpc
                         if (client.TotalMobsKilled >= 100000)
                         {
                             client.TotalMobsKilled -= 100000;
-                            client.Player.ConquerPoints += 500;
-                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("" + client.Player.Name + " he/she has killed 100k monsters and has claimed 500 CPs from SoulKeeper!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+
+                            string rewardName = ""; // Variável para armazenar o nome da recompensa
+
+                            // Escolher uma recompensa aleatória
+                            switch (Program.GetRandom.Next(1, 8))
+                            {
+                                case 1:
+                                    client.Inventory.Add(stream, ItemType.Stone_1, 1);
+                                    rewardName = "Stone 1";
+                                    break;
+                                case 2:
+                                    client.Inventory.Add(stream, ItemType.Meteor, 1);
+                                    rewardName = "Meteor";
+                                    break;
+                                case 3:
+                                    client.Inventory.Add(stream, ItemType.DragonBall, 1);
+                                    rewardName = "Dragon Ball";
+                                    break;
+                                case 4:
+                                    client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
+                                    rewardName = "Meteor Scroll";
+                                    break;
+                                case 5:
+                                    client.Inventory.Add(stream, ItemType.DragonBallScroll, 1);
+                                    rewardName = "Dragon Ball Scroll";
+                                    break;
+                                case 6:
+                                    client.Inventory.Add(stream, ItemType.MoonBox, 1);
+                                    rewardName = "Moon Box";
+                                    break;
+                                case 7:
+                                    client.Inventory.Add(stream, ItemType.Stone_2, 1);
+                                    rewardName = "Stone 2";
+                                    break;
+                            }
+
+                            // Enviar mensagem global informando sobre a premiação específica
+                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("" + client.Player.Name + " has killed 100k monsters and has claimed " + rewardName + " from SoulKeeper!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
                         }
                         else
                         {
@@ -7473,7 +7475,6 @@ namespace COServer.Game.MsgNpc
                                   .AddText("You've killed: " + client.TotalMobsKilled + "/ 100k monsters.")
                                   .AddOption("Okay.", 255)
                                   .AddAvatar(211).FinalizeDialog();
-
                         }
                         break;
                     }
@@ -18589,7 +18590,7 @@ namespace COServer.Game.MsgNpc
                                             {
                                                 // Gera um número aleatório entre 1 e 2000
                                                 Random random = new Random();
-                                                int chance = random.Next(1, 2000);
+                                                int chance = random.Next(1, 2500);
 
                                                 // Verifica se o número gerado é 1 (1 em 2000 de chance)
                                                 if (chance == 1)

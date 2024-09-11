@@ -99,7 +99,7 @@ namespace COServer.Game.MsgTournaments
 
             // Envia uma mensagem para o Discord informando que o evento começou
             Program.DiscordAPIevents.Enqueue($"``{Name} has started!``");
-            Program.DiscordAPI.Enqueue($"``Total Online: {Server.GamePoll.Count} - Max Online: {KernelThread.GetMaxOnline()}``");
+            Program.DiscordAPI.Enqueue($"`` Server Online ``");
         }
 
         internal unsafe static void SendSysMesage(string Messaj, Game.MsgServer.MsgMessage.ChatMode ChatType = Game.MsgServer.MsgMessage.ChatMode.TopLeft
