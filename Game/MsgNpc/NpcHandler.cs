@@ -99,7 +99,7 @@ namespace COServer.Game.MsgNpc
                             client.CreateBoxDialog("Sorry, you do not have RubyEgg");
                             break;
                         }
-                       
+
                         else
                         {
                             if (client.Inventory.Contain(729935, 1) && client.Inventory.Contain(729936, 1) && client.Inventory.Contain(729937, 1))
@@ -142,14 +142,12 @@ namespace COServer.Game.MsgNpc
                                 }
 
                                 // Envia a mensagem global com o nome da recompensa
-                                Program.SendGlobalPackets.Enqueue(
-                                    new Game.MsgServer.MsgMessage(
-                                        client.Player.Name + "Has claimed " + rewardName + "from EggQuestNPC!",
-                                        Game.MsgServer.MsgMessage.MsgColor.white,
-                                        Game.MsgServer.MsgMessage.ChatMode.System
-                                    ).GetArray(stream)
-                                );
+                                Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"{client.Player.Name} has claimed {rewardName} from EggQuestNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+
+                                // Envia a mensagem para o Discord através da API
+                                Program.DiscordAPIQuest.Enqueue($"{client.Player.Name} has claimed {rewardName} from EggQuestNPC!");
                             }
+
                             else
                             {
                                 client.CreateBoxDialog("Sorry, you do not have all Egg");
@@ -7472,6 +7470,7 @@ namespace COServer.Game.MsgNpc
 
                             // Enviar mensagem global informando sobre a premiação específica
                             Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("" + client.Player.Name + " has killed 100k monsters and has claimed " + rewardName + " from SoulKeeper!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                            Program.DiscordAPIQuest.Enqueue($"{client.Player.Name} has claimed {rewardName} from  Soul KeeperNPC!");
                         }
                         else
                         {

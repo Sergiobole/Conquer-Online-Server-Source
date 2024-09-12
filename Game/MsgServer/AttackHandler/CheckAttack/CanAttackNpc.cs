@@ -149,17 +149,17 @@
             }
             #endregion
             #region _FirePoleWar
-            if (attacked.UID == Game.MsgTournaments.MsgSchedules._FirePoleWar.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
-            {
-                if (client.Player.MyGuild == null)
-                    return false;
-                if (Game.MsgTournaments.MsgSchedules._FirePoleWar.Furnitures[Role.SobNpc.StaticMesh.Pole].HitPoints == 0)
-                    return false;
-                if (client.Player.GuildID == Game.MsgTournaments.MsgSchedules._FirePoleWar.Winner.GuildID)
-                    return false;
-                if (Game.MsgTournaments.MsgSchedules._FirePoleWar.IsFinished())
-                    return false;
-            }
+            //if (attacked.UID == Game.MsgTournaments.MsgSchedules._FirePoleWar.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
+            //{
+            //    if (client.Player.MyGuild == null)
+            //        return false;
+            //    if (Game.MsgTournaments.MsgSchedules._FirePoleWar.Furnitures[Role.SobNpc.StaticMesh.Pole].HitPoints == 0)
+            //        return false;
+            //    if (client.Player.GuildID == Game.MsgTournaments.MsgSchedules._FirePoleWar.Winner.GuildID)
+            //        return false;
+            //    if (Game.MsgTournaments.MsgSchedules._FirePoleWar.IsFinished())
+            //        return false;
+            //}
             #endregion
             #region PoleDomination
             if (attacked.UID == Game.MsgTournaments.MsgSchedules.PoleDomination.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)

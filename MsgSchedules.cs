@@ -22,7 +22,7 @@ namespace COServer.Game.MsgTournaments
         #endregion
         internal static ExtremeFlagWar _ExtremeFlagWar;
         internal static EliteGuildWar _EliteGuildWar;
-        internal static FirePoleWar _FirePoleWar;
+        //internal static FirePoleWar _FirePoleWar;
         internal static MsgGuildWar GuildWar;
         internal static MsgClassPKWar ClassPkWar;
         internal static MsgCouples CouplesPKWar;
@@ -55,7 +55,7 @@ namespace COServer.Game.MsgTournaments
             #endregion
             _ExtremeFlagWar = new ExtremeFlagWar();
             _EliteGuildWar = new EliteGuildWar();
-            _FirePoleWar = new FirePoleWar();
+            //_FirePoleWar = new FirePoleWar();
             _Ss_Fb = new Ss_Fb();
             _ConquerPk = new ConquerPk();
             _LastMan = new LastMan();
@@ -145,7 +145,7 @@ namespace COServer.Game.MsgTournaments
                     _ConquerPk.CheckUp();
                     _LastMan.CheckUp();
                     _NobilityWar.CheckUp();
-                    _FirePoleWar.CheckUp();
+                    //_FirePoleWar.CheckUp();
                     _GenderWar.CheckUp();
                     _ExtremeFlagWar.CheckUp();
                     _EliteGuildWar.CheckUp();

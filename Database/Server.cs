@@ -163,7 +163,7 @@ namespace COServer.Database
             QuizShow.Load();
             Game.MsgTournaments.MsgSchedules._ExtremeFlagWar.CreateFurnitures();
             Game.MsgTournaments.MsgSchedules._EliteGuildWar.CreateFurnitures();
-            Game.MsgTournaments.MsgSchedules._FirePoleWar.CreateFurnitures();
+            //Game.MsgTournaments.MsgSchedules._FirePoleWar.CreateFurnitures();
             #region PoleDomination
             Game.MsgTournaments.MsgSchedules.PoleDomination.CreateFurnitures();
             Game.MsgTournaments.MsgSchedules.PoleDominationBI.CreateFurnitures();

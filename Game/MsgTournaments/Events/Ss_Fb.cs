@@ -33,7 +33,7 @@ namespace COServer.Game.MsgTournaments
             if (Mode == ProcesType.Dead)
             {
                 Mode = ProcesType.Alive;
-                MsgSchedules.SendInvitation(Title, 442, 355, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.Ss_Fb);
+                MsgSchedules.SendInvitation("Ss_Fb", 442, 355, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.Ss_Fb);
                 MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
 
                 FinishTimer = DateTime.Now.AddMinutes(FinishMinutes);

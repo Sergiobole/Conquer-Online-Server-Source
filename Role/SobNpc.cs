@@ -251,15 +251,15 @@ namespace COServer.Role
             }
             #endregion
             #region _FirePoleWar
-            else if (UID == Game.MsgTournaments.MsgSchedules._FirePoleWar.Furnitures[StaticMesh.Pole].UID)
-            {
-                uint Damage = (uint)HitPoints;
-                if (HitPoints > 0)
-                {
-                    HitPoints = 0;
-                }
-                Game.MsgTournaments.MsgSchedules._FirePoleWar.UpdateScore(killer.Player, Damage);
-            }
+            //else if (UID == Game.MsgTournaments.MsgSchedules._FirePoleWar.Furnitures[StaticMesh.Pole].UID)
+            //{
+            //    uint Damage = (uint)HitPoints;
+            //    if (HitPoints > 0)
+            //    {
+            //        HitPoints = 0;
+            //    }
+            //    Game.MsgTournaments.MsgSchedules._FirePoleWar.UpdateScore(killer.Player, Damage);
+            //}
             #endregion
             #region PoleDomination
             else if (UID == Game.MsgTournaments.MsgSchedules.PoleDomination.Furnitures[StaticMesh.Pole].UID)

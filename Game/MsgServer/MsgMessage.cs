@@ -496,15 +496,15 @@ namespace COServer.Game.MsgServer
                                 }
                                 break;
                             }
-                        case "firepolewar":
-                            {
-                                switch (data[1])
-                                {
-                                    case "on": MsgSchedules._FirePoleWar.Start(); break;
-                                    case "off": MsgSchedules._FirePoleWar.CompleteEndGuildWar(); break;
-                                }
-                                break;
-                            }
+                        //case "firepolewar":
+                        //    {
+                        //        switch (data[1])
+                        //        {
+                        //            case "on": MsgSchedules._FirePoleWar.Start(); break;
+                        //            case "off": MsgSchedules._FirePoleWar.CompleteEndGuildWar(); break;
+                        //        }
+                        //        break;
+                        //    }
                         case "pvp":
                             {
                                 EventsLib.EventManager.JoinPVP(client);
