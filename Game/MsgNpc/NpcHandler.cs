@@ -136,7 +136,88 @@ namespace COServer.Game.MsgNpc
         }
         #endregion
 
+        #region EggQuest
+        [NpcAttribute(NpcID.letterquest)]
+        private static void letterquest(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        {
+            Dialog dialog = new Dialog(client, stream);
+            switch (Option)
+            {
+                case 0:
+                    {
+                        dialog.AddText("Hello " + client.Player.Name + " I can exchange your Letters for a random prize.\nGo and collect Letters from monsters and come again to get your prize!")
+                              .AddOption("I~have~collected~Letters.", 1)
+                              .AddOption("Just passing by.")
+                              .AddAvatar(63)
+                              .FinalizeDialog();
+                        break;
+                    }
+                case 1:
+                    {
+                        if (client.Inventory.Contain(7112141, 1) && client.Inventory.Contain(7112151, 1) && client.Inventory.Contain(7112161, 1) && client.Inventory.Contain(7112171, 1) && client.Inventory.Contain(7112181, 1) && client.Inventory.Contain(7112191, 1) && client.Inventory.Contain(7112201, 1))
+                        {
+                            client.Inventory.Remove(7112141, 1, stream);
+                            client.Inventory.Remove(7112151, 1, stream);
+                            client.Inventory.Remove(7112161, 1, stream);
+                            client.Inventory.Remove(7112171, 1, stream);
+                            client.Inventory.Remove(7112181, 1, stream);
+                            client.Inventory.Remove(7112191, 1, stream);
+                            client.Inventory.Remove(7112201, 1, stream);
 
+
+                            string rewardName = "";
+                            switch (Program.GetRandom.Next(1, 8))
+                            {
+                                case 1:
+                                    client.Inventory.Add(stream, ItemType.Stone_1, 1);
+                                    rewardName = "Stone +1";
+                                    break;
+                                case 2:
+                                    client.Inventory.Add(stream, ItemType.Meteor, 1);
+                                    rewardName = "Meteor";
+                                    break;
+                                case 3:
+                                    client.Inventory.Add(stream, ItemType.DragonBall, 1);
+                                    rewardName = "Dragon Ball";
+                                    break;
+                                case 4:
+                                    client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
+                                    rewardName = "Meteor Scroll";
+                                    break;
+                                case 5:
+                                    client.Inventory.Add(stream, ItemType.DragonBallScroll, 1);
+                                    rewardName = "Dragon Ball Scroll";
+                                    break;
+                                case 6:
+                                    client.Inventory.Add(stream, ItemType.MoonBox, 1);
+                                    rewardName = "Moon Box";
+                                    break;
+                                case 7:
+                                    client.Inventory.Add(stream, ItemType.Stone_2, 1);
+                                    rewardName = "Stone +2";
+                                    break;
+                            }
+
+                            // Envia a mensagem global com o nome da recompensa
+                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"{client.Player.Name} has claimed {rewardName} from LetterQuestNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+
+                            // Envia a mensagem para o Discord através da API
+                            Program.DiscordAPIQuest.Enqueue($"{client.Player.Name} has claimed {rewardName} from LetterQuestNPC!");
+                        }
+                        else
+                        {
+                            dialog.Text("You don’t have all the required Letters.\n")
+                                  .AddText("Check your eggs.")
+                                  .AddOption("Okay.", 255)
+                                  .AddAvatar(63)
+                                  .FinalizeDialog();
+                        }
+                        break;
+                    }
+            }
+        }
+
+        #endregion
         #region Super TotoiseQuest
         [NpcAttribute(NpcID.TotoiseQuest)]
         private static void TotoiseQuest(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -196,7 +277,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Hello " + client.Player.Name + " \n ArenaDuel 100 hit For Every Hours \n")
-                            .AddText("Working in the minute [Xx:31] To [Xx:40] \n Rewards [100,000 Gold]")
+                            .AddText("Working in the minute [Xx:31] To [Xx:40] \n Rewards [DragonballScroll]")
                             .AddOption("Okey ,Enter Me.", 1)
                             .AddOption("I will come later. ", 255)
                             .AddAvatar(63).FinalizeDialog();
@@ -490,7 +571,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Top Conquer For All Classes Every day\n")
-                            .AddText("Working From [5:00] To [5:9] AM \nThe Winner Get [ Top Conquer and 100,000 Silver ]")
+                            .AddText("Working From [5:00] To [5:9] AM \nThe Winner Get [ DragonBallScroll ]")
                             .AddOption("Okey ,Enter Me.", 1)
                             .AddOption("I will come later. ", 255)
                             .AddAvatar(63).FinalizeDialog();
@@ -577,7 +658,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Welcome [ " + client.Player.Name + " ] \nTop FirstKiller For All Classes Every Day\n")
-                            .AddText("Working From [5:00] To [5:09] PM \nThe Winner Get [ Top FirstKiller and 100,000 Silver ]")
+                            .AddText("Working From [5:00] To [5:09] PM \nThe Winner Get [ DragonBallScroll ]")
                             .AddOption("Okey ,Enter Me.", 1)
                             .AddOption("I will come later. ", 255)
                             .AddAvatar(63).FinalizeDialog();
@@ -664,7 +745,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Top LastMan War For All Classes Every Hour\n")
-                            .AddText("Working From [Xx:30] To [Xx:35] \nThe Winner Get [ Top LastMan and 100,000 Silver ]")
+                            .AddText("Working From [Xx:30] To [Xx:35] \nThe Winner Get [ DragonBallScroll ]")
                             .AddOption("Okey ,Enter Me.", 1)
                             .AddOption("I will come later. ", 255)
                             .AddAvatar(63).FinalizeDialog();
@@ -751,7 +832,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Top Black For All Classes Every Day\n")
-                            .AddText("Working From [11:00] To [11:09] AM \nThe Winner Get [ Top Black and 100,000 Silver ]")
+                            .AddText("Working From [11:00] To [11:09] AM \nThe Winner Get [ DragonBallScroll ]")
                             .AddOption("Okey ,Enter Me.", 1)
                             .AddOption("I will come later. ", 255)
                             .AddAvatar(63).FinalizeDialog();
@@ -1189,7 +1270,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Top Conquer For All Classes Every day\n")
-                            .AddText("Working From [5:00] To [5:9] AM \nThe Winner Get [ Top Conquer and 100,000 Silver ]")
+                            .AddText("Working From [5:00] To [5:9] AM \nThe Winner Get [ DragonBallScroll ]")
                             .AddOption("Okey ,Enter Me.", 1)
                             .AddOption("I will come later. ", 255)
                             .AddAvatar(63).FinalizeDialog();

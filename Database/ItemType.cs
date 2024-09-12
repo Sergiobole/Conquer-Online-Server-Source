@@ -96,7 +96,16 @@ namespace COServer.Database
             YellowEgg = 720004,
             GreenEgg = 720005,
             WhiteEgg = 720006,
-            ExpBall2 = 723834;
+            ExpBall2 = 723834,
+            Letra1 = 7112141,
+            Letra2 = 7112151,
+            Letra3 = 7112161,
+            Letra4 = 7112171,
+            Letra5 = 7112181,
+            Letra6 = 7112191,
+            Letra7 = 7112201;
+
+
 
 
         public static bool IsMoneyBag(uint ID)

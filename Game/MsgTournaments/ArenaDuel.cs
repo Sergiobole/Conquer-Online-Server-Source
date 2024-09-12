@@ -8,7 +8,6 @@ namespace COServer.Game.MsgTournaments
 {
     public class ArenaDuel
     {
-        public const int RewardConquerPoints = 100000, FinishMinutes = 30;
         public const uint Map = 1005;
         private ProcesType Mode;
         private DateTime FinishTimer = new DateTime();
@@ -35,7 +34,7 @@ namespace COServer.Game.MsgTournaments
                 Mode = ProcesType.Alive;
                 MsgSchedules.SendInvitation("ArenaDuel", 437, 354, 1002, 0, 60);
                 MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
-                FinishTimer = DateTime.Now.AddMinutes(FinishMinutes);
+                FinishTimer = DateTime.Now.AddMinutes(30); // Mudado para 30 minutos diretamente
             }
         }
         public bool AllowJoin(Client.GameClient user, ServerSockets.Packet stream)
@@ -109,9 +108,9 @@ namespace COServer.Game.MsgTournaments
         }
         public void GiveReward(Client.GameClient client, ServerSockets.Packet stream)
         {
-            client.SendSysMesage("You received " + RewardConquerPoints.ToString() + " ConquerPoints.", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.red);
-            MsgSchedules.SendSysMesage("" + client.Player.Name + " has won " + Title + " , he received " + RewardConquerPoints.ToString() + " ConquerPoints!", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
-            client.Player.Money += RewardConquerPoints;
+            client.SendSysMesage("You received a DragonBallScroll.", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.red);
+            MsgSchedules.SendSysMesage("" + client.Player.Name + " has won " + Title + " and received a DragonBallScroll!", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
+            client.Inventory.Add(stream, 720028, 1, 0, 0, 0, 0, 0, false);
             client.Player.HitPoints = (int)client.Status.MaxHitpoints;
             client.Teleport(428, 378, 1002);
         }
@@ -130,4 +129,5 @@ namespace COServer.Game.MsgTournaments
             }
         }
     }
+
 }

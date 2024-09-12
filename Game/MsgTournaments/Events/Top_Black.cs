@@ -7,7 +7,6 @@ namespace COServer.Game.MsgTournaments
 {
     public class Top_Black
     {
-        public const int Reward = 100000, FinishMinutes = 1;
         public const uint Map = 603;
         private ProcesType Mode;
         private DateTime FinishTimer = new DateTime();
@@ -23,7 +22,7 @@ namespace COServer.Game.MsgTournaments
         {
             if (Mode == ProcesType.Dead)
             {
-                FinishTimer = DateTime.Now.AddMinutes(FinishMinutes);
+                FinishTimer = DateTime.Now.AddMinutes(1);
                 Mode = ProcesType.Alive;
                 MsgSchedules.SendInvitation("Top Black", 464, 356, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TopBlack);
                 MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
@@ -44,7 +43,7 @@ namespace COServer.Game.MsgTournaments
             {
                 if (Mode == ProcesType.Dead)
                 {
-                    FinishTimer = DateTime.Now.AddMinutes(FinishMinutes);
+                    FinishTimer = DateTime.Now.AddMinutes(1);
                     Mode = ProcesType.Alive;
                     MsgSchedules.SendInvitation("Top Black", 464, 356, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TopBlack);
                     MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
@@ -74,10 +73,9 @@ namespace COServer.Game.MsgTournaments
         public void GiveReward(Client.GameClient client, ServerSockets.Packet stream)
         {
             WinnerUID = client.Player.UID;
-            client.SendSysMesage("You received " + Reward.ToString() + " ConquerPoints.", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.red);
-            MsgSchedules.SendSysMesage("" + client.Player.Name + " has won " + Title + " , he received " + Reward.ToString() + " ConquerPoints!", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
-            client.Player.Money += Reward;
-            AddTop(client);
+            client.SendSysMesage("You received a DragonBallScroll.", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.red);
+            MsgSchedules.SendSysMesage("" + client.Player.Name + " has won " + Title + " and received a DragonBallScroll!", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
+            client.Inventory.Add(stream, 720028, 1, 0, 0, 0, 0, 0, false); // Atualizado para adicionar DragonBallScroll
             client.Player.HitPoints = (int)client.Status.MaxHitpoints;
             client.Teleport(428, 378, 1002);
         }

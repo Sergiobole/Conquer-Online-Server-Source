@@ -296,6 +296,107 @@ namespace COServer.Game.MsgMonster
                         }
                     }
                     #endregion
+
+                    #region Letra [Quest]
+                    uint LetraCauler = (uint)Program.GetRandom.Next(1, 8);
+                    if (killer.MobsKilled > 5000)
+                    {
+                        switch (LetraCauler)
+                        {
+                            #region Letras1
+                            case 1:
+                                {
+                                    if (killer.Player.VipLevel >= 6)
+                                    {
+                                        killer.Inventory.Add(stream, 7112141, 1);
+                                    }
+                                    else DropItemID(killer, 7112141, stream, 6);
+                                    killer.MobsKilled = 0;
+                                    break;
+                                }
+                            #endregion
+                            #region Letra2
+                            case 2:
+                                {
+                                    if (killer.Player.VipLevel >= 6)
+                                    {
+                                        killer.Inventory.Add(stream, 7112151, 1);
+                                    }
+                                    else
+                                        DropItemID(killer, 7112151, stream, 6);
+                                    killer.MobsKilled = 0;
+                                    break;
+                                }
+                            #endregion
+                            #region letra3
+                            case 3:
+                                {
+                                    if (killer.Player.VipLevel >= 6)
+                                    {
+                                        killer.Inventory.Add(stream, 7112161, 1);
+                                    }
+                                    else
+                                        DropItemID(killer, 7112161, stream, 6);
+                                    killer.MobsKilled = 0;
+                                    break;
+                                }
+                            #endregion
+                            #region Letra4
+                            case 4:
+                                {
+                                    if (killer.Player.VipLevel >= 6)
+                                    {
+                                        killer.Inventory.Add(stream, 7112171, 1);
+                                    }
+                                    else
+                                        DropItemID(killer, 7112171, stream, 6);
+                                    killer.MobsKilled = 0;
+                                    break;
+                                }
+                            #endregion
+                            #region Letra5
+                            case 5:
+                                {
+                                    if (killer.Player.VipLevel >= 6)
+                                    {
+                                        killer.Inventory.Add(stream, 7112181, 1);
+                                    }
+                                    else
+                                        DropItemID(killer, 7112181, stream, 6);
+                                    killer.MobsKilled = 0;
+                                    break;
+                                }
+                            #endregion
+                            #region Letra6
+                            case 6:
+                                {
+                                    if (killer.Player.VipLevel >= 6)
+                                    {
+                                        killer.Inventory.Add(stream, 7112191, 1);
+                                    }
+                                    else
+                                        DropItemID(killer, 7112191, stream, 6);
+                                    killer.MobsKilled = 0;
+                                    break;
+                                }
+                            #endregion
+                            #region Letra7
+                            case 7:
+                                {
+                                    if (killer.Player.VipLevel >= 6)
+                                    {
+                                        killer.Inventory.Add(stream, 7112201, 1);
+                                    }
+                                    else
+                                        DropItemID(killer, 7112201, stream, 6);
+                                    killer.MobsKilled = 0;
+                                    break;
+                                }
+                                #endregion
+
+                        }
+                    }
+                    #endregion
                     if (killer.Player.VipLevel >= 6)//شغل اديا منور هنا اهو
                     {
                         #region Drop_DragonBall
