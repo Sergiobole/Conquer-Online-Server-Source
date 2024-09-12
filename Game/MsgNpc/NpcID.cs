@@ -35,6 +35,7 @@ namespace COServer.Game.MsgNpc
         ArenaDuel = 300,
         ArenaDuelOut = 301,
         EggQuest = 302,
+        TotoiseQuest = 15955,
         Events = 6378,
         ExitArena = 465221,
         JasonNpc = 13332423,

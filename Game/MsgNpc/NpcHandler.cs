@@ -68,91 +68,117 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        dialog.AddText("Hello " + client.Player.Name + " i can exchange your egg for random stone\nGo and collect egg from monster and come again to get your prize !")
-                        .AddOption("I~have~collecte~Eggs.", 1)
-                        .AddOption("Just passing by.")
-                        .AddAvatar(63).FinalizeDialog();
+                        dialog.AddText("Hello " + client.Player.Name + " I can exchange your egg for a random stone.\nGo and collect eggs from monsters and come again to get your prize!")
+                              .AddOption("I~have~collected~Eggs.", 1)
+                              .AddOption("Just passing by.")
+                              .AddAvatar(63)
+                              .FinalizeDialog();
                         break;
                     }
                 case 1:
                     {
-                        dialog.AddText("Hello " + client.Player.Name + " i need from you 3 differrent egg to get your prize \nAre you have [VertEgg, PurpleEgg, RubyEgg] ?")
-                         .AddOption("Yes~I~have.", 2)
-                         .AddOption("Just passing by.")
-                         .AddAvatar(63).FinalizeDialog();
-                        break;
-                    }
-                case 2:
-                    {
-                        if (!client.Inventory.Contain(729935, 1))
+                        if (client.Inventory.Contain(729935, 1) && client.Inventory.Contain(729936, 1) && client.Inventory.Contain(729937, 1))
                         {
-                            client.CreateBoxDialog("Sorry, you do not have VertEgg");
-                            break;
-                        }
-                        else if (!client.Inventory.Contain(729936, 1))
-                        {
-                            client.CreateBoxDialog("Sorry, you do not have PurpleEgg");
-                            break;
-                        }
-                        else if (!client.Inventory.Contain(729937, 1))
-                        {
-                            client.CreateBoxDialog("Sorry, you do not have RubyEgg");
-                            break;
-                        }
+                            client.Inventory.Remove(729935, 1, stream);
+                            client.Inventory.Remove(729936, 1, stream);
+                            client.Inventory.Remove(729937, 1, stream);
 
+                            string rewardName = "";
+                            switch (Program.GetRandom.Next(1, 8))
+                            {
+                                case 1:
+                                    client.Inventory.Add(stream, ItemType.Stone_1, 1);
+                                    rewardName = "Stone +1";
+                                    break;
+                                case 2:
+                                    client.Inventory.Add(stream, ItemType.Meteor, 1);
+                                    rewardName = "Meteor";
+                                    break;
+                                case 3:
+                                    client.Inventory.Add(stream, ItemType.DragonBall, 1);
+                                    rewardName = "Dragon Ball";
+                                    break;
+                                case 4:
+                                    client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
+                                    rewardName = "Meteor Scroll";
+                                    break;
+                                case 5:
+                                    client.Inventory.Add(stream, ItemType.DragonBallScroll, 1);
+                                    rewardName = "Dragon Ball Scroll";
+                                    break;
+                                case 6:
+                                    client.Inventory.Add(stream, ItemType.MoonBox, 1);
+                                    rewardName = "Moon Box";
+                                    break;
+                                case 7:
+                                    client.Inventory.Add(stream, ItemType.Stone_2, 1);
+                                    rewardName = "Stone +2";
+                                    break;
+                            }
+
+                            // Envia a mensagem global com o nome da recompensa
+                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"{client.Player.Name} has claimed {rewardName} from EggQuestNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+
+                            // Envia a mensagem para o Discord através da API
+                            Program.DiscordAPIQuest.Enqueue($"{client.Player.Name} has claimed {rewardName} from EggQuestNPC!");
+                        }
                         else
                         {
-                            if (client.Inventory.Contain(729935, 1) && client.Inventory.Contain(729936, 1) && client.Inventory.Contain(729937, 1))
-                            {
-                                client.Inventory.Remove(729935, 1, stream);
-                                client.Inventory.Remove(729936, 1, stream);
-                                client.Inventory.Remove(729937, 1, stream);
+                            dialog.Text("You don’t have all the required eggs.\n")
+                                  .AddText("Check your eggs.")
+                                  .AddOption("Okay.", 255)
+                                  .AddAvatar(63)
+                                  .FinalizeDialog();
+                        }
+                        break;
+                    }
+            }
+        }
+        #endregion
 
-                                string rewardName = ""; // Variável para armazenar o nome da recompensa
-                                switch (Program.GetRandom.Next(1, 8))
-                                {
-                                    case 1:
-                                        client.Inventory.Add(stream, ItemType.Stone_1, 1);
-                                        rewardName = "Stone +1";
-                                        break;
-                                    case 2:
-                                        client.Inventory.Add(stream, ItemType.Meteor, 1);
-                                        rewardName = "Meteor";
-                                        break;
-                                    case 3:
-                                        client.Inventory.Add(stream, ItemType.DragonBall, 1);
-                                        rewardName = "Dragon Ball";
-                                        break;
-                                    case 4:
-                                        client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
-                                        rewardName = "Meteor Scroll";
-                                        break;
-                                    case 5:
-                                        client.Inventory.Add(stream, ItemType.DragonBallScroll, 1);
-                                        rewardName = "Dragon Ball Scroll";
-                                        break;
-                                    case 6:
-                                        client.Inventory.Add(stream, ItemType.MoonBox, 1);
-                                        rewardName = "Moon Box";
-                                        break;
-                                    case 7:
-                                        client.Inventory.Add(stream, ItemType.Stone_2, 1);
-                                        rewardName = "Stone +2";
-                                        break;
-                                }
 
-                                // Envia a mensagem global com o nome da recompensa
-                                Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"{client.Player.Name} has claimed {rewardName} from EggQuestNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+        #region Super TotoiseQuest
+        [NpcAttribute(NpcID.TotoiseQuest)]
+        private static void TotoiseQuest(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        {
+            Dialog dialog = new Dialog(client, stream);
+            switch (Option)
+            {
+                case 0:
+                    {
+                        dialog.AddText("Hello " + client.Player.Name + " You need the 6 Super Gems to trade. \nAre you have [PhoenixGem, PhoenixGem, RainbowGem, KylinGem, VioletGem, MoonGem]?")
+                         .AddOption("Yes~I~Have.", 1)
+                         .AddOption("Just passing by.")
+                         .AddAvatar(63).FinalizeDialog();
 
-                                // Envia a mensagem para o Discord através da API
-                                Program.DiscordAPIQuest.Enqueue($"{client.Player.Name} has claimed {rewardName} from EggQuestNPC!");
-                            }
+                        break;
+                    }
+                case 1:
+                    {
+                        if (client.Inventory.Contain(700003, 1) && client.Inventory.Contain(700013, 1) && client.Inventory.Contain(700033, 1) && client.Inventory.Contain(700043, 1) && client.Inventory.Contain(700053, 1) && client.Inventory.Contain(700063, 1))
+                        {
 
-                            else
-                            {
-                                client.CreateBoxDialog("Sorry, you do not have all Egg");
-                                break;
-                            }
+                            client.Inventory.Remove(700003, 1, stream);
+                            client.Inventory.Remove(700013, 1, stream);
+                            client.Inventory.Remove(700033, 1, stream);
+                            client.Inventory.Remove(700043, 1, stream);
+                            client.Inventory.Remove(700053, 1, stream);
+                            client.Inventory.Remove(700063, 1, stream);
+
+                            client.Inventory.Add(stream, ItemType.SuperToroiseGem, 1);
+
+                            // Envia a mensagem global com o nome da recompensa
+                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"{client.Player.Name} has claimed SuperToroiseGem from SuperToroiseGemNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+
+                            // Envia a mensagem para o Discord através da API
+                            Program.DiscordAPIQuest.Enqueue($"{client.Player.Name} has claimed SuperToroiseGem from SuperToroiseGemNPC!");
+                        }
+                        else
+                        {
+                            dialog.Text("You don’t have the 6 necessary Super Gems.\n")
+                                 .AddText("Check ur Gems.")
+                                 .AddOption("Okay.", 255)
+                                 .AddAvatar(211).FinalizeDialog();
                         }
                         break;
                     }
