@@ -113,8 +113,8 @@ namespace COServer.Game.MsgTournaments
 
                     ResetFurnitures(stream);
                     ScoreList.Clear();
-                    MsgSchedules.SendInvitation("FirePoleWar", 429, 342, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.FirePoleWar);
-                    Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("FirePoleWar has started!", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                    //MsgSchedules.SendInvitation("FirePoleWar", 429, 342, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.FirePoleWar);
+                    //Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("FirePoleWar has started!", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
                 }
             }
         }

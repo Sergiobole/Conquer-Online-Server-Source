@@ -33,7 +33,7 @@ namespace COServer.Game.MsgTournaments
             if (Mode == ProcesType.Dead)
             {
                 Mode = ProcesType.Alive;
-                MsgSchedules.SendInvitation(Title, 353, 317, 1002, 0, 60);
+                MsgSchedules.SendInvitation("ArenaDuel", 437, 354, 1002, 0, 60);
                 MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
                 FinishTimer = DateTime.Now.AddMinutes(FinishMinutes);
             }

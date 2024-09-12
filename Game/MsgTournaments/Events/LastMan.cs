@@ -27,7 +27,7 @@ namespace COServer.Game.MsgTournaments
             {
                 FinishTimer = DateTime.Now.AddMinutes(FinishMinutes);
                 Mode = ProcesType.Alive;
-                MsgSchedules.SendInvitation(Title, 457, 356, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.LastMan);
+                MsgSchedules.SendInvitation("LastMan", 457, 356, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.LastMan);
                 MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
             }
         }
@@ -46,7 +46,7 @@ namespace COServer.Game.MsgTournaments
                 {
                     FinishTimer = DateTime.Now.AddMinutes(FinishMinutes);
                     Mode = ProcesType.Alive;
-                    MsgSchedules.SendInvitation(Title, 457, 356, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.LastMan);
+                    MsgSchedules.SendInvitation("LastMan", 457, 356, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.LastMan);
                     MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
                 }
             }

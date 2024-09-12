@@ -249,7 +249,7 @@ namespace COServer.Game.MsgMonster
                         DropItemID(killer, 1088000, stream, 6);
 
                     #region Egg [Quest]
-                    uint EggCouler = (uint)Program.GetRandom.Next(1, 3);
+                    uint EggCouler = (uint)Program.GetRandom.Next(1, 4);
                     if (killer.MobsKilled > 10000)
                     {
                         switch (EggCouler)

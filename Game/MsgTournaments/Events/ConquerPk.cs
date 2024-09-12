@@ -25,7 +25,7 @@ namespace COServer.Game.MsgTournaments
             {
                 FinishTimer = DateTime.Now.AddMinutes(FinishMinutes);
                 Mode = ProcesType.Alive;
-                MsgSchedules.SendInvitation(Title, 473, 356, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TopConquer);
+                MsgSchedules.SendInvitation("Top_Conquer", 473, 356, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TopConquer);
                 MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
                 if (!Program.FreePkMap.Contains(Map))
                     Program.FreePkMap.Add(Map);
@@ -44,7 +44,7 @@ namespace COServer.Game.MsgTournaments
             {
                 if (Mode == ProcesType.Dead)
                 {
-                    MsgSchedules.SendInvitation(Title, 473, 356, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TopConquer);
+                    MsgSchedules.SendInvitation("Top_Conquer", 473, 356, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TopConquer);
                     Mode = ProcesType.Alive;
                     MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
                     FinishTimer = DateTime.Now.AddMinutes(FinishMinutes);

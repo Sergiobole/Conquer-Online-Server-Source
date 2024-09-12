@@ -76,7 +76,7 @@ namespace COServer.Game.MsgNpc
                     }
                 case 1:
                     {
-                        dialog.AddText("Hello " + client.Player.Name + " i need from you 3 differrent egg to get your prize \nAre you have [ VertEgg, PurpleEgg, RubyEgg] ?")
+                        dialog.AddText("Hello " + client.Player.Name + " i need from you 3 differrent egg to get your prize \nAre you have [VertEgg, PurpleEgg, RubyEgg] ?")
                          .AddOption("Yes~I~have.", 2)
                          .AddOption("Just passing by.")
                          .AddAvatar(63).FinalizeDialog();
@@ -107,44 +107,48 @@ namespace COServer.Game.MsgNpc
                                 client.Inventory.Remove(729935, 1, stream);
                                 client.Inventory.Remove(729936, 1, stream);
                                 client.Inventory.Remove(729937, 1, stream);
-                                switch (Program.GetRandom.Next(1, 7))
+
+                                string rewardName = ""; // Variável para armazenar o nome da recompensa
+                                switch (Program.GetRandom.Next(1, 8))
                                 {
                                     case 1:
-                                        {
-                                            client.Inventory.Add(stream, ItemType.Stone_1, 1);
-                                            break;
-                                        }
+                                        client.Inventory.Add(stream, ItemType.Stone_1, 1);
+                                        rewardName = "Stone +1";
+                                        break;
                                     case 2:
-                                        {
-                                            client.Inventory.Add(stream, ItemType.Meteor, 1);
-                                            break;
-                                        }
+                                        client.Inventory.Add(stream, ItemType.Meteor, 1);
+                                        rewardName = "Meteor";
+                                        break;
                                     case 3:
-                                        {
-                                            client.Inventory.Add(stream, ItemType.DragonBall, 1);
-                                            break;
-                                        }
+                                        client.Inventory.Add(stream, ItemType.DragonBall, 1);
+                                        rewardName = "Dragon Ball";
+                                        break;
                                     case 4:
-                                        {
-                                            client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
-                                            break;
-                                        }
+                                        client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
+                                        rewardName = "Meteor Scroll";
+                                        break;
                                     case 5:
-                                        {
-                                            client.Inventory.Add(stream, ItemType.DragonBallScroll, 1);
-                                            break;
-                                        }
+                                        client.Inventory.Add(stream, ItemType.DragonBallScroll, 1);
+                                        rewardName = "Dragon Ball Scroll";
+                                        break;
                                     case 6:
-                                        {
-                                            client.Inventory.Add(stream, ItemType.MoonBox, 1);
-                                            break;
-                                        }
+                                        client.Inventory.Add(stream, ItemType.MoonBox, 1);
+                                        rewardName = "Moon Box";
+                                        break;
                                     case 7:
-                                        {
-                                            client.Inventory.Add(stream, ItemType.Stone_2, 1);
-                                            break;
-                                        }
+                                        client.Inventory.Add(stream, ItemType.Stone_2, 1);
+                                        rewardName = "Stone +2";
+                                        break;
                                 }
+
+                                // Envia a mensagem global com o nome da recompensa
+                                Program.SendGlobalPackets.Enqueue(
+                                    new Game.MsgServer.MsgMessage(
+                                        client.Player.Name + "Has claimed " + rewardName + "from EggQuestNPC!",
+                                        Game.MsgServer.MsgMessage.MsgColor.white,
+                                        Game.MsgServer.MsgMessage.ChatMode.System
+                                    ).GetArray(stream)
+                                );
                             }
                             else
                             {
