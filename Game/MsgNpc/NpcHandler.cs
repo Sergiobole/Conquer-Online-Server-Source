@@ -207,7 +207,7 @@ namespace COServer.Game.MsgNpc
                         else
                         {
                             dialog.Text("You don’t have all the required Letters.\n")
-                                  .AddText("Check your eggs.")
+                                  .AddText("Check your Letters.")
                                   .AddOption("Okay.", 255)
                                   .AddAvatar(63)
                                   .FinalizeDialog();
@@ -2676,7 +2676,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 7)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=11112222;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -2740,7 +2740,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 20)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=11112222;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -2801,7 +2801,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 50)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=11112222;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -2913,7 +2913,7 @@ namespace COServer.Game.MsgNpc
 
                         if (name.Length > 0 && name != null)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=11112222;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -2979,7 +2979,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 20)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=11112222;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3043,7 +3043,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 20)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=11112222;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3107,7 +3107,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 20)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=11112222;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))

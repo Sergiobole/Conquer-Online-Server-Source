@@ -29,13 +29,13 @@ namespace COServer
 
         public static VoteRank VoteRank;
         public static List<EventsLib.BaseEvent> Events = new List<EventsLib.BaseEvent>();
-        public static Discord DiscordAPI = new Discord("https://discord.com/api/webhooks/1279059333186850906/tXJNrPK4ANgx1KUmPBnwQSyBiIV1nUyoFUTBNV67DWgoGeTeUaBpM1U737lwBFiWm4HV1");
-        public static Discord DiscordAPIsocket = new Discord("https://discord.com/api/webhooks/1279057888546914349/HV7GvJDn_dVM1sEgW5K2yCd76AghtitDm32TKmxZrnGiFXMWj644nfPEooahcPJGsunE1");
-        public static Discord DiscordAPIevents = new Discord("https://discord.com/api/webhooks/1279064456009220131/prtX5o2LB7fyF1c_rg82NASmYi1QR4A_KcPaNJ8Oj0ApSM3r_bNMkvLtSPYBuwtIzp9B1");
-        public static Discord DiscordAPIworld = new Discord("https://discord.com/api/webhooks/1279070520423223387/j6jdhxqLh6T1B5B4ZXgg89eIQ6PJZowwQY65XDjflguIV2OM_xoWhXAK95lb_zDeLiEl1");
-        public static Discord DiscordAPIfoundslog = new Discord("https://discord.com/api/webhooks/1280114216195461154/z-1mIZ0yhrFwBkyxWsjdRqW8BGVtBdPySRb5KV_HMV5Hd_Jni4RhZHfuroctZ40Fsa8u1");
-        public static Discord DiscordAPIGarmetLog = new Discord("https://discord.com/api/webhooks/1280114219274211409/ykpPtC_LECMTugnd6kIg395pgudjXg9vDRhzB-VGfSX_OaGqq_D0VclB8iOJJzf-xPR11y1");
-        public static Discord DiscordAPIQuest = new Discord("https://discord.com/api/webhooks/1283628275033313362/7VxErV7OX5HQKHlomFYZdUfiJiCjqt8jV467rY9V5oCHyuRY_pLcSNTfTHjyoB4oY9Rn1");
+        public static Discord DiscordAPI = new Discord("https://discord.com/api/webhooks/1279059333186850906/tXJNrPK4ANgx1KUmPBnwQSyBiIV1nUyoFUTBNV67DWgoGeTeUaBpM1U737lwBFiWm4HV");
+        public static Discord DiscordAPIsocket = new Discord("https://discord.com/api/webhooks/1279057888546914349/HV7GvJDn_dVM1sEgW5K2yCd76AghtitDm32TKmxZrnGiFXMWj644nfPEooahcPJGsunE");
+        public static Discord DiscordAPIevents = new Discord("https://discord.com/api/webhooks/1279064456009220131/prtX5o2LB7fyF1c_rg82NASmYi1QR4A_KcPaNJ8Oj0ApSM3r_bNMkvLtSPYBuwtIzp9B");
+        public static Discord DiscordAPIworld = new Discord("https://discord.com/api/webhooks/1279070520423223387/j6jdhxqLh6T1B5B4ZXgg89eIQ6PJZowwQY65XDjflguIV2OM_xoWhXAK95lb_zDeLiEl");
+        public static Discord DiscordAPIfoundslog = new Discord("https://discord.com/api/webhooks/1280114216195461154/z-1mIZ0yhrFwBkyxWsjdRqW8BGVtBdPySRb5KV_HMV5Hd_Jni4RhZHfuroctZ40Fsa8u");
+        public static Discord DiscordAPIGarmetLog = new Discord("https://discord.com/api/webhooks/1280114219274211409/ykpPtC_LECMTugnd6kIg395pgudjXg9vDRhzB-VGfSX_OaGqq_D0VclB8iOJJzf-xPR11y");
+        public static Discord DiscordAPIQuest = new Discord("https://discord.com/api/webhooks/1283628275033313362/7VxErV7OX5HQKHlomFYZdUfiJiCjqt8jV467rY9V5oCHyuRY_pLcSNTfTHjyoB4oY9Rn");
         public static ulong CPsHuntedSinceRestart = 0;
         public static List<byte[]> LoadPackets = new List<byte[]>();
         public static List<uint> ProtectMapSpells = new List<uint>() { 1038 };

@@ -110,7 +110,7 @@ namespace COServer.Game.MsgTournaments
         {
             client.SendSysMesage("You received a DragonBallScroll.", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.red);
             MsgSchedules.SendSysMesage("" + client.Player.Name + " has won " + Title + " and received a DragonBallScroll!", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
-            client.Inventory.Add(stream, 720028, 1, 0, 0, 0, 0, 0, false);
+            //client.Inventory.Add(stream, 720028, 1, 0, 0, 0, 0, 0, false);
             client.Player.HitPoints = (int)client.Status.MaxHitpoints;
             client.Teleport(428, 378, 1002);
         }
