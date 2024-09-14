@@ -214,190 +214,261 @@ namespace COServer.Game.MsgMonster
                     return;
                 if (killer != null && killer.Player != null)
                 {
-                    if (ConfirmBoss())
+                    if (ConfirmBoss()) // Verifica se a função ConfirmBoss retorna verdadeiro (ou seja, se o boss é confirmado)
                     {
+                        // 70% de chance de fazer o drop de um item com ID 722057
                         if (Role.Core.Rate(70))
                         {
+                            // Gera coordenadas aleatórias ao redor da posição (X, Y) do boss
                             ushort xx = (ushort)Program.GetRandom.Next(X - 6, X + 6);
                             ushort yy = (ushort)Program.GetRandom.Next(Y - 6, Y + 6);
+
+                            // Adiciona o item ao chão se a coordenada gerada for válida
                             if (killer.Map.AddGroundItem(ref xx, ref yy))
                             {
+                                // Faz o drop de um item com ID 722057 na coordenada (xx, yy)
+                                DropItem(stream, killer.Player.UID, killer.Map, 722057, xx, yy, MsgFloorItem.MsgItem.ItemType.Item, 0, false, 0);
+                            }
+                        }
+                        // 30% de chance de fazer o drop de 3 itens com ID 722057
+                        else if (Role.Core.Rate(30))
+                        {
+                            for (int i = 0; i < 3; i++)
+                            {
+                                // Gera coordenadas aleatórias ao redor da posição (X, Y) do boss
+                                ushort xx = (ushort)Program.GetRandom.Next(X - 6, X + 6);
+                                ushort yy = (ushort)Program.GetRandom.Next(Y - 6, Y + 6);
+
+                                // Adiciona o item ao chão se a coordenada gerada for válida
+                                if (killer.Map.AddGroundItem(ref xx, ref yy))
+                                {
+                                    // Faz o drop de um item com ID 722057 na coordenada (xx, yy)
+                                    DropItem(stream, killer.Player.UID, killer.Map, 722057, xx, yy, MsgFloorItem.MsgItem.ItemType.Item, 0, false, 0);
+                                }
+                            }
+                        }
+
+                        // 70% de chance de fazer o drop do item com ID 730001
+                        if (Role.Core.Rate(70))
+                        {
+                            // Gera coordenadas aleatórias ao redor da posição (X, Y) do boss
+                            ushort xx = (ushort)Program.GetRandom.Next(X - 6, X + 6);
+                            ushort yy = (ushort)Program.GetRandom.Next(Y - 6, Y + 6);
+
+                            // Adiciona o item ao chão se a coordenada gerada for válida
+                            if (killer.Map.AddGroundItem(ref xx, ref yy))
+                            {
+                                // Faz o drop do item com ID 730001 na coordenada (xx, yy)
                                 DropItem(stream, killer.Player.UID, killer.Map, 730001, xx, yy, MsgFloorItem.MsgItem.ItemType.Item, 0, false, 0);
                             }
                         }
-                        else
+                        else // 30% de chance (caso a chance de 70% não se concretize)
                         {
+                            // Gera coordenadas aleatórias ao redor da posição (X, Y) do boss
                             ushort xx = (ushort)Program.GetRandom.Next(X - 6, X + 6);
                             ushort yy = (ushort)Program.GetRandom.Next(Y - 6, Y + 6);
+
+                            // Adiciona o item ao chão se a coordenada gerada for válida
                             if (killer.Map.AddGroundItem(ref xx, ref yy))
                             {
+                                // Faz o drop do item com ID 730002 na coordenada (xx, yy)
                                 DropItem(stream, killer.Player.UID, killer.Map, 730002, xx, yy, MsgFloorItem.MsgItem.ItemType.Item, 0, false, 0);
                             }
                         }
+
+                        // Faz o drop do item com ID 1088000 em 5 coordenadas aleatórias ao redor da posição (X, Y) do boss
                         for (int i = 0; i < 5; i++)
                         {
                             ushort xx = (ushort)Program.GetRandom.Next(X - 6, X + 6);
                             ushort yy = (ushort)Program.GetRandom.Next(Y - 6, Y + 6);
+
+                            // Adiciona o item ao chão se a coordenada gerada for válida
                             if (killer.Map.AddGroundItem(ref xx, ref yy))
                             {
+                                // Faz o drop do item com ID 1088000 na coordenada (xx, yy)
                                 DropItem(stream, killer.Player.UID, killer.Map, 1088000, xx, yy, MsgFloorItem.MsgItem.ItemType.Item, 0, false, 0);
                             }
                         }
-                        return;
+
+                        return; // Finaliza a execução da função após o processamento dos drops
                     }
                     if (Role.Core.Rate(2, 20000))
                         DropItemID(killer, 1088000, stream, 6);
 
-                    #region Egg [Quest]
+                    #region EggOrLetter [Quest]
+                    uint ItemType = (uint)Program.GetRandom.Next(1, 3); // 1 para Ovo, 2 para Letra
                     uint EggCouler = (uint)Program.GetRandom.Next(1, 4);
-                    if (killer.MobsKilled > 10000)
-                    {
-                        switch (EggCouler)
-                        {
-                            #region VertEgg
-                            case 1:
-                                {
-                                    if (killer.Player.VipLevel >= 6)
-                                    {
-                                        killer.Inventory.Add(stream, 729935, 1);
-                                    }
-                                    else DropItemID(killer, 729935, stream, 6);
-                                    killer.MobsKilled = 0;
-                                    break;
-                                }
-                            #endregion
-                            #region PurpleEgg
-                            case 2:
-                                {
-                                    if (killer.Player.VipLevel >= 6)
-                                    {
-                                        killer.Inventory.Add(stream, 729936, 1);
-                                    }
-                                    else
-                                        DropItemID(killer, 729936, stream, 6);
-                                    killer.MobsKilled = 0;
-                                    break;
-                                }
-                            #endregion
-                            #region RubyEgg
-                            case 3:
-                                {
-                                    if (killer.Player.VipLevel >= 6)
-                                    {
-                                        killer.Inventory.Add(stream, 729937, 1);
-                                    }
-                                    else
-                                        DropItemID(killer, 729937, stream, 6);
-                                    killer.MobsKilled = 0;
-                                    break;
-                                }
-                            #endregion
-
-                        }
-                    }
-                    #endregion
-
-                    #region Letra [Quest]
                     uint LetraCauler = (uint)Program.GetRandom.Next(1, 8);
-                    if (killer.MobsKilled > 5000)
-                    {
-                        switch (LetraCauler)
-                        {
-                            #region Letras1
-                            case 1:
-                                {
-                                    if (killer.Player.VipLevel >= 6)
-                                    {
-                                        killer.Inventory.Add(stream, 7112141, 1);
-                                    }
-                                    else DropItemID(killer, 7112141, stream, 6);
-                                    killer.MobsKilled = 0;
-                                    break;
-                                }
-                            #endregion
-                            #region Letra2
-                            case 2:
-                                {
-                                    if (killer.Player.VipLevel >= 6)
-                                    {
-                                        killer.Inventory.Add(stream, 7112151, 1);
-                                    }
-                                    else
-                                        DropItemID(killer, 7112151, stream, 6);
-                                    killer.MobsKilled = 0;
-                                    break;
-                                }
-                            #endregion
-                            #region letra3
-                            case 3:
-                                {
-                                    if (killer.Player.VipLevel >= 6)
-                                    {
-                                        killer.Inventory.Add(stream, 7112161, 1);
-                                    }
-                                    else
-                                        DropItemID(killer, 7112161, stream, 6);
-                                    killer.MobsKilled = 0;
-                                    break;
-                                }
-                            #endregion
-                            #region Letra4
-                            case 4:
-                                {
-                                    if (killer.Player.VipLevel >= 6)
-                                    {
-                                        killer.Inventory.Add(stream, 7112171, 1);
-                                    }
-                                    else
-                                        DropItemID(killer, 7112171, stream, 6);
-                                    killer.MobsKilled = 0;
-                                    break;
-                                }
-                            #endregion
-                            #region Letra5
-                            case 5:
-                                {
-                                    if (killer.Player.VipLevel >= 6)
-                                    {
-                                        killer.Inventory.Add(stream, 7112181, 1);
-                                    }
-                                    else
-                                        DropItemID(killer, 7112181, stream, 6);
-                                    killer.MobsKilled = 0;
-                                    break;
-                                }
-                            #endregion
-                            #region Letra6
-                            case 6:
-                                {
-                                    if (killer.Player.VipLevel >= 6)
-                                    {
-                                        killer.Inventory.Add(stream, 7112191, 1);
-                                    }
-                                    else
-                                        DropItemID(killer, 7112191, stream, 6);
-                                    killer.MobsKilled = 0;
-                                    break;
-                                }
-                            #endregion
-                            #region Letra7
-                            case 7:
-                                {
-                                    if (killer.Player.VipLevel >= 6)
-                                    {
-                                        killer.Inventory.Add(stream, 7112201, 1);
-                                    }
-                                    else
-                                        DropItemID(killer, 7112201, stream, 6);
-                                    killer.MobsKilled = 0;
-                                    break;
-                                }
-                                #endregion
 
+                    if (killer.MobsKilled > 2000)
+                    {
+                        switch (ItemType)
+                        {
+                            #region Ovos
+                            case 1:
+                                // Sorteio entre ovos
+                                switch (EggCouler)
+                                {
+                                    #region VertEgg
+                                    case 1:
+                                        {
+                                            if (killer.Player.VipLevel >= 6)
+                                            {
+                                                killer.Inventory.Add(stream, 729935, 1);
+                                            }
+                                            else
+                                            {
+                                                DropItemID(killer, 729935, stream, 6);
+                                            }
+                                            break;
+                                        }
+                                    #endregion
+                                    #region PurpleEgg
+                                    case 2:
+                                        {
+                                            if (killer.Player.VipLevel >= 6)
+                                            {
+                                                killer.Inventory.Add(stream, 729936, 1);
+                                            }
+                                            else
+                                            {
+                                                DropItemID(killer, 729936, stream, 6);
+                                            }
+                                            break;
+                                        }
+                                    #endregion
+                                    #region RubyEgg
+                                    case 3:
+                                        {
+                                            if (killer.Player.VipLevel >= 6)
+                                            {
+                                                killer.Inventory.Add(stream, 729937, 1);
+                                            }
+                                            else
+                                            {
+                                                DropItemID(killer, 729937, stream, 6);
+                                            }
+                                            break;
+                                        }
+                                        #endregion
+                                }
+                                break;
+                            #endregion
+                            #region Letras
+                            case 2:
+                                // Sorteio entre letras
+                                switch (LetraCauler)
+                                {
+                                    #region Letras1
+                                    case 1:
+                                        {
+                                            if (killer.Player.VipLevel >= 6)
+                                            {
+                                                killer.Inventory.Add(stream, 7112141, 1);
+                                            }
+                                            else
+                                            {
+                                                DropItemID(killer, 7112141, stream, 6);
+                                            }
+                                            break;
+                                        }
+                                    #endregion
+                                    #region Letra2
+                                    case 2:
+                                        {
+                                            if (killer.Player.VipLevel >= 6)
+                                            {
+                                                killer.Inventory.Add(stream, 7112151, 1);
+                                            }
+                                            else
+                                            {
+                                                DropItemID(killer, 7112151, stream, 6);
+                                            }
+                                            break;
+                                        }
+                                    #endregion
+                                    #region Letra3
+                                    case 3:
+                                        {
+                                            if (killer.Player.VipLevel >= 6)
+                                            {
+                                                killer.Inventory.Add(stream, 7112161, 1);
+                                            }
+                                            else
+                                            {
+                                                DropItemID(killer, 7112161, stream, 6);
+                                            }
+                                            break;
+                                        }
+                                    #endregion
+                                    #region Letra4
+                                    case 4:
+                                        {
+                                            if (killer.Player.VipLevel >= 6)
+                                            {
+                                                killer.Inventory.Add(stream, 7112171, 1);
+                                            }
+                                            else
+                                            {
+                                                DropItemID(killer, 7112171, stream, 6);
+                                            }
+                                            break;
+                                        }
+                                    #endregion
+                                    #region Letra5
+                                    case 5:
+                                        {
+                                            if (killer.Player.VipLevel >= 6)
+                                            {
+                                                killer.Inventory.Add(stream, 7112181, 1);
+                                            }
+                                            else
+                                            {
+                                                DropItemID(killer, 7112181, stream, 6);
+                                            }
+                                            break;
+                                        }
+                                    #endregion
+                                    #region Letra6
+                                    case 6:
+                                        {
+                                            if (killer.Player.VipLevel >= 6)
+                                            {
+                                                killer.Inventory.Add(stream, 7112191, 1);
+                                            }
+                                            else
+                                            {
+                                                DropItemID(killer, 7112191, stream, 6);
+                                            }
+                                            break;
+                                        }
+                                    #endregion
+                                    #region Letra7
+                                    case 7:
+                                        {
+                                            if (killer.Player.VipLevel >= 6)
+                                            {
+                                                killer.Inventory.Add(stream, 7112201, 1);
+                                            }
+                                            else
+                                            {
+                                                DropItemID(killer, 7112201, stream, 6);
+                                            }
+                                            break;
+                                        }
+                                        #endregion
+                                }
+                                break;
+                                #endregion
                         }
+
+                        // Resetar o contador de mobs após o drop
+                        killer.MobsKilled = 0;
                     }
                     #endregion
-                    if (killer.Player.VipLevel >= 6)//شغل اديا منور هنا اهو
+
+
+                    if (killer.Player.VipLevel >= 6)
                     {
                         #region Drop_DragonBall
                         if (killer.DbKilled >= ProjectControl.VipDb_Drop)
@@ -418,26 +489,6 @@ namespace COServer.Game.MsgMonster
                             }
                         }
                         #endregion
-                        //#region Drop_Meteors
-                        //if (killer.Drop_Meteors >= ProjectControl.Vip_Drop_Meteors)
-                        //{
-                        //    killer.Drop_Meteors = 0;
-                        //    if (killer.Inventory.HaveSpace(ProjectControl.Max_Meteors_Vip))
-                        //    {
-                        //        if (killer.Inventory.Contain(1088001, 9))
-                        //        {
-                        //            killer.Inventory.Remove(1088001, 9, stream);
-                        //            killer.Inventory.Add(stream, 720027, 1);
-                        //            killer.SendSysMesage("[Drop System] Auto Make 1xMeteorScroll in your Inventory.", MsgMessage.ChatMode.TopLeft);
-                        //        }
-                        //        else
-                        //        {
-                        //            killer.Inventory.Add(stream, 1088001, ProjectControl.Max_Meteors_Vip);
-                        //            killer.SendSysMesage("[Drop System] You Have Got " + ProjectControl.Max_Meteors_Vip + " Meteors in your Inventory.", MsgMessage.ChatMode.TopLeft);
-                        //        }
-                        //    }
-                        //}
-                        //#endregion
                         #region Drop_Stone
                         if (killer.Drop_Stone >= ProjectControl.Vip_Drop_Stone)
                         {
@@ -652,9 +703,8 @@ namespace COServer.Game.MsgMonster
                             for (ushort i = 0; i < 5; i++)
                                 DropItemNull(Database.ItemType.DragonBall, stream);
 
-                            if (Role.Core.Rate(5))//dances book
+                            if (Role.Core.Rate(5))
                             {
-                                //   DropItemID(killer, (uint)(725018 + Program.GetRandom.Next(1, 7)), stream);
                                 DropItemNull((uint)(725018 + Program.GetRandom.Next(1, 7)), stream);
                             }
                             if (Role.Core.Rate(3))

@@ -84,7 +84,7 @@ namespace COServer.Game.MsgNpc
                             client.Inventory.Remove(729937, 1, stream);
 
                             string rewardName = "";
-                            switch (Program.GetRandom.Next(1, 8))
+                            switch (Program.GetRandom.Next(1, 7))
                             {
                                 case 1:
                                     client.Inventory.Add(stream, ItemType.Stone_1, 1);
@@ -107,10 +107,6 @@ namespace COServer.Game.MsgNpc
                                     rewardName = "Dragon Ball Scroll";
                                     break;
                                 case 6:
-                                    client.Inventory.Add(stream, ItemType.MoonBox, 1);
-                                    rewardName = "Moon Box";
-                                    break;
-                                case 7:
                                     client.Inventory.Add(stream, ItemType.Stone_2, 1);
                                     rewardName = "Stone +2";
                                     break;
@@ -166,7 +162,7 @@ namespace COServer.Game.MsgNpc
 
 
                             string rewardName = "";
-                            switch (Program.GetRandom.Next(1, 8))
+                            switch (Program.GetRandom.Next(1, 7))
                             {
                                 case 1:
                                     client.Inventory.Add(stream, ItemType.Stone_1, 1);
@@ -189,10 +185,6 @@ namespace COServer.Game.MsgNpc
                                     rewardName = "Dragon Ball Scroll";
                                     break;
                                 case 6:
-                                    client.Inventory.Add(stream, ItemType.MoonBox, 1);
-                                    rewardName = "Moon Box";
-                                    break;
-                                case 7:
                                     client.Inventory.Add(stream, ItemType.Stone_2, 1);
                                     rewardName = "Stone +2";
                                     break;
@@ -227,7 +219,7 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        dialog.AddText("Hello " + client.Player.Name + " You need the 6 Super Gems to trade. \nAre you have [PhoenixGem, PhoenixGem, RainbowGem, KylinGem, VioletGem, MoonGem]?")
+                        dialog.AddText("Hello " + client.Player.Name + "You need the 6 Super Gems to trade for SuperToroiseGem. \nAre you have [PhoenixGem, RainbowGem, KylinGem, VioletGem, MoonGem, DragonGem]?")
                          .AddOption("Yes~I~Have.", 1)
                          .AddOption("Just passing by.")
                          .AddAvatar(63).FinalizeDialog();
@@ -340,12 +332,12 @@ namespace COServer.Game.MsgNpc
                     {
                         // Exibe o diálogo inicial com os pontos online do usuário e uma opção para trocar por um token VIP de 7 dias
                         dialog.AddText($"Hello, you will earn 1 OnlinePoint for every minute you stay online.\nYou have [ {client.Player.OnlinePoints} ] OnlinePoints.").AddAvatar(7);
-                        dialog.AddOption("1 - 7 Days VIP", 1);
-                        dialog.AddOption("2 - 30 Days VIP", 2);                  
-                        dialog.AddOption("3 - DBScroll", 3);
-                        dialog.AddOption("4 - MoonBox", 4);
-                        dialog.AddOption("5 - MetScroll", 5);
-
+                        dialog.AddOption("1 - 7 Days VIP = 8.000", 1);
+                        dialog.AddOption("2 - 30 Days VIP = 22.000", 2);                  
+                        dialog.AddOption("3 - DBScroll = 1.000", 3);
+                        dialog.AddOption("4 - MoonBox = 2.000", 4);
+                        dialog.AddOption("5 - MetScroll = 500", 5);
+                        dialog.AddOption("6 - 3xExp = 500", 6);
                         dialog.AddOption("Okay", 255);
                         dialog.FinalizeDialog();
                         break;
@@ -362,16 +354,17 @@ namespace COServer.Game.MsgNpc
                         }
 
                         // Verifica se o jogador tem pontos online suficientes para trocar pelo VIP de 7 dias
-                        if (client.Player.OnlinePoints >= 7000)
+                        if (client.Player.OnlinePoints >= 8000)
                         {
                             // Deduz os pontos online e adiciona o VIP de 7 dias ao inventário
-                            client.Player.OnlinePoints -= 7000;
+                            client.Player.OnlinePoints -= 8000;
                             client.Inventory.Add(stream, 780000, 1, 0, 0, 0, 0, 0, false);
-                            dialog.AddText("You have successfully exchanged 7.000 Online Points for a 7-Days VIP Token.").AddAvatar(7);
+                            dialog.AddText("You have successfully exchanged 8.000 Online Points for a 7-Days VIP Token.").AddAvatar(7);
+                            Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Vip 7-Days Online Points``");
                         }
                         else
                         {
-                            dialog.AddText("You do not have Online Points.\nYou need 7.000 Online Points to exchange for a 7-Days VIP Token.").AddAvatar(7);
+                            dialog.AddText("You do not have Online Points.\nYou need 8.000 Online Points to exchange for a 7-Days VIP Token.").AddAvatar(7);
                         }
 
                         dialog.AddOption("Okay", 255);
@@ -390,16 +383,17 @@ namespace COServer.Game.MsgNpc
                         }
 
                         // Verifica se o jogador tem pontos online suficientes para trocar pelo VIP de 30 dias
-                        if (client.Player.OnlinePoints >= 20000)
+                        if (client.Player.OnlinePoints >= 22000)
                         {
                             // Deduz os pontos online e adiciona o VIP de 30 dias ao inventário
-                            client.Player.OnlinePoints -= 20000;
+                            client.Player.OnlinePoints -= 22000;
                             client.Inventory.Add(stream, 780010, 1, 0, 0, 0, 0, 0, false);
-                            dialog.AddText("You have successfully exchanged 20.000 Online Points for a 30-Days VIP Token.").AddAvatar(7);
+                            dialog.AddText("You have successfully exchanged 22.000 Online Points for a 30-Days VIP Token.").AddAvatar(7);
+                            Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Vip 30-Days Online Points``");
                         }
                         else
                         {
-                            dialog.AddText("You do not have Online Points.\nYou need 20.000 Online Points to exchange for a 30-Days VIP Token.").AddAvatar(7);
+                            dialog.AddText("You do not have Online Points.\nYou need 22.000 Online Points to exchange for a 30-Days VIP Token.").AddAvatar(7);
                         }
 
                         dialog.AddOption("Okay", 255);
@@ -424,6 +418,7 @@ namespace COServer.Game.MsgNpc
                             client.Player.OnlinePoints -= 1000;
                             client.Inventory.Add(stream, 720028, 1, 0, 0, 0, 0, 0, false);
                             dialog.AddText("You have successfully exchanged 1.000 Online Points for a DbScroll.").AddAvatar(7);
+                            Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take DbScroll Online Points``");
                         }
                         else
                         {
@@ -452,6 +447,7 @@ namespace COServer.Game.MsgNpc
                             client.Player.OnlinePoints -= 2000;
                             client.Inventory.Add(stream, 721080, 1, 0, 0, 0, 0, 0, false);
                             dialog.AddText("You have successfully exchanged 2.000 Online Points for a MoonBox.").AddAvatar(7);
+                            Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take MoonBox Online Points``");
                         }
                         else
                         {
@@ -480,10 +476,40 @@ namespace COServer.Game.MsgNpc
                             client.Player.OnlinePoints -= 500;
                             client.Inventory.Add(stream, 720027, 1, 0, 0, 0, 0, 0, false);
                             dialog.AddText("You have successfully exchanged 500 Online Points for a MetScroll.").AddAvatar(7);
+                            Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : MetScroll Online Points``");
                         }
                         else
                         {
                             dialog.AddText("You do not have Online Points.\nYou need 500 Online Points to exchange for a MetScroll.").AddAvatar(7);
+                        }
+
+                        dialog.AddOption("Okay", 255);
+                        dialog.FinalizeDialog();
+                        break;
+                    }
+                case 6:
+                    {
+                        // Verifica se há espaço suficiente no inventário para o novo item
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
+                            dialog.AddOption("Let me check.", 255);
+                            dialog.FinalizeDialog();
+                            break;
+                        }
+
+                        // Verifica se o jogador tem pontos online suficientes
+                        if (client.Player.OnlinePoints >= 1000)
+                        {
+                            // Deduz os pontos online e adiciona o item 
+                            client.Player.OnlinePoints -= 1000;
+                            client.Inventory.Add(stream, 720393, 1, 0, 0, 0, 0, 0, false);
+                            dialog.AddText("You have successfully exchanged 1000 Online Points for a 3xExp.").AddAvatar(7);
+                            Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take 3xExp Online Points``");
+                        }
+                        else
+                        {
+                            dialog.AddText("You do not have Online Points.\nYou need 1000 Online Points to exchange for a 3xExp.").AddAvatar(7);
                         }
 
                         dialog.AddOption("Okay", 255);
@@ -7543,7 +7569,7 @@ namespace COServer.Game.MsgNpc
                             string rewardName = ""; // Variável para armazenar o nome da recompensa
 
                             // Escolher uma recompensa aleatória
-                            switch (Program.GetRandom.Next(1, 8))
+                            switch (Program.GetRandom.Next(1, 7))
                             {
                                 case 1:
                                     client.Inventory.Add(stream, ItemType.Stone_1, 1);
@@ -7566,10 +7592,6 @@ namespace COServer.Game.MsgNpc
                                     rewardName = "Dragon Ball Scroll";
                                     break;
                                 case 6:
-                                    client.Inventory.Add(stream, ItemType.MoonBox, 1);
-                                    rewardName = "Moon Box";
-                                    break;
-                                case 7:
                                     client.Inventory.Add(stream, ItemType.Stone_2, 1);
                                     rewardName = "Stone 2";
                                     break;
@@ -18643,46 +18665,75 @@ namespace COServer.Game.MsgNpc
                                     {
                                         if (DataItem.SocketOne == Role.Flags.Gem.NoSocket)
                                         {
-                                            // Verifica novamente se o primeiro socket do item de dados está vazio (parece redundante)
                                             if (DataItem.SocketOne == Role.Flags.Gem.NoSocket)
                                             {
-                                                // Verifica se o inventário do cliente contém 1 Meteor
                                                 if (client.Inventory.Contain(Database.ItemType.Meteor, 1))
                                                 {
-                                                    // Gera um número aleatório entre 1 e 700
                                                     Random random = new Random();
                                                     int chance = random.Next(1, 700);
 
-                                                    // Remove 1 Meteor do inventário do cliente
+                                                    var itemLevel = Database.Server.ItemsBase[DataItem.ITEM_ID].Level;
+
+                                                    if (itemLevel > client.Player.Level)
+                                                    {
+                                                        client.SendSysMesage("You cannot open a socket on this item because its level is higher than your character level.");
+                                                        return;
+                                                    }
+
+                                                    if (itemLevel >= 110)
+                                                    {
+                                                        client.SendSysMesage("The item is at the maximum level and cannot be modified.");
+                                                        return;
+                                                    }
+
                                                     client.Inventory.Remove(Database.ItemType.Meteor, 1, stream);
 
-                                                    // Verifica se o número gerado é 1 (1 em 700 de chance)
                                                     if (chance == 1)
                                                     {
-                                                        // Define o primeiro socket do item de dados como um socket vazio
                                                         DataItem.SocketOne = Role.Flags.Gem.EmptySocket;
-                                                        // Atualiza o modo do item de dados para indicar que foi atualizado
                                                         DataItem.Mode = Role.Flags.ItemMode.Update;
-                                                        // Envia a atualização do item de dados para o cliente
                                                         DataItem.Send(client, stream);
 
-                                                        // Se a posição do item de dados não for zero, consulta o equipamento do cliente
                                                         if (DataItem.Position != 0)
                                                             client.Equipment.QueryEquipment();
 
-                                                        // Informa ao cliente que o socket foi aberto com sucesso
                                                         client.SendSysMesage("Congratulations! You have successfully opened a socket with a 0.14% chance!");
                                                         Program.DiscordAPIsocket.Enqueue($"``Congratulations! {client.Player.Name} You have successfully opened a socket with a 0.14% chance!``");
                                                     }
                                                     else
                                                     {
-                                                        // Informa ao cliente que a tentativa falhou
-                                                        client.SendSysMesage("Failed to open a socket.");
+                                                        var cost = 1;
+                                                        if (client.Inventory.Contain(Database.ItemType.Meteor, (byte)cost))
+                                                        {
+                                                            client.Inventory.Remove(Database.ItemType.Meteor, (byte)cost, stream);
+
+                                                            bool success = false;
+                                                            uint nextItemId = Database.Server.ItemsBase.UpdateItem(DataItem.ITEM_ID, out success);
+
+                                                            if (success)
+                                                            {
+                                                                DataItem.ITEM_ID = nextItemId;
+                                                                DataItem.Mode = Role.Flags.ItemMode.Update;
+                                                                DataItem.Send(client, stream);
+
+                                                                if (DataItem.Position != 0)
+                                                                    client.Equipment.QueryEquipment();
+
+                                                                client.SendSysMesage("Failed to open a socket.");
+                                                            }
+                                                            else
+                                                            {
+                                                                client.SendSysMesage("Failed to open a socket.");
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            client.SendSysMesage("Sorry, you don't have the required 1 Meteor for open Socket");
+                                                        }
                                                     }
                                                 }
                                                 else
                                                 {
-                                                    // Envia uma mensagem de erro para o cliente se ele não tiver 1 Meteor
                                                     client.SendSysMesage("Sorry, you don't have 1 Meteor!");
                                                 }
                                             }
@@ -18692,50 +18743,78 @@ namespace COServer.Game.MsgNpc
                                                 client.SendSysMesage("This item already has one socket!");
                                             }
                                         }
-                                        // Verifica se o segundo socket do item de dados está vazio
+
                                         else if (DataItem.SocketTwo == Role.Flags.Gem.NoSocket)
                                         {
-                                            // Verifica se o inventário do cliente contém 2000 Meteors
                                             if (client.Inventory.Contain(Database.ItemType.Meteor, 1))
                                             {
-                                                // Gera um número aleatório entre 1 e 2000
                                                 Random random = new Random();
-                                                int chance = random.Next(1, 2500);
+                                                int chance = random.Next(1, 2000);
 
-                                                // Verifica se o número gerado é 1 (1 em 2000 de chance)
+                                                var itemLevel = Database.Server.ItemsBase[DataItem.ITEM_ID].Level;
+
+                                                if (itemLevel > client.Player.Level)
+                                                {
+                                                    client.SendSysMesage("You cannot open a socket on this item because its level is higher than your character level.");
+                                                    return;
+                                                }
+
+                                                if (itemLevel >= 110)
+                                                {
+                                                    client.SendSysMesage("The item is at the maximum level and cannot be modified.");
+                                                    return;
+                                                }
+
+                                                client.Inventory.Remove(Database.ItemType.Meteor, 1, stream);
+
                                                 if (chance == 1)
                                                 {
-                                                    // Define o segundo socket do item de dados como um socket vazio
                                                     DataItem.SocketTwo = Role.Flags.Gem.EmptySocket;
-                                                    // Atualiza o modo do item de dados para indicar que foi atualizado
                                                     DataItem.Mode = Role.Flags.ItemMode.Update;
-                                                    // Envia a atualização do item de dados para o cliente
                                                     DataItem.Send(client, stream);
 
-                                                    // Se a posição do item de dados não for zero, consulta o equipamento do cliente
                                                     if (DataItem.Position != 0)
                                                         client.Equipment.QueryEquipment();
 
-                                                    // Remove 12 DragonBalls do inventário do cliente
-                                                    client.Inventory.Remove(Database.ItemType.Meteor, 1, stream);
-
-                                                    // Informa ao cliente que o socket foi aberto com sucesso
-                                                    data.AddText("Congratulations! You've opened a 2nd socket in your item with a 0.05% chance!").AddOption("Thank you so much!", 255).FinalizeDialog();
+                                                    client.SendSysMesage("Congratulations! You've opened a 2nd socket in your item with a 0.05% chance!");
                                                     Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + client.Player.Name + " has opened a 2nd socket in their " + Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID), Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
                                                     Program.DiscordAPIsocket.Enqueue($"``Congratulations! {client.Player.Name} You have successfully opened a second socket with a 0.05% chance!``");
-
                                                 }
                                                 else
                                                 {
-                                                    // Se a tentativa falhar, remove meteor e informa ao cliente
-                                                    client.Inventory.Remove(Database.ItemType.Meteor, 1, stream);
-                                                    client.SendSysMesage("You're unlucky, you've failed to open the socket.");
+                                                    var cost = 1;
+                                                    if (client.Inventory.Contain(Database.ItemType.Meteor, (byte)cost))
+                                                    {
+                                                        client.Inventory.Remove(Database.ItemType.Meteor, (byte)cost, stream);
+
+                                                        bool success = false;
+                                                        uint nextItemId = Database.Server.ItemsBase.UpdateItem(DataItem.ITEM_ID, out success);
+
+                                                        if (success)
+                                                        {
+                                                            DataItem.ITEM_ID = nextItemId;
+                                                            DataItem.Mode = Role.Flags.ItemMode.Update;
+                                                            DataItem.Send(client, stream);
+
+                                                            if (DataItem.Position != 0)
+                                                                client.Equipment.QueryEquipment();
+
+                                                            client.SendSysMesage("Failed to open a socket.");
+                                                        }
+                                                        else
+                                                        {
+                                                            client.SendSysMesage("Failed to open a socket.");
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        client.SendSysMesage("Sorry, you don't have the required 1 Meteor for open Socket.");
+                                                    }
                                                 }
                                             }
                                             else
                                             {
-                                                // Envia uma mensagem de erro para o cliente se ele não tiver meteor
-                                                client.SendSysMesage("Sorry, you don't have 1 Meteors");
+                                                client.SendSysMesage("Sorry, you don't have 1 Meteor.");
                                             }
                                         }
                                     }
