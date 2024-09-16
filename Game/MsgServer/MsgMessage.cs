@@ -250,7 +250,6 @@ namespace COServer.Game.MsgServer
                                         user.Send(msg.GetArray(packet));
                                     }
                                 }
-                                //  Program.SendGlobalPackets.Enqueue(msg.GetArray());
                             }
                             break;
                         }
@@ -266,8 +265,8 @@ namespace COServer.Game.MsgServer
                                         user.Send(msg.GetArray(packet));
                                     }
                                 }
-                                Program.DiscordAPI.Enqueue("" + msg._From + " speaks to " + msg._To + ": " + msg.__Message + "");
-                                //  Program.SendGlobalPackets.Enqueue(msg.GetArray());
+                                Program.DiscordAPIworld.Enqueue("" + msg._From + " speaks to " + msg._To + ": " + msg.__Message + "");
+
                             }
                             break;
                         }

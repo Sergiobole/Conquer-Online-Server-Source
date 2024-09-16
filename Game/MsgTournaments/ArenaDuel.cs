@@ -108,7 +108,7 @@ namespace COServer.Game.MsgTournaments
                     Mode = ProcesType.Dead;
                 }
             }
-            if (DateTime.Now.Minute == 30 && DateTime.Now.Second < 2)
+            if (DateTime.Now.Minute == 15 && DateTime.Now.Second < 2)
             {
                 Open();
             }

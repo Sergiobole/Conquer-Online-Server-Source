@@ -12,6 +12,7 @@ namespace COServer.Game.MsgTournaments
         private DateTime FinishTimer = new DateTime();
         private string Title = "LastMan";
         public uint WinnerUID = 0;
+
         public LastMan()
         {
             Mode = ProcesType.Dead;
@@ -20,6 +21,7 @@ namespace COServer.Game.MsgTournaments
             if (!Program.FreePkMap.Contains(Map))
                 Program.FreePkMap.Add(Map);
         }
+
         public void Open()
         {
             if (Mode == ProcesType.Dead)
@@ -30,6 +32,7 @@ namespace COServer.Game.MsgTournaments
                 MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
             }
         }
+
         public void CheckUp()
         {
             if (Mode == ProcesType.Alive)
@@ -39,7 +42,7 @@ namespace COServer.Game.MsgTournaments
                     Mode = ProcesType.Dead;
                 }
             }
-            if (DateTime.Now.Minute == 30 && DateTime.Now.Second < 2)
+            if (DateTime.Now.Minute == 45 && DateTime.Now.Second < 2)
             {
                 if (Mode == ProcesType.Dead)
                 {
@@ -50,6 +53,7 @@ namespace COServer.Game.MsgTournaments
                 }
             }
         }
+
         public bool AllowJoin(Client.GameClient user, ServerSockets.Packet stream)
         {
             if (Mode == ProcesType.Alive)
@@ -62,11 +66,14 @@ namespace COServer.Game.MsgTournaments
             }
             return false;
         }
+
         public bool IsFinished() { return Mode == ProcesType.Dead; }
+
         public bool TheLastPlayer()
         {
             return Database.Server.GamePoll.Values.Where(p => p.Player.Map == Map && p.Player.Alive).Count() == 1;
         }
+
         public void GiveReward(Client.GameClient client, ServerSockets.Packet stream)
         {
             WinnerUID = client.Player.UID;
@@ -76,6 +83,7 @@ namespace COServer.Game.MsgTournaments
             client.Player.HitPoints = (int)client.Status.MaxHitpoints;
             client.Teleport(301, 278, 1002);
         }
+
         public void AddTop(Client.GameClient client)
         {
             if (WinnerUID == client.Player.UID)

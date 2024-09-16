@@ -269,9 +269,6 @@ namespace COServer.Game.MsgServer
 
                                 // Envia a mensagem de broadcast para o jogador
                                 user.Send(stream.BroadcastCreate(BroadTyp.BroadcastMessage, dwParam, Strings));
-
-                                // Envia a mensagem de broadcast para a API do Discord com o nome do jogador
-                                Program.DiscordAPIworld.Enqueue($"`` Broadcast from {user.Player.Name}: {broadcast.Message} `` ");
                                 break;
                             }
 

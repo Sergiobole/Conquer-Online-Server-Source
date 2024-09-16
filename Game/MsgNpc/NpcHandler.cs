@@ -338,6 +338,7 @@ namespace COServer.Game.MsgNpc
                         dialog.AddOption("4 - MoonBox = 2.000", 4);
                         dialog.AddOption("5 - MetScroll = 500", 5);
                         dialog.AddOption("6 - 3xExp = 500", 6);
+                        dialog.AddOption("7 - Emerald = 500", 7);
                         dialog.AddOption("Okay", 255);
                         dialog.FinalizeDialog();
                         break;
@@ -506,6 +507,35 @@ namespace COServer.Game.MsgNpc
                             client.Inventory.Add(stream, 720393, 1, 0, 0, 0, 0, 0, false);
                             dialog.AddText("You have successfully exchanged 500 Online Points for a 3xExp.").AddAvatar(7);
                             Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take 3xExp Online Points``");
+                        }
+                        else
+                        {
+                            dialog.AddText("You do not have Online Points.\nYou need 1000 Online Points to exchange for a 3xExp.").AddAvatar(7);
+                        }
+
+                        dialog.AddOption("Okay", 255);
+                        dialog.FinalizeDialog();
+                        break;
+                    }
+                case 7:
+                    {
+                        // Verifica se há espaço suficiente no inventário para o novo item
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
+                            dialog.AddOption("Let me check.", 255);
+                            dialog.FinalizeDialog();
+                            break;
+                        }
+
+                        // Verifica se o jogador tem pontos online suficientes
+                        if (client.Player.OnlinePoints >= 500)
+                        {
+                            // Deduz os pontos online e adiciona o item 
+                            client.Player.OnlinePoints -= 500;
+                            client.Inventory.Add(stream, 1080001, 1, 0, 0, 0, 0, 0, false);
+                            dialog.AddText("You have successfully exchanged 500 Online Points for a Emerald.").AddAvatar(7);
+                            Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Emerald Online Points``");
                         }
                         else
                         {
