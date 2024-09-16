@@ -15,6 +15,10 @@ namespace COServer.Game.MsgTournaments
         public uint WinnerUID = 0;
         DateTime lastSent = DateTime.Now;
         List<string> score = new List<string>();
+
+        // Lista para armazenar jogadores que já participaram
+        private HashSet<uint> participants = new HashSet<uint>();
+
         public ArenaDuel()
         {
             Mode = ProcesType.Dead;
@@ -27,6 +31,7 @@ namespace COServer.Game.MsgTournaments
             if (!Program.SsFbMap.Contains(Map))
                 Program.SsFbMap.Add(Map);
         }
+
         public void Open()
         {
             if (Mode == ProcesType.Dead)
@@ -35,21 +40,28 @@ namespace COServer.Game.MsgTournaments
                 MsgSchedules.SendInvitation("ArenaDuel", 437, 354, 1002, 0, 60);
                 MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
                 FinishTimer = DateTime.Now.AddMinutes(30); // Mudado para 30 minutos diretamente
+                participants.Clear(); // Limpa a lista de participantes quando o evento começa
             }
         }
+
         public bool AllowJoin(Client.GameClient user, ServerSockets.Packet stream)
         {
-            if (Mode == ProcesType.Alive)
+            // Verifica se o jogador já participou
+            if (Mode == ProcesType.Alive && !participants.Contains(user.Player.UID))
             {
                 ushort x = 0;
                 ushort y = 0;
                 Server.ServerMaps[Map].GetRandCoord(ref x, ref y);
                 user.Teleport(x, y, Map, 999);
                 user.Player.HitPoints = 1;
+
+                // Adiciona o jogador à lista de participantes
+                participants.Add(user.Player.UID);
                 return true;
             }
-            return false;
+            return false; // Bloqueia a entrada se o jogador já tiver participado
         }
+
         public void CheckUp()
         {
             if (Mode == ProcesType.Alive)
@@ -101,19 +113,22 @@ namespace COServer.Game.MsgTournaments
                 Open();
             }
         }
+
         public bool IsFinished() { return Mode == ProcesType.Dead; }
+
         public bool TheLastPlayer()
         {
             return Server.GamePoll.Values.Where(p => p.Player.Map == Map && p.Player.DynamicID == 999 && p.Player.Alive).Count() == 1;
         }
+
         public void GiveReward(Client.GameClient client, ServerSockets.Packet stream)
         {
             client.SendSysMesage("You received a DragonBallScroll.", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.red);
             MsgSchedules.SendSysMesage("" + client.Player.Name + " has won " + Title + " and received a DragonBallScroll!", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
-            //client.Inventory.Add(stream, 720028, 1, 0, 0, 0, 0, 0, false);
             client.Player.HitPoints = (int)client.Status.MaxHitpoints;
             client.Teleport(428, 378, 1002);
         }
+
         public void SendScore(List<string> text)
         {
             using (var rec = new ServerSockets.RecycledPacket())
@@ -129,5 +144,4 @@ namespace COServer.Game.MsgTournaments
             }
         }
     }
-
 }

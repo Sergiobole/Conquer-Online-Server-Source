@@ -16,6 +16,10 @@ namespace COServer.Game.MsgTournaments
         public uint WinnerUID = 0;
         DateTime lastSent = DateTime.Now;
         List<string> score = new List<string>();
+
+        // Lista para armazenar jogadores que já participaram
+        private HashSet<uint> participants = new HashSet<uint>();
+
         public Ss_Fb()
         {
             Mode = ProcesType.Dead;
@@ -28,6 +32,7 @@ namespace COServer.Game.MsgTournaments
             if (!Program.SsFbMap.Contains(Map))
                 Program.SsFbMap.Add(Map);
         }
+
         public void Open()
         {
             if (Mode == ProcesType.Dead)
@@ -37,21 +42,28 @@ namespace COServer.Game.MsgTournaments
                 MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
 
                 FinishTimer = DateTime.Now.AddMinutes(FinishMinutes);
+                participants.Clear(); // Limpa a lista de participantes ao iniciar o evento
             }
         }
+
         public bool AllowJoin(Client.GameClient user, ServerSockets.Packet stream)
         {
-            if (Mode == ProcesType.Alive)
+            // Verifica se o jogador já participou
+            if (Mode == ProcesType.Alive && !participants.Contains(user.Player.UID))
             {
                 ushort x = 0;
                 ushort y = 0;
                 Server.ServerMaps[Map].GetRandCoord(ref x, ref y);
                 user.Teleport(x, y, Map, 9999);
                 user.Player.HitPoints = 1;
+
+                // Adiciona o jogador à lista de participantes
+                participants.Add(user.Player.UID);
                 return true;
             }
-            return false;
+            return false; // Se o jogador já tiver participado, bloqueia a entrada
         }
+
         public void CheckUp()
         {
             if (Mode == ProcesType.Alive)
@@ -98,16 +110,21 @@ namespace COServer.Game.MsgTournaments
                     Mode = ProcesType.Dead;
                 }
             }
+
+            // Verifica se o minuto atual é o exato 41º minuto e se estamos nos primeiros 2 segundos do minuto
             if (DateTime.Now.Minute == 41 && DateTime.Now.Second < 2)
             {
                 Open();
             }
         }
+
         public bool IsFinished() { return Mode == ProcesType.Dead; }
+
         public bool TheLastPlayer()
         {
             return Server.GamePoll.Values.Where(p => p.Player.Map == Map && p.Player.DynamicID == 9999 && p.Player.Alive).Count() == 1;
         }
+
         public void GiveReward(Client.GameClient client, ServerSockets.Packet stream)
         {
             client.SendSysMesage("You received a DragonBallScroll.", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.red);
@@ -116,6 +133,7 @@ namespace COServer.Game.MsgTournaments
             client.Player.HitPoints = (int)client.Status.MaxHitpoints;
             client.Teleport(428, 378, 1002);
         }
+
         public void SendScore(List<string> text)
         {
             using (var rec = new ServerSockets.RecycledPacket())

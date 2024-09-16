@@ -499,12 +499,12 @@ namespace COServer.Game.MsgNpc
                         }
 
                         // Verifica se o jogador tem pontos online suficientes
-                        if (client.Player.OnlinePoints >= 1000)
+                        if (client.Player.OnlinePoints >= 500)
                         {
                             // Deduz os pontos online e adiciona o item 
-                            client.Player.OnlinePoints -= 1000;
+                            client.Player.OnlinePoints -= 500;
                             client.Inventory.Add(stream, 720393, 1, 0, 0, 0, 0, 0, false);
-                            dialog.AddText("You have successfully exchanged 1000 Online Points for a 3xExp.").AddAvatar(7);
+                            dialog.AddText("You have successfully exchanged 500 Online Points for a 3xExp.").AddAvatar(7);
                             Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take 3xExp Online Points``");
                         }
                         else
@@ -2679,7 +2679,8 @@ namespace COServer.Game.MsgNpc
                         data.AddOption("1 - 7 Day VIP = 7 Founds", 2);
                         data.AddOption("2 - 30 Day VIP = 20 Founds", 3);
                         data.AddOption("3 - GoldPrizes = 50 Founds", 4);
-                        data.AddOption("4 - Garmets -7 255HP = 30 Founds", 23);
+                        data.AddOption("4 - PowerExpBall = 1 Founds", 11);
+                        data.AddOption("5 - Garmets -7 255HP = 30 Founds", 23);
                         // data.AddOption("5 - Transfer Founds", 5); // Se precisar dessa opção, descomente esta linha
 
                         data.AddAvatar(63).FinalizeDialog();
@@ -2903,6 +2904,71 @@ namespace COServer.Game.MsgNpc
                         break;
                     }
                 case 7:
+
+                case 11:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+
+                            return; 
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 20)
+                        {
+                            const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 1
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 1);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário
+                                {
+                                    client.Inventory.Add(stream, 722057, 1, 0, 0, 0, 0, 0, false);
+                                    data.AddText("You have successfully exchanged 1 Founds Points for a PowerExpBall.")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take PowerExpBall``");
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+
+
+
                 case 23:
                     {
                         if (!client.Inventory.HaveSpace(1))
@@ -3412,7 +3478,7 @@ namespace COServer.Game.MsgNpc
                             if (client.Inventory.HaveSpace(1))
                             {
                                 client.Player.VotePoints -= 1;
-                                client.Inventory.Add(stream, 721030);//MoonBox
+                                client.Inventory.Add(stream, 721080);//MoonBox
                             }
                             else client.SendSysMesage("You don`t have enough space in your inventory.");
                         }

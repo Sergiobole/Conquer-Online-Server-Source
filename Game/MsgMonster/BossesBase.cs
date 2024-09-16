@@ -32,30 +32,30 @@ namespace COServer.Game.MsgMonster
                 }
                 else if (Nr == 2)
                 {
-                    SpawnHandler(1015, 199, 193, 20060, "TeratoDragon",
+                    SpawnHandler(1000, 500, 704, 20060, "TeratoDragon",
                         "will appear at " + now.Hour + ":00! Get ready to fight! You only have 5 minutes!",
-                        " has spawned in " + Database.Server.MapName[1015] + " (199,193)!",
+                        " has spawned in " + Database.Server.MapName[1000] + " (500,704)!",
                         MsgServer.MsgStaticMessage.Messages.TeratoDragon);
 
-                    MsgSchedules.SendInvitation("TeratoDragon", 199, 193, 1015, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TeratoDragon);
+                    MsgSchedules.SendInvitation("TeratoDragon", 500, 704, 1000, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TeratoDragon);
                 }
                 else if (Nr == 3)
                 {
-                    SpawnHandler(1012, 118, 110, 20060, "TeratoDragon",
+                    SpawnHandler(1020, 568, 584, 20060, "TeratoDragon",
                         "will appear at " + now.Hour + ":00! Get ready to fight! You only have 5 minutes!",
-                        " has spawned in " + Database.Server.MapName[1012] + " (118,110)!",
+                        " has spawned in " + Database.Server.MapName[1012] + " (568,564)!",
                         MsgServer.MsgStaticMessage.Messages.TeratoDragon);
 
-                    MsgSchedules.SendInvitation("TeratoDragon", 118, 110, 1012, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TeratoDragon);
+                    MsgSchedules.SendInvitation("TeratoDragon", 568, 564, 1020, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TeratoDragon);
                 }
                 else if (Nr == 4)
                 {
-                    SpawnHandler(1105, 93, 54, 20060, "TeratoDragon",
+                    SpawnHandler(1015, 799, 575, 20060, "TeratoDragon",
                         "will appear at " + now.Hour + ":00! Get ready to fight! You only have 5 minutes!",
-                        " has spawned in " + Database.Server.MapName[1105] + " (93,54)!",
+                        " has spawned in " + Database.Server.MapName[1105] + " (799,575)!",
                         MsgServer.MsgStaticMessage.Messages.TeratoDragon);
 
-                    MsgSchedules.SendInvitation("TeratoDragon", 93, 54, 1105, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TeratoDragon);
+                    MsgSchedules.SendInvitation("TeratoDragon", 799, 575, 1015, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TeratoDragon);
                 }
 
                 // Atualiza o tempo do último spawn
