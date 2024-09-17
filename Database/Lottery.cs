@@ -22,11 +22,11 @@ namespace COServer.Database
         };
         public static List<uint> RateH4 = new List<uint>()
         {
-            1200001,730002,1200006,721261,700002,700012,700022,700032,700042,700052,700062
+            1200001,730002,700002,700012,700022,700032,700042,700052,700062
         };
         public static List<uint> RateH5 = new List<uint>()
         {
-            723744,1200002,2100025,2100045,1200005,
+            1200002,2100025,2100045,
         };
         //public static List<uint> Super1SocItems = new List<uint>()
         //{

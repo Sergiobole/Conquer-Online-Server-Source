@@ -17007,7 +17007,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Are you sure you want to open this LotteryBox?")
-                            .AddOption("Pay 150 CPS.", 2)
+                            .AddOption("Pay 1000 CPS.", 2)
                             .AddOption("Use LotteryTicket.", 1)
                             .AddOption("No thanks.", 255)
                             .AddAvatar(123)
@@ -17062,11 +17062,11 @@ namespace COServer.Game.MsgNpc
 
                         if (user.Player.LotteryEntries < Role.Player.LotteryEntry(user.Player.VipLevel))
                         {
-                            if (user.Player.ConquerPoints >= 150)
+                            if (user.Player.ConquerPoints >= 1000)
                             {
                                 if (user.Inventory.HaveSpace(1))
                                 {
-                                    user.Player.ConquerPoints -= 150;
+                                    user.Player.ConquerPoints -= 1000;
                                     user.Player.LotteryEntries++;
                                     //reset lottery jade 
                                     Database.Lottery.GetRandomPrize(user, stream);

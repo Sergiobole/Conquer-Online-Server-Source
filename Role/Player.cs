@@ -1054,41 +1054,60 @@ namespace COServer.Role
 
                     if (GetPkPkPoints)
                     {
-                        if (killer.MyGuild != null)
+                        // Verificar se o killer tem uma guilda e a guilda inimiga
+                        if (killer.MyGuild != null && killer.MyGuildMember != null && MyGuild != null)
                         {
                             if (killer.MyGuild.Enemy.ContainsKey(GuildID))
                             {
+                                // Adicionar PK Points ao killer
                                 killer.PKPoints += 3;
-                                if (killer.MyGuild != null && killer.MyGuildMember != null && MyGuild != null && MyGuild.GuildName != killer.MyGuild.GuildName)
+
+                                // Checar se as guildas são diferentes
+                                if (MyGuild.GuildName != killer.MyGuild.GuildName)
                                 {
                                     killer.MyGuild.Info.SilverFund += 5000;
                                     killer.MyGuild.Info.Donation += 2500;
                                 }
+
+                                // Enviar mensagem para a guilda do killer
                                 if (Database.Server.MapName.ContainsKey(Map))
                                 {
-                                    //if (GuildRank >= Flags.GuildMemberRank.Manager)
-                                    killer.MyGuild.SendMessajGuild("The (" + killer.GuildRank.ToString() + ")" + killer.Name + " killed (" + GuildRank.ToString() + ")" + Name + " from guild " + MyGuild.GuildName + " in " + Database.Server.MapName[Map] + "", Game.MsgServer.MsgMessage.ChatMode.Guild, Game.MsgServer.MsgMessage.MsgColor.yellow);
+                                    killer.MyGuild.SendMessajGuild(
+                                        $"The ({killer.GuildRank}) {killer.Name} killed ({GuildRank}) {Name} from guild {MyGuild.GuildName} in {Database.Server.MapName[Map]}",
+                                        Game.MsgServer.MsgMessage.ChatMode.Guild,
+                                        Game.MsgServer.MsgMessage.MsgColor.yellow
+                                    );
                                 }
                                 return;
                             }
                         }
+
+                        // Verificar se o killer tem o morto como inimigo na lista de associados
                         if (killer.Associate.Contain(Role.Instance.Associate.Enemy, UID))
                         {
+                            // Adicionar PK Points ao killer
                             killer.PKPoints += 5;
-                            if (killer.MyGuild != null && killer.MyGuildMember != null && MyGuild != null && MyGuild.GuildName != killer.MyGuild.GuildName)
+
+                            // Se o killer tiver guilda e o morto também, e se as guildas forem diferentes
+                            if (killer.MyGuild != null && MyGuild != null && MyGuild.GuildName != killer.MyGuild.GuildName)
                             {
                                 killer.MyGuild.Info.SilverFund += 10000;
                                 killer.MyGuild.Info.Donation += 5000;
                             }
                             return;
                         }
+
+                        // Caso geral: Adicionar 10 PK Points ao killer, mesmo se ele não tiver guilda
                         killer.PKPoints += 10;
-                        if (killer.MyGuild != null && killer.MyGuildMember != null && MyGuild != null && MyGuild.GuildName != killer.MyGuild.GuildName)
+
+                        // Se o killer tiver guilda e o morto também, e se as guildas forem diferentes
+                        if (killer.MyGuild != null && MyGuild != null && MyGuild.GuildName != killer.MyGuild.GuildName)
                         {
                             killer.MyGuild.Info.SilverFund += 10000;
                             killer.MyGuild.Info.Donation += 5000;
                         }
                     }
+
                 }
                 else
                 {
