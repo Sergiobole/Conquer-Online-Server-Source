@@ -351,7 +351,8 @@ namespace COServer.Role
         private static List<ushort> UsingMaps = new List<ushort>()
         {
             601,//offlineTG
-            700,//arena map, lotery map
+            700,//arena map,
+                //map
             1000,//Desert
             1001,//MysticCastel
             1002,//TwinCity

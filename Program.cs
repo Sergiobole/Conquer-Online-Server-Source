@@ -36,6 +36,7 @@ namespace COServer
         public static Discord DiscordAPIfoundslog = new Discord("https://discord.com/api/webhooks/1280114216195461154/z-1mIZ0yhrFwBkyxWsjdRqW8BGVtBdPySRb5KV_HMV5Hd_Jni4RhZHfuroctZ40Fsa8u");
         public static Discord DiscordAPIGarmetLog = new Discord("https://discord.com/api/webhooks/1280114219274211409/ykpPtC_LECMTugnd6kIg395pgudjXg9vDRhzB-VGfSX_OaGqq_D0VclB8iOJJzf-xPR11y");
         public static Discord DiscordAPIQuest = new Discord("https://discord.com/api/webhooks/1283628275033313362/7VxErV7OX5HQKHlomFYZdUfiJiCjqt8jV467rY9V5oCHyuRY_pLcSNTfTHjyoB4oY9Rn");
+        public static Discord DiscordAPILotery = new Discord("https://discord.com/api/webhooks/1285649959533674598/3imSBiaHAyCWKrg-ubfbrTbo5OKkdtbolwN6pJzdSdJT_271lpNeuyIwVDpGR2AI1WWn");
         public static ulong CPsHuntedSinceRestart = 0;
         public static List<byte[]> LoadPackets = new List<byte[]>();
         public static List<uint> ProtectMapSpells = new List<uint>() { 1038 };

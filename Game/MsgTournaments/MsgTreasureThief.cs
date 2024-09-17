@@ -43,7 +43,7 @@ namespace COServer.Game.MsgTournaments
                 Process = ProcesType.Alive;
                 StartTimer = DateTime.Now.AddMinutes(5);
                 BoxesStamp = DateTime.Now.AddSeconds(15);
-                MsgSchedules.SendInvitation("TreasureThief", 427, 326, 1002, 0, 60,MsgServer.MsgStaticMessage.Messages.Tthief);
+                MsgSchedules.SendInvitation("TreasureThief", 436, 384, 1002, 0, 60,MsgServer.MsgStaticMessage.Messages.Tthief);
 
             }
         }

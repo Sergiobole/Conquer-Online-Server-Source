@@ -10,7 +10,7 @@ namespace COServer.Database
     {
         public static List<uint> RateH = new List<uint>()
         {
-            723584,723700,723583,723711,723727,1088001,1088002,1088000,1080001,1072031,751001,751003,751009,751099,751999,710001,721117
+            723584,723700,723583,723711,723727,1088001,1088002,1088000,1080001,1072031,751001,751003,751009,751099,751999,710001
         };
         public static List<uint> RateH2 = new List<uint>()
         {
@@ -26,7 +26,7 @@ namespace COServer.Database
         };
         public static List<uint> RateH5 = new List<uint>()
         {
-            1200002,2100025,2100045,
+            1200002,2100025,2100045,722057,730003,700072
         };
         //public static List<uint> Super1SocItems = new List<uint>()
         //{
@@ -82,6 +82,7 @@ namespace COServer.Database
                 uint Id = RateH5[Role.Core.Random.Next(0, RateH5.Count)];
                 Client.Inventory.Add(stream, Id, 1);
                 Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + Client.Player.Name + " won " + Server.ItemsBase[Id].Name + " in lottery.", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                Program.DiscordAPILotery.Enqueue("``Congratulations! "+ Client.Player.Name + " won " + Server.ItemsBase[Id].Name + " in lottery.``");
             }
             else if (Role.Core.Rate(0.010))
             {
@@ -90,6 +91,7 @@ namespace COServer.Database
                uint Id = RateH4[Role.Core.Random.Next(0, RateH4.Count)];
                 Client.Inventory.Add(stream, Id, 1);
                 Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + Client.Player.Name + " won " + Server.ItemsBase[Id].Name + " in lottery.", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                Program.DiscordAPILotery.Enqueue("``Congratulations! " + Client.Player.Name + " won " + Server.ItemsBase[Id].Name + " in lottery.``");
             }
             else if (Role.Core.Rate(0.015))
             {
@@ -97,6 +99,7 @@ namespace COServer.Database
                     Client.SendSysMesage("Group3", Game.MsgServer.MsgMessage.ChatMode.TopLeft);
                 uint Id = RateH3[Role.Core.Random.Next(0, RateH3.Count)];
                 Client.Inventory.Add(stream, Id, 1);
+                Program.DiscordAPILotery.Enqueue("``Congratulations! " + Client.Player.Name + " won " + Server.ItemsBase[Id].Name + " in lottery.``");
             }
             else if (Role.Core.Rate(10))
             {
@@ -104,6 +107,7 @@ namespace COServer.Database
                     Client.SendSysMesage("Group2", Game.MsgServer.MsgMessage.ChatMode.TopLeft);
                 uint Id = RateH2[Role.Core.Random.Next(0, RateH2.Count)];
                 Client.Inventory.Add(stream, Id, 1);
+               
             }
             else
             {
@@ -111,6 +115,7 @@ namespace COServer.Database
                     Client.SendSysMesage("Group1", Game.MsgServer.MsgMessage.ChatMode.TopLeft);
                 uint Id = RateH[Role.Core.Random.Next(0, RateH.Count)];
                 Client.Inventory.Add(stream, Id, 1);
+               
             }
         }
         //static string ItemsSuper = "";

@@ -801,8 +801,8 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Top LastMan War For All Classes Every Hour\n")
-                            .AddText("Working From [Xx:30] To [Xx:35] \nThe Winner Get [ DragonBallScroll ]")
-                            .AddOption("Okey ,Enter Me.", 1)
+                            .AddText("The Winner Get [ DragonBallScroll ]")
+                            .AddOption("Okey, Enter Me.", 1)
                             .AddOption("I will come later. ", 255)
                             .AddAvatar(63).FinalizeDialog();
                         break;
@@ -811,11 +811,11 @@ namespace COServer.Game.MsgNpc
                     {
                         if (!MsgSchedules._LastMan.AllowJoin(client, stream))
                         {
-                            data.AddText("Come back in the right time at [Xx:30] To [Xx:35].")
+                            data.AddText("Come back in the time.")
                                 .AddOption("I see. ", 255)
-                                .AddAvatar(63).FinalizeDialog();
+                                .AddAvatar(63).FinalizeDialog();        
                         }
-                        break;
+                        break;              
                     }
             }
         }
@@ -853,7 +853,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("Sorry, the war end at [Xx:35].")
+                            data.AddText("Sorry, wait end Time.")
                                 .AddOption("I see. ", 255)
                                 .AddAvatar(63).FinalizeDialog();
                         }
@@ -8754,7 +8754,7 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        data.AddText("I've lost all my treasure chests inside the map when I was doing the quest! Now you'll need to find them for me!")
+                        data.AddText("I've lost all my treasure chests inside the map when I was doing the quest! Now you'll need to find them for me!\n All Times [00:30] Start!")
                             .AddOption("Sign~me~up!", 1)
                             .AddOption("Exchange your points.", 2)
                             .AddOption("Maybe later.", 255)
@@ -8799,10 +8799,13 @@ namespace COServer.Game.MsgNpc
                         if (client.Player.TreasureBoxesPoint > 0)
                         {
                             data.AddText($"Select your reward:")
-                                .AddOption("MeteorScroll - 10 Points.", 4)
-                                .AddOption("PrayingStone(S) - 50 Points.", 6)
-                                .AddOption("1 DB - 20 Points.", 5)
-                                .AddOption("99Lilies - 30 Points.", 7)
+                                .AddOption("MeteorScroll - 30 Points.", 4)
+                                .AddOption("Emerald - 40 Points.", 5)
+                                .AddOption("DragonBallScroll - 40 Points.", 6)
+                                .AddOption("LifeFruitBasket - 50 Points.", 7)
+                                .AddOption("MoonBox - 150 Points.", 8)
+                                .AddOption("Stone +2 - 100 Points.", 9)
+                                .AddOption("PowerEXPBall - 150 Points.", 10)
                                 .AddOption("Never~mind.", 255).AddAvatar(3).FinalizeDialog();
                             break;
                         }
@@ -8816,9 +8819,9 @@ namespace COServer.Game.MsgNpc
                     }
                 case 4:
                     {
-                        if (client.Player.TreasureBoxesPoint >= 10)
+                        if (client.Player.TreasureBoxesPoint >= 30)
                         {
-                            client.Player.TreasureBoxesPoint -= 10;
+                            client.Player.TreasureBoxesPoint -= 30;
                             client.Inventory.Add(stream, Database.ItemType.MeteorScroll, 1);
                             data.AddText($"You've received 1 MeteorScroll! You now have: {client.Player.TreasureBoxesPoint} points!")
                                 .AddOption("Thanks!", 255)
@@ -8837,8 +8840,8 @@ namespace COServer.Game.MsgNpc
                         if (client.Player.TreasureBoxesPoint >= 20)
                         {
                             client.Player.TreasureBoxesPoint -= 20;
-                            client.Inventory.Add(stream, Database.ItemType.DragonBall, 1);
-                            data.AddText($"You've received 1 Dragon Ball! You now have: {client.Player.TreasureBoxesPoint} points!")
+                            client.Inventory.Add(stream, 1080001, 1, 0, 0, 0, 0, 0, false);
+                            data.AddText($"You've received 1 Emerald! You now have: {client.Player.TreasureBoxesPoint} points!")
                                 .AddOption("Thanks!", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
@@ -8852,11 +8855,11 @@ namespace COServer.Game.MsgNpc
                     }
                 case 6:
                     {
-                        if (client.Player.TreasureBoxesPoint >= 50)
+                        if (client.Player.TreasureBoxesPoint >= 40)
                         {
-                            client.Player.TreasureBoxesPoint -= 50;
-                            client.Inventory.Add(stream, Database.ItemType.PrayingStoneS, 1);
-                            data.AddText($"You've received 1 PrayingStone(S)! You now have: {client.Player.TreasureBoxesPoint} points!")
+                            client.Player.TreasureBoxesPoint -= 40;
+                            client.Inventory.Add(stream, 720028, 1, 0, 0, 0, 0, 0, false);
+                            data.AddText($"You've received 1 DragonBallScroll! You now have: {client.Player.TreasureBoxesPoint} points!")
                                 .AddOption("Thanks!", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
@@ -8870,16 +8873,65 @@ namespace COServer.Game.MsgNpc
                     }
                 case 7:
                     {
-                        if (client.Player.TreasureBoxesPoint >= 30)
+                        if (client.Player.TreasureBoxesPoint >= 50)
                         {
-                            client.Player.TreasureBoxesPoint -= 30;
-                            var RateH3 = new List<uint>()
-                            {
-                                753099,751099,752099,754099
-                            };
-                            uint Id = RateH3[Program.GetRandom.Next(0, RateH3.Count)];
-                            client.Inventory.Add(stream, Id, 1);
-                            data.AddText($"You've received 1 99Lilies! You now have: {client.Player.TreasureBoxesPoint} points!")
+                            client.Player.TreasureBoxesPoint -= 50;
+                            client.Inventory.Add(stream, 723725, 1, 0, 0, 0, 0, 0, false);
+                            data.AddText($"You've received 1 LifeFruitBasket! You now have: {client.Player.TreasureBoxesPoint} points!")
+                                .AddOption("Thanks!", 255)
+                                .AddAvatar(3).FinalizeDialog();
+                        }
+                        else
+                        {
+                            data.AddText($"Sorry, you don't have enough Treasure Points, you have: {client.Player.TreasureBoxesPoint} points!")
+                                .AddOption("I~see.", 255)
+                                .AddAvatar(3).FinalizeDialog();
+                        }
+                        break;
+                    }
+                case 8:
+                    {
+                        if (client.Player.TreasureBoxesPoint >= 150)
+                        {
+                            client.Player.TreasureBoxesPoint -= 150;
+                            client.Inventory.Add(stream, 721080, 1, 0, 0, 0, 0, 0, false);
+                            data.AddText($"You've received 1 MoonBox! You now have: {client.Player.TreasureBoxesPoint} points!")
+                                .AddOption("Thanks!", 255)
+                                .AddAvatar(3).FinalizeDialog();
+                        }
+                        else
+                        {
+                            data.AddText($"Sorry, you don't have enough Treasure Points, you have: {client.Player.TreasureBoxesPoint} points!")
+                                .AddOption("I~see.", 255)
+                                .AddAvatar(3).FinalizeDialog();
+                        }
+                        break;
+                    }
+                case 9:
+                    {
+                        if (client.Player.TreasureBoxesPoint >= 100)
+                        {
+                            client.Player.TreasureBoxesPoint -= 100;
+                            client.Inventory.Add(stream, 730002, 1, 0, 0, 0, 0, 0, false);
+                            data.AddText($"You've received 1 Stone +2! You now have: {client.Player.TreasureBoxesPoint} points!")
+                                .AddOption("Thanks!", 255)
+                                .AddAvatar(3).FinalizeDialog();
+                        }
+                        else
+                        {
+                            data.AddText($"Sorry, you don't have enough Treasure Points, you have: {client.Player.TreasureBoxesPoint} points!")
+                                .AddOption("I~see.", 255)
+                                .AddAvatar(3).FinalizeDialog();
+                        }
+                        break;
+                    }
+                case 10:
+                    {
+                        if (client.Player.TreasureBoxesPoint >= 150)
+                        {
+                            client.Player.TreasureBoxesPoint -= 150;
+                            client.Inventory.Add(stream, 722057, 1, 0, 0, 0, 0, 0, false);
+                            data.AddText($"You've received 1 PowerExp! You now have: {client.Player.TreasureBoxesPoint} points!")
                                 .AddOption("Thanks!", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
