@@ -17,6 +17,7 @@ namespace COServer.Game.MsgTournaments
         public DateTime StartTime;
         DateTime lastSent = DateTime.Now;
         List<string> score = new List<string>();
+
         public Get5Out()
         {
             Mode = ProcesType.Dead;
@@ -29,6 +30,7 @@ namespace COServer.Game.MsgTournaments
             if (!Program.SsFbMap.Contains(Map))
                 Program.SsFbMap.Add(Map);
         }
+
         public void Open()
         {
             if (Mode == ProcesType.Dead)
@@ -39,6 +41,7 @@ namespace COServer.Game.MsgTournaments
                 MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
             }
         }
+
         public bool AllowJoin(Client.GameClient user, ServerSockets.Packet stream)
         {
             if (Mode == ProcesType.Alive)
@@ -70,9 +73,11 @@ namespace COServer.Game.MsgTournaments
             }
             return false;
         }
+
         public void CheckUp()
         {
-            if ((DateTime.Now.Hour == 02 || DateTime.Now.Hour == 14 ) && (DateTime.Now.Minute == 00 && DateTime.Now.Second < 2))
+            // Evento configurado para acontecer todos os dias às 20:00 no horário local do servidor
+            if (DateTime.Now.Hour == 20 && DateTime.Now.Minute == 00 && DateTime.Now.Second < 2)
             {
                 if (Mode == ProcesType.Dead)
                 {
@@ -82,6 +87,7 @@ namespace COServer.Game.MsgTournaments
                     MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
                 }
             }
+
             if (Mode == ProcesType.Alive)
             {
                 score.Clear();
@@ -109,6 +115,7 @@ namespace COServer.Game.MsgTournaments
                 }
             }
         }
+
         public void SendScore(List<string> text)
         {
             using (var rec = new ServerSockets.RecycledPacket())
@@ -123,24 +130,29 @@ namespace COServer.Game.MsgTournaments
                 }
             }
         }
+
         public bool IsFinished() { return Mode == ProcesType.Dead; }
         public bool IsStarted() { return Mode == ProcesType.Alive; }
+
         public bool TheLastPlayer()
         {
             return Database.Server.GamePoll.Values.Where(p => p.Player.Map == Map && p.Player.Alive).Count() == 1;
         }
+
         public void GiveReward(Client.GameClient client, ServerSockets.Packet stream)
         {
             if (client.Player.UID == WinnerUID)
             {
-                client.SendSysMesage("You received " + RewardConquerPoints.ToString() + " ConquerPoints.", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.red);
-                MsgSchedules.SendSysMesage("" + client.Player.Name + " has won " + Title + " , he received " + RewardConquerPoints.ToString() + " ConquerPoints!", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
-                client.Player.ConquerPoints += RewardConquerPoints;
+                client.SendSysMesage("You received 5k Cps.", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.red);
+                MsgSchedules.SendSysMesage("" + client.Player.Name + " has won " + Title + " , he received 5k Cps!", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
+                client.Player.ConquerPoints += 5000;
                 AddTop(client);
                 client.Player.HitPoints = (int)client.Status.MaxHitpoints;
                 client.Teleport(428, 378, 1002);
             }
         }
+
+
         public void AddTop(Client.GameClient client)
         {
             if (WinnerUID == client.Player.UID)
@@ -151,6 +163,7 @@ namespace COServer.Game.MsgTournaments
                     client.EffectStatus.Remove("fivenout");
             }
         }
+
         public static void ExecuteAttack(GameClient attacked, GameClient attacker, ref uint Damage)
         {
             if (attacked.Player.Map == Map)

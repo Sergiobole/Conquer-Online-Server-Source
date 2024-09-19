@@ -39,7 +39,7 @@ namespace COServer.Game.MsgTournaments
                     Mode = ProcesType.Dead;
                 }
             }
-            if (DateTime.Now.Hour == 17 && DateTime.Now.Minute == 00 && DateTime.Now.Second < 2)
+            if (DateTime.Now.Hour == 21 && DateTime.Now.Minute == 00 && DateTime.Now.Second < 2)
             {
                 if (Mode == ProcesType.Dead)
                 {

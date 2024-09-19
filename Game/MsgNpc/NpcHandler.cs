@@ -359,7 +359,7 @@ namespace COServer.Game.MsgNpc
                         {
                             // Deduz os pontos online e adiciona o VIP de 7 dias ao inventário
                             client.Player.OnlinePoints -= 8000;
-                            client.Inventory.Add(stream, 780000, 1, 0, 0, 0, 0, 0, false);
+                            client.Inventory.Add(stream, 780000, 1, 0, 0, 0, 0, 0, true);
                             dialog.AddText("You have successfully exchanged 8.000 Online Points for a 7-Days VIP Token.").AddAvatar(7);
                             Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Vip 7-Days Online Points``");
                         }
@@ -388,7 +388,7 @@ namespace COServer.Game.MsgNpc
                         {
                             // Deduz os pontos online e adiciona o VIP de 30 dias ao inventário
                             client.Player.OnlinePoints -= 22000;
-                            client.Inventory.Add(stream, 780010, 1, 0, 0, 0, 0, 0, false);
+                            client.Inventory.Add(stream, 780010, 1, 0, 0, 0, 0, 0, true);
                             dialog.AddText("You have successfully exchanged 22.000 Online Points for a 30-Days VIP Token.").AddAvatar(7);
                             Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Vip 30-Days Online Points``");
                         }
@@ -627,7 +627,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Top Conquer For All Classes Every day\n")
-                            .AddText("Working From [5:00] To [5:9] AM \nThe Winner Get [ DragonBallScroll ]")
+                            .AddText("Working From [19:00] To [19:09] PM \nThe Winner Get [ DragonBallScroll ]")
                             .AddOption("Okey ,Enter Me.", 1)
                             .AddOption("I will come later. ", 255)
                             .AddAvatar(63).FinalizeDialog();
@@ -637,7 +637,7 @@ namespace COServer.Game.MsgNpc
                     {
                         if (!MsgSchedules._ConquerPk.AllowJoin(client, stream))
                         {
-                            data.AddText("Come back in the right time at [5:00] To [5:09] AM.")
+                            data.AddText("Come back in the right time at [19:00] To [19:09] PM.")
                                 .AddOption("I see. ", 255)
                                 .AddAvatar(63).FinalizeDialog();
                         }
@@ -714,7 +714,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Welcome [ " + client.Player.Name + " ] \nTop FirstKiller For All Classes Every Day\n")
-                            .AddText("Working From [5:00] To [5:09] PM \nThe Winner Get [ DragonBallScroll ]")
+                            .AddText("Working From [21:00 PM] To [21:09 PM] \nThe Winner Gets [ DragonBallScroll ]")
                             .AddOption("Okey ,Enter Me.", 1)
                             .AddOption("I will come later. ", 255)
                             .AddAvatar(63).FinalizeDialog();
@@ -724,7 +724,7 @@ namespace COServer.Game.MsgNpc
                     {
                         if (!MsgSchedules._FirstKiller.AllowJoin(client, stream))
                         {
-                            data.AddText("Come back in the right time at [5:00] To [5:09] PM.")
+                            data.AddText("Come back in the right time at [21:00 PM] To [21:09 PM] PM.")
                                 .AddOption("I see. ", 255)
                                 .AddAvatar(63).FinalizeDialog();
                         }
@@ -888,7 +888,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Top Black For All Classes Every Day\n")
-                            .AddText("Working From [11:00] To [11:09] AM \nThe Winner Get [ DragonBallScroll ]")
+                            .AddText("Working From [23:00] To [23:09] PM \nThe Winner Get [ DragonBallScroll ]")
                             .AddOption("Okey ,Enter Me.", 1)
                             .AddOption("I will come later. ", 255)
                             .AddAvatar(63).FinalizeDialog();
@@ -898,7 +898,7 @@ namespace COServer.Game.MsgNpc
                     {
                         if (!MsgSchedules._Top_Black.AllowJoin(client, stream))
                         {
-                            data.AddText("Come back in the right time at [11:00] To [Xx:09] AM.")
+                            data.AddText("Come back in the right time at [23:00] To [23:09] AM.")
                                 .AddOption("I see. ", 255)
                                 .AddAvatar(63).FinalizeDialog();
                         }
@@ -1038,10 +1038,10 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Hello " + client.Player.Name + " \nWe Have Top Five(n)out For Every Day.\n")
-                            .AddText("Working From [2:00] To [2:09] AM and From [2:00] To [2:09] PM.\nThe Winner Get [ Top Five(n)out and 1,000,000 Silver ]\n")
-                            .AddText("                      Top Rules\n1- After you enter top you will get 5 Points.\n2- If you die you will lose 1 point.\n3- if you lose all 5 point you will be sent to Tc.\n")
-                            .AddText("4- Last player alive can talk to npc inside map and cliam prize.")
-                            .AddOption("Okey ,Enter Me.", 1)
+                            .AddText("Working From [20:00 PM] To [20:09 PM] Server Time.\nThe Winner Gets [5k Cps]\n")
+                            .AddText("                      Top Rules\n1- After you enter top you will get 5 Points.\n2- If you die, you will lose 1 point.\n3- If you lose all 5 points, you will be sent to Twin City (TC).\n")
+                            .AddText("4- The last player alive can talk to the NPC inside the map and claim the prize.")
+                            .AddOption("Okay, Enter Me.", 1)
                             .AddOption("I will come later. ", 255)
                             .AddAvatar(63).FinalizeDialog();
                         break;
@@ -1051,7 +1051,7 @@ namespace COServer.Game.MsgNpc
 
                         if (!MsgSchedules._Get5Out.AllowJoin(client, stream))
                         {
-                            data.AddText("Come back in the right time at [2:09] To [2:09] AM Or at [2:09] To [2:09]PM.")
+                            data.AddText("Come back in the right time at [20:00 PM] To [20:09 PM].")
                                 .AddOption("I see. ", 255)
                                 .AddAvatar(63).FinalizeDialog();
                         }
@@ -1326,7 +1326,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Top Conquer For All Classes Every day\n")
-                            .AddText("Working From [5:00] To [5:9] AM \nThe Winner Get [ DragonBallScroll ]")
+                            .AddText("Working From [19:00] To [19:09] PM \nThe Winner Get [ DragonBallScroll ]")
                             .AddOption("Okey ,Enter Me.", 1)
                             .AddOption("I will come later. ", 255)
                             .AddAvatar(63).FinalizeDialog();
@@ -1340,7 +1340,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("Come back in the right time at [5:00] To [5:09] AM.")
+                            data.AddText("Come back in the right time at [19:00] To [19:09] AM.")
                                 .AddOption("I see. ", 255)
                                 .AddAvatar(63).FinalizeDialog();
                         }
@@ -8754,7 +8754,7 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        data.AddText("I've lost all my treasure chests inside the map when I was doing the quest! Now you'll need to find them for me!\n All Times [00:30] Start!")
+                        data.AddText("I've lost all my treasure chests inside the map when I was doing the quest! Now you'll need to find them for me!\n All Times [XX:30] Start!")
                             .AddOption("Sign~me~up!", 1)
                             .AddOption("Exchange your points.", 2)
                             .AddOption("Maybe later.", 255)
