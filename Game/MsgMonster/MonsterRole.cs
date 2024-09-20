@@ -587,7 +587,7 @@ namespace COServer.Game.MsgMonster
                         killer.TotalMobsLevel++;
                     }
                     killer.Player.Owner.OnAutoAttack = false;
-                    // Guild Beast 
+ 
                     if (Family.ID == 3120 && killer.Player.SpawnGuildBeast && Map == 1038)
                     {
                         killer.Player.SendString(stream, MsgStringPacket.StringID.Effect, true, "zf2-e290");
@@ -614,26 +614,7 @@ namespace COServer.Game.MsgMonster
                             DropItemID(killer, Database.ItemType.DragonBall, stream);
                         }
                     }
-                    //if (Role.Core.Rate(1, 100))
-                    //{
-                    //    if (Role.Core.Rate(1, 100))
-                    //    {
-                    //        Program.SendGlobalPackets.Enqueue(new MsgMessage($"As Lucky {killer.Player.Name} He/She found A Dragon Ball", MsgMessage.MsgColor.red, MsgMessage.ChatMode.Center).GetArray(stream));
-                    //        DropItemID(killer, Database.ItemType.DragonBall, stream);
-                    //    }
-                    //    return;
-                    //}
-                    //if (killer.Player.BlessTime > 0)
-                    //{
-                    //    if (Role.Core.Rate(1, 100))
-                    //    {
-                    //        Program.SendGlobalPackets.Enqueue(new MsgMessage($"As Lucky {killer.Player.Name} He/She found A Dragon Ball", MsgMessage.MsgColor.red, MsgMessage.ChatMode.Center).GetArray(stream));
-                    //        killer.SendSysMesage("You got lucky, a monster you killed just dropped a DragonBall.", MsgMessage.ChatMode.Action);
-                    //        killer.Player.SendString(stream, MsgStringPacket.StringID.Effect, true, "LuckyGuy");
-                    //        DropItemID(killer, Database.ItemType.DragonBall, stream);
-                    //    }
-                    //    return;
-                    //}
+
                     if (killer.Player.VipLevel > 0)
                     {
                         killer.Player.Money += (uint)Program.GetRandom.Next(1, 50);//9. Make gold drop random.
@@ -687,7 +668,16 @@ namespace COServer.Game.MsgMonster
                     #region CleanWater
                     if (Map == 1212 && Family.ID == 8500)
                     {
-                        DropItemID(killer, Database.ItemType.CleanWater, stream);
+                        if (Role.Core.Rate(40)) // Chance de 40% CleanWater
+                        {
+                            DropItemID(killer, Database.ItemType.CleanWater, stream);
+                            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a ClearWater in WaterLord(292,216)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.Center).GetArray(stream));
+                        }
+                        else
+                        {
+                            DropItemID(killer, Database.ItemType.Meteor, stream); // Dropar uma Meteor.
+                            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a Meteor in WaterLord(292,216) !", MsgMessage.MsgColor.white, MsgMessage.ChatMode.Center).GetArray(stream));
+                        }
                     }
                     #endregion
                     #region Bosses 
@@ -1075,6 +1065,7 @@ namespace COServer.Game.MsgMonster
                             if (Role.Core.Rate(0.005))
                             {
                                 DropItemID(killer, 1080001, stream);
+                                killer.SendSysMesage("Emerald dropped!", MsgMessage.ChatMode.TopLeft);
                             }
                         }
                     }
@@ -1669,7 +1660,7 @@ namespace COServer.Game.MsgMonster
                             }
                             killer.Send(stream.ActionCreate(&action2));
                         }
-                        //   killer.Player.View.SendView(new Game.MsgServer.MsgMessage(killer.Player.Name + " has found a DragonBall in " + killer.Map.Name + "(" + xx + ", " + yy + ")", MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.Center).GetArray(stream), true);
+                        
                     }
                     else
                     {

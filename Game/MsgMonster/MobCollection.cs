@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace COServer.Game.MsgMonster
 {
@@ -13,6 +14,7 @@ namespace COServer.Game.MsgMonster
         public Role.GameMap DMap = null;
 
         private uint DmapID = 0;
+
         public MobCollection(uint Map)
         {
             DmapID = Map;
@@ -22,76 +24,110 @@ namespace COServer.Game.MsgMonster
                     DMap.MonstersColletion = this;
             }
         }
+
         public bool ReadMap()
         {
             if (Database.Server.ServerMaps != null)
             {
                 var mapId = DmapID;
-                //if (mapId == 8800)
-                //    mapId = 1354;
                 if (Database.Server.ServerMaps.TryGetValue(mapId, out DMap))
                     DMap.MonstersColletion = this;
             }
 
             return DMap != null;
         }
+
         public MonsterRole Add(MonsterFamily Famili, bool RemoveOnDead = false, uint dinamicid = 0, bool justone = false)
         {
             if (DMap == null)
                 ReadMap();
-            int count = 0;
-            if (Famili.ID == 9000 || Famili.ID == 9001 || Famili.ID == 9002 || Famili.ID == 9004 || Famili.ID == 9007 || Famili.ID == 0026 || Famili.ID == 3101 || Famili.ID == 3103 || Famili.ID == 3102 || Famili.ID == 8500)
-                count = (int)((Famili.Boss > 0) ? 1 : (int)(Math.Max(1, (int)Famili.SpawnCount)));
-            else
-                count = (int)((Famili.Boss > 0) ? 1 : (int)(Math.Max(1, (int)Famili.SpawnCount * 2)));
 
-            MonsterRole monsterr = null;
+            // Se for o monstro 8500, usa a lógica específica
+            if (Famili.ID == 8500)
+            {
+                return SpawnFixedMonster(Famili, dinamicid, 292, 216, 1212);
+            }
+
+            // Lógica para os outros monstros
+            return SpawnNormalMonsters(Famili, RemoveOnDead, dinamicid, justone);
+        }
+
+        private MonsterRole SpawnNormalMonsters(MonsterFamily Famili, bool RemoveOnDead, uint dinamicid, bool justone)
+        {
+            int count = (int)((Famili.Boss > 0) ? 1 : (int)(Math.Max(1, (int)Famili.SpawnCount * 2)));
             if (justone)
                 count = Math.Max(1, (int)Famili.SpawnCount);
 
-
-            //if (DmapID == 1011 || DmapID == 3071 || DmapID == 1770 || DmapID == 1771 || DmapID == 1772 || DmapID == 1773 || DmapID == 1774
-            //    || DmapID == 1775 || DmapID == 1777 || DmapID == 1782
-            //    || DmapID == 1785 || DmapID == 1786 || DmapID == 1787 || DmapID == 1794 || DmapID == 1015)
-            //{
-            //    if (count > 1 && Famili.SpawnCount > 1)
-            //        count = (int)(((Famili.MaxSpawnX - Famili.SpawnX) / Famili.SpawnCount) * ((Famili.MaxSpawnY - Famili.SpawnY) / Famili.SpawnCount));
-            //}
+            MonsterRole monsterr = null;
 
             for (int x = 0; x < count; x++)
             {
-
-                MonsterRole Mob = new MonsterRole(Famili.Copy(), GenerateUid.Next, LocationSpawn, DMap);
-                Mob.RemoveOnDead = RemoveOnDead;
                 ushort _x = 0, _y = 0;
                 TryObtainSpawnXY(Famili, out _x, out _y);
-                if (!DMap.ValidLocation(_x, _y) || (DMap.MonsterOnTile(_x, _y) && Mob.Boss == 0))
+                if (!DMap.ValidLocation(_x, _y) || (DMap.MonsterOnTile(_x, _y) && Famili.Boss == 0))
                     continue;
-                DMap.SetMonsterOnTile(_x, _y, true);
 
-                Mob.X = _x;
-                Mob.Y = _y;
-                Mob.RespawnX = _x;
-                Mob.RespawnY = _y;
-
-                Mob.Map = DMap.ID;
-                Mob.DynamicID = dinamicid;
-
-                monsterr = Mob;
-
-                DMap.View.EnterMap<MonsterRole>(Mob);
+                monsterr = SpawnMonster(Famili, RemoveOnDead, dinamicid, _x, _y, DMap.ID);
             }
             return monsterr;
         }
 
-        /// <summary>
-        /// Attemps to obtain a point where the monster can be re-spawned.
-        /// </summary>
-        /// <param name="X">The x-coordinate point.</param>
-        /// <param name="Y">The y-coordinate point.</param>
+        private MonsterRole SpawnFixedMonster(MonsterFamily Famili, uint dinamicid, ushort x, ushort y, uint mapId)
+        {
+            MonsterRole Mob = new MonsterRole(Famili.Copy(), GenerateUid.Next, LocationSpawn, DMap);
+            Mob.RemoveOnDead = true; // Permitir que o monstro seja removido ao morrer
+
+            Mob.X = x; // Coordenada fixa
+            Mob.Y = y; // Coordenada fixa
+            Mob.RespawnX = x;
+            Mob.RespawnY = y;
+            Mob.Map = mapId;
+            Mob.DynamicID = dinamicid;
+
+            if (DMap != null)
+            {
+                DMap.View.EnterMap<MonsterRole>(Mob);
+            }
+
+            // Adicionar chamada para o Discord API
+            Program.DiscordAPIevents.Enqueue("``WaterLord Spawned.``");
+
+            // Iniciar o temporizador para respawn
+            StartRespawnTimer(Famili, 40); // CleanWater
+
+            return Mob;
+        }
+
+        private MonsterRole SpawnMonster(MonsterFamily Famili, bool RemoveOnDead, uint dinamicid, ushort x, ushort y, uint mapId)
+        {
+            MonsterRole Mob = new MonsterRole(Famili.Copy(), GenerateUid.Next, LocationSpawn, DMap);
+            Mob.RemoveOnDead = RemoveOnDead; // Permitir que o monstro seja removido ao morrer
+
+            Mob.X = x;
+            Mob.Y = y;
+            Mob.RespawnX = x;
+            Mob.RespawnY = y;
+            Mob.Map = mapId;
+            Mob.DynamicID = dinamicid;
+
+            if (DMap != null)
+            {
+                DMap.View.EnterMap<MonsterRole>(Mob);
+            }
+
+            return Mob;
+        }
+
+        private async void StartRespawnTimer(MonsterFamily Famili, int minutes)
+        {
+            await Task.Delay(TimeSpan.FromMinutes(minutes));
+
+            // Após o delay, respawnar o monstro 8500 nas coordenadas fixas no mapa 1212
+            Add(Famili, RemoveOnDead: false, dinamicid: 0, justone: true);
+        }
+
         public void TryObtainSpawnXY(MonsterFamily Monster, out ushort X, out ushort Y)
         {
-
             X = (ushort)Program.GetRandom.Next(Monster.SpawnX, Monster.MaxSpawnX);
             Y = (ushort)Program.GetRandom.Next(Monster.SpawnY, Monster.MaxSpawnY);
 

@@ -9883,7 +9883,7 @@ namespace COServer.Game.MsgNpc
                         if (client.Player.Class >= 101)
                         {
                             data.AddOption("Lightning -" + (client.MySpells.ClientSpells.ContainsKey((ushort)Role.Flags.SpellID.Lightning) ? " (Learned)" : "[Lv.1]") + "", 71)
-                                .AddOption("Next page.", 241);
+                                .AddOption("Next page.", 122);
 
                         }
                         data.AddOption("I`ll~think~about~it.", 255).AddAvatar(6).FinalizeDialog();
@@ -9891,7 +9891,7 @@ namespace COServer.Game.MsgNpc
 
                         break;
                     }
-                case 241:
+                case 122:
                     {
                         if (Database.AtributesStatus.IsFire(client.Player.Class))
                         {
