@@ -671,12 +671,12 @@ namespace COServer.Game.MsgMonster
                         if (Role.Core.Rate(40)) // Chance de 40% CleanWater
                         {
                             DropItemID(killer, Database.ItemType.CleanWater, stream);
-                            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a ClearWater in WaterLord(292,216)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.Center).GetArray(stream));
+                            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a ClearWater in WaterLord(428,418) !", MsgMessage.MsgColor.white, MsgMessage.ChatMode.Center).GetArray(stream));
                         }
                         else
                         {
                             DropItemID(killer, Database.ItemType.Meteor, stream); // Dropar uma Meteor.
-                            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a Meteor in WaterLord(292,216) !", MsgMessage.MsgColor.white, MsgMessage.ChatMode.Center).GetArray(stream));
+                            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a Meteor in WaterLord(428,418) !", MsgMessage.MsgColor.white, MsgMessage.ChatMode.Center).GetArray(stream));
                         }
                     }
                     #endregion
@@ -1483,61 +1483,46 @@ namespace COServer.Game.MsgMonster
             }
             if (user != null)
             {
-                if (user.Player.VipLevel >= 5)
+                if (user != null)
                 {
-                    if (DataItem.ITEM_ID == Database.ItemType.DragonBall && user.Player.LootDragonBall)
+                    if (user.Player.VipLevel >= 5)
                     {
-                        if (user.Inventory.HaveSpace(1))
+                        if (DataItem.ITEM_ID == Database.ItemType.DragonBall && user.Player.LootDragonBall)
                         {
-                            user.Inventory.Update(DataItem, Role.Instance.AddMode.ADD, stream);
-                            if (user.Inventory.Contain(Database.ItemType.DragonBall, 10) && user.Player.VipLevel == 6)
+                            if (user.Inventory.HaveSpace(1))
                             {
-                                user.Inventory.Remove(Database.ItemType.DragonBall, 10, stream);
-                                user.Inventory.Add(stream, Database.ItemType.DragonBallScroll, 1);
-                            }
-                        }
-                        else
-                        {
-                            string npcname = "";
-                            if (!user.Warehouse.AddVIPItem(DataItem, out npcname))
-                            {
-                                user.SendSysMesage("[VIP] Please remove some items from inventory or warehouse!");
-                                user.Player.AddMapEffect(stream, XX, YY, "accession3");
+                                user.Inventory.Update(DataItem, Role.Instance.AddMode.ADD, stream);
+                                if (user.Inventory.Contain(Database.ItemType.DragonBall, 10) && user.Player.VipLevel == 6)
+                                {
+                                    user.Inventory.Remove(Database.ItemType.DragonBall, 10, stream);
+                                    user.Inventory.Add(stream, Database.ItemType.DragonBallScroll, 1);
+                                }
                             }
                             else
                             {
-                                user.SendSysMesage($"[VIP] A monster you've killed just dropped a {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)} moved to your {npcname.ToLower()} warehouse.", MsgMessage.ChatMode.Action);
-                                return;
-                            }
-                        }
-                        return;
-                    }
-                    else if (DataItem.ITEM_ID == Database.ItemType.Meteor && user.Player.LootMeteorItems)
-                    {
-                        if (user.Inventory.HaveSpace(1))
-                        {
-                            user.Inventory.Update(DataItem, Role.Instance.AddMode.ADD, stream);
-                            if (user.Inventory.Contain(Database.ItemType.Meteor, 10) && user.Player.VipLevel == 6)
-                            {
-                                user.Inventory.Remove(Database.ItemType.Meteor, 10, stream);
-                                user.Inventory.Add(stream, Database.ItemType.MeteorScroll, 1);
-                            }
-                        }
-                        else
-                        {
-                            string npcname = "";
-                            if (!user.Warehouse.AddVIPItem(DataItem, out npcname))
-                            {
-                                user.SendSysMesage("[VIP] Please remove some items from inventory or warehouse!");
+                                user.SendSysMesage("[VIP] Please remove some items from your inventory!");
                                 user.Player.AddMapEffect(stream, XX, YY, "accession3");
+                            }
+                            return;
+                        }
+                        else if (DataItem.ITEM_ID == Database.ItemType.Meteor && user.Player.LootMeteorItems)
+                        {
+                            if (user.Inventory.HaveSpace(1))
+                            {
+                                user.Inventory.Update(DataItem, Role.Instance.AddMode.ADD, stream);
+                                if (user.Inventory.Contain(Database.ItemType.Meteor, 10) && user.Player.VipLevel == 6)
+                                {
+                                    user.Inventory.Remove(Database.ItemType.Meteor, 10, stream);
+                                    user.Inventory.Add(stream, Database.ItemType.MeteorScroll, 1);
+                                }
                             }
                             else
                             {
-                                user.SendSysMesage($"[VIP] A monster you've killed just dropped a {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)} moved to your {npcname.ToLower()} warehouse.", MsgMessage.ChatMode.Action);
-                                return;
+                                user.SendSysMesage("[VIP] Please remove some items from your inventory!");
+                                user.Player.AddMapEffect(stream, XX, YY, "accession3");
                             }
+                            return;
                         }
-                        return;
                     }
                 }
             }

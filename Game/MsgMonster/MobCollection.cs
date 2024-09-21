@@ -45,7 +45,7 @@ namespace COServer.Game.MsgMonster
             // Se for o monstro 8500, usa a lógica específica
             if (Famili.ID == 8500)
             {
-                return SpawnFixedMonster(Famili, dinamicid, 292, 216, 1212);
+                return SpawnFixedMonster(Famili, dinamicid, 428, 418, 1212);
             }
 
             // Lógica para os outros monstros
