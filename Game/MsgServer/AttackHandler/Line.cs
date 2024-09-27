@@ -142,7 +142,7 @@ namespace COServer.Game.MsgServer.AttackHandler
                                     }
                                 }
                             }
-                            user.Player.Stamina -= 10;
+                            user.Player.Stamina -= 20;
                             user.Player.SendUpdate(stream, user.Player.Stamina, Game.MsgServer.MsgUpdate.DataType.Stamina);
                             Updates.IncreaseExperience.Up(stream, user, Experience);
                             Updates.UpdateSpell.CheckUpdate(stream, user, Attack, Experience, DBSpells);

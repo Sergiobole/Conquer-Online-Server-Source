@@ -38,26 +38,26 @@ namespace COServer
 
                 user.Player.View.MonsterCallBack(clock);
 
-                if (clock > user.AutoHunt)
-                {
-                    if (user.Player.Robot)
-                    {
-                        Game.AutoHunting2.JumpRobot(user);
-                    }
-                    user.AutoHunt.Value = clock.Value + 1350;
-                }
-                if (clock > user.AutoHuntAttack)
-                {
-                    if (user.Player.Robot)
-                    {
-                        Game.AutoHunting2.SkillRobot(user);
-                    }
-                    if (user.Player.Robot)
-                    {
-                        Game.AutoHunting2.ReviveRobot(user);
-                    }
-                    user.AutoHuntAttack.Value = clock.Value + 700;
-                }
+                //if (clock > user.AutoHunt)
+                //{
+                //    if (user.Player.Robot)
+                //    {
+                //        Game.AutoHunting2.JumpRobot(user);
+                //    }
+                //    user.AutoHunt.Value = clock.Value + 1350;
+                //}
+                //if (clock > user.AutoHuntAttack)
+                //{
+                //    if (user.Player.Robot)
+                //    {
+                //        Game.AutoHunting2.SkillRobot(user);
+                //    }
+                //    if (user.Player.Robot)
+                //    {
+                //        Game.AutoHunting2.ReviveRobot(user);
+                //    }
+                //    user.AutoHuntAttack.Value = clock.Value + 700;
+                //}
                 if (clock > user.BuffersStamp)
                 {
                     Client.PoolProcesses.BuffersCallback(user);

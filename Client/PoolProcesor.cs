@@ -411,8 +411,7 @@ namespace COServer.Client
                             client.Player.SendUpdate(stream, client.Player.Stamina, Game.MsgServer.MsgUpdate.DataType.Stamina);
                         }
                     }
-                    //   MsgSchedules//.PlayerTop.AddTop(client);
-                    //   MsgSchedules.PlayerTop.RemoveTop(client);
+
                     if (client.Player.Map != 601 && client.Player.Map != 1039)
                     {
                         if (Timer > client.Player.ReceivePointsOnlineTraining)

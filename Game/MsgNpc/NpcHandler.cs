@@ -2685,7 +2685,9 @@ namespace COServer.Game.MsgNpc
         {
             Dialog data = new Dialog(client, stream);
 
-            int foundsToTransfer = -1; 
+            
+
+
 
             switch (Option)
             {
@@ -2704,14 +2706,15 @@ namespace COServer.Game.MsgNpc
                         Console.WriteLine("Founds: " + totalFounds);
 
                         // Mostra os fundos disponíveis e as opções de compra
-                        
+
                         data.AddText(string.Format("You have {0} founds, Buy Founds in CoGolden.com!", totalFounds));
-                        data.AddOption("1 - 7 Day VIP = 7 Founds", 2);
-                        data.AddOption("2 - 30 Day VIP = 20 Founds", 3);
-                        data.AddOption("3 - GoldPrizes = 50 Founds", 4);
-                        data.AddOption("4 - PowerExpBall = 1 Founds", 11);
-                        data.AddOption("5 - Garmets -7 255HP = 30 Founds", 23);
-                        // data.AddOption("5 - Transfer Founds", 5); // Se precisar dessa opção, descomente esta linha
+                        data.AddOption("1 - Transfer Founds", 5);
+                        data.AddOption("2 - 7 Day VIP = 7 Founds", 2);
+                        data.AddOption("3 - 30 Day VIP = 20 Founds", 3);
+                        data.AddOption("4 - GoldPrizes = 50 Founds", 4);
+                        data.AddOption("5 - PowerExpBall = 1 Founds", 11);
+                        data.AddOption("6 - Garmets -7 255HP = 30 Founds", 23);
+                        
 
                         data.AddAvatar(63).FinalizeDialog();
                         break;
@@ -2905,35 +2908,214 @@ namespace COServer.Game.MsgNpc
                     }
                 case 5:
                     {
-                        data.AddText("Insert the ammount of founds that you want to transfer to another player.");
-                        data.AddInput("Ammount founds: ", 6).AddAvatar(6).FinalizeDialog();
-
-
-
+                        data.AddText("Insert the amount of founds that you want to transfer to another player.");
+                        data.AddInput("Amount of founds: ", 6).AddAvatar(6).FinalizeDialog();
                         break;
                     }
-                case 6:
+                case 6: // Recebe o valor a ser transferido
                     {
-                        foundsToTransfer = int.Parse(Input);
-                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        // Verifica se a entrada é um número válido
+                        if (!int.TryParse(Input, out int foundsToTransfer) || foundsToTransfer <= 0)
+                        {
+                            data.AddText("Please enter a valid amount of founds to transfer.")
+                                .AddOption("Okay", 255)
+                                .AddAvatar(63).FinalizeDialog();
+                            break;
+                        }
 
+                        // Armazena o valor de foundsToTransfer no client para ser acessado no case 7
+                        client.FoundsToTransfer = foundsToTransfer;
+
+                        Console.WriteLine($"Founds to transfer set to: {foundsToTransfer}");
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         if (foundsToTransfer > totalFounds)
                         {
-                            data.AddText(string.Format("Sorry, you only have {0} founds.", totalFounds));
-                            data.AddOption("Okay", 255);
-                            data.AddAvatar(63).FinalizeDialog();
-                        }
-                        else
-                        {
-                            data.AddText("Please enter the name of the player that you want to send founds.")
-                                .AddInput("Player name:", 7).AddAvatar(6).FinalizeDialog();
-
-
+                            data.AddText($"Sorry, you only have {totalFounds} founds.")
+                                .AddOption("Okay.", 255)
+                                .AddAvatar(63).FinalizeDialog();
+                            break;
                         }
 
+                        data.AddText("Please enter the LOGIN the player that you want to send founds.")
+                           .AddInput("Player Login:", 7).AddAvatar(6).FinalizeDialog();
                         break;
                     }
-                case 7:
+
+                case 7: // Recebe o nome do jogador para transferência
+                    {
+                        string recipientPlayerName = Input.Trim();
+
+                        if (string.IsNullOrEmpty(recipientPlayerName))
+                        {
+                            data.AddText("Player Login cannot be empty. Please enter a valid Login.")
+                                .AddOption("Okay.", 255)
+                                .AddAvatar(63).FinalizeDialog();
+                            break;
+                        }
+
+                        // Verifique se o remetente está tentando enviar founds para si mesmo
+                        if (recipientPlayerName.Equals(client.AccountName(client.Player.Name), StringComparison.OrdinalIgnoreCase))
+                        {
+                            data.AddText("You cannot send founds to yourself.")
+                                .AddOption("Okay.", 255)
+                                .AddAvatar(63).FinalizeDialog();
+                            break;
+                        }
+
+                        int foundsToTransfer = client.FoundsToTransfer;
+
+                        if (foundsToTransfer <= 0)
+                        {
+                            data.AddText("An error occurred. Invalid founds to transfer.")
+                                .AddOption("Okay", 255)
+                                .AddAvatar(63).FinalizeDialog();
+                            break;
+                        }
+
+                        Console.WriteLine($"Attempting to transfer {foundsToTransfer} founds from {client.AccountName(client.Player.Name)} to {recipientPlayerName}");
+
+                        const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
+
+                        try
+                        {
+                            using (var conn = new MySqlConnection(ConnectionString))
+                            {
+                                conn.Open();
+
+                                // Verifique se o destinatário existe na tabela accounts
+                                using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("SELECT COUNT(*) FROM accounts WHERE username = @username", conn))
+                                {
+                                    cmd.Parameters.AddWithValue("@username", recipientPlayerName);
+                                    int count = Convert.ToInt32(cmd.ExecuteScalar());
+                                    if (count == 0)
+                                    {
+                                        data.AddText("Login not Found. Please check the name and try again.")
+                                            .AddOption("Okay.", 255)
+                                            .AddAvatar(63).FinalizeDialog();
+                                        break;
+                                    }
+                                }
+
+                                // Verifique o saldo do remetente
+                                int senderFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                                if (senderFounds < foundsToTransfer)
+                                {
+                                    data.AddText("Insufficient funds. Please check your balance and try again.")
+                                        .AddOption("Okay.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    break;
+                                }
+
+                                // Inicia uma transação para garantir que ambas as operações sejam atômicas
+                                using (var transaction = conn.BeginTransaction())
+                                {
+                                    try
+                                    {
+                                        // 1. Atualizar os founds do remetente
+                                        using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = founds - @founds WHERE username = @username", conn, transaction))
+                                        {
+                                            cmd.Parameters.AddWithValue("@founds", foundsToTransfer);
+                                            cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+                                            cmd.ExecuteNonQuery();
+                                        }
+
+                                        // 2. Verificar se o destinatário já tem uma entrada na tabela payments
+                                        int recipientCurrentFounds = 0;
+                                        bool recipientExists = false;
+
+                                        using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("SELECT founds FROM payments WHERE username = @username", conn, transaction))
+                                        {
+                                            cmd.Parameters.AddWithValue("@username", recipientPlayerName);
+                                            var result = cmd.ExecuteScalar();
+                                            if (result != null)
+                                            {
+                                                recipientCurrentFounds = Convert.ToInt32(result); // Se houver saldo, armazene-o
+                                                recipientExists = true;
+                                            }
+                                        }
+
+                                        // 3. Se o destinatário não tiver uma entrada, criar uma nova
+                                        if (!recipientExists)
+                                        {
+                                            using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("INSERT INTO payments (username, founds) VALUES (@username, @founds)", conn, transaction))
+                                            {
+                                                cmd.Parameters.AddWithValue("@username", recipientPlayerName);
+                                                cmd.Parameters.AddWithValue("@founds", foundsToTransfer);
+                                                cmd.ExecuteNonQuery();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            // 4. Atualizar os founds do destinatário com base no saldo atual
+                                            int updatedFounds = recipientCurrentFounds + foundsToTransfer;
+                                            using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @updatedFounds WHERE username = @username", conn, transaction))
+                                            {
+                                                cmd.Parameters.AddWithValue("@updatedFounds", updatedFounds);
+                                                cmd.Parameters.AddWithValue("@username", recipientPlayerName);
+                                                cmd.ExecuteNonQuery();
+                                            }
+                                        }
+
+                                        // Comita a transação após todas as operações serem bem-sucedidas
+                                        transaction.Commit();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        transaction.Rollback();
+                                        Console.WriteLine($"Error during transaction: {ex.Message}");
+                                        data.AddText("An error occurred during the transfer. Please try again.")
+                                            .AddOption("Okay.", 255)
+                                            .AddAvatar(63).FinalizeDialog();
+                                        return; // Sai do case
+                                    }
+                                }
+                            }
+
+                            data.AddText($"Successfully transferred {foundsToTransfer} founds to {recipientPlayerName}.")
+                                .AddOption("Thanks.", 255)
+                                .AddAvatar(63).FinalizeDialog();
+                            Program.DiscordAPIfoundslog.Enqueue($"` {client.Player.Name} transferred {foundsToTransfer} founds to {recipientPlayerName}.");
+                        }
+                        catch (MySqlException sqlEx)
+                        {
+                            Console.WriteLine($"MySQL error: {sqlEx.Message} - Attempting to transfer {foundsToTransfer} to {recipientPlayerName}");
+                            data.AddText("An error occurred during the transfer. Please try again.")
+                                .AddOption("Okay.", 255)
+                                .AddAvatar(63).FinalizeDialog();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"An unexpected error occurred: {ex.Message} - Attempting to transfer {foundsToTransfer} to {recipientPlayerName}");
+                            data.AddText("An unexpected error occurred. Please try again.")
+                                .AddOption("Okay.", 255)
+                                .AddAvatar(63).FinalizeDialog();
+                        }
+
+                        break; // Sai do case
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 case 11:
                     {
@@ -3028,63 +3210,7 @@ namespace COServer.Game.MsgNpc
                         break;
                     }
 
-                    {
-                        string name = Input;
-
-                        Console.WriteLine($"Inserted name: {name}");
-
-                        if (name.Length > 0 && name != null)
-                        {
-                            const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
-                            try
-                            {
-                                using (var conn = new MySqlConnection(ConnectionString))
-                                {
-                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("insert into payments (username, txn_id, claimed, founds, payment_gross, mc_gross, payer_id, payment_status, points, token) values (@username, @txn_id, @claimed, @founds, @payment_gross, @mc_gross, @payer_id, @payment_status, @points, @token)"
-                                        , conn))
-                                    {
-                                        conn.Open();
-
-                                        // username, txn_id, claimed, founds, payment_gross, mc_gross, payer_id, payment_status, points, token
-                                        cmd.Parameters.AddWithValue("@username", name);
-                                        cmd.Parameters.AddWithValue("@txn_id", "1234");
-                                        cmd.Parameters.AddWithValue("@claimed", 0);
-                                        cmd.Parameters.AddWithValue("@founds", foundsToTransfer);
-                                        cmd.Parameters.AddWithValue("@payment_gross", 1.0);
-                                        cmd.Parameters.AddWithValue("@mc_gross", "1234");
-                                        cmd.Parameters.AddWithValue("@payer_id", "1");
-                                        cmd.Parameters.AddWithValue("@payment_status", "Transfer");
-                                        cmd.Parameters.AddWithValue("@points", 12);
-                                        cmd.Parameters.AddWithValue("@token", "123");
-
-                                        Console.WriteLine($"Final query: ${cmd.CommandText}");
-
-                                        cmd.ExecuteNonQuery();
-                                    }
-                                }
-
-                                int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-
-                                using (var conn = new MySqlConnection(ConnectionString))
-                                {
-                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("update payments set founds = @founds where founds = @founds and username = @username"
-                                    , conn))
-                                    {
-                                        conn.Open();
-
-                                        cmd.Parameters.AddWithValue("@founds", Math.Min((totalFounds - foundsToTransfer), 0));
-                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
-                                    }
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine(e.ToString());
-                            }
-                        }
-
-                        break;
-                    }
+                   
                 case 30:
                     {
                         if (!client.Inventory.HaveSpace(1))
@@ -12717,7 +12843,7 @@ namespace COServer.Game.MsgNpc
                             client.Inventory.Add(stream, 2100085, 1); // GoldTrophy
                             client.Player.AddFlag(MsgServer.MsgUpdate.Flags.TopGuildLeader, Role.StatusFlagsBigVector32.PermanentFlag, false);
                             Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("" + client.Player.Name + " , Guild Leader from " + client.Player.MyGuild.GuildName + " was rewarded with " + MsgGuildWar.GuildWarScrore.ConquerPointsReward.ToString() + " CPs, and a Gold Trophy for winning Guild War.", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.TopLeft).GetArray(stream));
-                            data.AddText("You've got 20,000 CPs.")
+                            data.AddText("You've got 50,000 CPs.")
                                 .AddOption("Thank you.", 255).AddAvatar(110).FinalizeDialog();
                         }
                         // Verificar se é o vice-líder da guilda

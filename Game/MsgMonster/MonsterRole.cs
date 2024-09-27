@@ -1450,25 +1450,17 @@ namespace COServer.Game.MsgMonster
                                 if (user.Inventory.HaveSpace(2))
                                 {
                                     user.Inventory.Add(stream, DataItem.ITEM_ID, 1, DataItem.Plus, DataItem.Bless, 0, DataItem.SocketOne, DataItem.SocketTwo, false);
+                                    user.SendSysMesage($"[Auto Loot VIP] A monster you've killed just dropped a {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)}", MsgMessage.ChatMode.Action);
                                 }
                                 else
                                 {
-                                    string npcname = "";
-                                    if (!user.Warehouse.AddVIPItem(DataItem, out npcname))
-                                    {
-                                        user.SendSysMesage("[VIP] Please remove some items from inventory or warehouse!");
-                                        user.Player.AddMapEffect(stream, XX, YY, "accession3");
-                                    }
-                                    else
-                                    {
-                                        user.SendSysMesage($"[VIP] A monster you've killed just dropped a {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)} moved to your {npcname.ToLower()} warehouse.", MsgMessage.ChatMode.Action);
-                                        return;
-                                    }
+                                    user.SendSysMesage("[VIP] Please remove some items from inventory!");
+                                    user.Player.AddMapEffect(stream, XX, YY, "accession3");
                                 }
-                                user.SendSysMesage($"[Auto Loot VIP] A monster you've killed just dropped a {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)}", MsgMessage.ChatMode.Action);
                                 return;
                             }
                         }
+
                         else if (lucky && Role.Core.Rate(20) && user.Player.VipLevel == 0)//jason
                         {
                             user.SendSysMesage($"A monster you've killed just dropped a {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)}");
@@ -1616,7 +1608,7 @@ namespace COServer.Game.MsgMonster
                             ObjId = killer.Player.UID,
                             Type = ActionType.DragonBall
                         };
-                        if (killer.Player.VipLevel == 6)//&& killer.Player.LootDragonBalls
+                        if (killer.Player.VipLevel == 6)
                         {
                             if (killer.Inventory.HaveSpace(1))
                             {
@@ -1632,20 +1624,12 @@ namespace COServer.Game.MsgMonster
                             }
                             else
                             {
-                                string npcname = "";
-                                if (!killer.Warehouse.AddVIPItem(DataItem, out npcname))
-                                {
-                                    killer.SendSysMesage("[VIP] Please remove some items from inventory or warehouse!");
-                                }
-                                else
-                                {
-                                    killer.SendSysMesage($"[VIP] A monster you've killed just dropped a {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)} moved to your {npcname.ToLower()} warehouse.", MsgMessage.ChatMode.Action);
-                                    return;
-                                }
+                                killer.SendSysMesage("Inventory is full.");
+                                return;
                             }
-                            killer.Send(stream.ActionCreate(&action2));
                         }
-                        
+                        killer.Send(stream.ActionCreate(&action2));
+
                     }
                     else
                     {
@@ -1655,7 +1639,6 @@ namespace COServer.Game.MsgMonster
                     {
                         if (killer.Player.VipLevel == 6 && killer.Player.LootMeteorItems)
                         {
-
                             if (killer.Inventory.HaveSpace(1))
                             {
                                 if (killer.Inventory.Contain(Database.ItemType.Meteor, 10))
@@ -1667,16 +1650,8 @@ namespace COServer.Game.MsgMonster
                             }
                             else
                             {
-                                string npcname = "";
-                                if (!killer.Warehouse.AddVIPItem(DataItem, out npcname))
-                                {
-                                    killer.SendSysMesage("[VIP] Please remove some items from inventory or warehouse!");
-                                }
-                                else
-                                {
-                                    killer.SendSysMesage($"[VIP] A monster you've killed just dropped a {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)} moved to your {npcname.ToLower()} warehouse.", MsgMessage.ChatMode.Action);
-                                    return;
-                                }
+                                killer.SendSysMesage("Inventory is full. Unable to loot the Meteor.");
+                                return;
                             }
                         }
                     }

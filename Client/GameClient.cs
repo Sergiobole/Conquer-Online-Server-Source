@@ -47,6 +47,7 @@ namespace COServer.Client
         public uint TempGarmentID = 0;
         internal int ElitePKPoints;
         public int Npoints { get; set; }
+        public int FoundsToTransfer { get; set; } = 0;
         public int CTBScore;
         public CTBTeam TeamColor = CTBTeam.Blue;
         internal uint DMGarmentUid;
