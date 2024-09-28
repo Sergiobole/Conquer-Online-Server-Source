@@ -78,6 +78,8 @@ namespace COServer.Game.MsgServer.AttackHandler.CheckAttack
                                 }
                             }
                         }
+
+
                         if (Spell.Type == Database.MagicType.MagicSort.DirectAttack || Spell.Type == Database.MagicType.MagicSort.Attack && Spell.ID != 1002)
                         {
 
@@ -99,7 +101,7 @@ namespace COServer.Game.MsgServer.AttackHandler.CheckAttack
                             return false;
                         }
                         if (client.Player.Map != 1039)
-                        {
+                            {
                             if (Spell.UseStamina + IncreaseSpellStamina > client.Player.Stamina)
                                 return false;
                             else

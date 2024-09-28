@@ -625,8 +625,6 @@ namespace COServer.Client
         }
         public unsafe static void StaminaCallback(Client.GameClient client)
         {
-            //if (!client.FullLoading)
-            //    return;
             if (!Valid(client))
                 return;
             var Timer = Time32.Now;
@@ -639,12 +637,28 @@ namespace COServer.Client
 
             if (client.Player.Stamina < MaxStamina)
             {
-                ushort addstamin = 0;
-                addstamin += client.Player.GetAddStamina();
-                client.Player.Stamina = (ushort)Math.Min((int)(client.Player.Stamina + addstamin), MaxStamina);
+                // Obtém a quantidade de stamina adicional que o jogador pode receber
+                ushort addstamin = client.Player.GetAddStamina();
+
+                // Se a stamina atual é 0, não permita que a stamina seja setada para o máximo
+                if (client.Player.Stamina == 0 && addstamin >= MaxStamina)
+                {
+                    // Opcional: Mantenha a stamina em 0 ou ajuste para um valor razoável
+                    // client.Player.Stamina = 1; // Exemplo para evitar ir para 0
+                }
+                else
+                {
+                    // Atualiza a stamina do jogador, garantindo que não exceda a stamina máxima
+                    client.Player.Stamina = (ushort)Math.Min(client.Player.Stamina + addstamin, MaxStamina);
+                }
+
+                // Cria um pacote reciclado para enviar a atualização da stamina ao cliente
                 using (var rec = new ServerSockets.RecycledPacket())
                 {
+                    // Obtém o stream do pacote reciclado
                     var stream = rec.GetStream();
+
+                    // Envia a atualização da stamina para o jogador
                     client.Player.SendUpdate(stream, client.Player.Stamina, Game.MsgServer.MsgUpdate.DataType.Stamina);
                 }
             }

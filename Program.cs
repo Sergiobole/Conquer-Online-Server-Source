@@ -50,7 +50,7 @@ namespace COServer
         public static List<uint> RevivePoint = new List<uint>() { 1201, 1202 };
         public static List<uint> NoDropItems = new List<uint>() { 1764, 700, 1780, 3820, 1005 };
         public static List<uint> FreePkMap = new List<uint>() { 50, 51, 52, 53, 2071, 3998, 3071, 6000, 6001, 1505, 1005, 1038, 700, 1508, 1201 };
-        public static List<uint> BlockAttackMap = new List<uint>() { 9999, 1700, 1202, 3825, 3830, 3831, 3832, 3834, 3826, 3827, 3828, 3829, 3833, 9995, 1068, 4020, 4000, 4003, 4006, 4008, 4009, 1860, 1858, 1801, 1780, 1779/*Ghost Map*/, 9972, 1806, 3954, 3081, 1036, 1004, 1008, 601, 1006, 1511, 1039, 700 };
+        public static List<uint> BlockAttackMap = new List<uint>() { 9999, 1700, 1202, 3825, 3830, 3831, 3832, 3834, 3826, 3827, 3828, 3829, 3833, 9995, 1068, 4020, 4000, 4003, 4006, 4008, 4009, 1860, 1858, 1801, 1780, 1779/*Ghost Map*/, 9972, 1806, 3954, 3081, 1036, 1004, 1008, 601, 1006, 1511, 1039, 700, 1002 };
         public static List<uint> BlockTeleportMap = new List<uint>() { 601, 1043, 1044, 1045, 1046, 1047, 1048, 1049, 1780, 1202, 6000, 6001, 1005, 700, 1860, 3852, 1768, 1038 };
         public static Role.Instance.Nobility.NobilityRanking NobilityRanking = new Role.Instance.Nobility.NobilityRanking();
         public static Role.Instance.Flowers.FlowersRankingToday FlowersRankToday = new Role.Instance.Flowers.FlowersRankingToday();

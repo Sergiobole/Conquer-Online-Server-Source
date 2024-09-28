@@ -25,9 +25,22 @@ namespace COServer.Game.MsgServer.AttackHandler
             MsgSpell ClientSpell;
             if (CheckAttack.CanUseSpell.Verified(Attack, user, DBSpells, out ClientSpell, out DBSpell))
             {
+                // Lógica para redução da stamina
+                if (user.Player.Stamina >= 20) // Verifica se há stamina suficiente
+                {
+                    user.Player.Stamina -= 20;
+                }
+                else
+                {
+                    user.SendSysMesage("Você não tem stamina suficiente!");
+                    return; // Sai do método se não tiver stamina suficiente
+                }
+
+                // Atualiza o status da stamina no cliente
+                user.Player.SendUpdate(stream, user.Player.Stamina, Game.MsgServer.MsgUpdate.DataType.Stamina);
+
                 switch (ClientSpell.ID)
                 {
-
                     case (ushort)Role.Flags.SpellID.FastBlader:
                     case (ushort)Role.Flags.SpellID.ScrenSword:
                     case (ushort)Role.Flags.SpellID.ViperFang:
@@ -74,8 +87,8 @@ namespace COServer.Game.MsgServer.AttackHandler
                             foreach (Role.IMapObj targer in user.Player.View.Roles(Role.MapObjectType.Player))
                             {
                                 var attacked = targer as Role.Player;
-                                
-                                if (Role.Core.GetDistance(user.Player.X, user.Player.Y, targer.X, targer.Y) 
+
+                                if (Role.Core.GetDistance(user.Player.X, user.Player.Y, targer.X, targer.Y)
                                     < DBSpell.Range)
                                 {
                                     if (Line.InLine(attacked.X, attacked.Y))
@@ -93,7 +106,7 @@ namespace COServer.Game.MsgServer.AttackHandler
                                                         {
                                                             if (bot.Bot != null)
                                                             {
-                                                                if (bot.Bot.Player.Map == user.Player.Map 
+                                                                if (bot.Bot.Player.Map == user.Player.Map
                                                                     && bot.Bot.Player.DynamicID == user.Player.DynamicID)
                                                                     bot.Dispose();
                                                                 user.SendSysMesage("You've won!");
@@ -142,8 +155,7 @@ namespace COServer.Game.MsgServer.AttackHandler
                                     }
                                 }
                             }
-                            user.Player.Stamina -= 20;
-                            user.Player.SendUpdate(stream, user.Player.Stamina, Game.MsgServer.MsgUpdate.DataType.Stamina);
+
                             Updates.IncreaseExperience.Up(stream, user, Experience);
                             Updates.UpdateSpell.CheckUpdate(stream, user, Attack, Experience, DBSpells);
                             MsgSpell.SetStream(stream);
@@ -172,7 +184,6 @@ namespace COServer.Game.MsgServer.AttackHandler
                                         AnimationObj.Damage = Calculate.Base.CalculateSoul(AnimationObj.Damage, ClientSpell.UseSpellSoul);
                                         Experience += ReceiveAttack.Monster.Execute(stream, AnimationObj, user, attacked);
                                         MsgSpell.Targets.Enqueue(AnimationObj);
-
                                     }
                                 }
                             }
@@ -190,7 +201,6 @@ namespace COServer.Game.MsgServer.AttackHandler
                                         MsgSpell.Targets.Enqueue(AnimationObj);
                                     }
                                 }
-
                             }
                             foreach (Role.IMapObj targer in user.Player.View.Roles(Role.MapObjectType.SobNpc))
                             {
@@ -207,9 +217,19 @@ namespace COServer.Game.MsgServer.AttackHandler
                                     }
                                 }
                             }
+
+                            // Ajuste na lógica de Stamina
+                            if (user.Player.Stamina < 20)
+                            {
+                                user.SendSysMesage("You don’t have enough stamina!");
+                                return; // Sai do método se não tiver stamina suficiente
+                            }
+                            user.Player.Stamina -= 20;
+
                             Updates.IncreaseExperience.Up(stream, user, Experience);
                             Updates.UpdateSpell.CheckUpdate(stream, user, Attack, Experience, DBSpells);
-                            MsgSpell.SetStream(stream); MsgSpell.Send(user);
+                            MsgSpell.SetStream(stream);
+                            MsgSpell.Send(user);
                             break;
                         }
                 }
