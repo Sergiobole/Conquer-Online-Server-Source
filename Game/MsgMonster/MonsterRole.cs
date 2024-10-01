@@ -276,20 +276,6 @@ namespace COServer.Game.MsgMonster
                             }
                         }
 
-                        // Faz o drop do item com ID 1088000 em 5 coordenadas aleatórias ao redor da posição (X, Y) do boss
-                        for (int i = 0; i < 5; i++)
-                        {
-                            ushort xx = (ushort)Program.GetRandom.Next(X - 6, X + 6);
-                            ushort yy = (ushort)Program.GetRandom.Next(Y - 6, Y + 6);
-
-                            // Adiciona o item ao chão se a coordenada gerada for válida
-                            if (killer.Map.AddGroundItem(ref xx, ref yy))
-                            {
-                                // Faz o drop do item com ID 1088000 na coordenada (xx, yy)
-                                DropItem(stream, killer.Player.UID, killer.Map, 1088000, xx, yy, MsgFloorItem.MsgItem.ItemType.Item, 0, false, 0);
-                            }
-                        }
-
                         return; // Finaliza a execução da função após o processamento dos drops
                     }
                     if (Role.Core.Rate(2, 20000))
@@ -600,7 +586,7 @@ namespace COServer.Game.MsgMonster
                     else
                         killer.Player.DbCount += Program.GetRandom.Next(1, 10);
 
-                    if (killer.Player.DbCount >= 4000)
+                    if (killer.Player.DbCount >= 6500)
                     {
                         killer.Player.SendString(stream, MsgStringPacket.StringID.Effect, true, "downnumber1");
                         killer.Player.DbCount = 0;
@@ -1268,7 +1254,7 @@ namespace COServer.Game.MsgMonster
                                         else
                                             Amount = Family.ItemGenerator.GenerateGold(out ItemID);
                                     }
-                                    DropItem(stream, killer.Player.UID, killer.Map, ItemID, xx, yy, MsgFloorItem.MsgItem.ItemType.Money, Amount, false, 0);
+                                    //DropItem(stream, killer.Player.UID, killer.Map, ItemID, xx, yy, MsgFloorItem.MsgItem.ItemType.Money, Amount, false, 0);
                                 }
                             }
                         }

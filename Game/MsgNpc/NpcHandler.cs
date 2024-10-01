@@ -2079,7 +2079,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("If you would like to change your gender, I can help you.\n")
-                            .AddText("You'll need to pay me 1,000 CPs.")
+                            .AddText("You'll need to pay me 50,000 CPs.")
                             .AddOption("Change gender.", 1)
                             .AddOption("More information.", 2)
                             .AddOption("Never~mind.", 255)
@@ -2090,7 +2090,7 @@ namespace COServer.Game.MsgNpc
                 case 3:
                     {
                         data.AddText("If you would like to change your gender, I can help you.\n")
-                            .AddText("You'll need to pay me 1,000 CPs.")
+                            .AddText("You'll need to pay me 50,000 CPs.")
                             .AddOption("Change gender.", 1)
                             .AddOption("More information.", 2)
                             .AddOption("Never~mind.", 255)
@@ -2107,7 +2107,7 @@ namespace COServer.Game.MsgNpc
                                 .AddAvatar(123).FinalizeDialog();
                             break;
                         }
-                        if (client.Player.ConquerPoints >= 1000)
+                        if (client.Player.ConquerPoints >= 50000)
                         {
                             if (client.Equipment.FreeEquip(Role.Flags.ConquerItem.Garment) == false
                            || !client.Equipment.FreeEquip(Role.Flags.ConquerItem.AleternanteGarment))
@@ -2117,7 +2117,7 @@ namespace COServer.Game.MsgNpc
                                     .AddAvatar(123).FinalizeDialog();
                                 break;
                             }
-                            client.Player.ConquerPoints -= 1000;
+                            client.Player.ConquerPoints -= 50000;
                             if (Role.Core.IsBoy(client.Player.Body))
                             {
                                 ushort typ = (ushort)(client.Player.Body % 10);
@@ -2167,7 +2167,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("It'll cost you 1,000 CPs for a gender change.\n")
+                            data.AddText("It'll cost you 50,000 CPs for a gender change.\n")
                                 .AddText("Would you still like to change your gender?")
                                 .AddOption("Okay.", 255)
                                 .AddAvatar(123).FinalizeDialog();
@@ -3100,23 +3100,6 @@ namespace COServer.Game.MsgNpc
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 case 11:
                     {
                         if (!client.Inventory.HaveSpace(1))
@@ -3201,9 +3184,9 @@ namespace COServer.Game.MsgNpc
                         else
                         {
                             data.AddText(string.Format("You have found {0} items! All gamerts have 255 HP, and -7 Bless costs 30 Founds.", totalFounds));
-                            data.AddOption("1 - WhiteReaper     ", 30);
-                            data.AddOption("2 - MikeKill        ", 31);
-                            data.AddOption("3 - WealthyArab(B)  ", 32);
+                            data.AddOption("1 - NinjaGarmet    ", 30);
+                            data.AddOption("2 - Raiden        ", 31);
+                            data.AddOption("3 - Phoenix(S)  ", 32);
                             data.AddOption("Okay.", 255);
                             data.AddAvatar(63).FinalizeDialog();
                         }
@@ -3224,7 +3207,7 @@ namespace COServer.Game.MsgNpc
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Founds: " + totalFounds);
 
-                        if (totalFounds >= 20)
+                        if (totalFounds >= 30)
                         {
 
                             const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
@@ -3246,7 +3229,7 @@ namespace COServer.Game.MsgNpc
 
                                 // Adiciona o item ao inventário
                                 {
-                                    client.Inventory.Add(stream, 183755, 0, 0, 7, 255, 0, 0, false);
+                                    client.Inventory.Add(stream, 193715, 0, 0, 7, 255, 0, 0, false);
 
                                     data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
                                         .AddOption("Thanks.", 255)
@@ -3288,7 +3271,7 @@ namespace COServer.Game.MsgNpc
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Founds: " + totalFounds);
 
-                        if (totalFounds >= 20)
+                        if (totalFounds >= 30)
                         {
 
                             const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
@@ -3310,7 +3293,7 @@ namespace COServer.Game.MsgNpc
 
                                 // Adiciona o item ao inventário
                                 {
-                                    client.Inventory.Add(stream, 199735, 0, 0, 7, 255, 0, 0, false);
+                                    client.Inventory.Add(stream, 183835, 0, 0, 7, 255, 0, 0, false);
 
                                     data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
                                         .AddOption("Thanks.", 255)
@@ -3352,7 +3335,7 @@ namespace COServer.Game.MsgNpc
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Founds: " + totalFounds);
 
-                        if (totalFounds >= 20)
+                        if (totalFounds >= 30)
                         {
 
                             const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
@@ -3374,7 +3357,7 @@ namespace COServer.Game.MsgNpc
 
                                 // Adiciona o item ao inventário
                                 {
-                                    client.Inventory.Add(stream, 182015, 0, 0, 7, 255, 0, 0, false);
+                                    client.Inventory.Add(stream, 195015, 0, 0, 7, 255, 0, 0, false);
 
                                     data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
                                         .AddOption("Thanks.", 255)
@@ -15172,8 +15155,8 @@ namespace COServer.Game.MsgNpc
                             int cost = 30000;
                             // int cost = (int)(5000 + client.Player.PKPoints * 10);
                             data.AddText("You~really~murdered~a~lot.~Well~in~this~case~if~you~pay~for~yours~sins~" + cost.ToString() + "~CPs~I~will~let~you~go.")
-         .AddOption("Here~is~my~payment.", 4)
-    .AddOption("No,~thanks.", 255).AddAvatar(37).FinalizeDialog();
+                 .AddOption("Here~is~my~payment.", 4)
+            .AddOption("No,~thanks.", 255).AddAvatar(37).FinalizeDialog();
                         }
 
                         break;
@@ -16925,7 +16908,7 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        data.AddText("If you want to turn a new page in your life, you can pay me 5,000 CPs to get a new name. Your new name will be registered, immediately.")
+                        data.AddText("If you want to turn a new page in your life, you can pay me 100,000 CPs to get a new name. Your new name will be registered, immediately.")
                    .AddInput("Okay,~here`s~my~new~name:", 1)
                    .AddOption("Reset edit times.", 10)
                    .AddAvatar(31).FinalizeDialog();
@@ -16933,7 +16916,7 @@ namespace COServer.Game.MsgNpc
                     }
                 case 10:
                     {
-                        data.AddText("Do you want to reset your name for 5,000 CPs?")
+                        data.AddText("Do you want to reset your name for 100,000 CPs?")
                         .AddOption("Yes!", 11)
                         .AddOption("No!", 255)
                         .AddAvatar(31).FinalizeDialog();
@@ -16941,9 +16924,9 @@ namespace COServer.Game.MsgNpc
                     }
                 case 11:
                     {
-                        if (client.Player.ConquerPoints >= 5000)
+                        if (client.Player.ConquerPoints >= 100000)
                         {
-                            client.Player.ConquerPoints -= 5000;
+                            client.Player.ConquerPoints -= 100000;
                             client.Player.NameEditCount = 0;
                             data.AddText("Your name has been changed successfully!")
                        .AddOption("Thank you!", 255)
@@ -16960,7 +16943,7 @@ namespace COServer.Game.MsgNpc
 
                 case 1:
                     {
-                        if (client.Player.ConquerPoints >= 5000)
+                        if (client.Player.ConquerPoints >= 100000)
                         {
                             string Username = Input;
                             if (Username != string.Empty && Username.Length != 0 && Username != client.Player.Name && Program.NameStrCheck(Username))

@@ -78,36 +78,40 @@ namespace COServer.Game.MsgMonster
             {
                 if (client.Map == null)
                     return;
+
                 var Array = client.Player.View.Roles(Role.MapObjectType.Monster);
                 foreach (var map_mob in Array)
                 {
-
                     var Guard = (map_mob as MonsterRole);
                     if ((Guard.Family.Settings & MonsterSettings.Guard) == MonsterSettings.Guard)
                     {
-                        if (timer > Guard.AttackSpeed.AddMilliseconds(Guard.Family.AttackSpeed + 700))
+                        // Verificar se o jogador tem PKPoints acima de 100
+                        if (client.Player.PKPoints <= 100) // Mudei a condição para atacar apenas se PKPoints for 100 ou menos
                         {
-                            if (!client.Player.View.MobActions.JumpPos(client.Player.View.GetPlayer().Owner, Guard))
-                                client.Player.View.MobActions.CheckGuardPosition(client.Player.View.GetPlayer(), Guard);
-
-                            if (client.Player.View.MobActions.GuardAttackPlayer(client.Player.View.GetPlayer(), Guard))
-                                Guard.AttackSpeed = timer;
-
-                            if (!Guard.Alive)
+                            if (timer > Guard.AttackSpeed.AddMilliseconds(Guard.Family.AttackSpeed + 700))
                             {
-                                Guard.AddFadeAway(timer.AllMilliseconds, client.Map);
-                                Guard.RemoveView(timer.AllMilliseconds, client.Map);
+                                if (!client.Player.View.MobActions.JumpPos(client.Player.View.GetPlayer().Owner, Guard))
+                                    client.Player.View.MobActions.CheckGuardPosition(client.Player.View.GetPlayer(), Guard);
 
-                            }
-                            foreach (var mob in Array)
-                            {
-                                var monseter = (mob as MonsterRole);
-                                if ((monseter.Family.Settings & MonsterSettings.Guard) != MonsterSettings.Guard
-                                    && (monseter.Family.Settings & MonsterSettings.Reviver) != MonsterSettings.Reviver
-                                    && !monseter.IsFloor)
+                                if (client.Player.View.MobActions.GuardAttackPlayer(client.Player.View.GetPlayer(), Guard))
+                                    Guard.AttackSpeed = timer;
+
+                                if (!Guard.Alive)
                                 {
-                                    if (client.Player.View.MobActions.GuardAttackMonster(client.Map, monseter, Guard))
-                                        break;
+                                    Guard.AddFadeAway(timer.AllMilliseconds, client.Map);
+                                    Guard.RemoveView(timer.AllMilliseconds, client.Map);
+                                }
+
+                                foreach (var mob in Array)
+                                {
+                                    var monster = (mob as MonsterRole);
+                                    if ((monster.Family.Settings & MonsterSettings.Guard) != MonsterSettings.Guard
+                                        && (monster.Family.Settings & MonsterSettings.Reviver) != MonsterSettings.Reviver
+                                        && !monster.IsFloor)
+                                    {
+                                        if (client.Player.View.MobActions.GuardAttackMonster(client.Map, monster, Guard))
+                                            break;
+                                    }
                                 }
                             }
                         }
@@ -119,6 +123,7 @@ namespace COServer.Game.MsgMonster
                 Console.WriteException(e);
             }
         }
+
         public static void AliveMonstersCallback(Client.GameClient client, Time32 timer)
         {
             try

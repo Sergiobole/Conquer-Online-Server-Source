@@ -779,7 +779,9 @@ namespace COServer.Role
                         if (killer.Map == 1020 && Game.MsgTournaments.MsgSchedules.PoleDomination.IsFinished() ||
                             killer.Map == 1015 && Game.MsgTournaments.MsgSchedules.PoleDominationBI.IsFinished() ||
                             killer.Map == 1011 && Game.MsgTournaments.MsgSchedules.PoleDominationPC.IsFinished() ||
-                            killer.Map == 1000 && Game.MsgTournaments.MsgSchedules.PoleDominationDC.IsFinished())
+                            killer.Map == 1000 && Game.MsgTournaments.MsgSchedules.PoleDominationDC.IsFinished() ||
+                            killer.Map == 1075 ||
+                            killer.Map == 1076 )
                         {
                             if (DynamicID == 0)
                             {
@@ -849,17 +851,19 @@ namespace COServer.Role
         }
         public void CheckDropHealingItems(Role.Player killer, ServerSockets.Packet stream)
         {
-            // Removed the Drop Items.
             try
             {
                 ushort x = X;
                 ushort y = Y;
+
                 if (x > 5 && y > 5)
                 {
                     var inventoryItems = Owner.Inventory.ClientItems.Values.ToArray();
-                    if (inventoryItems.Length / 4 > 1)
+                    // Verifica se há mais de 2 itens no inventário para permitir o drop
+                    if (inventoryItems.Length > 2)
                     {
-                        uint count = (uint)Program.GetRandom.Next(1, (int)(inventoryItems.Length));
+                        // Gera um número aleatório de itens a serem descartados, menor que a metade do total
+                        uint count = (uint)Program.GetRandom.Next(1, (inventoryItems.Length / 2) + 1);
 
                         for (int index = 0; index < count; index++)
                         {
@@ -868,14 +872,21 @@ namespace COServer.Role
                                 if (inventoryItems.Length > index && inventoryItems[index] != null)
                                 {
                                     var item = inventoryItems[index];
+
                                     if (item.Position == (ushort)Role.Flags.ConquerItem.Bottle)
                                         continue;
-                                    if (item.Locked == 0 && item.Bound == 0 && !Database.ItemType.unabletradeitem.Contains(item.ITEM_ID) && !Database.ItemType.IsSash(item.ITEM_ID))
+
+                                    if (item.Locked == 0 && item.Bound == 0 &&
+                                        !Database.ItemType.unabletradeitem.Contains(item.ITEM_ID) &&
+                                        !Database.ItemType.IsSash(item.ITEM_ID))
                                     {
-                                        if (item.ITEM_ID >= 720010 && item.ITEM_ID <= 720017 || item.ITEM_ID >= 1000000 && item.ITEM_ID <= 1002050)
+                                        // Verifica se o item é do tipo "cura"
+                                        if (item.ITEM_ID >= 720010 && item.ITEM_ID <= 720017 ||
+                                            item.ITEM_ID >= 1000000 && item.ITEM_ID <= 1002050)
                                         {
                                             ushort New_X = (ushort)Program.GetRandom.Next((ushort)(x - 5), (ushort)(x + 5));
                                             ushort New_Y = (ushort)Program.GetRandom.Next((ushort)(y - 5), (ushort)(y + 5));
+
                                             if (Owner.Map.AddGroundItem(ref New_X, ref New_Y))
                                             {
                                                 DropItem(item, New_X, New_Y, stream);
@@ -884,14 +895,20 @@ namespace COServer.Role
                                     }
                                 }
                             }
-                            catch (Exception e) { Console.WriteLine(e.ToString()); }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.ToString());
+                            }
                         }
-
                     }
                 }
             }
-            catch (Exception e) { Console.WriteLine(e.ToString()); }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
+
 
         public void CheckDropItems(Role.Player killer, ServerSockets.Packet stream)
         {
@@ -1005,11 +1022,12 @@ namespace COServer.Role
 
                         //--------------------------------
 
+
                         //add container Item
                         foreach (var item in ItemsDrop.Values)
-                            Owner.Confiscator.AddItem(Owner, killer.Owner, item, stream);
-                        //-----------
+                            DropItem(item, (ushort)(x + 2), (ushort)(y + 2), stream);
                     }
+                    Program.DiscordAPIRedDrop.Enqueue($"``[{Name}] has been captured by [" + MyKillerName + "] and drop your item!! ``");
                 }
             }
             catch (Exception e) { Console.WriteLine(e.ToString()); }
@@ -1121,6 +1139,8 @@ namespace COServer.Role
                         {
                             var stream = rec.GetStream();
                             Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage(Name + " has been captured by " + MyKillerName + " and sent to jail! CoGolen is now safer!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.System).GetArray(stream));
+
+                            Program.DiscordAPIRedDrop.Enqueue($"``[{Name}] has been captured by [" + MyKillerName + "] and sent to jail and drop your itens!! CoGolen is now safer!``");
                         }
                     }
                 }

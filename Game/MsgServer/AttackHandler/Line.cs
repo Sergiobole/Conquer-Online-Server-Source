@@ -32,7 +32,7 @@ namespace COServer.Game.MsgServer.AttackHandler
                 }
                 else
                 {
-                    user.SendSysMesage("Você não tem stamina suficiente!");
+                    user.SendSysMesage("You don’t have enough stamina!");
                     return; // Sai do método se não tiver stamina suficiente
                 }
 
