@@ -18,7 +18,7 @@ namespace COServer.Game.MsgMonster
             if ((now - lastSpawnTime).TotalHours >= 1)
             {
                 Random R = new Random();
-                int Nr = R.Next(1, 5); // Sorteio de local, 4 opções
+                int Nr = R.Next(1, 6); // Sorteio de local, agora com 6 opções
 
                 // Sorteia os diferentes locais para o TeratoDragon
                 if (Nr == 1)
@@ -57,9 +57,19 @@ namespace COServer.Game.MsgMonster
 
                     MsgSchedules.SendInvitation("TeratoDragon", 799, 575, 1015, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TeratoDragon);
                 }
+                else if (Nr == 5)
+                {
+                    // Novo respawn do Dragon
+                    MsgMonster.BossesBase.SpawnHandler(1787, 48, 38, 20070, "Dragon",
+                        "will appear at " + DateTime.Now.Hour + ":30! Get ready to fight! You only have 5 minutes left!",
+                        " has spawned in Dragon Island!");
+
+                    MsgSchedules.SendInvitation("Dragon", 48, 38, 1787, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.DragonKing);
+                }
 
                 // Atualiza o tempo do último spawn
                 lastSpawnTime = now;
+
             }
         }
 
