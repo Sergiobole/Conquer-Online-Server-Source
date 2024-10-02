@@ -123,7 +123,7 @@ namespace COServer.Game.MsgTournaments
             "Thanks for supporting CoGolden! We will keep on working to provide the best for our players!",
             "Talk to CoGolden NPC in Twin City for information about the game.",
             "Remember to vote! By voting you're helping to increase the community and you can earn some cool rewards for it!",
-            "Top Weekly Voter will receive 500 CPs."
+            "Top Weekly Voter will receive 10.000 CPs."
         };
         internal static void CheckUp(Time32 clock)
         {

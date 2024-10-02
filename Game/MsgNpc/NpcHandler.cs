@@ -113,10 +113,10 @@ namespace COServer.Game.MsgNpc
                             }
 
                             // Envia a mensagem global com o nome da recompensa
-                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"{client.Player.Name} has claimed {rewardName} from EggQuestNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"[{client.Player.Name}] has claimed {rewardName} from EggQuestNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
 
                             // Envia a mensagem para o Discord através da API
-                            Program.DiscordAPIQuest.Enqueue($"{client.Player.Name} has claimed {rewardName} from EggQuestNPC!");
+                            Program.DiscordAPIQuest.Enqueue($"[{client.Player.Name}] has claimed {rewardName} from EggQuestNPC!");
                         }
                         else
                         {
@@ -191,10 +191,10 @@ namespace COServer.Game.MsgNpc
                             }
 
                             // Envia a mensagem global com o nome da recompensa
-                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"{client.Player.Name} has claimed {rewardName} from LetterQuestNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"[{client.Player.Name}] has claimed {rewardName} from LetterQuestNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
 
                             // Envia a mensagem para o Discord através da API
-                            Program.DiscordAPIQuest.Enqueue($"{client.Player.Name} has claimed {rewardName} from LetterQuestNPC!");
+                            Program.DiscordAPIQuest.Enqueue($"[{client.Player.Name}] has claimed {rewardName} from LetterQuestNPC!");
                         }
                         else
                         {
@@ -241,10 +241,10 @@ namespace COServer.Game.MsgNpc
                             client.Inventory.Add(stream, ItemType.SuperToroiseGem, 1);
 
                             // Envia a mensagem global com o nome da recompensa
-                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"{client.Player.Name} has claimed SuperToroiseGem from SuperToroiseGemNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"[{client.Player.Name}] has claimed SuperToroiseGem from SuperToroiseGemNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
 
                             // Envia a mensagem para o Discord através da API
-                            Program.DiscordAPIQuest.Enqueue($"{client.Player.Name} has claimed SuperToroiseGem from SuperToroiseGemNPC!");
+                            Program.DiscordAPIQuest.Enqueue($"[{client.Player.Name}] has claimed SuperToroiseGem from SuperToroiseGemNPC!");
                         }
                         else
                         {
@@ -2880,7 +2880,7 @@ namespace COServer.Game.MsgNpc
 
                                 // Adiciona o item ao inventário 
                                 {
-                                    client.Inventory.Add(stream, 2100075, 1, 0, 0, 0, 0, 0, false);
+                                    client.Inventory.Add(stream, 2100075, 1, 0, 1, 0, 0, 0, true);
                                     data.AddText("You have successfully exchanged 50 FoundsPoints for a Gold-Prize.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
@@ -3114,7 +3114,7 @@ namespace COServer.Game.MsgNpc
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Founds: " + totalFounds);
 
-                        if (totalFounds >= 20)
+                        if (totalFounds >= 1)
                         {
                             const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
                             try
@@ -3234,7 +3234,7 @@ namespace COServer.Game.MsgNpc
                                     data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
-                                    Program.DiscordAPIGarmetLog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
 
                                     break;
                                 }
@@ -3298,7 +3298,7 @@ namespace COServer.Game.MsgNpc
                                     data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
-                                    Program.DiscordAPIGarmetLog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
 
                                     break;
                                 }
@@ -3362,7 +3362,7 @@ namespace COServer.Game.MsgNpc
                                     data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
-                                    Program.DiscordAPIGarmetLog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
 
                                     break;
                                 }
@@ -7804,7 +7804,7 @@ namespace COServer.Game.MsgNpc
 
                             // Enviar mensagem global informando sobre a premiação específica
                             Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("" + client.Player.Name + " has killed 100k monsters and has claimed " + rewardName + " from SoulKeeper!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
-                            Program.DiscordAPIQuest.Enqueue($"{client.Player.Name} has claimed {rewardName} from  Soul KeeperNPC!");
+                            Program.DiscordAPIQuest.Enqueue($"[{client.Player.Name}] has claimed {rewardName} from  Soul KeeperNPC!");
                         }
                         else
                         {
@@ -9232,7 +9232,7 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        data.AddText("Everyone settle down! I need to announce that there are new rules for the Class PK War!")
+                        data.AddText("Everyone settle down! I need to announce that there are new rules for the Class PK War!\n Your need level 130+ !")
                             .AddOption("Tell~me~more.", 1)
                        .AddOption("Sign~up.", 2)
                        .AddOption("Not~interested.", 255).AddAvatar(154).FinalizeDialog();
@@ -9242,7 +9242,8 @@ namespace COServer.Game.MsgNpc
                     }
                 case 1:
                     {
-                        data.AddText("The ClassPK War is held each monday where all classes fight for their top halo. The winner gets 645 CPs! The event is held on monday at 18:00.")
+                        data.AddText("The ClassPK War is held each monday where all classes fight for their top halo. The winner gets 10.000 CPs!\nThe event is held on monday at 18:00. (22:00 BR TIME)\n")
+                            .AddText("[Monday - Trojan]\n[Tuesday - Warrior]\n[Wednesday - Acher]\n[Thursday - Water]\n[Friday - Fire]")
                    .AddOption("Sign~up.", 2)
                    .AddOption("Not~interested.", 255).AddAvatar(154).FinalizeDialog();
                         break;
@@ -9264,7 +9265,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("I`m sorry, but the Class PK War is only held on Mondays.")
+                            data.AddText("I`m sorry, but the Class PK War is only held on Mondays and need level 130+!")
                      .AddOption("Alright.", 255).AddAvatar(154).FinalizeDialog();
                         }
 
@@ -18955,7 +18956,7 @@ namespace COServer.Game.MsgNpc
                                                             client.Equipment.QueryEquipment();
 
                                                         client.SendSysMesage("Congratulations! You have successfully opened a socket with a 0.14% chance!");
-                                                        Program.DiscordAPIsocket.Enqueue($"``Congratulations! {client.Player.Name} You have successfully opened a socket with a 0.14% chance!``");
+                                                        Program.DiscordAPIsocket.Enqueue($"``Congratulations! [{client.Player.Name}] You have successfully opened a socket with a 0.14% chance!``");
                                                     }
                                                     else
                                                     {
@@ -19035,7 +19036,7 @@ namespace COServer.Game.MsgNpc
 
                                                     client.SendSysMesage("Congratulations! You've opened a 2nd socket in your item with a 0.05% chance!");
                                                     Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + client.Player.Name + " has opened a 2nd socket in their " + Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID), Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
-                                                    Program.DiscordAPIsocket.Enqueue($"``Congratulations! {client.Player.Name} You have successfully opened a second socket with a 0.05% chance!``");
+                                                    Program.DiscordAPIsocket.Enqueue($"``Congratulations! [{client.Player.Name}] You have successfully opened a second socket with a 0.05% chance!``");
                                                 }
                                                 else
                                                 {

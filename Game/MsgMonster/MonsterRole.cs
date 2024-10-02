@@ -274,9 +274,18 @@ namespace COServer.Game.MsgMonster
                                 // Faz o drop do item com ID 730002 na coordenada (xx, yy)
                                 DropItem(stream, killer.Player.UID, killer.Map, 730002, xx, yy, MsgFloorItem.MsgItem.ItemType.Item, 0, false, 0);
                             }
+
+
+
                         }
 
+                        Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} killer a TeratoDragon!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                        Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] killer a TeratoDragon!``");
+                        
                         return; // Finaliza a execução da função após o processamento dos drops
+
+
+
                     }
                     if (Role.Core.Rate(2, 20000))
                         DropItemID(killer, 1088000, stream, 6);
@@ -657,12 +666,14 @@ namespace COServer.Game.MsgMonster
                         if (Role.Core.Rate(40)) // Chance de 40% CleanWater
                         {
                             DropItemID(killer, Database.ItemType.CleanWater, stream);
-                            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a ClearWater in WaterLord(428,418) !", MsgMessage.MsgColor.white, MsgMessage.ChatMode.Center).GetArray(stream));
+                            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a ClearWater in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                            Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] found a ClearWater in WaterLord(428,418)!``");
                         }
                         else
                         {
                             DropItemID(killer, Database.ItemType.Meteor, stream); // Dropar uma Meteor.
-                            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a Meteor in WaterLord(428,418) !", MsgMessage.MsgColor.white, MsgMessage.ChatMode.Center).GetArray(stream));
+                            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a Meteor in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                            Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] found a Meteor in WaterLord(428,418)!``");
                         }
                     }
                     #endregion
@@ -1254,7 +1265,7 @@ namespace COServer.Game.MsgMonster
                                         else
                                             Amount = Family.ItemGenerator.GenerateGold(out ItemID);
                                     }
-                                    //DropItem(stream, killer.Player.UID, killer.Map, ItemID, xx, yy, MsgFloorItem.MsgItem.ItemType.Money, Amount, false, 0);
+                                    DropItem(stream, killer.Player.UID, killer.Map, ItemID, xx, yy, MsgFloorItem.MsgItem.ItemType.Money, Amount, false, 0);
                                 }
                             }
                         }

@@ -50,11 +50,11 @@ namespace COServer
             uint valueReward = 0;
             switch (rank)
             {
-                case 1: valueReward = 500; break;
-                case 2: valueReward = 400; break;
-                case 3: valueReward = 300; break;
-                case 4: valueReward = 200; break;
-                case 5: valueReward = 100; break;
+                case 1: valueReward = 10000; break;
+                case 2: valueReward = 5000; break;
+                case 3: valueReward = 3000; break;
+                case 4: valueReward = 2000; break;
+                case 5: valueReward = 1000; break;
             }
             return valueReward;
         }

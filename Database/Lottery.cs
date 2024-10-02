@@ -82,7 +82,7 @@ namespace COServer.Database
                 uint Id = RateH5[Role.Core.Random.Next(0, RateH5.Count)];
                 Client.Inventory.Add(stream, Id, 1);
                 Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + Client.Player.Name + " won " + Server.ItemsBase[Id].Name + " in lottery.", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
-                Program.DiscordAPILotery.Enqueue("``Congratulations! "+ Client.Player.Name + " won " + Server.ItemsBase[Id].Name + " in lottery.``");
+                Program.DiscordAPILotery.Enqueue("``Congratulations! ["+ Client.Player.Name + "] won " + Server.ItemsBase[Id].Name + " in lottery.``");
             }
             else if (Role.Core.Rate(0.010))
             {
@@ -91,7 +91,7 @@ namespace COServer.Database
                uint Id = RateH4[Role.Core.Random.Next(0, RateH4.Count)];
                 Client.Inventory.Add(stream, Id, 1);
                 Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + Client.Player.Name + " won " + Server.ItemsBase[Id].Name + " in lottery.", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
-                Program.DiscordAPILotery.Enqueue("``Congratulations! " + Client.Player.Name + " won " + Server.ItemsBase[Id].Name + " in lottery.``");
+                Program.DiscordAPILotery.Enqueue("``Congratulations! [" + Client.Player.Name + "] won " + Server.ItemsBase[Id].Name + " in lottery.``");
             }
             else if (Role.Core.Rate(0.015))
             {
@@ -99,7 +99,7 @@ namespace COServer.Database
                     Client.SendSysMesage("Group3", Game.MsgServer.MsgMessage.ChatMode.TopLeft);
                 uint Id = RateH3[Role.Core.Random.Next(0, RateH3.Count)];
                 Client.Inventory.Add(stream, Id, 1);
-                Program.DiscordAPILotery.Enqueue("``Congratulations! " + Client.Player.Name + " won " + Server.ItemsBase[Id].Name + " in lottery.``");
+                Program.DiscordAPILotery.Enqueue("``Congratulations! [" + Client.Player.Name + "] won " + Server.ItemsBase[Id].Name + " in lottery.``");
             }
             else if (Role.Core.Rate(10))
             {

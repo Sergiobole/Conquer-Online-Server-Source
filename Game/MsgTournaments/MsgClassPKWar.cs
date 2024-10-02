@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace COServer.Game.MsgTournaments
@@ -13,24 +14,35 @@ namespace COServer.Game.MsgTournaments
             Trojan = 0,
             Warrior = 1,
             Archer = 2,
-            //Ninja = 3,
-            //Monk = 4,
-            //Pirate = 5,
             Fire = 3,
             Water = 4,
-            //LongLee = 8,
-            //WindWalker = 9,
             Count = 5
         }
         public enum TournamentLevel : byte
         {
-            Level_1_99 = 0,
-            Level_100_119 = 1,
-            Level_120_130 = 2,
-            Level_130_140 = 3,
+            Level_130 = 0,
             Count = 4
         }
 
+        public enum Weekday : byte
+        {
+            Sunday = 0,
+            Monday = 1,
+            Tuesday = 2,
+            Wednesday = 3,
+            Thursday = 4,
+            Friday = 5,
+            Saturday = 6
+        }
+
+        public static readonly Dictionary<TournamentType, Weekday> TournamentDays = new Dictionary<TournamentType, Weekday>
+            {
+                { TournamentType.Trojan, Weekday.Monday },
+                { TournamentType.Warrior, Weekday.Tuesday },
+                { TournamentType.Archer, Weekday.Wednesday },
+                { TournamentType.Fire, Weekday.Thursday },
+                { TournamentType.Water, Weekday.Friday }
+            };
 
         public War[][] PkWars;
         public ProcesType Proces;
@@ -45,7 +57,7 @@ namespace COServer.Game.MsgTournaments
             {
                 PkWars[(byte)i] = new War[(byte)TournamentLevel.Count];
 
-                for (TournamentLevel x = TournamentLevel.Level_1_99; x < TournamentLevel.Count; x++)
+                for (TournamentLevel x = TournamentLevel.Level_130; x < TournamentLevel.Count; x++)
                 {
                     PkWars[(byte)i][(byte)x] = new War(i, x, ProcesType.Dead);
                 }
@@ -55,22 +67,27 @@ namespace COServer.Game.MsgTournaments
         {
             if (Proces == ProcesType.Dead)
             {
-                for (TournamentType i = TournamentType.Trojan; i < TournamentType.Count; i++)
-                {
-                    PkWars[(byte)i] = new War[(byte)TournamentLevel.Count];
+                var currentDay = (Weekday)(int)DateTime.Now.DayOfWeek;
 
-                    for (TournamentLevel x = TournamentLevel.Level_1_99; x < TournamentLevel.Count; x++)
-                    {
-                        PkWars[(byte)i][(byte)x] = new War(i, x, ProcesType.Dead);
-                    }
-                }
-                foreach (var tournament in PkWars)
+                foreach (var tournament in TournamentDays)
                 {
-                    foreach (var war in tournament)
+                    if (tournament.Value == currentDay)
                     {
-                        war.Start(Database.Server.ServerMaps[MapID]);
+                        var typ = tournament.Key;
+                        PkWars[(byte)typ] = new War[(byte)TournamentLevel.Count];
+
+                        for (TournamentLevel x = TournamentLevel.Level_130; x < TournamentLevel.Count; x++)
+                        {
+                            PkWars[(byte)typ][(byte)x] = new War(typ, x, ProcesType.Dead);
+                        }
+
+                        foreach (var war in PkWars[(byte)typ])
+                        {
+                            war.Start(Database.Server.ServerMaps[MapID]);
+                        }
                     }
                 }
+
                 Proces = ProcesType.Idle;
             }
         }
@@ -96,8 +113,6 @@ namespace COServer.Game.MsgTournaments
                 case TournamentType.Trojan: return MsgServer.MsgUpdate.Flags.TopTrojan;
                 case TournamentType.Warrior: return MsgServer.MsgUpdate.Flags.TopWarrior;
                 case TournamentType.Archer: return MsgServer.MsgUpdate.Flags.TopArcher;
-                //case TournamentType.Ninja: return MsgServer.MsgUpdate.Flags.TopNinja;
-                //case TournamentType.Monk: return MsgServer.MsgUpdate.Flags.TopMonk;
                 case TournamentType.Fire: return MsgServer.MsgUpdate.Flags.TopFireTaoist;
                 case TournamentType.Water: return MsgServer.MsgUpdate.Flags.TopWaterTaoist;
             }
@@ -124,12 +139,6 @@ namespace COServer.Game.MsgTournaments
                 return TournamentType.Warrior;
             if (Database.AtributesStatus.IsArcher(client.Player.Class))
                 return TournamentType.Archer;
-            //if (Database.AtributesStatus.IsNinja(client.Player.Class))
-            //    return TournamentType.Ninja;
-            //if (Database.AtributesStatus.IsMonk(client.Player.Class))
-            //    return TournamentType.Monk;
-            //if (Database.AtributesStatus.IsPirate(client.Player.Class))
-            //    return TournamentType.Pirate;
             if (Database.AtributesStatus.IsWater(client.Player.Class))
                 return TournamentType.Water;
             if (Database.AtributesStatus.IsFire(client.Player.Class))
@@ -138,14 +147,8 @@ namespace COServer.Game.MsgTournaments
         }
         internal static TournamentLevel GetMyTournamentLevel(Client.GameClient client)
         {
-            if (client.Player.Level <= 99)
-                return TournamentLevel.Level_1_99;
-            else if (client.Player.Level > 99 && client.Player.Level < 120)
-                return TournamentLevel.Level_100_119;
-            else if (client.Player.Level >= 120 && client.Player.Level <= 129)
-                return TournamentLevel.Level_120_130;
-            else if (client.Player.Level >= 130)
-                return TournamentLevel.Level_130_140;
+            if (client.Player.Level >= 130)
+                return TournamentLevel.Level_130;
             return TournamentLevel.Count;
         }
         internal ProcesType GetWar(Client.GameClient client, out War mywar)
@@ -232,7 +235,7 @@ namespace COServer.Game.MsgTournaments
                 if (Proces == ProcesType.Dead)
                 {
                     Proces = ProcesType.Alive;
-                    FinishTimer = DateTime.Now.AddMinutes(10);
+                    FinishTimer = DateTime.Now.AddMinutes(1);
                     DinamicID = map.GenerateDynamicID();
 
                     foreach (var client in Database.Server.GamePoll.Values)
@@ -293,10 +296,11 @@ namespace COServer.Game.MsgTournaments
                     if (aura != MsgServer.MsgUpdate.Flags.Normal)
                         client.Player.AddFlag(aura, Role.StatusFlagsBigVector32.PermanentFlag, false);
 
-                    client.Player.ConquerPoints += 645;
+                    client.Player.ConquerPoints += 10000;
                     LastFlag = aura;
                     Winner = client.Player.UID;
-                    MsgSchedules.SendSysMesage("" + client.Player.Name + " Won " + Typ.ToString() + " PK War (" + Level.ToString() + ") , he/she received Top " + Typ.ToString() + " and 645 CPs.", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
+                    MsgSchedules.SendSysMesage("" + client.Player.Name + " Won " + Typ.ToString() + " PK War (" + Level.ToString() + ") , he/she received Top " + Typ.ToString() + " and 10.000 CPs.", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
+                    Program.DiscordAPIwinners.Enqueue("``[" + client.Player.Name + "] Won " + Typ.ToString() + " PK War (" + Level.ToString() + "), he/she received Top " + Typ.ToString() + " and 10.000 CPs.``");
                     client.Teleport(430, 269, 1002, 0);
                 }
             }
