@@ -760,18 +760,30 @@ namespace COServer.Client
                         }
                     }
                 }
-                // Verifica se já se passaram mais de 10 minutos desde o último timestamp de login
                 if (DateTime.Now > client.LastOnlineStamp.AddMinutes(10))
                 {
                     // Atualiza o timestamp do último login para o horário atual
                     client.LastOnlineStamp = DateTime.Now;
 
-                    // Incrementa os pontos online do jogador em 10
-                    client.Player.OnlinePoints += 10;
+                    // Verifica se o jogador está no mapa 1002
+                    if (client.Player.Map == 1002)
+                    {
+                        // Incrementa os pontos online do jogador em 10
+                        client.Player.OnlinePoints += 10;
 
-                    // Envia uma mensagem ao jogador informando que ele ganhou 10 pontos online
-                    // e mostra o total de pontos online atualizado
-                    client.SendSysMesage($"You have earned 10 OnlinePoints, your total is: {client.Player.OnlinePoints}");
+                        // Envia uma mensagem ao jogador informando que ele ganhou 10 pontos online
+                        // e mostra o total de pontos online atualizado
+                        client.SendSysMesage($"You have earned 10 OnlinePoints for being in the special map TwinCity, your total is: {client.Player.OnlinePoints}");
+                    }
+                    else
+                    {
+                        // Incrementa os pontos online do jogador em 5
+                        client.Player.OnlinePoints += 5;
+
+                        // Envia uma mensagem ao jogador informando que ele ganhou 5 pontos online
+                        // por não estar no mapa especial
+                        client.SendSysMesage($"You have earned 5 OnlinePoints for not being in TwinCity map, your total is: {client.Player.OnlinePoints}");
+                    }
                 }
             }
 

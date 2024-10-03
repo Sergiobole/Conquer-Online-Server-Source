@@ -73,9 +73,9 @@ namespace COServer.Game.MsgServer
                         client.Player.Class = Class;
                         client.Player.Body = Body;
                         client.Player.Level = 1;
-                        client.Player.Map = 1004;
-                        client.Player.X = 51;
-                        client.Player.Y = 47;
+                        client.Player.Map = 1002;
+                        client.Player.X = 430;
+                        client.Player.Y = 388;
                         client.Player.Money += 10000;
 
                         //if (DateTime.Now > client.Player.ExpireVip)
