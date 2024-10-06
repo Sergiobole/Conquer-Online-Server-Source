@@ -19,17 +19,22 @@ namespace COServer.EventsLib
                 if (Database.Server.GamePoll.Values.Where(e => e.Hunted == true && e.Player.Alive && e.Player.Map == map).Count() == 0)
                     Pass();
             }
-            else
-                if (list.Count() == 1)
+            else if (list.Count() == 1)
             {
                 var winner = list.SingleOrDefault();
                 winner.Teleport(430, 378, 1002);
                 winner.Hunted = false;
-                winner.Player.Money += 800000; //800k
+                winner.Player.Money += 100000; // 100k
+
+                // Adiciona o item Tortoise ao vencedor
                 using (var rec = new ServerSockets.RecycledPacket())
                 {
                     var stream = rec.GetStream();
-                    Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"{ winner.Player.Name } has won the Kill The Fugitive.", "ALLUSERS", "PrisonOfficer", Game.MsgServer.MsgMessage.MsgColor.white, (Game.MsgServer.MsgMessage.ChatMode)2005).GetArray(stream));
+                    winner.Inventory.Add(stream, 700071, 1); // Adiciona 1 item Tortoise
+
+                    // Envia a mensagem de vitória
+                    Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"{winner.Player.Name} has won the Kill The Fugitive.", "ALLUSERS", "PrisonOfficer", Game.MsgServer.MsgMessage.MsgColor.white, (Game.MsgServer.MsgMessage.ChatMode)2005).GetArray(stream));
+                    Program.DiscordAPIwinners.Enqueue("``[" + winner.Player.Name + "] has won Vendetta. Very nice, and won [Tortoise Normal]!``");
                 }
             }
         }

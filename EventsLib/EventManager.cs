@@ -1,7 +1,9 @@
 ﻿using COServer.Client;
+using COServer.Game.MsgServer.AttackHandler.ReceiveAttack;
 using COServer.Role;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,7 +36,7 @@ namespace COServer.EventsLib
         public static GuildsDeathMatch guildsdm = new GuildsDeathMatch();
         public static TeamFreezeWar teamfreezewar = new TeamFreezeWar();
         public static DragonWar dragonwar = new DragonWar();
-        public static uint CountEvent = 0;
+        public static uint CountEvent = 1;
         /// <summary>
         /// RndCoordinates
         /// </summary>
@@ -150,6 +152,8 @@ namespace COServer.EventsLib
                 chaa.Teleport(X, Y, Map);
             }
         }
+
+        // ID DO MAPA ORIGINAL DE EVENTO: 1767
         public static void SetEvent(string Name, uint Map)
         {
             //if (Name == passthebombEv.name)
@@ -168,7 +172,8 @@ namespace COServer.EventsLib
             using (var rec = new ServerSockets.RecycledPacket())
             {
                 var stream = rec.GetStream();
-                Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("The signups for " + NextEvent + " has started. Type @pvp to signup.", "ALLUSERS", "PVPEvents", Game.MsgServer.MsgMessage.MsgColor.white, (Game.MsgServer.MsgMessage.ChatMode)2011).GetArray(stream));
+
+                Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("The signups for " + NextEvent + " has started. Type @pvp to signup.", "ALLUSERS", "PVPEvents", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.TopLeft).GetArray(stream));
             }
             if (NextEvent == dragonwar.name)
                 dragonwar.ChooseKing = true;
@@ -240,6 +245,7 @@ namespace COServer.EventsLib
                     player.MySpells.Add(stream, 1045, 4);
                     player.MySpells.Add(stream, 1046, 4);
                 }
+
                 player.Teleport(50, 50, 1767);
                 player.SendSysMesage("You've signed up! Please wait for 1 minute, and don't teleport or you'll be disqualified.", (Game.MsgServer.MsgMessage.ChatMode)2005);
             }
@@ -250,6 +256,7 @@ namespace COServer.EventsLib
         {
             try
             {
+
                 if (DateTime.Now > signUp.AddMinutes(1) && !EventStarted && NextMap != 0 && CountDown <= 0)
                 {
                     using (var rec = new ServerSockets.RecycledPacket())
@@ -262,42 +269,6 @@ namespace COServer.EventsLib
                         }
                     }
                     EventStarted = true;
-                    if (NextEvent == guildsdm.name)
-                    {
-                        foreach (var pl in Database.Server.GamePoll.Values.Where(e => e.Player.Map == 1767))
-                        {
-                            #region rndcoor
-                            ushort X = 0, Y = 0;
-                            switch (rnd.Next(0, 6))
-                            {
-                                default:
-                                case 0:
-                                    X = 229;
-                                    Y = 183;
-                                    break;
-                                case 1:
-                                    X = 255;
-                                    Y = 168;
-                                    break;
-                                case 2:
-                                    X = 285;
-                                    Y = 211;
-                                    break;
-                                case 3:
-                                    X = 320;
-                                    Y = 280;
-                                    break;
-                                case 4:
-                                    X = 293;
-                                    Y = 373;
-                                    break;
-                            }
-                            #endregion
-
-                            pl.Teleport(X, Y, NextMap);
-                        }
-
-                    }
                     if (!Program.FreePkMap.Contains(NextMap))
                         Program.FreePkMap.Add(NextMap);
                     int c = Database.Server.GamePoll.Values.Where(e => e.Player.Map == 1767).Count();
@@ -345,6 +316,43 @@ namespace COServer.EventsLib
                             Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("The signups for " + NextEvent + " has been disabled.", "ALLUSERS", "PVPEvents", Game.MsgServer.MsgMessage.MsgColor.white, (Game.MsgServer.MsgMessage.ChatMode)2011).GetArray(stream));
                         }
                     }
+
+                    if (NextEvent == guildsdm.name)
+                    {
+                        foreach (var pl in Database.Server.GamePoll.Values.Where(e => e.Player.Map == 1767))
+                        {
+                            #region rndcoor
+                            ushort X = 0, Y = 0;
+                            switch (rnd.Next(0, 6))
+                            {
+                                default:
+                                case 0:
+                                    X = 229;
+                                    Y = 183;
+                                    break;
+                                case 1:
+                                    X = 255;
+                                    Y = 168;
+                                    break;
+                                case 2:
+                                    X = 285;
+                                    Y = 211;
+                                    break;
+                                case 3:
+                                    X = 320;
+                                    Y = 280;
+                                    break;
+                                case 4:
+                                    X = 293;
+                                    Y = 373;
+                                    break;
+                            }
+                            #endregion
+
+                            pl.Teleport(X, Y, NextMap);
+                        }
+
+                    }
                 }
                 using (var rec = new ServerSockets.RecycledPacket())
                 {
@@ -358,6 +366,7 @@ namespace COServer.EventsLib
                 }
                 if (CountDown > 0)
                     --CountDown;
+
                 //passthebombEv.worker();
                 kingofthehill.worker();
                 deathmatch.worker();
@@ -622,6 +631,17 @@ namespace COServer.EventsLib
                             killer.SendSysMesage("You lost 1 point for killing your teammate!", (Game.MsgServer.MsgMessage.ChatMode)2000);
                         }
                         else killer.SendSysMesage("If you kill your teammate you'll lose 1 point.", (Game.MsgServer.MsgMessage.ChatMode)2000);
+                    }
+                }
+                if (killed.Player.Map == guildsdm.map)
+                {
+                    //Console.WriteLine(killed.Player.Name);
+                    killed.Teleport(430, 329, 1002);
+
+                    using (var rec = new ServerSockets.RecycledPacket())
+                    {
+                        var stream = rec.GetStream();
+                        killed.Player.Revive(stream);
                     }
                 }
             }

@@ -256,6 +256,9 @@ namespace COServer.Role.Instance
                     case 601:
                         Name = "OfflineTG";
                         break;
+                    case 1767:
+                        Name = "Event";
+                        break;
                     case 700:
                         Name = "LotteryMap";
                         break;

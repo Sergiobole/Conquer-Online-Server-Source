@@ -386,7 +386,8 @@ namespace COServer.Role
             2057,
             Game.MsgTournaments.MsgClassPKWar.MapID,
             10137,
-            10166
+            10166,
+            1767,
         };
 
         public List<Portal> Portals = new List<Portal>();
@@ -763,6 +764,7 @@ namespace COServer.Role
                 }
                 if (folded.Key == 1004)
                 {
+                    LoadMap(1767, mapFile, 1004);
                     LoadMap(9999, mapFile, 1004);
                 }
                 if (folded.Key == 700)

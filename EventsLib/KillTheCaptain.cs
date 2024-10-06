@@ -118,12 +118,16 @@ namespace COServer.EventsLib
                 {
                     if (player.TeamKillTheCaptain == winnerTeam)
                     {
-                        player.Inventory.Add(stream, 700072, 1);
+                        player.Inventory.Add(stream, 700071, 1); /// totoise
+                        Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage(winnerTeam + " team has won Vendetta. Very nice!", "ALLUSERS", "Vendetta", Game.MsgServer.MsgMessage.MsgColor.white, (Game.MsgServer.MsgMessage.ChatMode)2500).GetArray(stream));
+                        Program.DiscordAPIwinners.Enqueue("``[" + winnerTeam + "] team has won Vendetta. Very nice, and [Totoise Normal]!``");
                     }
-                    player.Teleport(1006, 036, 32);
+                    player.Teleport(439, 387, 1002);
                     player.Player.RemoveFlag(Game.MsgServer.MsgUpdate.Flags.Flashy);
+
                 }
-                Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage(winnerTeam + " team has won Vendetta. Very nice!", "ALLUSERS", "Vendetta", Game.MsgServer.MsgMessage.MsgColor.white, (Game.MsgServer.MsgMessage.ChatMode)2500).GetArray(stream));
+
+
             }
         }
     }

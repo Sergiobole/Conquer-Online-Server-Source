@@ -26,9 +26,9 @@ namespace COServer.Game.MsgServer.AttackHandler
             if (CheckAttack.CanUseSpell.Verified(Attack, user, DBSpells, out ClientSpell, out DBSpell))
             {
                 // Lógica para redução da stamina
-                if (user.Player.Stamina >= 20) // Verifica se há stamina suficiente
+                if (user.Player.Stamina >= 15) // Verifica se há stamina suficiente
                 {
-                    user.Player.Stamina -= 20;
+                    user.Player.Stamina -= 15;
                 }
                 else
                 {
@@ -219,12 +219,12 @@ namespace COServer.Game.MsgServer.AttackHandler
                             }
 
                             // Ajuste na lógica de Stamina
-                            if (user.Player.Stamina < 20)
+                            if (user.Player.Stamina < 15)
                             {
                                 user.SendSysMesage("You don’t have enough stamina!");
                                 return; // Sai do método se não tiver stamina suficiente
                             }
-                            user.Player.Stamina -= 20;
+                            user.Player.Stamina -= 15;
 
                             Updates.IncreaseExperience.Up(stream, user, Experience);
                             Updates.UpdateSpell.CheckUpdate(stream, user, Attack, Experience, DBSpells);

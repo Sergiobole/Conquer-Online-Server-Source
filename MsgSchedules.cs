@@ -31,16 +31,16 @@ namespace COServer.Game.MsgTournaments
         internal static MsgDisCity DisCity;
         internal static MsgMonster.BossesBase Bosses;
         internal static MsgSquama Squama;
-        internal static Ss_Fb _Ss_Fb;
-        internal static ConquerPk _ConquerPk;
+        //internal static Ss_Fb _Ss_Fb;
+        //internal static ConquerPk _ConquerPk;
         internal static LastMan _LastMan;
         internal static Get5Out _Get5Out;
         internal static LuckyBox _LuckyBox;
         internal static NobilityWar _NobilityWar;
         internal static GenderWar _GenderWar;
-        internal static Top_Black _Top_Black;
-        internal static FirstKiller _FirstKiller;
-        internal static ArenaDuel _ArenaDuel;
+        //internal static Top_Black _Top_Black;
+        //internal static FirstKiller _FirstKiller;
+        //internal static ArenaDuel _ArenaDuel;
         internal static MsgCityWarAnimation CityWarAnimation;
         internal static MsgCityWar CityWar;
         internal static MsgDragonIsland DragonIsland;
@@ -57,16 +57,16 @@ namespace COServer.Game.MsgTournaments
             _ExtremeFlagWar = new ExtremeFlagWar();
             _EliteGuildWar = new EliteGuildWar();
             //_FirePoleWar = new FirePoleWar();
-            _Ss_Fb = new Ss_Fb();
-            _ConquerPk = new ConquerPk();
+            //_Ss_Fb = new Ss_Fb();
+            //_ConquerPk = new ConquerPk();
             _LastMan = new LastMan();
             _NobilityWar = new NobilityWar();
             _GenderWar = new GenderWar();
             _LuckyBox = new LuckyBox();
             _Get5Out = new Get5Out();
-            _Top_Black = new Top_Black();
-            _FirstKiller = new FirstKiller();
-            _ArenaDuel = new ArenaDuel();
+            //_Top_Black = new Top_Black();
+            //_FirstKiller = new FirstKiller();
+            //_ArenaDuel = new ArenaDuel();
             Tournaments.Add(TournamentType.None, new MsgNone(TournamentType.None));
             Tournaments.Add(TournamentType.TreasureThief, new MsgTreasureChests(TournamentType.TreasureThief));
             Tournaments.Add(TournamentType.DBShower, new MsgDBShower(TournamentType.DBShower));
@@ -142,15 +142,15 @@ namespace COServer.Game.MsgTournaments
                     DisCity.CheckUp();
                     PkWar.CheckUp();
                     CouplesPKWar.CheckUp();
-                    _Ss_Fb.CheckUp();
-                    _ConquerPk.CheckUp();
+                    //_Ss_Fb.CheckUp();
+                    //_ConquerPk.CheckUp();
                     _LastMan.CheckUp();
                     _NobilityWar.CheckUp();
                     //_FirePoleWar.CheckUp();
                     _GenderWar.CheckUp();
                     _ExtremeFlagWar.CheckUp();
                     _EliteGuildWar.CheckUp();
-                    _ArenaDuel.CheckUp();
+                    //_ArenaDuel.CheckUp();
                     PoleDomination.CheckUp();
                     PoleDominationPC.CheckUp();
                     PoleDominationDC.CheckUp();
@@ -172,12 +172,15 @@ namespace COServer.Game.MsgTournaments
                             Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage(rndMsg, "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
                         }
                     }
-                    if (Now64 > EventManager.TimeEvent.AddMilliseconds(1800000))
+                    //1800000
+                    if (Now64 > EventManager.TimeEvent.AddMinutes(30))
                     {
                         EventManager.TimeEvent = Now64;
                         EventManager.CountEvent++;
+                        Console.WriteLine("Iniciar evento: " + EventManager.CountEvent);
                         switch (EventManager.CountEvent)
                         {
+
                             case 2:
                                 {
                                     EventsLib.EventManager.freezewar.LastSpawn = DateTime.Now;
@@ -185,6 +188,7 @@ namespace COServer.Game.MsgTournaments
                                     EventsLib.EventManager.SetEvent(EventsLib.EventManager.freezewar.name,
                                         EventsLib.EventManager.freezewar.map);
                                     EventsLib.EventManager.freezewar.SendInvitation();
+                                    Program.DiscordAPIevents.Enqueue($"``Freezewar has started!``");
                                     break;
                                 }
                             case 3:
@@ -193,82 +197,79 @@ namespace COServer.Game.MsgTournaments
                                     EventsLib.EventManager.SetEvent(EventsLib.EventManager.guildsdm.name,
                                         EventsLib.EventManager.guildsdm.map);
                                     EventsLib.EventManager.guildsdm.SendInvitation();
+                                    Program.DiscordAPIevents.Enqueue($"``GuildDeathmatch has started!``");
                                     break;
                                 }
                             //case 4:
                             //    {
-                            //        EventsLib.EventManager.passthebombEv.LastSpawn = DateTime.Now;
-                            //        EventsLib.EventManager.passthebombEv.senton = DateTime.Now;
-                            //        EventsLib.EventManager.SetEvent(EventsLib.EventManager.passthebombEv.name,
-                            //            EventsLib.EventManager.passthebombEv.map);
-                            //        EventsLib.EventManager.passthebombEv.SendInvitation();
+                            //        EventsLib.EventManager.kingofthehill.LastSpawn = DateTime.Now;
+                            //        EventsLib.EventManager.kingofthehill.senton = DateTime.Now;
+                            //        EventsLib.EventManager.SetEvent(EventsLib.EventManager.kingofthehill.name,
+                            //            EventsLib.EventManager.kingofthehill.map);
+                            //        EventsLib.EventManager.kingofthehill.SendInvitation();
                             //        break;
                             //    }
-                            case 6:
-                                {
-                                    EventsLib.EventManager.kingofthehill.LastSpawn = DateTime.Now;
-                                    EventsLib.EventManager.kingofthehill.senton = DateTime.Now;
-                                    EventsLib.EventManager.SetEvent(EventsLib.EventManager.kingofthehill.name,
-                                        EventsLib.EventManager.kingofthehill.map);
-                                    EventsLib.EventManager.kingofthehill.SendInvitation();
-                                    break;
-                                }
-                            case 7:
+                            case 4:
                                 {
                                     EventsLib.EventManager.ctb.LastSpawn = DateTime.Now;
                                     EventsLib.EventManager.ctb.senton = DateTime.Now;
                                     EventsLib.EventManager.SetEvent(EventsLib.EventManager.ctb.name,
                                         EventsLib.EventManager.ctb.map);
                                     EventsLib.EventManager.ctb.SendInvitation();
+                                    Program.DiscordAPIevents.Enqueue($"``CaptureTheBag has started!``");
                                     break;
                                 }
-                            case 8:
+                            case 5:
                                 {
                                     EventsLib.EventManager.deathmatch.LastSpawn = DateTime.Now;
                                     EventsLib.EventManager.deathmatch.senton = DateTime.Now;
                                     EventsLib.EventManager.SetEvent(EventsLib.EventManager.deathmatch.name,
                                         EventsLib.EventManager.deathmatch.map);
                                     EventsLib.EventManager.deathmatch.SendInvitation();
+                                    Program.DiscordAPIevents.Enqueue($"``Deathmatch has started!``");
+
                                     break;
                                 }
-                            case 9:
+                            case 6:
                                 {
                                     EventsLib.EventManager.killthecaptain.LastSpawn = DateTime.Now;
                                     EventsLib.EventManager.killthecaptain.senton = DateTime.Now;
                                     EventsLib.EventManager.SetEvent(EventsLib.EventManager.killthecaptain.name,
                                         EventsLib.EventManager.killthecaptain.map);
                                     EventsLib.EventManager.killthecaptain.SendInvitation();
+                                    Program.DiscordAPIevents.Enqueue($"``Kill the captain has started!``");
                                     break;
                                 }
-                            case 10:
+                            case 7:
                                 {
                                     EventsLib.EventManager.killhunted.LastSpawn = DateTime.Now;
                                     EventsLib.EventManager.killhunted.senton = DateTime.Now;
                                     EventsLib.EventManager.SetEvent(EventsLib.EventManager.killhunted.name,
                                         EventsLib.EventManager.killhunted.map);
                                     EventsLib.EventManager.killhunted.SendInvitation();
+                                    Program.DiscordAPIevents.Enqueue($"``Kill hunted has started!``");
                                     break;
                                 }
-                            case 11:
-                                {
-                                    EventsLib.EventManager.teamfreezewar.LastSpawn = DateTime.Now;
-                                    EventsLib.EventManager.teamfreezewar.senton = DateTime.Now;
-                                    EventsLib.EventManager.SetEvent(EventsLib.EventManager.teamfreezewar.name,
-                                        EventsLib.EventManager.teamfreezewar.map);
-                                    EventsLib.EventManager.teamfreezewar.SendInvitation();
-                                    break;
-                                }
-                            case 12:
-                                {
-                                    EventsLib.EventManager.dragonwar.LastSpawn = DateTime.Now;
-                                    EventsLib.EventManager.dragonwar.senton = DateTime.Now;
-                                    EventsLib.EventManager.SetEvent(EventsLib.EventManager.dragonwar.name,
-                                        EventsLib.EventManager.dragonwar.map);
-                                    EventsLib.EventManager.dragonwar.SendInvitation();
-                                    break;
-                                }
+                            //case 9:
+                            //    {
+                            //        EventsLib.EventManager.teamfreezewar.LastSpawn = DateTime.Now;
+                            //        EventsLib.EventManager.teamfreezewar.senton = DateTime.Now;
+                            //        EventsLib.EventManager.SetEvent(EventsLib.EventManager.teamfreezewar.name,
+                            //            EventsLib.EventManager.teamfreezewar.map);
+                            //        EventsLib.EventManager.teamfreezewar.SendInvitation();
+                            //        break;
+                            //    }
+                            //case 10:
+                            //    {
+                            //        EventsLib.EventManager.dragonwar.LastSpawn = DateTime.Now;
+                            //        EventsLib.EventManager.dragonwar.senton = DateTime.Now;
+                            //        EventsLib.EventManager.SetEvent(EventsLib.EventManager.dragonwar.name,
+                            //            EventsLib.EventManager.dragonwar.map);
+                            //        EventsLib.EventManager.dragonwar.SendInvitation();
+                            //        break;
+                            //    }
                             default:
-                                EventManager.CountEvent = 0;
+                                EventManager.CountEvent = 1;
                                 break;
                         }
                     }
@@ -344,7 +345,7 @@ namespace COServer.Game.MsgTournaments
                     if (Now64.Hour == 18 && Now64.Minute == 0)
                     {
                         ClassPkWar.Start();
-                        Program.DiscordAPIevents.Enqueue($"``{ClassPkWar} has started!``");
+                        Program.DiscordAPIevents.Enqueue($"``ClassPK has started!``");
                     }
                     if (Now64.Hour == 18 && Now64.Minute >= 10)
                     {

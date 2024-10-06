@@ -906,8 +906,8 @@ namespace COServer.Game.MsgMonster
             {
                 if (Player.Action == Role.Flags.ConquerAction.Sit)
                 {
-                    if (Player.Stamina >= 20)
-                        Player.Stamina -= 20;
+                    if (Player.Stamina >= 10)
+                        Player.Stamina -= 10;
                     else
                         Player.Stamina = 0;
 

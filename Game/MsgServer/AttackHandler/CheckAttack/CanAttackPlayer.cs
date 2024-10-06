@@ -28,8 +28,8 @@ namespace COServer.Game.MsgServer.AttackHandler.CheckAttack
 
             if (attacked.Action == Role.Flags.ConquerAction.Sit)
             {
-                if (attacked.Stamina >= 50)
-                    attacked.Stamina -= 50;
+                if (attacked.Stamina >= 10)
+                    attacked.Stamina -= 10;
                 else attacked.Stamina = 0;
                 using (var rec = new ServerSockets.RecycledPacket())
                 {

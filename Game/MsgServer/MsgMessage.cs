@@ -420,11 +420,11 @@ namespace COServer.Game.MsgServer
                                 switch (data[1])
                                 {
                                     case "fivenot": MsgSchedules._Get5Out.Open(); break;
-                                    case "ss_fb": MsgTournaments.MsgSchedules._Ss_Fb.Open(); break;
-                                    case "topconquer": MsgTournaments.MsgSchedules._ConquerPk.Open(); break;
+                                    //case "ss_fb": MsgTournaments.MsgSchedules._Ss_Fb.Open(); break;
+                                    //case "topconquer": MsgTournaments.MsgSchedules._ConquerPk.Open(); break;
                                     case "lastman": MsgTournaments.MsgSchedules._LastMan.Open(); break;
-                                    case "firstkiller": MsgSchedules._FirstKiller.Open(); break;
-                                    case "topblack": MsgSchedules._Top_Black.Open(); break;
+                                    //case "firstkiller": MsgSchedules._FirstKiller.Open(); break;
+                                    //case "topblack": MsgSchedules._Top_Black.Open(); break;
                                     case "topgender": MsgSchedules._GenderWar.Open(); break;
                                         //case "dragonwar": MsgSchedules.Dragonwar = true; break;
                                         //case "luckybox": MsgSchedules.Luckybox = true; break;
@@ -548,25 +548,15 @@ namespace COServer.Game.MsgServer
                                             }
                                         //case "4":
                                         //    {
-                                        //        EventsLib.EventManager.passthebombEv.LastSpawn = DateTime.Now;
-                                        //        EventsLib.EventManager.passthebombEv.senton = DateTime.Now;
-                                        //        EventsLib.EventManager.SetEvent(EventsLib.EventManager.passthebombEv.name,
-                                        //            EventsLib.EventManager.passthebombEv.map);
-                                        //        EventsLib.EventManager.passthebombEv.SendInvitation();
+                                        //        EventsLib.EventManager.kingofthehill.LastSpawn = DateTime.Now;
+                                        //        EventsLib.EventManager.kingofthehill.senton = DateTime.Now;
+                                        //        EventsLib.EventManager.SetEvent(EventsLib.EventManager.kingofthehill.name,
+                                        //            EventsLib.EventManager.kingofthehill.map);
+                                        //        EventsLib.EventManager.kingofthehill.SendInvitation();
 
                                         //        break;
                                         //    }
-                                        case "6":
-                                            {
-                                                EventsLib.EventManager.kingofthehill.LastSpawn = DateTime.Now;
-                                                EventsLib.EventManager.kingofthehill.senton = DateTime.Now;
-                                                EventsLib.EventManager.SetEvent(EventsLib.EventManager.kingofthehill.name,
-                                                    EventsLib.EventManager.kingofthehill.map);
-                                                EventsLib.EventManager.kingofthehill.SendInvitation();
-
-                                                break;
-                                            }
-                                        case "7":
+                                        case "4":
                                             {
                                                 EventsLib.EventManager.ctb.LastSpawn = DateTime.Now;
                                                 EventsLib.EventManager.ctb.senton = DateTime.Now;
@@ -576,7 +566,7 @@ namespace COServer.Game.MsgServer
 
                                                 break;
                                             }
-                                        case "8":
+                                        case "5":
                                             {
                                                 EventsLib.EventManager.deathmatch.LastSpawn = DateTime.Now;
                                                 EventsLib.EventManager.deathmatch.senton = DateTime.Now;
@@ -586,7 +576,7 @@ namespace COServer.Game.MsgServer
 
                                                 break;
                                             }
-                                        case "9":
+                                        case "6":
                                             {
                                                 EventsLib.EventManager.killthecaptain.LastSpawn = DateTime.Now;
                                                 EventsLib.EventManager.killthecaptain.senton = DateTime.Now;
@@ -596,7 +586,7 @@ namespace COServer.Game.MsgServer
 
                                                 break;
                                             }
-                                        case "10":
+                                        case "7":
                                             {
                                                 EventsLib.EventManager.killhunted.LastSpawn = DateTime.Now;
                                                 EventsLib.EventManager.killhunted.senton = DateTime.Now;
@@ -606,26 +596,26 @@ namespace COServer.Game.MsgServer
 
                                                 break;
                                             }
-                                        case "11":
-                                            {
-                                                EventsLib.EventManager.teamfreezewar.LastSpawn = DateTime.Now;
-                                                EventsLib.EventManager.teamfreezewar.senton = DateTime.Now;
-                                                EventsLib.EventManager.SetEvent(EventsLib.EventManager.teamfreezewar.name,
-                                                    EventsLib.EventManager.teamfreezewar.map);
-                                                EventsLib.EventManager.teamfreezewar.SendInvitation();
+                                        //case "9":
+                                        //    {
+                                        //        EventsLib.EventManager.teamfreezewar.LastSpawn = DateTime.Now;
+                                        //        EventsLib.EventManager.teamfreezewar.senton = DateTime.Now;
+                                        //        EventsLib.EventManager.SetEvent(EventsLib.EventManager.teamfreezewar.name,
+                                        //            EventsLib.EventManager.teamfreezewar.map);
+                                        //        EventsLib.EventManager.teamfreezewar.SendInvitation();
 
-                                                break;
-                                            }
-                                        case "12":
-                                            {
-                                                EventsLib.EventManager.dragonwar.LastSpawn = DateTime.Now;
-                                                EventsLib.EventManager.dragonwar.senton = DateTime.Now;
-                                                EventsLib.EventManager.SetEvent(EventsLib.EventManager.dragonwar.name,
-                                                    EventsLib.EventManager.dragonwar.map);
-                                                EventsLib.EventManager.dragonwar.SendInvitation();
+                                        //        break;
+                                        //    }
+                                        //case "10":
+                                        //    {
+                                        //        EventsLib.EventManager.dragonwar.LastSpawn = DateTime.Now;
+                                        //        EventsLib.EventManager.dragonwar.senton = DateTime.Now;
+                                        //        EventsLib.EventManager.SetEvent(EventsLib.EventManager.dragonwar.name,
+                                        //            EventsLib.EventManager.dragonwar.map);
+                                        //        EventsLib.EventManager.dragonwar.SendInvitation();
 
-                                                break;
-                                            }
+                                        //        break;
+                                        //    }
                                     }
                                     break;
                                 }
@@ -2351,11 +2341,11 @@ namespace COServer.Game.MsgServer
                                     client.Player.MessageBox("Welcome back to Fifty Shades of Semper ;)", null, null);
                                     break;
                                 }
-                            case "arenaduel":
-                                {
-                                    MsgSchedules._ArenaDuel.Open();
-                                    break;
-                                }
+                            //case "arenaduel":
+                            //    {
+                            //        MsgSchedules._ArenaDuel.Open();
+                            //        break;
+                            //    }
                             case "tele":
                                 {
                                     client.TerainMask = 0;

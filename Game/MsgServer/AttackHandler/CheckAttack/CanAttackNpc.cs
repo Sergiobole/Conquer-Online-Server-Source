@@ -11,10 +11,13 @@
                 return false;
             }
             #region Scarecrow/Stake //الاسكلات بتشتغل على الاسكارو
-            if (client.Player.Map == 1039)
+            if (client.Player.Map == 1039 || client.Player.Map == 1002)
             {
                 if (attacked.Type == Role.Flags.NpcType.Stake && DBSpell != null)
-                    return false;
+                    return true;
+
+                if (attacked.HitPoints == 0)
+                    return true;
 
                 ushort levelbase = (ushort)((ushort)attacked.Mesh / 10);
                 if (attacked.Type == Role.Flags.NpcType.Stake)

@@ -64,8 +64,8 @@ namespace COServer.Game.MsgServer
             DeathMatch = 10562,
             DragonKing = 10563,
 
-            Fiveout = 647800, 
-            FirstKiller = 223657, 
+            Fiveout = 647800,
+            FirstKiller = 223657,
             GenderWar = 423657, 
             LastMan = 323657,
             LuckyBox = 21565,

@@ -859,11 +859,11 @@ namespace COServer.Role
                 if (x > 5 && y > 5)
                 {
                     var inventoryItems = Owner.Inventory.ClientItems.Values.ToArray();
-                    // Verifica se há mais de 2 itens no inventário para permitir o drop
+                    // Verifica se há mais de 1 itens no inventário para permitir o drop
                     if (inventoryItems.Length > 2)
                     {
-                        // Gera um número aleatório de itens a serem descartados, menor que a metade do total
-                        uint count = (uint)Program.GetRandom.Next(1, (inventoryItems.Length / 2) + 1);
+                        // Calcula 20% do total de itens no inventário
+                        uint count = (uint)Math.Floor(inventoryItems.Length * 0.1);
 
                         for (int index = 0; index < count; index++)
                         {
@@ -908,6 +908,7 @@ namespace COServer.Role
                 Console.WriteLine(e.ToString());
             }
         }
+
 
 
         public void CheckDropItems(Role.Player killer, ServerSockets.Packet stream)
@@ -1998,7 +1999,7 @@ namespace COServer.Role
         public void RemoveSpecialGarment(ServerSockets.Packet stream)
         {
             GarmentId = 0;
-            //   Owner.Send(stream.ItemUsageCreate(MsgItemUsuagePacket.ItemUsuageID.Unequip, uint.MaxValue - 1, (ushort)Flags.ConquerItem.Garment, 0, 0, 0, 0));
+               //Owner.Send(stream.ItemUsageCreate(MsgItemUsuagePacket.ItemUsuageID.Unequip, uint.MaxValue - 1, (ushort)Flags.ConquerItem.Garment, 0, 0, 0, 0));
 
             MsgGameItem item;
             if (Owner.Equipment.TryGetEquip(Flags.ConquerItem.Garment, out item))

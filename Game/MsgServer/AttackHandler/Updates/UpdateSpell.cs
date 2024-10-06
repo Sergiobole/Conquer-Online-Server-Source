@@ -9,60 +9,54 @@ namespace COServer.Game.MsgServer.AttackHandler.Updates
     {
         public unsafe static void CheckUpdate(ServerSockets.Packet stream, Client.GameClient client, InteractQuery Attack, uint Damage, Dictionary<ushort, Database.MagicType.Magic> DBSpells)
         {
-            if (Damage == 0)
-                return;
+            // Removido o retorno imediato se o dano for 0
+            // if (Damage == 0) return; 
             if (Attack.SpellID == 30000)
                 return;
+
             if (DBSpells != null)
             {
                 MsgSpell ClientSpell;
                 if (client.MySpells.ClientSpells.TryGetValue(Attack.SpellID, out ClientSpell))
                 {
                     ushort firstlevel = ClientSpell.Level;
-                    if (ClientSpell.Level < DBSpells.Count - 1)
-                    {//coped from EO SOURCE
-                     // Damage = 10;
-                        if (client.GemValues(Role.Flags.Gem.NormalMoonGem) > 0)
-                        {
-                            Damage += Damage * client.GemValues(Role.Flags.Gem.NormalMoonGem) / 100;
-                        }
-                        switch (ClientSpell.ID)
-                        {
-                            //case (ushort)Role.Flags.SpellID.Thunder:
-                            // case (ushort)Role.Flags.SpellID.Fire:
-                            // case (ushort)Role.Flags.SpellID.FastBlader:
-                            // case (ushort)Role.Flags.SpellID.ScrenSword:
-                            // case (ushort)Role.Flags.SpellID.Hercules:
-                            // case (ushort)Role.Flags.SpellID.Snow:
-                            // case (ushort)Role.Flags.SpellID.ViperFang:
-                            // case (ushort)Role.Flags.SpellID.ScatterFire:
-                            // case (ushort)Role.Flags.SpellID.Rage:
-                            //     Damage = 100;//200
-                            //     break;
-                            case (ushort)Role.Flags.SpellID.Tornado:
-                                Damage *= 100;
-                                break;
-                            case (ushort)Role.Flags.SpellID.Meditation:
-                                // case (ushort)Role.Flags.SpellID.FireCircle:
-                                // case (ushort)Role.Flags.SpellID.FireofHell:
-                                Damage += 1000;
-                                break;
-                            case (ushort)Role.Flags.SpellID.Stigma:
-                            case (ushort)Role.Flags.SpellID.DivineHare:
-                            case (ushort)Role.Flags.SpellID.Penetration:
-                            case (ushort)Role.Flags.SpellID.Phoenix:
-                            case (ushort)Role.Flags.SpellID.Intensify:
-                            //case (ushort)Role.Flags.SpellID.RapidFire:
-                            case (ushort)Role.Flags.SpellID.Golem:
-                            case (ushort)Role.Flags.SpellID.NightDevil:
-                            case (ushort)Role.Flags.SpellID.WaterElf:
-                            case (ushort)Role.Flags.SpellID.SummonGuard:
-                                Damage = 1;
-                                break;
 
-                            default:
-                                Damage /= 3;
-                                break;
+                    if (ClientSpell.Level < DBSpells.Count - 1)
+                    {
+                        // Tratamento de dano específico para Phoenix
+                        if (ClientSpell.ID == (ushort)Role.Flags.SpellID.Phoenix)
+                        {
+                            Damage = 1; // Considera o dano como 1 para experiência
+                        }
+                        else
+                        {
+                            if (client.GemValues(Role.Flags.Gem.NormalMoonGem) > 0)
+                            {
+                                Damage += Damage * client.GemValues(Role.Flags.Gem.NormalMoonGem) / 100;
+                            }
+
+                            switch (ClientSpell.ID)
+                            {
+                                case (ushort)Role.Flags.SpellID.Tornado:
+                                    Damage *= 100;
+                                    break;
+                                case (ushort)Role.Flags.SpellID.Meditation:
+                                    Damage += 1000;
+                                    break;
+                                case (ushort)Role.Flags.SpellID.Stigma:
+                                case (ushort)Role.Flags.SpellID.DivineHare:
+                                case (ushort)Role.Flags.SpellID.Penetration:
+                                case (ushort)Role.Flags.SpellID.Intensify:
+                                case (ushort)Role.Flags.SpellID.Golem:
+                                case (ushort)Role.Flags.SpellID.NightDevil:
+                                case (ushort)Role.Flags.SpellID.WaterElf:
+                                case (ushort)Role.Flags.SpellID.SummonGuard:
+                                    Damage = 1; // Para outras skills, mantém o dano como 1 se necessário
+                                    break;
+                                default:
+                                    Damage /= 3;
+                                    break;
+                            }
                         }
 
                         if (client.Player.Level >= DBSpells[ClientSpell.Level].NeedLevel)
@@ -81,12 +75,11 @@ namespace COServer.Game.MsgServer.AttackHandler.Updates
                             try
                             {
                                 if (ClientSpell.Level > firstlevel)
-                                    client.SendSysMesage("You have just leveled your skill " + DBSpells[0].Name + ".", MsgMessage.ChatMode.System);
+                                    client.SendSysMesage("You have just leveled your skill " + DBSpells[ClientSpell.Level].Name + ".", MsgMessage.ChatMode.System);
                             }
                             catch (Exception e) { Console.WriteLine(e.ToString()); }
                             client.Send(stream.SpellCreate(ClientSpell));
                         }
-
                     }
                 }
             }
@@ -99,11 +92,6 @@ namespace COServer.Game.MsgServer.AttackHandler.Updates
 
                 if (PorfLeftWeapon != 0)
                     client.MyProfs.CheckUpdate(PorfLeftWeapon, Damage / 2, stream);
-
-
-                //if (Database.ItemType.IsArrow(client.Equipment.LeftWeapon))
-                //    client.MyProfs.CheckUpdate(PorfLeftWeapon, Damage, stream);
-
             }
         }
     }

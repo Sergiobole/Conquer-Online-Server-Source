@@ -2078,7 +2078,7 @@ namespace COServer.Game.MsgServer
                     || item.ITEM_ID == 1002050
                     || item.ITEM_ID == 725065 || item.ITEM_ID == 1003010)
                 {
-                    if (DateTime.Now > client.Player.MedicineStamp.AddMilliseconds(300) && !Program.NoDrugMap.Contains(client.Player.Map))
+                    if (DateTime.Now > client.Player.MedicineStamp.AddMilliseconds(100) && !Program.NoDrugMap.Contains(client.Player.Map))
                     {
                         if (client.Player.ContainFlag(MsgUpdate.Flags.PoisonStar))
                             return;

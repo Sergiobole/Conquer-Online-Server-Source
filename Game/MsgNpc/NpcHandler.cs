@@ -260,66 +260,66 @@ namespace COServer.Game.MsgNpc
         #endregion
         #region ArenaDuel
         #region Join
-        [NpcAttribute(NpcID.ArenaDuel)]
-        public static void ArenaDuel(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
-        {
-            Dialog data = new Dialog(client, stream);
-            switch (Option)
-            {
-                case 0:
-                    {
-                        data.AddText("Hello " + client.Player.Name + " \n ArenaDuel 100 hit For Every Hours \n")
-                            .AddText("Working in the minute [Xx:31] To [Xx:40] \n Rewards [DragonballScroll]")
-                            .AddOption("Okey ,Enter Me.", 1)
-                            .AddOption("I will come later. ", 255)
-                            .AddAvatar(63).FinalizeDialog();
-                        break;
-                    }
-                case 1:
-                    {
-                        if (!Game.MsgTournaments.MsgSchedules._ArenaDuel.AllowJoin(client, stream))
-                        {
-                            data.AddText("Come back in the right time at [Xx:31] To [Xx:40].")
-                                .AddOption("I see. ", 255)
-                                .AddAvatar(63).FinalizeDialog();
-                        }
-                        break;
-                    }
-            }
-        }
-        #endregion
-        #region Winner
-        [NpcAttribute(NpcID.ArenaDuelOut)]
-        public static void ArenaDuelOut(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
-        {
-            Dialog data = new Dialog(client, stream);
-            switch (Option)
-            {
-                case 0:
-                    {
-                        data.AddText("Hello , i can telport you to Tc")
-                            .AddOption("Teleport~to~Twin~City.", 2)
-                            .AddOption("Ah. wait", 255)
-                            .AddAvatar(154).FinalizeDialog();
-                        break;
-                    }
-                case 2:
-                    {
-                        data.AddText("You wana to teleport back to TwinCity? You are sure?")
-                            .AddOption("Yes", 3)
-                            .AddOption("Ah no.", 255)
-                            .AddAvatar(154).FinalizeDialog();
-                        break;
-                    }
-                case 3:
-                    {
-                        client.Player.HitPoints = (int)client.Status.MaxHitpoints;
-                        client.Teleport(428, 378, 1002, 0);
-                        break;
-                    }
-            }
-        }
-        #endregion
+        //[NpcAttribute(NpcID.ArenaDuel)]
+        //public static void ArenaDuel(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        //{
+        //    Dialog data = new Dialog(client, stream);
+        //    switch (Option)
+        //    {
+        //        case 0:
+        //            {
+        //                data.AddText("Hello " + client.Player.Name + " \n ArenaDuel 100 hit For Every Hours \n")
+        //                    .AddText("Working in the minute [Xx:31] To [Xx:40] \n Rewards [DragonballScroll]")
+        //                    .AddOption("Okey ,Enter Me.", 1)
+        //                    .AddOption("I will come later. ", 255)
+        //                    .AddAvatar(63).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 1:
+        //            {
+        //                if (!Game.MsgTournaments.MsgSchedules._ArenaDuel.AllowJoin(client, stream))
+        //                {
+        //                    data.AddText("Come back in the right time at [Xx:31] To [Xx:40].")
+        //                        .AddOption("I see. ", 255)
+        //                        .AddAvatar(63).FinalizeDialog();
+        //                }
+        //                break;
+        //            }
+        //    }
+        //}
+        //#endregion
+        //#region Winner
+        //[NpcAttribute(NpcID.ArenaDuelOut)]
+        //public static void ArenaDuelOut(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        //{
+        //    Dialog data = new Dialog(client, stream);
+        //    switch (Option)
+        //    {
+        //        case 0:
+        //            {
+        //                data.AddText("Hello , i can telport you to Tc")
+        //                    .AddOption("Teleport~to~Twin~City.", 2)
+        //                    .AddOption("Ah. wait", 255)
+        //                    .AddAvatar(154).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 2:
+        //            {
+        //                data.AddText("You wana to teleport back to TwinCity? You are sure?")
+        //                    .AddOption("Yes", 3)
+        //                    .AddOption("Ah no.", 255)
+        //                    .AddAvatar(154).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 3:
+        //            {
+        //                client.Player.HitPoints = (int)client.Status.MaxHitpoints;
+        //                client.Teleport(428, 378, 1002, 0);
+        //                break;
+        //            }
+        //    }
+        //}
+        //#endregion
         #endregion
         #region OnlinePoint
         [NpcAttribute(NpcID.OnlinePointsReward)]
@@ -331,14 +331,14 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         // Exibe o diálogo inicial com os pontos online do usuário e uma opção para trocar por um token VIP de 7 dias
-                        dialog.AddText($"Hello, you will earn 1 OnlinePoint for every minute you stay online.\nYou have [ {client.Player.OnlinePoints} ] OnlinePoints.").AddAvatar(7);
-                        dialog.AddOption("1 - 7 Days VIP = 8.000", 1);
-                        dialog.AddOption("2 - 30 Days VIP = 22.000", 2);                  
-                        dialog.AddOption("3 - DBScroll = 1.000", 3);
-                        dialog.AddOption("4 - MoonBox = 2.000", 4);
-                        dialog.AddOption("5 - MetScroll = 500", 5);
-                        dialog.AddOption("6 - 3xExp = 500", 6);
-                        dialog.AddOption("7 - Emerald = 500", 7);
+                        dialog.AddText($"Hello, you will earn 1 OnlinePoint for every minute you stay online in Twin City.\nIn other maps, you will earn 0.5 points per minute.\nYou currently have [ {client.Player.OnlinePoints} ] OnlinePoints.").AddAvatar(7);
+                        dialog.AddOption("1 - [7 Days VIP] = 8.000", 1);
+                        dialog.AddOption("2 - [30 Days VIP] = 22.000", 2);                  
+                        dialog.AddOption("3 - [DBScroll] = 1.000", 3);
+                        dialog.AddOption("4 - [MoonBox] = 2.000", 4);
+                        dialog.AddOption("5 - [MetScroll] = 500", 5);
+                        dialog.AddOption("6 - [3xExp] = 500", 6);
+                        dialog.AddOption("7 - [Emerald] = 500", 7);
                         dialog.AddOption("Okay", 255);
                         dialog.FinalizeDialog();
                         break;
@@ -555,33 +555,33 @@ namespace COServer.Game.MsgNpc
         #region Tops
         #region Ss_Fb
         #region Join
-        [NpcAttribute(NpcID.Ss_Fb)]
-        public static void Ss_Fb(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
-        {
-            Dialog data = new Dialog(client, stream);
-            switch (Option)
-            {
-                case 0:
-                    {
-                        data.AddText("Hello " + client.Player.Name + " \n Top Ss/Fb For Every Hours \n")
-                            .AddText("Working in the minute [Xx:41] To [Xx:50] \n Rewards [ Db Scroll ] [Top Ss/Fb]")
-                            .AddOption("Okey ,Enter Me.", 1)
-                            .AddOption("I will come later. ", 255)
-                            .AddAvatar(63).FinalizeDialog();
-                        break;
-                    }
-                case 1:
-                    {
-                        if (!MsgSchedules._Ss_Fb.AllowJoin(client, stream))
-                        {
-                            data.AddText("Come back in the right time at [Xx:41] To [Xx:50].")
-                                .AddOption("I see. ", 255)
-                                .AddAvatar(63).FinalizeDialog();
-                        }
-                        break;
-                    }
-            }
-        }
+        //[NpcAttribute(NpcID.Ss_Fb)]
+        //public static void Ss_Fb(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        //{
+        //    Dialog data = new Dialog(client, stream);
+        //    switch (Option)
+        //    {
+        //        case 0:
+        //            {
+        //                data.AddText("Hello " + client.Player.Name + " \n Top Ss/Fb For Every Hours \n")
+        //                    .AddText("Working in the minute [Xx:41] To [Xx:50] \n Rewards [ Db Scroll ] [Top Ss/Fb]")
+        //                    .AddOption("Okey ,Enter Me.", 1)
+        //                    .AddOption("I will come later. ", 255)
+        //                    .AddAvatar(63).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 1:
+        //            {
+        //                if (!MsgSchedules._Ss_Fb.AllowJoin(client, stream))
+        //                {
+        //                    data.AddText("Come back in the right time at [Xx:41] To [Xx:50].")
+        //                        .AddOption("I see. ", 255)
+        //                        .AddAvatar(63).FinalizeDialog();
+        //                }
+        //                break;
+        //            }
+        //    }
+        //}
         #endregion
         #region Out
         [NpcAttribute(NpcID.Ss_Fb_Out)]
@@ -616,180 +616,180 @@ namespace COServer.Game.MsgNpc
         }
         #endregion
         #endregion
-        #region Top_Conquer
-        #region Join
-        [NpcAttribute(NpcID.ConquerPkJoin)]
-        public static void ConquerPkJoin(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
-        {
-            Dialog data = new Dialog(client, stream);
-            switch (Option)
-            {
-                case 0:
-                    {
-                        data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Top Conquer For All Classes Every day\n")
-                            .AddText("Working From [19:00] To [19:09] PM \nThe Winner Get [ DragonBallScroll ]")
-                            .AddOption("Okey ,Enter Me.", 1)
-                            .AddOption("I will come later. ", 255)
-                            .AddAvatar(63).FinalizeDialog();
-                        break;
-                    }
-                case 1:
-                    {
-                        if (!MsgSchedules._ConquerPk.AllowJoin(client, stream))
-                        {
-                            data.AddText("Come back in the right time at [19:00] To [19:09] PM.")
-                                .AddOption("I see. ", 255)
-                                .AddAvatar(63).FinalizeDialog();
-                        }
-                        break;
-                    }
-            }
-        }
-        #endregion
-        #region Winner
-        [NpcAttribute(NpcID.ConquerPkWinner)]
-        public static void ConquerPkWinner(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
-        {
-            Dialog data = new Dialog(client, stream);
-            switch (Option)
-            {
-                case 0:
-                    {
-                        data.AddText("Hello , you're the last player alive?")
-                            .AddOption("Yes", 1)
-                            .AddOption("Teleport~to~Twin~City.", 2)
-                            .AddOption("Ah. wait", 255)
-                            .AddAvatar(154).FinalizeDialog();
-                        break;
-                    }
-                case 1:
-                    {
-                        if (MsgSchedules._ConquerPk.IsFinished())
-                        {
-                            if (MsgSchedules._ConquerPk.TheLastPlayer())
-                            {
-                                MsgSchedules._ConquerPk.GiveReward(client, stream);
-                            }
-                            else
-                            {
-                                data.AddText("Sorry, other players are still alive.")
-                                    .AddOption("Ah ok", 255)
-                                    .AddAvatar(154).FinalizeDialog();
-                            }
-                        }
-                        else
-                        {
-                            data.AddText("Sorry, the war end at [5:09].")
-                                .AddOption("I see. ", 255)
-                                .AddAvatar(63).FinalizeDialog();
-                        }
-                        break;
-                    }
-                case 2:
-                    {
-                        data.AddText("You wana to teleport back to TwinCity? You are sure?")
-                            .AddOption("Yes", 3)
-                            .AddOption("Ah no.", 255)
-                            .AddAvatar(154).FinalizeDialog();
-                        break;
-                    }
-                case 3:
-                    {
-                        client.Player.HitPoints = (int)client.Status.MaxHitpoints;
-                        client.Teleport(428, 378, 1002, 0);
-                        break;
-                    }
-            }
-        }
-        #endregion
-        #endregion
-        #region Top_FirstKiller
-        #region Join
-        [NpcAttribute(NpcID.FirstKillerJoin)]
-        public static void FirstKillerJoin(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
-        {
-            Dialog data = new Dialog(client, stream);
-            switch (Option)
-            {
-                case 0:
-                    {
-                        data.AddText("Welcome [ " + client.Player.Name + " ] \nTop FirstKiller For All Classes Every Day\n")
-                            .AddText("Working From [21:00 PM] To [21:09 PM] \nThe Winner Gets [ DragonBallScroll ]")
-                            .AddOption("Okey ,Enter Me.", 1)
-                            .AddOption("I will come later. ", 255)
-                            .AddAvatar(63).FinalizeDialog();
-                        break;
-                    }
-                case 1:
-                    {
-                        if (!MsgSchedules._FirstKiller.AllowJoin(client, stream))
-                        {
-                            data.AddText("Come back in the right time at [21:00 PM] To [21:09 PM] PM.")
-                                .AddOption("I see. ", 255)
-                                .AddAvatar(63).FinalizeDialog();
-                        }
-                        break;
-                    }
-            }
-        }
-        #endregion
-        #region Winner
-        [NpcAttribute(NpcID.FirstKillerWinner)]
-        public static void FirstKillerWinner(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
-        {
-            Dialog data = new Dialog(client, stream);
-            switch (Option)
-            {
-                case 0:
-                    {
-                        data.AddText("Hello , you're the last player alive?")
-                            .AddOption("Yes", 1)
-                            .AddOption("Teleport~to~Twin~City.", 2)
-                            .AddOption("Ah. wait", 255)
-                            .AddAvatar(154).FinalizeDialog();
-                        break;
-                    }
-                case 1:
-                    {
-                        if (MsgSchedules._FirstKiller.IsFinished())
-                        {
-                            if (MsgSchedules._FirstKiller.TheLastPlayer())
-                            {
-                                MsgSchedules._FirstKiller.GiveReward(client, stream);
-                            }
-                            else
-                            {
-                                data.AddText("Sorry, other players are still alive.")
-                                    .AddOption("Ah ok", 255)
-                                    .AddAvatar(154).FinalizeDialog();
-                            }
-                        }
-                        else
-                        {
-                            data.AddText("Sorry, the war end at [5:09].")
-                                .AddOption("I see. ", 255)
-                                .AddAvatar(63).FinalizeDialog();
-                        }
-                        break;
-                    }
-                case 2:
-                    {
-                        data.AddText("You wana to teleport back to TwinCity? You are sure?")
-                            .AddOption("Yes", 3)
-                            .AddOption("Ah no.", 255)
-                            .AddAvatar(154).FinalizeDialog();
-                        break;
-                    }
-                case 3:
-                    {
-                        client.Player.HitPoints = (int)client.Status.MaxHitpoints;
-                        client.Teleport(428, 378, 1002, 0);
-                        break;
-                    }
-            }
-        }
-        #endregion
-        #endregion
+        //#region Top_Conquer
+        //#region Join
+        //[NpcAttribute(NpcID.ConquerPkJoin)]
+        //public static void ConquerPkJoin(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        //{
+        //    Dialog data = new Dialog(client, stream);
+        //    switch (Option)
+        //    {
+        //        case 0:
+        //            {
+        //                data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Top Conquer For All Classes Every day\n")
+        //                    .AddText("Working From [19:00] To [19:09] PM \nThe Winner Get [ DragonBallScroll ]")
+        //                    .AddOption("Okey ,Enter Me.", 1)
+        //                    .AddOption("I will come later. ", 255)
+        //                    .AddAvatar(63).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 1:
+        //            {
+        //                if (!MsgSchedules._ConquerPk.AllowJoin(client, stream))
+        //                {
+        //                    data.AddText("Come back in the right time at [19:00] To [19:09] PM.")
+        //                        .AddOption("I see. ", 255)
+        //                        .AddAvatar(63).FinalizeDialog();
+        //                }
+        //                break;
+        //            }
+        //    }
+        //}
+        //#endregion
+        //#region Winner
+        //[NpcAttribute(NpcID.ConquerPkWinner)]
+        //public static void ConquerPkWinner(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        //{
+        //    Dialog data = new Dialog(client, stream);
+        //    switch (Option)
+        //    {
+        //        case 0:
+        //            {
+        //                data.AddText("Hello , you're the last player alive?")
+        //                    .AddOption("Yes", 1)
+        //                    .AddOption("Teleport~to~Twin~City.", 2)
+        //                    .AddOption("Ah. wait", 255)
+        //                    .AddAvatar(154).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 1:
+        //            {
+        //                if (MsgSchedules._ConquerPk.IsFinished())
+        //                {
+        //                    if (MsgSchedules._ConquerPk.TheLastPlayer())
+        //                    {
+        //                        MsgSchedules._ConquerPk.GiveReward(client, stream);
+        //                    }
+        //                    else
+        //                    {
+        //                        data.AddText("Sorry, other players are still alive.")
+        //                            .AddOption("Ah ok", 255)
+        //                            .AddAvatar(154).FinalizeDialog();
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    data.AddText("Sorry, the war end at [5:09].")
+        //                        .AddOption("I see. ", 255)
+        //                        .AddAvatar(63).FinalizeDialog();
+        //                }
+        //                break;
+        //            }
+        //        case 2:
+        //            {
+        //                data.AddText("You wana to teleport back to TwinCity? You are sure?")
+        //                    .AddOption("Yes", 3)
+        //                    .AddOption("Ah no.", 255)
+        //                    .AddAvatar(154).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 3:
+        //            {
+        //                client.Player.HitPoints = (int)client.Status.MaxHitpoints;
+        //                client.Teleport(428, 378, 1002, 0);
+        //                break;
+        //            }
+        //    }
+        //}
+        //#endregion
+        //#endregion
+        //#region Top_FirstKiller
+        //#region Join
+        //[NpcAttribute(NpcID.FirstKillerJoin)]
+        //public static void FirstKillerJoin(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        //{
+        //    Dialog data = new Dialog(client, stream);
+        //    switch (Option)
+        //    {
+        //        case 0:
+        //            {
+        //                data.AddText("Welcome [ " + client.Player.Name + " ] \nTop FirstKiller For All Classes Every Day\n")
+        //                    .AddText("Working From [21:00 PM] To [21:09 PM] \nThe Winner Gets [ DragonBallScroll ]")
+        //                    .AddOption("Okey ,Enter Me.", 1)
+        //                    .AddOption("I will come later. ", 255)
+        //                    .AddAvatar(63).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 1:
+        //            {
+        //                if (!MsgSchedules._FirstKiller.AllowJoin(client, stream))
+        //                {
+        //                    data.AddText("Come back in the right time at [21:00 PM] To [21:09 PM] PM.")
+        //                        .AddOption("I see. ", 255)
+        //                        .AddAvatar(63).FinalizeDialog();
+        //                }
+        //                break;
+        //            }
+        //    }
+        //}
+        //#endregion
+        //#region Winner
+        //[NpcAttribute(NpcID.FirstKillerWinner)]
+        //public static void FirstKillerWinner(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        //{
+        //    Dialog data = new Dialog(client, stream);
+        //    switch (Option)
+        //    {
+        //        case 0:
+        //            {
+        //                data.AddText("Hello , you're the last player alive?")
+        //                    .AddOption("Yes", 1)
+        //                    .AddOption("Teleport~to~Twin~City.", 2)
+        //                    .AddOption("Ah. wait", 255)
+        //                    .AddAvatar(154).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 1:
+        //            {
+        //                if (MsgSchedules._FirstKiller.IsFinished())
+        //                {
+        //                    if (MsgSchedules._FirstKiller.TheLastPlayer())
+        //                    {
+        //                        MsgSchedules._FirstKiller.GiveReward(client, stream);
+        //                    }
+        //                    else
+        //                    {
+        //                        data.AddText("Sorry, other players are still alive.")
+        //                            .AddOption("Ah ok", 255)
+        //                            .AddAvatar(154).FinalizeDialog();
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    data.AddText("Sorry, the war end at [5:09].")
+        //                        .AddOption("I see. ", 255)
+        //                        .AddAvatar(63).FinalizeDialog();
+        //                }
+        //                break;
+        //            }
+        //        case 2:
+        //            {
+        //                data.AddText("You wana to teleport back to TwinCity? You are sure?")
+        //                    .AddOption("Yes", 3)
+        //                    .AddOption("Ah no.", 255)
+        //                    .AddAvatar(154).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 3:
+        //            {
+        //                client.Player.HitPoints = (int)client.Status.MaxHitpoints;
+        //                client.Teleport(428, 378, 1002, 0);
+        //                break;
+        //            }
+        //    }
+        //}
+        //#endregion
+        //#endregion
         #region LastMan
         #region Join
         [NpcAttribute(NpcID.LastManJoin)]
@@ -877,123 +877,123 @@ namespace COServer.Game.MsgNpc
         }
         #endregion
         #endregion
-        #region Top_Black
-        #region Join
-        [NpcAttribute(NpcID.Top_BlackJoin)]
-        public static void Top_BlackJoin(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
-        {
-            Dialog data = new Dialog(client, stream);
-            switch (Option)
-            {
-                case 0:
-                    {
-                        data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Top Black For All Classes Every Day\n")
-                            .AddText("Working From [23:00] To [23:09] PM \nThe Winner Get [ DragonBallScroll ]")
-                            .AddOption("Okey ,Enter Me.", 1)
-                            .AddOption("I will come later. ", 255)
-                            .AddAvatar(63).FinalizeDialog();
-                        break;
-                    }
-                case 1:
-                    {
-                        if (!MsgSchedules._Top_Black.AllowJoin(client, stream))
-                        {
-                            data.AddText("Come back in the right time at [23:00] To [23:09] AM.")
-                                .AddOption("I see. ", 255)
-                                .AddAvatar(63).FinalizeDialog();
-                        }
-                        break;
-                    }
-            }
-        }
-        #endregion
-        #region Winner
-        [NpcAttribute(NpcID.Top_BlackWinner)]
-        public static void Top_BlackWinner(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
-        {
-            Dialog data = new Dialog(client, stream);
-            switch (Option)
-            {
-                case 0:
-                    {
-                        data.AddText("Hello , you're the last player alive?")
-                            .AddOption("Yes", 1)
-                            .AddOption("Teleport~to~Twin~City.", 2)
-                            .AddOption("Ah. wait", 255)
-                            .AddAvatar(154).FinalizeDialog();
-                        break;
-                    }
-                case 1:
-                    {
-                        if (MsgSchedules._Top_Black.IsFinished())
-                        {
-                            if (MsgSchedules._Top_Black.TheLastPlayer())
-                            {
-                                MsgSchedules._Top_Black.GiveReward(client, stream);
-                            }
-                            else
-                            {
-                                data.AddText("Sorry, other players are still alive.")
-                                    .AddOption("Ah ok", 255)
-                                    .AddAvatar(154).FinalizeDialog();
-                            }
-                        }
-                        else
-                        {
-                            data.AddText("Sorry, the war end at [11:09].")
-                                .AddOption("I see. ", 255)
-                                .AddAvatar(63).FinalizeDialog();
-                        }
-                        break;
-                    }
-                case 2:
-                    {
-                        data.AddText("You wana to teleport back to TwinCity? You are sure?")
-                            .AddOption("Yes", 3)
-                            .AddOption("Ah no.", 255)
-                            .AddAvatar(154).FinalizeDialog();
-                        break;
-                    }
-                case 3:
-                    {
-                        client.Player.HitPoints = (int)client.Status.MaxHitpoints;
-                        client.Teleport(428, 378, 1002, 0);
-                        break;
-                    }
-            }
-        }
-        #endregion
-        #endregion
+        //#region Top_Black
+        //#region Join
+        //[NpcAttribute(NpcID.Top_BlackJoin)]
+        //public static void Top_BlackJoin(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        //{
+        //    Dialog data = new Dialog(client, stream);
+        //    switch (Option)
+        //    {
+        //        case 0:
+        //            {
+        //                data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Top Black For All Classes Every Day\n")
+        //                    .AddText("Working From [23:00] To [23:09] PM \nThe Winner Get [ DragonBallScroll ]")
+        //                    .AddOption("Okey ,Enter Me.", 1)
+        //                    .AddOption("I will come later. ", 255)
+        //                    .AddAvatar(63).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 1:
+        //            {
+        //                if (!MsgSchedules._Top_Black.AllowJoin(client, stream))
+        //                {
+        //                    data.AddText("Come back in the right time at [23:00] To [23:09] AM.")
+        //                        .AddOption("I see. ", 255)
+        //                        .AddAvatar(63).FinalizeDialog();
+        //                }
+        //                break;
+        //            }
+        //    }
+        //}
+        //#endregion
+        //#region Winner
+        //[NpcAttribute(NpcID.Top_BlackWinner)]
+        //public static void Top_BlackWinner(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        //{
+        //    Dialog data = new Dialog(client, stream);
+        //    switch (Option)
+        //    {
+        //        case 0:
+        //            {
+        //                data.AddText("Hello , you're the last player alive?")
+        //                    .AddOption("Yes", 1)
+        //                    .AddOption("Teleport~to~Twin~City.", 2)
+        //                    .AddOption("Ah. wait", 255)
+        //                    .AddAvatar(154).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 1:
+        //            {
+        //                if (MsgSchedules._Top_Black.IsFinished())
+        //                {
+        //                    if (MsgSchedules._Top_Black.TheLastPlayer())
+        //                    {
+        //                        MsgSchedules._Top_Black.GiveReward(client, stream);
+        //                    }
+        //                    else
+        //                    {
+        //                        data.AddText("Sorry, other players are still alive.")
+        //                            .AddOption("Ah ok", 255)
+        //                            .AddAvatar(154).FinalizeDialog();
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    data.AddText("Sorry, the war end at [11:09].")
+        //                        .AddOption("I see. ", 255)
+        //                        .AddAvatar(63).FinalizeDialog();
+        //                }
+        //                break;
+        //            }
+        //        case 2:
+        //            {
+        //                data.AddText("You wana to teleport back to TwinCity? You are sure?")
+        //                    .AddOption("Yes", 3)
+        //                    .AddOption("Ah no.", 255)
+        //                    .AddAvatar(154).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 3:
+        //            {
+        //                client.Player.HitPoints = (int)client.Status.MaxHitpoints;
+        //                client.Teleport(428, 378, 1002, 0);
+        //                break;
+        //            }
+        //    }
+        //}
+        //#endregion
+        //#endregion
         #region LuckyBox
-        #region Join
-        [NpcAttribute(NpcID.LuckyBoxJoin)]
-        public static void LuckyBoxJoin(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
-        {
-            Dialog data = new Dialog(client, stream);
-            switch (Option)
-            {
-                case 0:
-                    {
-                        data.AddText("Hello " + client.Player.Name + " \n Top Ss/Fb For Every Hours \n")
-                            .AddText("Working in the minute [Xx:21] To [Xx:30] \n Rewards [10,000 Cps] [LastMan]")
-                            .AddOption("Okey ,Enter Me.", 1)
-                            .AddOption("I will come later. ", 255)
-                            .AddAvatar(63).FinalizeDialog();
-                        break;
-                    }
-                case 1:
-                    {
-                        if (!MsgSchedules._ConquerPk.AllowJoin(client, stream))
-                        {
-                            data.AddText("Come back in the right time at [Xx:21] To [Xx:30].")
-                                .AddOption("I see. ", 255)
-                                .AddAvatar(63).FinalizeDialog();
-                        }
-                        break;
-                    }
-            }
-        }
-        #endregion
+        //#region Join
+        //[NpcAttribute(NpcID.LuckyBoxJoin)]
+        //public static void LuckyBoxJoin(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        //{
+        //    Dialog data = new Dialog(client, stream);
+        //    switch (Option)
+        //    {
+        //        case 0:
+        //            {
+        //                data.AddText("Hello " + client.Player.Name + " \n Top Ss/Fb For Every Hours \n")
+        //                    .AddText("Working in the minute [Xx:21] To [Xx:30] \n Rewards [10,000 Cps] [LastMan]")
+        //                    .AddOption("Okey ,Enter Me.", 1)
+        //                    .AddOption("I will come later. ", 255)
+        //                    .AddAvatar(63).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 1:
+        //            {
+        //                if (!MsgSchedules._ConquerPk.AllowJoin(client, stream))
+        //                {
+        //                    data.AddText("Come back in the right time at [Xx:21] To [Xx:30].")
+        //                        .AddOption("I see. ", 255)
+        //                        .AddAvatar(63).FinalizeDialog();
+        //                }
+        //                break;
+        //            }
+        //    }
+        //}
+        //#endregion
         #region Winner
         [NpcAttribute(NpcID.LuckyBoxOut)]
         public static void LuckyBoxOut(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -21905,3 +21905,4 @@ namespace COServer.Game.MsgNpc
 
     }
 }
+#endregion
