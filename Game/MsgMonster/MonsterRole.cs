@@ -505,7 +505,7 @@ namespace COServer.Game.MsgMonster
                         }
                         #endregion
                     }
-                    else if (killer.Player.VipLevel < 6 || killer.Player.VipLevel == 0)
+                    else if (killer.Player.VipLevel == 0)
                     {
                         #region Drop_DragonBall
                         if (killer.DbKilled >= ProjectControl.NormalDb_Drop)
@@ -514,14 +514,8 @@ namespace COServer.Game.MsgMonster
                             if (killer.Inventory.HaveSpace(ProjectControl.Max_DragonBall))
                             {
 
-                                killer.Inventory.Add(stream, 1088000, ProjectControl.Max_DragonBall);
-                                killer.SendSysMesage("[VIP] You've got " + ProjectControl.Max_DragonBall + " DragonBalls in your inventory.", MsgMessage.ChatMode.TopLeft);
-                                if (killer.Inventory.Contain(1088000, 10))
-                                {
-                                    killer.Inventory.Remove(1088000, 10, stream);
-                                    killer.Inventory.Add(stream, 720028, 1);
-                                    killer.SendSysMesage("[VIP] Auto packed 1 DBScroll in your inventory.", MsgMessage.ChatMode.TopLeft);
-                                }
+                                DropItemID(killer, 1088000, stream); // Dropa 1 Db
+                                killer.SendSysMesage("[Drop System] Dropped DragonBall on the map.", MsgMessage.ChatMode.TopLeft);
                                 return;
                             }
                         }
@@ -531,18 +525,9 @@ namespace COServer.Game.MsgMonster
                         {
                             killer.Drop_Meteors = 0;
                             if (killer.Inventory.HaveSpace(ProjectControl.Max_Meteors))
-                            {
-                                if (killer.Inventory.Contain(1088001, 9))
-                                {
-                                    killer.Inventory.Remove(1088001, 9, stream);
-                                    killer.Inventory.Add(stream, 720027, 1);
-                                    killer.SendSysMesage("[VIP] Auto packed 1 MeteorScroll in your inventory.", MsgMessage.ChatMode.TopLeft);
-                                }
-                                else
-                                {
-                                    killer.Inventory.Add(stream, 1088001, ProjectControl.Max_Meteors);
-                                    killer.SendSysMesage("[VIP] You've got " + ProjectControl.Max_Meteors + " Meteors in your inventory.", MsgMessage.ChatMode.TopLeft);
-                                }
+                            {  
+                                DropItemID(killer, 1088001, stream); // Dropa 1 meteoro no chão
+                                killer.SendSysMesage("[No Vip System] Dropped Meteor on the map.", MsgMessage.ChatMode.TopLeft);    
                             }
                         }
                         #endregion
@@ -552,17 +537,8 @@ namespace COServer.Game.MsgMonster
                             killer.Drop_Stone = 0;
                             if (killer.Inventory.HaveSpace(ProjectControl.Max_Stone))
                             {
-                                if (killer.Inventory.Contain(730001, 3))
-                                {
-                                    killer.Inventory.Remove(730001, 3, stream);
-                                    killer.Inventory.Add(stream, 730002, 1);
-                                    killer.SendSysMesage("[VIP] Auto packed +2Stone in your inventory.", MsgMessage.ChatMode.TopLeft);
-                                }
-                                else
-                                {
-                                    killer.Inventory.Add(stream, 730001, ProjectControl.Max_Stone);
-                                    killer.SendSysMesage("[VIP] You've got " + ProjectControl.Max_Stone + " +1Stones in your inventory.", MsgMessage.ChatMode.TopLeft);
-                                }
+                                DropItemID(killer, 730001, stream); // Dropa 1 stone
+                                killer.SendSysMesage("[Drop System]Dropped Stone on the map.", MsgMessage.ChatMode.TopLeft);
                             }
                         }
                         #endregion
@@ -595,7 +571,7 @@ namespace COServer.Game.MsgMonster
                     else
                         killer.Player.DbCount += Program.GetRandom.Next(1, 10);
 
-                    if (killer.Player.DbCount >= 6500)
+                    if (killer.Player.DbCount >= 10000)
                     {
                         killer.Player.SendString(stream, MsgStringPacket.StringID.Effect, true, "downnumber1");
                         killer.Player.DbCount = 0;

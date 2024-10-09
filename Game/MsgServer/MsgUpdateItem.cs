@@ -309,9 +309,15 @@ namespace COServer.Game.MsgServer
                                                     }
                                                     DataItem.Mode = Role.Flags.ItemMode.Update;
                                                     DataItem.Send(client, stream).Update(Stone, Role.Instance.AddMode.REMOVE, stream);
-                                                    if (oldplus != DataItem.Plus && DataItem.Plus >= 6)
+                                                    if (oldplus != DataItem.Plus && DataItem.Plus >= 2)
                                                     {
-                                                        client.Map.SendSysMesage("Congratulations, " + client.Player.Name + " has upgraded his/her " + Database.Server.ItemsBase[DataItem.ITEM_ID].Name + " to + " + DataItem.Plus + " and " + DataItem.PlusProgress + " in progress!");
+                                                        string congratsMessage = $"Congratulations, {client.Player.Name} has upgraded his/her {Database.Server.ItemsBase[DataItem.ITEM_ID].Name} to +{DataItem.Plus} and {DataItem.PlusProgress} in progress!";
+
+                                                        // Enviar mensagem ao mapa do cliente
+                                                        client.Map.SendSysMesage(congratsMessage);
+
+                                                        // Enviar mensagem à API do Discord
+                                                        Program.DiscordAPIplus.Enqueue($"``{congratsMessage}``");
                                                     }
 
                                                     if (client.Player.MyMentor != null)

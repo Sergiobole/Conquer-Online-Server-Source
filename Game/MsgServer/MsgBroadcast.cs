@@ -249,6 +249,9 @@ namespace COServer.Game.MsgServer
                                     Message = Strings[0].Length > 80 ? Strings[0].Remove(80) : Strings[0]
                                 };
 
+                                // Envia a mensagem para o Discord
+                                Program.DiscordAPIworld.Enqueue($"``[{user.Player.Name}] Speaks to Broadcast: {Strings[0]}``");
+
                                 // Verifica se é o primeiro broadcast
                                 if (MsgTournaments.MsgBroadcast.Broadcasts.Count == 0)
                                 {
@@ -269,9 +272,9 @@ namespace COServer.Game.MsgServer
 
                                 // Envia a mensagem de broadcast para o jogador
                                 user.Send(stream.BroadcastCreate(BroadTyp.BroadcastMessage, dwParam, Strings));
+
                                 break;
                             }
-
                             break;
                         }
                 }

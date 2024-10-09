@@ -26,7 +26,7 @@ namespace COServer
         }
         private void Dequeue()
         {
-            postToDiscord("Discord Thread started");
+            
             while (true)
             {
                 try

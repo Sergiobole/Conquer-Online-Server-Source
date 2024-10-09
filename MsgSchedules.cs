@@ -209,17 +209,17 @@ namespace COServer.Game.MsgTournaments
                             //        EventsLib.EventManager.kingofthehill.SendInvitation();
                             //        break;
                             //    }
+                            //case 4:
+                            //    {
+                            //        EventsLib.EventManager.ctb.LastSpawn = DateTime.Now;
+                            //        EventsLib.EventManager.ctb.senton = DateTime.Now;
+                            //        EventsLib.EventManager.SetEvent(EventsLib.EventManager.ctb.name,
+                            //            EventsLib.EventManager.ctb.map);
+                            //        EventsLib.EventManager.ctb.SendInvitation();
+                            //        Program.DiscordAPIevents.Enqueue($"``CaptureTheBag has started!``");
+                            //        break;
+                            //    }
                             case 4:
-                                {
-                                    EventsLib.EventManager.ctb.LastSpawn = DateTime.Now;
-                                    EventsLib.EventManager.ctb.senton = DateTime.Now;
-                                    EventsLib.EventManager.SetEvent(EventsLib.EventManager.ctb.name,
-                                        EventsLib.EventManager.ctb.map);
-                                    EventsLib.EventManager.ctb.SendInvitation();
-                                    Program.DiscordAPIevents.Enqueue($"``CaptureTheBag has started!``");
-                                    break;
-                                }
-                            case 5:
                                 {
                                     EventsLib.EventManager.deathmatch.LastSpawn = DateTime.Now;
                                     EventsLib.EventManager.deathmatch.senton = DateTime.Now;
@@ -230,7 +230,7 @@ namespace COServer.Game.MsgTournaments
 
                                     break;
                                 }
-                            case 6:
+                            case 5:
                                 {
                                     EventsLib.EventManager.killthecaptain.LastSpawn = DateTime.Now;
                                     EventsLib.EventManager.killthecaptain.senton = DateTime.Now;
@@ -240,7 +240,7 @@ namespace COServer.Game.MsgTournaments
                                     Program.DiscordAPIevents.Enqueue($"``Kill the captain has started!``");
                                     break;
                                 }
-                            case 7:
+                            case 6:
                                 {
                                     EventsLib.EventManager.killhunted.LastSpawn = DateTime.Now;
                                     EventsLib.EventManager.killhunted.senton = DateTime.Now;

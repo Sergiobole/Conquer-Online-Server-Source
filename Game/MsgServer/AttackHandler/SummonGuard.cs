@@ -65,26 +65,26 @@ namespace COServer.Game.MsgServer.AttackHandler
                             MsgSpell.Send(user);
                             break;
                         }
-                    case 4050:
-                        {
-                            MsgSpellAnimation MsgSpell = new MsgSpellAnimation(user.Player.UID
-                              , 0, Attack.X, Attack.Y, ClientSpell.ID
-                              , ClientSpell.Level, ClientSpell.UseSpellSoul);
-                            var skill = Database.Server.Magic[ClientSpell.ID];
-                            switch (ClientSpell.Level)
-                            {
-                                case 0: Name = "EvilBatA"; break;
-                                case 1: Name = "EvilBatB"; break;
-                                case 2: Name = "EvilBatC"; break;
-                                case 3: Name = "EvilBatD"; break;
-                            }
-                            new MonsterPet(user.Player, Name, stream);
-                            user.Pet.Attach(stream);
-                            Updates.UpdateSpell.CheckUpdate(stream, user, Attack, 1, DBSpells);
-                            MsgSpell.SetStream(stream);
-                            MsgSpell.Send(user);
-                            break;
-                        }
+                    //case 4050:
+                    //    {
+                    //        MsgSpellAnimation MsgSpell = new MsgSpellAnimation(user.Player.UID
+                    //          , 0, Attack.X, Attack.Y, ClientSpell.ID
+                    //          , ClientSpell.Level, ClientSpell.UseSpellSoul);
+                    //        var skill = Database.Server.Magic[ClientSpell.ID];
+                    //        switch (ClientSpell.Level)
+                    //        {
+                    //            case 0: Name = "EvilBatA"; break;
+                    //            case 1: Name = "EvilBatB"; break;
+                    //            case 2: Name = "EvilBatC"; break;
+                    //            case 3: Name = "EvilBatD"; break;
+                    //        }
+                    //        new MonsterPet(user.Player, Name, stream);
+                    //        user.Pet.Attach(stream);
+                    //        Updates.UpdateSpell.CheckUpdate(stream, user, Attack, 1, DBSpells);
+                    //        MsgSpell.SetStream(stream);
+                    //        MsgSpell.Send(user);
+                    //        break;
+                    //    }
                     case 4060:
                         {
                             MsgSpellAnimation MsgSpell = new MsgSpellAnimation(user.Player.UID
@@ -125,26 +125,26 @@ namespace COServer.Game.MsgServer.AttackHandler
                             MsgSpell.Send(user);
                             break;
                         }
-                    case (ushort)Role.Flags.SpellID.SummonGuard:
-                        {
-                            MsgSpellAnimation MsgSpell = new MsgSpellAnimation(user.Player.UID
-                              , 0, Attack.X, Attack.Y, ClientSpell.ID
-                              , ClientSpell.Level, ClientSpell.UseSpellSoul);
-                            var skill = Database.Server.Magic[ClientSpell.ID];
-                            switch (ClientSpell.Level)
-                            {
-                                case 0: Name = "IronGuard"; break;
-                                case 1: Name = "CopperGuard"; break;
-                                case 2: Name = "SilverGuard"; break;
-                                case 3: Name = "GoldGuard"; break;
-                            }
-                            new MonsterPet(user.Player, Name, stream);
-                            user.Pet.Attach(stream);
-                            Updates.UpdateSpell.CheckUpdate(stream, user, Attack, 1, DBSpells);
-                            MsgSpell.SetStream(stream);
-                            MsgSpell.Send(user);
-                            break;
-                        }
+                    //case (ushort)Role.Flags.SpellID.SummonGuard:
+                    //    {
+                    //        MsgSpellAnimation MsgSpell = new MsgSpellAnimation(user.Player.UID
+                    //          , 0, Attack.X, Attack.Y, ClientSpell.ID
+                    //          , ClientSpell.Level, ClientSpell.UseSpellSoul);
+                    //        var skill = Database.Server.Magic[ClientSpell.ID];
+                    //        switch (ClientSpell.Level)
+                    //        {
+                    //            case 0: Name = "IronGuard"; break;
+                    //            case 1: Name = "CopperGuard"; break;
+                    //            case 2: Name = "SilverGuard"; break;
+                    //            case 3: Name = "GoldGuard"; break;
+                    //        }
+                    //        new MonsterPet(user.Player, Name, stream);
+                    //        user.Pet.Attach(stream);
+                    //        Updates.UpdateSpell.CheckUpdate(stream, user, Attack, 1, DBSpells);
+                    //        MsgSpell.SetStream(stream);
+                    //        MsgSpell.Send(user);
+                    //        break;
+                    //    }
                 }
             }
         }

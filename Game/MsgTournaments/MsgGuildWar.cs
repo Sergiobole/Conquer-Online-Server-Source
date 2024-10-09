@@ -112,7 +112,6 @@ namespace COServer.Game.MsgTournaments
         private Role.GameMap GuildWarMap;
 
         public ProcesType Proces { get; set; }
-
         public DataFlameQuest FlamesQuest;
         public Dictionary<Role.SobNpc.StaticMesh, Role.SobNpc> Furnitures { get; set; }
         public ConcurrentDictionary<uint, GuildWarScrore> ScoreList;
@@ -333,7 +332,46 @@ namespace COServer.Game.MsgTournaments
         {
             if (Proces != ProcesType.Dead)
             {
-                StampShuffleScore = DateTime.Now.AddSeconds(8);
+                StampShuffleScore = DateTime.Now.AddSeconds(1);
+
+                // Cálculo do tempo restante até as 13:00 de domingo
+                DateTime now = DateTime.Now;
+                DateTime eventEndTime = new DateTime(now.Year, now.Month, now.Day, 13, 0, 0);
+                if (now.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    eventEndTime = eventEndTime.AddDays(((int)DayOfWeek.Sunday - (int)now.DayOfWeek + 7) % 7);
+                }
+                TimeSpan timeRemaining = eventEndTime - now;
+
+                // Formatação da mensagem de tempo restante
+                string timeRemainingMessage = $"Guild War ends in: {timeRemaining.Minutes}m {timeRemaining.Seconds}s";
+
+
+
+                // Enviar a mensagem de tempo restante para acabar gw
+                using (var rec = new ServerSockets.RecycledPacket())
+                {
+                    var stream = rec.GetStream();
+                    Game.MsgServer.MsgMessage timeMsg = new MsgServer.MsgMessage(
+                        timeRemainingMessage,
+                        MsgServer.MsgMessage.MsgColor.yellow,
+                        MsgServer.MsgMessage.ChatMode.FirstRightCorner
+                    );     
+                    
+                    SendMapPacket(timeMsg.GetArray(stream));
+                }
+                // Enviar a mensagem de separação
+                using (var rec = new ServerSockets.RecycledPacket())
+                {
+                    var stream = rec.GetStream();
+                    Game.MsgServer.MsgMessage timeMsg = new MsgServer.MsgMessage(
+                        "------------------------------", //separador 
+                        MsgServer.MsgMessage.MsgColor.yellow,
+                        MsgServer.MsgMessage.ChatMode.ContinueRightCorner 
+                    );
+                    
+                    SendMapPacket(timeMsg.GetArray(stream));
+                }
                 var Array = ScoreList.Values.ToArray();
                 var DescendingList = Array.OrderByDescending(p => p.Score).ToArray();
                 for (int x = 0; x < DescendingList.Length; x++)
@@ -341,20 +379,27 @@ namespace COServer.Game.MsgTournaments
                     var element = DescendingList[x];
                     if (x == 0 && createWinned)
                         Winner = element;
+
                     using (var rec = new ServerSockets.RecycledPacket())
                     {
                         var stream = rec.GetStream();
-                        Game.MsgServer.MsgMessage msg = new MsgServer.MsgMessage("No " + (x + 1).ToString() + ". " + element.Name + " (" + element.Score.ToString() + ")"
-                           , MsgServer.MsgMessage.MsgColor.yellow, x == 0 ? MsgServer.MsgMessage.ChatMode.FirstRightCorner : MsgServer.MsgMessage.ChatMode.ContinueRightCorner);
+                        Game.MsgServer.MsgMessage msg = new MsgServer.MsgMessage(
+                            $"No {x + 1}. {element.Name} ({element.Score})",
+                            MsgServer.MsgMessage.MsgColor.yellow,
+                            x == 0 ? MsgServer.MsgMessage.ChatMode.ContinueRightCorner : MsgServer.MsgMessage.ChatMode.ContinueRightCorner
+                        );
 
+                        // Enviar a mensagem ao mapa
                         SendMapPacket(msg.GetArray(stream));
-
                     }
-                    if (x == 4)
+                    if (x == 6)
                         break;
                 }
             }
         }
+
+
+
         internal bool ValidJump(int Current, out int New, ushort X, ushort Y)
         {
             if (Role.Core.GetDistance(217, 177, X, Y) <= 3)

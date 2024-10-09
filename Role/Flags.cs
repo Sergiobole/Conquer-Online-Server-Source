@@ -307,7 +307,7 @@ namespace COServer.Role
             ArrowRain = 8030,
             Intensify = 9000,
             Bless = 9876,
-            SummonGuard = 4000,
+            //SummonGuard = 4000,
             AzureShield = 30000,
             ChainBolt = 10309,
             Pravade = 3090,

@@ -250,6 +250,8 @@ namespace COServer.Game.MsgServer
                                         user.Send(msg.GetArray(packet));
                                     }
                                 }
+                                // Adiciona a chamada da API Discord
+                                Program.DiscordAPIworld.Enqueue($"``[{client.Player.Name}] speaks to the world: {msg.__Message}``");
                             }
                             break;
                         }
@@ -258,6 +260,8 @@ namespace COServer.Game.MsgServer
                             if (Time32.Now > client.Player.LastWorldMessaj.AddSeconds(15))
                             {
                                 client.Player.LastWorldMessaj = Time32.Now;
+
+                                // Envia a mensagem para todos os jogadores, exceto para o remetente
                                 foreach (var user in Database.Server.GamePoll.Values)
                                 {
                                     if (user.Player.UID != client.Player.UID)
@@ -265,8 +269,6 @@ namespace COServer.Game.MsgServer
                                         user.Send(msg.GetArray(packet));
                                     }
                                 }
-                                Program.DiscordAPIworld.Enqueue("" + msg._From + " speaks to " + msg._To + ": " + msg.__Message + "");
-
                             }
                             break;
                         }
@@ -556,17 +558,17 @@ namespace COServer.Game.MsgServer
 
                                         //        break;
                                         //    }
-                                        case "4":
-                                            {
-                                                EventsLib.EventManager.ctb.LastSpawn = DateTime.Now;
-                                                EventsLib.EventManager.ctb.senton = DateTime.Now;
-                                                EventsLib.EventManager.SetEvent(EventsLib.EventManager.ctb.name,
-                                                    EventsLib.EventManager.ctb.map);
-                                                EventsLib.EventManager.ctb.SendInvitation();
+                                        //case "4":
+                                        //    {
+                                        //        EventsLib.EventManager.ctb.LastSpawn = DateTime.Now;
+                                        //        EventsLib.EventManager.ctb.senton = DateTime.Now;
+                                        //        EventsLib.EventManager.SetEvent(EventsLib.EventManager.ctb.name,
+                                        //            EventsLib.EventManager.ctb.map);
+                                        //        EventsLib.EventManager.ctb.SendInvitation();
 
-                                                break;
-                                            }
-                                        case "5":
+                                        //        break;
+                                        //    }
+                                        case "4":
                                             {
                                                 EventsLib.EventManager.deathmatch.LastSpawn = DateTime.Now;
                                                 EventsLib.EventManager.deathmatch.senton = DateTime.Now;
@@ -576,7 +578,7 @@ namespace COServer.Game.MsgServer
 
                                                 break;
                                             }
-                                        case "6":
+                                        case "5":
                                             {
                                                 EventsLib.EventManager.killthecaptain.LastSpawn = DateTime.Now;
                                                 EventsLib.EventManager.killthecaptain.senton = DateTime.Now;
@@ -586,7 +588,7 @@ namespace COServer.Game.MsgServer
 
                                                 break;
                                             }
-                                        case "7":
+                                        case "6":
                                             {
                                                 EventsLib.EventManager.killhunted.LastSpawn = DateTime.Now;
                                                 EventsLib.EventManager.killhunted.senton = DateTime.Now;
@@ -1619,11 +1621,17 @@ namespace COServer.Game.MsgServer
                                 }
                             case "banip":
                                 {
+                                    Console.WriteLine("banip");
                                     foreach (var user in Database.Server.GamePoll.Values)
                                     {
                                         if (user.Player.Name.ToLower() == data[1].ToLower())
                                         {
+                                            Console.WriteLine($"banip - Found player ${data[1].ToLower()}");
+
                                             Database.SystemBanned.AddBan(user.Socket.RemoteIp, uint.Parse(data[2]), user.Player.Name);
+
+                                            Console.WriteLine($"banip - Teste");
+
                                             user.SendSysMesage("You Ip Address was Banned by [PM]/[GM].", ChatMode.System, MsgColor.white);
                                             user.Socket.Disconnect();
                                             break;

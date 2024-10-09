@@ -207,7 +207,7 @@ namespace COServer.Game.MsgServer
 
             if (Value != null)
             {
-                for (int x = 0; x < Value.Length; x++)//4
+                for (int x = 0; x < 4; x++)//4
                 {
                     if (Value.Length > x)
                     {

@@ -32,12 +32,13 @@ namespace COServer
         public static Discord DiscordAPI = new Discord("https://discord.com/api/webhooks/1279059333186850906/tXJNrPK4ANgx1KUmPBnwQSyBiIV1nUyoFUTBNV67DWgoGeTeUaBpM1U737lwBFiWm4HV");
         public static Discord DiscordAPIsocket = new Discord("https://discord.com/api/webhooks/1279057888546914349/HV7GvJDn_dVM1sEgW5K2yCd76AghtitDm32TKmxZrnGiFXMWj644nfPEooahcPJGsunE");
         public static Discord DiscordAPIevents = new Discord("https://discord.com/api/webhooks/1279064456009220131/prtX5o2LB7fyF1c_rg82NASmYi1QR4A_KcPaNJ8Oj0ApSM3r_bNMkvLtSPYBuwtIzp9B");
-        public static Discord DiscordAPIworld = new Discord("https://discord.com/api/webhooks/1279070520423223387/j6jdhxqLh6T1B5B4ZXgg89eIQ6PJZowwQY65XDjflguIV2OM_xoWhXAK95lb_zDeLiEl");
+        public static Discord DiscordAPIworld = new Discord("https://discord.com/api/webhooks/1292663136783962153/499N37AfkWp_86ACQt33mF17gGjbjqyfqrfbahN5VE_XAoaPOErKABFWOi-D-GGV6X12");
         public static Discord DiscordAPIfoundslog = new Discord("https://discord.com/api/webhooks/1280114216195461154/z-1mIZ0yhrFwBkyxWsjdRqW8BGVtBdPySRb5KV_HMV5Hd_Jni4RhZHfuroctZ40Fsa8u");
         public static Discord DiscordAPIQuest = new Discord("https://discord.com/api/webhooks/1283628275033313362/7VxErV7OX5HQKHlomFYZdUfiJiCjqt8jV467rY9V5oCHyuRY_pLcSNTfTHjyoB4oY9Rn");
         public static Discord DiscordAPILotery = new Discord("https://discord.com/api/webhooks/1285649959533674598/3imSBiaHAyCWKrg-ubfbrTbo5OKkdtbolwN6pJzdSdJT_271lpNeuyIwVDpGR2AI1WWn");
         public static Discord DiscordAPIRedDrop = new Discord("https://discord.com/api/webhooks/1290511233220345868/DvCYgFXSvvSMDbULJT-hu8_Tr--xKVUL7B5fdRcA1EbpaeCsZuFbkL6yWFoGYFbUBnRo");
         public static Discord DiscordAPIwinners = new Discord("https://discord.com/api/webhooks/1290875109942493215/i6_-iFQfcOr8Se5QoIbHSr5jjDZO5RFyyEDYz27kA8B-LeCdXNVtRQ3pIfNBsiAD5zY9");
+        public static Discord DiscordAPIplus = new Discord("https://discord.com/api/webhooks/1293693826766209034/KOLB2UqS7KwiKELVlr88De18712rqtg6ZmiybvlqhdN3hZhYERYz0OsZq7wea7yE_xlf");
         public static ulong CPsHuntedSinceRestart = 0;
         public static List<byte[]> LoadPackets = new List<byte[]>();
         public static List<uint> ProtectMapSpells = new List<uint>() { 1038 };
@@ -577,12 +578,11 @@ namespace COServer
                 bool extra = false;
                 string text = System.Text.ASCIIEncoding.ASCII.GetString(obj.DHKeyBuffer.buffer, 0, obj.DHKeyBuffer.Length());
 
-                // Log for debugging the DH key buffer content
-                Console.WriteLine($"DHKeyBuffer content: {text}");
+                
 
                 if (!text.EndsWith("TQClient"))
                 {
-                    Console.WriteLine("Extra data detected. Copying additional 36 bytes from EncryptedDHKeyBuffer.");
+                    
                     System.Buffer.BlockCopy(obj.EncryptedDHKeyBuffer.buffer, obj.EncryptedDHKeyBuffer.Length() - 36, buffer, 0, 36);
                     extra = true;
                 }
@@ -590,20 +590,20 @@ namespace COServer
                 string key;
                 if (Stream.GetHandshakeReplyKey(out key))
                 {
-                    Console.WriteLine("Handshake key received. Setting DH key.");
+                    
                     obj.SetDHKey = true;
                     obj.Game.Cryptography = obj.Game.DHKeyExchance.HandleClientKeyPacket(key, obj.Game.Cryptography);
                 }
                 else
                 {
-                    Console.WriteLine("Failed to receive handshake key. Disconnecting.");
+                    
                     obj.Disconnect();
                     return;
                 }
 
                 if (extra)
                 {
-                    Console.WriteLine("Processing extra data.");
+                    
                     Stream.Seek(0);
                     obj.Game.Cryptography.Decrypt(buffer);
                     fixed (byte* ptr = buffer)
@@ -612,17 +612,17 @@ namespace COServer
                     Stream.Seek(2);
                     ushort PacketID = Stream.ReadUInt16();
 
-                    Console.WriteLine($"Packet ID: {PacketID}");
+                    
 
                     Action<Client.GameClient, ServerSockets.Packet> hinvoker;
                     if (MsgInvoker.TryGetInvoker(PacketID, out hinvoker))
                     {
-                        Console.WriteLine("Invoking packet handler.");
+                        
                         hinvoker(obj.Game, Stream);
                     }
                     else
                     {
-                        Console.WriteLine($"DH KEY: Packet ID not found - {PacketID}. Disconnecting.");
+                        
                         obj.Disconnect();
                     }
                 }
@@ -630,7 +630,7 @@ namespace COServer
             catch (Exception e)
             {
                 // Log the exception with more details
-                Console.WriteLine($"Exception in CreateDHKey: {e.Message}\nStackTrace: {e.StackTrace}");
+                
                 obj.Disconnect();
             }
         }

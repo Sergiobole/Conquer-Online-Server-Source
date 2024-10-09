@@ -2297,7 +2297,8 @@ namespace COServer.Game.MsgNpc
                         break;
                     }
                 #endregion
-                #region Wirthdraw Meteor
+                #region Wirthdraw 
+
                 case 13:
                     {
                         data.AddText($"You have: {client.Player.DepositMets} \n");
@@ -9416,134 +9417,134 @@ namespace COServer.Game.MsgNpc
         #endregion
         #region JobCenter
 
-        [NpcAttribute(NpcID.MightyTao)]//15745
-        public static void MightyTao(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
-        {
-            Dialog data = new Dialog(client, stream);
+        //[NpcAttribute(NpcID.MightyTao)]//15745
+        //public static void MightyTao(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        //{
+        //    Dialog data = new Dialog(client, stream);
 
-            switch (Option)
-            {
-                case 0:
-                    {
-                        data.AddText("If you've reborned at least one time, you can learn some great skills.\n")
-                            .AddText("With them you'll be able to conquer this world much faster.")
-                            .AddOption("Summon Guard [Lvl 15] - 5 Eux Ores.", 1)
-                            .AddOption("Summon Mob [Lvl 40] - 5 Eux Ores.", 2)
-                            .AddOption("Never~mind.", 255)
-                            .AddAvatar(6).FinalizeDialog();
-                        break;
-                    }
-                case 1:
-                    {
-                        if (client.Player.Reborn > 0)
-                        {
-                            if (client.Inventory.Contain(1072031, 5))
-                            {
-                                client.Inventory.Remove(1072031, 5, stream);
-                                var SpellID = Role.Flags.SpellID.SummonGuard;
-                                if (client.MySpells.ClientSpells.ContainsKey((ushort)SpellID))
-                                {
-                                    data.AddText("You`ve learned " + SpellID.ToString() + "!")
-                                        .AddOption("Thanks!", 255).AddAvatar(6).FinalizeDialog();
-                                    break;
-                                }
-                                else
-                                {
-                                    client.MySpells.Add(stream, (ushort)SpellID);
+        //    switch (Option)
+        //    {
+        //        case 0:
+        //            {
+        //                data.AddText("If you've reborned at least one time, you can learn some great skills.\n")
+        //                    .AddText("With them you'll be able to conquer this world much faster.")
+        //                    .AddOption("Summon Guard [Lvl 15] - 5 Eux Ores.", 1)
+        //                    .AddOption("Summon Mob [Lvl 40] - 5 Eux Ores.", 2)
+        //                    .AddOption("Never~mind.", 255)
+        //                    .AddAvatar(6).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 1:
+        //            {
+        //                if (client.Player.Reborn > 0)
+        //                {
+        //                    if (client.Inventory.Contain(1072031, 5))
+        //                    {
+        //                        client.Inventory.Remove(1072031, 5, stream);
+        //                        var SpellID = Role.Flags.SpellID.SummonGuard;
+        //                        if (client.MySpells.ClientSpells.ContainsKey((ushort)SpellID))
+        //                        {
+        //                            data.AddText("You`ve learned " + SpellID.ToString() + "!")
+        //                                .AddOption("Thanks!", 255).AddAvatar(6).FinalizeDialog();
+        //                            break;
+        //                        }
+        //                        else
+        //                        {
+        //                            client.MySpells.Add(stream, (ushort)SpellID);
 
-                                    data.AddText("Congratulations! You just learned the skill " + SpellID.ToString() + "!")
-                                        .AddOption("Thanks!", 255)
-                                        .AddAvatar(6).FinalizeDialog();
-                                }
-                            }
-                            else
-                            {
-                                data.AddText("You don't have 5 Euxenite Ores!")
-                                    .AddOption("Okay.", 255).AddAvatar(6).FinalizeDialog();
-                            }
-                        }
-                        break;
-                    }
-                case 2:
-                    {
-                        if (client.Player.Reborn > 0)
-                        {
-                            if (client.Inventory.Contain(1072031, 5))
-                            {
-                                client.Inventory.Remove(1072031, 5, stream);
-                                if (client.Player.Class <= 15)
-                                {
-                                    if (!client.MySpells.ClientSpells.ContainsKey((ushort)4050))
-                                        client.MySpells.Add(stream, (ushort)4050);
-                                    else
-                                    {
-                                        data.AddText("You've already learned it!")
-                                     .AddOption("Okay.", 255).AddAvatar(6).FinalizeDialog();
-                                        break;
-                                    }
-                                }
-                                else if (client.Player.Class <= 25)
-                                {
-                                    if (!client.MySpells.ClientSpells.ContainsKey((ushort)4060))
-                                        client.MySpells.Add(stream, (ushort)4060);
-                                    else
-                                    {
-                                        data.AddText("You've already learned it!")
-                                     .AddOption("Okay.", 255).AddAvatar(6).FinalizeDialog();
-                                        break;
-                                    }
-                                }
-                                else if (client.Player.Class <= 45)
-                                {
-                                    if (!client.MySpells.ClientSpells.ContainsKey((ushort)4070))
-                                        client.MySpells.Add(stream, (ushort)4070);
-                                    else
-                                    {
-                                        data.AddText("You've already learned it!")
-                                     .AddOption("Okay.", 255).AddAvatar(6).FinalizeDialog();
-                                        break;
-                                    }
-                                }
-                                else if (client.Player.Class <= 135)
-                                {
-                                    if (!client.MySpells.ClientSpells.ContainsKey((ushort)4010))
-                                        client.MySpells.Add(stream, (ushort)4010);
-                                    else
-                                    {
-                                        data.AddText("You've already learned it!")
-                                     .AddOption("Okay.", 255).AddAvatar(6).FinalizeDialog();
-                                        break;
-                                    }
-                                }
-                                else if (client.Player.Class <= 145)
-                                {
-                                    if (!client.MySpells.ClientSpells.ContainsKey((ushort)4020))
-                                        client.MySpells.Add(stream, (ushort)4020);
-                                    else
-                                    {
-                                        data.AddText("You've already learned it!")
-                                            .AddOption("Okay.", 255).AddAvatar(6).FinalizeDialog();
-                                        break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                data.AddText("You don't have 5 Euxenite Ores!")
-                                    .AddOption("Okay.", 255).AddAvatar(6).FinalizeDialog();
-                            }
-                        }
-                        else
-                        {
+        //                            data.AddText("Congratulations! You just learned the skill " + SpellID.ToString() + "!")
+        //                                .AddOption("Thanks!", 255)
+        //                                .AddAvatar(6).FinalizeDialog();
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        data.AddText("You don't have 5 Euxenite Ores!")
+        //                            .AddOption("Okay.", 255).AddAvatar(6).FinalizeDialog();
+        //                    }
+        //                }
+        //                break;
+        //            }
+        //        case 2:
+        //            {
+        //                if (client.Player.Reborn > 0)
+        //                {
+        //                    if (client.Inventory.Contain(1072031, 5))
+        //                    {
+        //                        client.Inventory.Remove(1072031, 5, stream);
+        //                        if (client.Player.Class <= 15)
+        //                        {
+        //                            if (!client.MySpells.ClientSpells.ContainsKey((ushort)4050))
+        //                                client.MySpells.Add(stream, (ushort)4050);
+        //                            else
+        //                            {
+        //                                data.AddText("You've already learned it!")
+        //                             .AddOption("Okay.", 255).AddAvatar(6).FinalizeDialog();
+        //                                break;
+        //                            }
+        //                        }
+        //                        else if (client.Player.Class <= 25)
+        //                        {
+        //                            if (!client.MySpells.ClientSpells.ContainsKey((ushort)4060))
+        //                                client.MySpells.Add(stream, (ushort)4060);
+        //                            else
+        //                            {
+        //                                data.AddText("You've already learned it!")
+        //                             .AddOption("Okay.", 255).AddAvatar(6).FinalizeDialog();
+        //                                break;
+        //                            }
+        //                        }
+        //                        else if (client.Player.Class <= 45)
+        //                        {
+        //                            if (!client.MySpells.ClientSpells.ContainsKey((ushort)4070))
+        //                                client.MySpells.Add(stream, (ushort)4070);
+        //                            else
+        //                            {
+        //                                data.AddText("You've already learned it!")
+        //                             .AddOption("Okay.", 255).AddAvatar(6).FinalizeDialog();
+        //                                break;
+        //                            }
+        //                        }
+        //                        else if (client.Player.Class <= 135)
+        //                        {
+        //                            if (!client.MySpells.ClientSpells.ContainsKey((ushort)4010))
+        //                                client.MySpells.Add(stream, (ushort)4010);
+        //                            else
+        //                            {
+        //                                data.AddText("You've already learned it!")
+        //                             .AddOption("Okay.", 255).AddAvatar(6).FinalizeDialog();
+        //                                break;
+        //                            }
+        //                        }
+        //                        else if (client.Player.Class <= 145)
+        //                        {
+        //                            if (!client.MySpells.ClientSpells.ContainsKey((ushort)4020))
+        //                                client.MySpells.Add(stream, (ushort)4020);
+        //                            else
+        //                            {
+        //                                data.AddText("You've already learned it!")
+        //                                    .AddOption("Okay.", 255).AddAvatar(6).FinalizeDialog();
+        //                                break;
+        //                            }
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        data.AddText("You don't have 5 Euxenite Ores!")
+        //                            .AddOption("Okay.", 255).AddAvatar(6).FinalizeDialog();
+        //                    }
+        //                }
+        //                else
+        //                {
 
-                            data.AddText("You can't learn these skills until you're reborned.")
-                                .AddOption("Okay.", 255)
-                                .AddAvatar(6).FinalizeDialog();
-                        }
-                        break;
-                    }
-            }
-        }
+        //                    data.AddText("You can't learn these skills until you're reborned.")
+        //                        .AddOption("Okay.", 255)
+        //                        .AddAvatar(6).FinalizeDialog();
+        //                }
+        //                break;
+        //            }
+        //    }
+        //}
 
         [NpcAttribute(NpcID.PromotionTaoist)]
         public static void PromotionTaoist(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)

@@ -50,7 +50,7 @@ namespace COServer.Game.MsgServer.AttackHandler.Updates
                                 case (ushort)Role.Flags.SpellID.Golem:
                                 case (ushort)Role.Flags.SpellID.NightDevil:
                                 case (ushort)Role.Flags.SpellID.WaterElf:
-                                case (ushort)Role.Flags.SpellID.SummonGuard:
+                                //case (ushort)Role.Flags.SpellID.SummonGuard:
                                     Damage = 1; // Para outras skills, mantém o dano como 1 se necessário
                                     break;
                                 default:
