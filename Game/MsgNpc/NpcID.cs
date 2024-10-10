@@ -5,6 +5,7 @@ namespace COServer.Game.MsgNpc
 {
     public enum NpcID : uint
     {
+        MiraculosQuest = 147147,
         letterquest = 15975,
         test = 515458,
         Ss_Fb = 100,

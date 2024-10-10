@@ -258,6 +258,55 @@ namespace COServer.Game.MsgNpc
             }
         }
         #endregion
+
+        #region MiraculosQuest
+        [NpcAttribute(NpcID.MiraculosQuest)]
+        private static void MiraculosQuest(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        {
+            Dialog dialog = new Dialog(client, stream);
+            switch (Option)
+            {
+                case 0:
+                    {
+                        dialog.AddText("Hello " + client.Player.Name + "You need the 6 Super Gems to trade for MiraculousGourd. \nAre you have [PhoenixGem, RainbowGem, KylinGem, VioletGem, MoonGem, DragonGem]?\n")
+                         .AddOption("Yes~I~Have.", 1)
+                         .AddOption("Just passing by.")
+                         .AddAvatar(63).FinalizeDialog();
+
+                        break;
+                    }
+                case 1:
+                    {
+                        if (client.Inventory.Contain(700003, 1) && client.Inventory.Contain(700013, 1) && client.Inventory.Contain(700033, 1) && client.Inventory.Contain(700043, 1) && client.Inventory.Contain(700053, 1) && client.Inventory.Contain(700063, 1))
+                        {
+
+                            client.Inventory.Remove(700003, 1, stream);
+                            client.Inventory.Remove(700013, 1, stream);
+                            client.Inventory.Remove(700033, 1, stream);
+                            client.Inventory.Remove(700043, 1, stream);
+                            client.Inventory.Remove(700053, 1, stream);
+                            client.Inventory.Remove(700063, 1, stream);
+
+                            client.Inventory.Add(stream, 2100025, 1);
+
+                            // Envia a mensagem global com o nome da recompensa
+                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"[{client.Player.Name}] has claimed MiraculousGourd from MiraculousGourdNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+
+                            // Envia a mensagem para o Discord através da API
+                            Program.DiscordAPIQuest.Enqueue($"[{client.Player.Name}] has claimed MiraculousGourd from MiraculousGourd!");
+                        }
+                        else
+                        {
+                            dialog.Text("You don’t have the 6 necessary Super Gems.\n")
+                                 .AddText("Check ur Gems.")
+                                 .AddOption("Okay.", 255)
+                                 .AddAvatar(211).FinalizeDialog();
+                        }
+                        break;
+                    }
+            }
+        }
+        #endregion
         #region ArenaDuel
         #region Join
         //[NpcAttribute(NpcID.ArenaDuel)]
@@ -15151,23 +15200,29 @@ namespace COServer.Game.MsgNpc
                     }
                 case 1:
                     {
-                        if (client.Player.PKPoints < 100)
+                        // Verifica se o minuto atual é múltiplo de 10
+                        if (DateTime.Now.Minute % 10 == 0)
                         {
-                            data.AddText("You~don\'t~need~to~stay~here~any~more.~Let~me~help~you~out")
-                       .AddOption("Ok,~thanks.", 3)
-                  .AddOption("I~wanna~stay~here.", 255).AddAvatar(37).FinalizeDialog();
-
-                            break;
+                            if (client.Player.PKPoints < 100)
+                            {
+                                data.AddText("You~don\'t~need~to~stay~here~any~more.~Let~me~help~you~out")
+                                    .AddOption("Ok,~thanks.", 3)
+                                    .AddOption("I~wanna~stay~here.", 255).AddAvatar(37).FinalizeDialog();
+                            }
+                            else
+                            {
+                                int cost = 30000;
+                                data.AddText("You~really~murdered~a~lot.~Well~in~this~case~if~you~pay~for~yours~sins~" + cost.ToString() + "~CPs~I~will~let~you~go.")
+                                    .AddOption("Here~is~my~payment.", 4)
+                                    .AddOption("No,~thanks.", 255).AddAvatar(37).FinalizeDialog();
+                            }
                         }
                         else
                         {
-                            int cost = 30000;
-                            // int cost = (int)(5000 + client.Player.PKPoints * 10);
-                            data.AddText("You~really~murdered~a~lot.~Well~in~this~case~if~you~pay~for~yours~sins~" + cost.ToString() + "~CPs~I~will~let~you~go.")
-                 .AddOption("Here~is~my~payment.", 4)
-            .AddOption("No,~thanks.", 255).AddAvatar(37).FinalizeDialog();
+                            // Caso não esteja no intervalo permitido, avisa ao jogador
+                            data.AddText("You~can~only~leave~at~xx:10,~xx:20,~xx:30,~etc.~Please~wait~until~the~next~time~interval.")
+                                .AddOption("I~see", 255).AddAvatar(37).FinalizeDialog();
                         }
-
                         break;
                     }
                 case 4:
