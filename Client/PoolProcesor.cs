@@ -843,7 +843,7 @@ namespace COServer.Client
 
                 //if (Timer < client.Player.LastAttack.AddSeconds(5))
                 //{
-                //    if (client.MobsKilled > 1000 && (DateTime.Now > client.Player.LastSuccessCaptcha.AddMinutes(client.Player.NextCaptcha)))
+                //    if (client.MobsKilled > 500 && (DateTime.Now > client.Player.LastSuccessCaptcha.AddMinutes(client.Player.NextCaptcha)))
                 //    {
                 //        if (Timer > client.Player.KillCountCaptchaStamp.AddSeconds(20))
                 //        {
@@ -872,14 +872,27 @@ namespace COServer.Client
                 //    }
                 //}
                 //#endregion
-                //if (client.Player.Map == 1005 && client.Player.DynamicID == 0 && !client.Player.Alive && Timer > client.Player.DeadStamp.AddSeconds(5))
-                //{
-                //    using (var rec = new ServerSockets.RecycledPacket())
-                //    {
-                //        var stream = rec.GetStream();
-                //        client.Player.Revive(stream);
-                //    }
-                //}
+                if ((client.Player.Map == 1005 || client.Player.Map == 6000)
+                        && client.Player.DynamicID == 0
+                        && !client.Player.Alive
+                        && Timer > client.Player.DeadStamp.AddSeconds(6))
+                {
+                    using (var rec = new ServerSockets.RecycledPacket())
+                    {
+                        var stream = rec.GetStream();
+                        client.Player.Revive(stream);
+
+                        // Verificar o mapa e definir as coordenadas apropriadas
+                        if (client.Player.Map == 1005)
+                        {
+                            client.Teleport(050, 050, 1005);
+                        }
+                        else if (client.Player.Map == 6000)
+                        {
+                            client.Teleport(029, 072, 6000); // Exemplo de coordenadas para o mapa 6000
+                        }
+                    }
+                }
 
                 if (client.Player.BlockMovementCo && DateTime.Now > client.Player.BlockMovement)
                 {
