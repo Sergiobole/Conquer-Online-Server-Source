@@ -575,4 +575,7 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>taskkill /IM "COServer.exe"  /F /FI "STATUS eq RUNNING"</PreBuildEvent>
+  </PropertyGroup>
 </Project>

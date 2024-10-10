@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Xml.Linq;
 
 namespace COServer.Game.MsgServer
 {
@@ -138,28 +139,38 @@ namespace COServer.Game.MsgServer
                 #region AncientDevil
                 if (client.Player.Map == 1082 && !Game.MsgTournaments.MsgSchedules.SpawnDevil)
                 {
-                    if (client.Player.X >= 217 && client.Player.X <= 218 && client.Player.Y >= 207 && client.Player.Y <= 208)
+                    TimeSpan horaAtual = DateTime.Now.TimeOfDay;
+
+                    //// A cada 2 horas, verificar se estamos nos primeiros 10 minutos
+                    if (horaAtual.Hours % 2 == 0 && horaAtual.Minutes >= 0 && horaAtual.Minutes < 10)
                     {
-                        if (client.Inventory.Contain(710011, 1)
-                        && client.Inventory.Contain(710012, 1)
-                        && client.Inventory.Contain(710013, 1)
-                            && client.Inventory.Contain(710014, 1)
-                            && client.Inventory.Contain(710015, 1) /*&& client.Inventory.Contain(710022, 1)*/)
+                        if (client.Player.X >= 217 && client.Player.X <= 218 && client.Player.Y >= 207 && client.Player.Y <= 208)
                         {
-                            client.Inventory.Remove(710011, 1, packet);
-                            client.Inventory.Remove(710012, 1, packet);
-                            client.Inventory.Remove(710013, 1, packet);
-                            client.Inventory.Remove(710014, 1, packet);
-                            client.Inventory.Remove(710015, 1, packet);
-                            //client.Inventory.Remove(710022, 1, packet);
-                            Database.Server.AddMapMonster(packet, client.Map, 9111, 213, 205, 1, 1, 1, 0, true, MsgFloorItem.MsgItemPacket.EffectMonsters.EarthquakeAndNight);
-                            Game.MsgTournaments.MsgSchedules.SpawnDevil = true;
-                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("The AncientDevil is being awaken! Prepare yourself to fight, it will appear in a matter of seconds!.", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.Center).GetArray(packet));
+                            if (client.Inventory.Contain(710011, 1)
+                            && client.Inventory.Contain(710012, 1)
+                            && client.Inventory.Contain(710013, 1)
+                                && client.Inventory.Contain(710014, 1)
+                                && client.Inventory.Contain(710015, 1))
+                            {
+                                client.Inventory.Remove(710011, 1, packet);
+                                client.Inventory.Remove(710012, 1, packet);
+                                client.Inventory.Remove(710013, 1, packet);
+                                client.Inventory.Remove(710014, 1, packet);
+                                client.Inventory.Remove(710015, 1, packet);
+                                Database.Server.AddMapMonster(packet, client.Map, 9111, 213, 205, 1, 1, 1, 0, true, MsgFloorItem.MsgItemPacket.EffectMonsters.EarthquakeAndNight);
+                                Game.MsgTournaments.MsgSchedules.SpawnDevil = true;
+                                Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("The AncientDevil is being awaken! Prepare yourself to fight, it will appear in a matter of seconds!.", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.Center).GetArray(packet));
+                                Program.DiscordAPIevents.Enqueue("``The AncientDevil is being awaken! Prepare yourself to fight, it will appear in a matter of seconds!.``");
+                            }
+                            else
+                            {
+                                client.SendSysMesage("You can only summon the AncientDevil inside its map near 218,208! Also you need the five Amulets (Trojan, Fire, Archer, Warrior and Water)");
+                            }
                         }
-                        else
-                        {
-                            client.SendSysMesage("You can only summon the AncientDevil inside its map near 218,208! Also you need the five Amulets (Trojan, Fire, Archer, Warrior and Water)");
-                        }
+                    }
+                    else
+                    {
+                        client.SendSysMesage("The AncientDevil can only be summoned every 2 hours, and only during the first 10 minutes of the hour.");
                     }
                 }
                 #endregion

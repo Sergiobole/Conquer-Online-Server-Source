@@ -738,35 +738,70 @@ namespace COServer.Game.MsgMonster
                         #region TrojanGuard
                         if (Family.ID == 9000)
                         {
-                            DropItemID(killer, 710017, stream);
+                            // Gera um número aleatório entre 1 e 100
+                            int chance = new Random().Next(1, 101);
+
+                            // Define a chance de drop (por exemplo, 10%)
+                            if (chance <= 10) // 10% de chance
+                            {
+                                DropItemID(killer, 710017, stream);
+                            }
                         }
 
                         #endregion
                         #region WarriorGuard
                         if (Family.ID == 9001)
                         {
-                            DropItemID(killer, 710016, stream);
+                            // Gera um número aleatório entre 1 e 100
+                            int chance = new Random().Next(1, 101);
+
+                            // Define a chance de drop (10%)
+                            if (chance <= 10) // 10% de chance
+                            {
+                                DropItemID(killer, 710016, stream);
+                            }
                         }
 
                         #endregion
                         #region ArcherGuard
                         if (Family.ID == 9002)
                         {
-                            DropItemID(killer, 710020, stream);
+                            // Gera um número aleatório entre 1 e 100
+                            int chance = new Random().Next(1, 101);
+
+                            // Define a chance de drop (10%)
+                            if (chance <= 10) // 10% de chance
+                            {
+                                DropItemID(killer, 710020, stream);
+                            }
                         }
 
                         #endregion
                         #region WaterGuard
                         if (Family.ID == 9004)
                         {
-                            DropItemID(killer, 710019, stream);
+                            // Gera um número aleatório entre 1 e 100
+                            int chance = new Random().Next(1, 101);
+
+                            // Define a chance de drop (10%)
+                            if (chance <= 10) // 10% de chance
+                            {
+                                DropItemID(killer, 710019, stream);
+                            }
                         }
 
                         #endregion
                         #region FireGuard
                         if (Family.ID == 9007)
                         {
-                            DropItemID(killer, 710018, stream);
+                            // Gera um número aleatório entre 1 e 100
+                            int chance = new Random().Next(1, 101);
+
+                            // Define a chance de drop (10%)
+                            if (chance <= 10) // 10% de chance
+                            {
+                                DropItemID(killer, 710018, stream);
+                            }
                         }
 
                         #endregion
@@ -774,42 +809,49 @@ namespace COServer.Game.MsgMonster
                         if (Family.ID == 9111)
                         {
                             Game.MsgTournaments.MsgSchedules.SpawnDevil = false;
-                            if (Role.Core.Rate(15))
-                            {
-                                DropItemNull(721330, stream);
-                            }
-                            if (Role.Core.Rate(15))
-                            {
-                                // DropItemID(killer, 721331, stream);
-                                DropItemNull(721331, stream);
 
-                            }
-                            if (Role.Core.Rate(15))
-                            {
-                                //     DropItemID(killer, 721332, stream);
-                                DropItemNull(721332, stream);
-
-                            }
+                            // Drops existentes
                             for (ushort i = 0; i < 10; i++)
                                 DropItemNull(Database.ItemType.Meteor, stream);
 
                             DropItemNull(Database.ItemType.DragonBall, stream);
 
-                            if (Role.Core.Rate(5))//dances book
+                            // Dances book com 5% de chance
+                            if (Role.Core.Rate(5))
                             {
-                                //   DropItemID(killer, (uint)(725018 + Program.GetRandom.Next(1, 7)), stream);
                                 DropItemNull((uint)(725018 + Program.GetRandom.Next(1, 7)), stream);
                             }
-                            if (Role.Core.Rate(3))
+
+                            // Novos itens com 15% de chance de drop
+                            if (Role.Core.Rate(15))
                             {
-                                uint amount = (uint)Program.GetRandom.Next(1000000);
-                                var ItemID = Database.ItemType.MoneyItemID((uint)amount);
-                                for (ushort i = 0; i < 10 && i < 20; i++)
-                                    DropItemNull(ItemID, stream, MsgItem.ItemType.Money, amount);
+                                // Gera um número aleatório entre 0 e 4 para escolher um dos cinco itens
+                                int randomIndex = Program.GetRandom.Next(0, 5);
+
+                                uint itemToDrop = 0;
+
+                                switch (randomIndex)
+                                {
+                                    case 0:
+                                        itemToDrop = 722840; // Item 1
+                                        break;
+                                    case 1:
+                                        itemToDrop = 722841; // Item 2
+                                        break;
+                                    case 2:
+                                        itemToDrop = 722842; // Item 3
+                                        break;
+                                    case 3:
+                                        itemToDrop = 1060101; // Item 4
+                                        break;
+                                    case 4:
+                                        itemToDrop = 730003; // Item 5
+                                        break;
+                                }
+
+                                DropItemNull(itemToDrop, stream);
                             }
-
                         }
-
                         #endregion
                     }
                     #endregion
@@ -1030,7 +1072,7 @@ namespace COServer.Game.MsgMonster
                         }
                     }
                     #endregion
-                    // emerald
+                    #region Emerald
                     if (Map == 1000)
                     {
                         if (Family.ID == 0015)
@@ -1042,6 +1084,8 @@ namespace COServer.Game.MsgMonster
                             }
                         }
                     }
+                    #endregion
+                    #region Health Wine
                     if (Map == 1001)// health wine
                     {
                         if (Family.ID == 0058)
@@ -1052,7 +1096,8 @@ namespace COServer.Game.MsgMonster
                             }
                         }
                     }
-
+                    #endregion
+                    #region SoulStone
                     if (Map == 2021)// soul stone
                     {
                         double i = 0;
@@ -1063,6 +1108,9 @@ namespace COServer.Game.MsgMonster
                             DropItemID(killer, 723085, stream);
                         }
                     }
+                    #endregion
+                    #region DisCity
+
                     if (Map == 2022)//dis city map 2
                     {
                         killer.Player.KillersDisCity += 1;
@@ -1076,7 +1124,9 @@ namespace COServer.Game.MsgMonster
                             MsgTournaments.MsgSchedules.DisCity.KillTheUltimatePluto(killer);
                         }
                     }
+                    #endregion
 
+                    #region Titan GonoDerma
                     if (Map == 1011 || Map == 1020)
                     {
                         if (Family.ID == 3130 || Family.ID == 3134)//titan/ ganoderma
@@ -1105,6 +1155,11 @@ namespace COServer.Game.MsgMonster
                         }
                     }
                     else if (Map == 1043 || Map == 1044 || Map == 1045 || Map == 1046 || Map == 1047 || Map == 1048 || Map == 1049)
+
+
+                    #endregion
+
+                    #region MoonBox
                     {// moon box
                         if (Family.ID == 6000 || Family.ID == 6001 || Family.ID == 6002 || Family.ID == 6003 || Family.ID == 6004 || Family.ID == 6005)//Moonbox
                         {
@@ -1134,6 +1189,7 @@ namespace COServer.Game.MsgMonster
                             }
                         }
                     }
+                    #endregion
 
                     else if (Map == 1351 || Map == 1352 || Map == 1353 || Map == 1354)
                     {

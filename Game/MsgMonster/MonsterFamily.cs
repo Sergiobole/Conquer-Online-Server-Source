@@ -152,9 +152,6 @@ namespace COServer.Game.MsgMonster
             {
                 Mob.RespawnTime = rest_secs;
             }
-            //if (Mob.ID == 20055 || Mob.ID == 20070)
-            //    Mob.RespawnTime = 60 * 60;
-
             Mob.LavaX = LavaX;
             Mob.LavaY = LavaY;
             Mob.DropSpecials = new SpecialItemWatcher[DropSpecials.Length];
