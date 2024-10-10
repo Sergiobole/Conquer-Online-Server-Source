@@ -61,6 +61,7 @@ namespace COServer.Client
         public bool RedTeam = false;
         public bool BlueTeam = false;
         public bool Invitations = false;
+        public int TotalKillsGW = 0;
         public DateTime DeathHit = DateTime.Now;
         internal int FreezewarPoints;
         public DateTime FrozenStamp;

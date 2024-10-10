@@ -487,6 +487,8 @@ namespace COServer.EventsLib
         {
             if (killer != null)
             {
+                Console.WriteLine($"1 - Player {killer.Player.Name} killed {killer.Player.Name} on map {killed.Player.Map}");
+
                 if (killed.Player.Map == dragonwar.map)
                 {
                     if (killed.isDragonKing)
@@ -631,6 +633,16 @@ namespace COServer.EventsLib
                             killer.SendSysMesage("You lost 1 point for killing your teammate!", (Game.MsgServer.MsgMessage.ChatMode)2000);
                         }
                         else killer.SendSysMesage("If you kill your teammate you'll lose 1 point.", (Game.MsgServer.MsgMessage.ChatMode)2000);
+                    }
+                }
+                if (killed.Player.Map == 1038)
+                {
+                    Console.WriteLine($"2 - Player {killer.Player.Name} killed {killed.Player.Name}");
+
+                    if (killer.Player.GuildID != killed.Player.GuildID)
+                    {
+                        killer.TotalKillsGW++;
+                        Console.WriteLine($"Total kills: {killer.TotalKillsGW}");
                     }
                 }
                 if (killed.Player.Map == guildsdm.map)

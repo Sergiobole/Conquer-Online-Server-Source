@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using COServer.Database;
+using COServer.Role.Instance;
 
 namespace COServer.Game.MsgTournaments
 {
@@ -98,6 +101,8 @@ namespace COServer.Game.MsgTournaments
             public uint GuildID;
             public string Name;
             public uint Score;
+
+            public uint GuildKillCount = 0;
 
             //for reward
             public int LeaderReward = 1;
@@ -229,6 +234,22 @@ namespace COServer.Game.MsgTournaments
                 ScoreList.Clear();
                 Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("Guild War has started!", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
             }
+
+            foreach (var player in Database.Server.GamePoll.Values
+                     .Where(e => e.Player.Map == 1038)
+                     .Where(e => e.Player.MyGuild != null))
+            {
+                if (!ScoreList.ContainsKey(player.Player.GuildID))
+                {
+                    ScoreList.TryAdd(player.Player.GuildID, new GuildWarScrore()
+                    {
+                        GuildID = player.Player.MyGuild.Info.GuildID,
+                        Name = player.Player.MyGuild.GuildName,
+                        Score = 0,
+                        GuildKillCount = 0,
+                    });
+                }
+            }
         }
 
         internal unsafe void FinishRound()
@@ -336,6 +357,10 @@ namespace COServer.Game.MsgTournaments
 
                 // Cálculo do tempo restante até as 13:00 de domingo
                 DateTime now = DateTime.Now;
+                //DateTime now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 13, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+
+                //Console.WriteLine($"Current Time: {now.ToUniversalTime().ToString()}");
+
                 DateTime eventEndTime = new DateTime(now.Year, now.Month, now.Day, 13, 0, 0);
                 if (now.DayOfWeek != DayOfWeek.Sunday)
                 {
@@ -346,7 +371,7 @@ namespace COServer.Game.MsgTournaments
                 // Formatação da mensagem de tempo restante
                 string timeRemainingMessage = $"Guild War ends in: {timeRemaining.Minutes}m {timeRemaining.Seconds}s";
 
-
+                
 
                 // Enviar a mensagem de tempo restante para acabar gw
                 using (var rec = new ServerSockets.RecycledPacket())
@@ -384,7 +409,7 @@ namespace COServer.Game.MsgTournaments
                     {
                         var stream = rec.GetStream();
                         Game.MsgServer.MsgMessage msg = new MsgServer.MsgMessage(
-                            $"No {x + 1}. {element.Name} ({element.Score})",
+                            $"No {x + 1}. {element.Name} ({element.Score}) - Guild Total Kills: {element.GuildKillCount}",
                             MsgServer.MsgMessage.MsgColor.yellow,
                             x == 0 ? MsgServer.MsgMessage.ChatMode.ContinueRightCorner : MsgServer.MsgMessage.ChatMode.ContinueRightCorner
                         );
@@ -394,6 +419,47 @@ namespace COServer.Game.MsgTournaments
                     }
                     if (x == 6)
                         break;
+                }
+
+                foreach (var player in Database.Server.GamePoll.Values
+                     .Where(e => e.Player.Map == 1038)
+                     .Where(e => e.Player.MyGuild != null))
+                {
+                    if (!ScoreList.ContainsKey(player.Player.GuildID))
+                    {
+                        ScoreList.TryAdd(player.Player.GuildID, new GuildWarScrore()
+                        {
+                            GuildID = player.Player.MyGuild.Info.GuildID,
+                            Name = player.Player.MyGuild.GuildName,
+                            Score = 0,
+                            GuildKillCount = 0,
+                        });
+                    }
+                }
+
+                var guilds = ScoreList.Values.ToArray();
+
+                Console.WriteLine($"QWIOEIQWEEWQ) 2 {guilds.Length}");
+
+                foreach (var guild in guilds)
+                {
+                    uint guildKills = 0;
+
+                    
+                    guild.GuildKillCount = guildKills;
+
+                    Console.WriteLine($"Guild {guild.Name}: {guild.GuildKillCount} kills.");
+
+                    using (var rec = new ServerSockets.RecycledPacket())
+                    {
+                        var stream = rec.GetStream();
+                        Game.MsgServer.MsgMessage msg = new MsgServer.MsgMessage(
+                        $"Guild {guild.Name} Total Kills: {guild.GuildKillCount}",
+                        MsgServer.MsgMessage.MsgColor.yellow, MsgServer.MsgMessage.ChatMode.ContinueRightCorner);
+
+                        // Enviar a mensagem ao mapa
+                        SendMapPacket(msg.GetArray(stream));
+                    }
                 }
             }
         }
