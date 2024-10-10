@@ -6,6 +6,7 @@ using COServer.Game.MsgServer.AttackHandler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace COServer.Game.MsgTournaments
 {
@@ -339,38 +340,31 @@ namespace COServer.Game.MsgTournaments
                         }
                     }
                     #region ClassPK
-                    if (Now64.DayOfWeek == DayOfWeek.Monday)
+
+                    if (Now64.Hour == 18 && Now64.Minute == 0)
                     {
-                        if (Now64.Hour == 18 && Now64.Minute == 0)
-                        {
-                            ClassPkWar.Start();
-                        }
-                        if (Now64.Hour == 18 && Now64.Minute >= 10)
-                        {
-                            foreach (var war in ClassPkWar.PkWars)
-                                foreach (var map in war)
+                        ClassPkWar.Start();
+                        Program.DiscordAPIevents.Enqueue($"``{ClassPkWar} has started!``");
+                    }
+                    if (Now64.Hour == 18 && Now64.Minute >= 10)
+                    {
+                        foreach (var war in ClassPkWar.PkWars)
+                            foreach (var map in war)
+                            {
+                                var players_in_map = Database.Server.GamePoll.Values.Where(e => e.Player.DynamicID == map.DinamicID && e.Player.Alive);
+                                if (players_in_map.Count() == 1)
                                 {
-                                    var players_in_map = Database.Server.GamePoll.Values.Where(e => e.Player.DynamicID == map.DinamicID && e.Player.Alive);
-                                    if (players_in_map.Count() == 1)
+                                    var winner = players_in_map.SingleOrDefault();
+                                    using (var rec = new ServerSockets.RecycledPacket())
                                     {
-                                        var winner = players_in_map.SingleOrDefault();
-                                        using (var rec = new ServerSockets.RecycledPacket())
-                                        {
-                                            var stream = rec.GetStream();
-                                            map.GetMyReward(winner, stream);
-                                        }
+                                        var stream = rec.GetStream();
+                                        map.GetMyReward(winner, stream);
                                     }
                                 }
-                        }
-                    }
-                    #endregion
-
-                    #endregion
-                    if (Now64.DayOfWeek == DayOfWeek.Saturday && Now64.Hour == 14 && Now64.Minute == 0)
-                    {
-                        CouplesPKWar.Open();
+                            }
                     }
                 }
+                #endregion
                 catch (Exception e)
                 {
                     Console.SaveException(e);
@@ -380,3 +374,4 @@ namespace COServer.Game.MsgTournaments
         }
     }
 }
+#endregion

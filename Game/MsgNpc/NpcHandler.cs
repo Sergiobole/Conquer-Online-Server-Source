@@ -8082,7 +8082,7 @@ namespace COServer.Game.MsgNpc
                     }
                 case 101:
                     {
-                        client.Teleport(050, 057, 1004);
+                        client.Teleport(431 ,391, 1002);
                         break;
                     }
                 case 70:
@@ -9242,7 +9242,7 @@ namespace COServer.Game.MsgNpc
                     }
                 case 1:
                     {
-                        data.AddText("The ClassPK War is held each monday where all classes fight for their top halo. The winner gets 10.000 CPs!\nThe event is held on monday at 18:00. (22:00 BR TIME)\n")
+                        data.AddText("The ClassPK War is held each monday where all classes fight for their top halo. The winner gets 20.000 CPs!\nThe event is held on monday at 18:00. (22:00 BR TIME)\n")
                             .AddText("[Monday - Trojan]\n[Tuesday - Warrior]\n[Wednesday - Acher]\n[Thursday - Water]\n[Friday - Fire]")
                    .AddOption("Sign~up.", 2)
                    .AddOption("Not~interested.", 255).AddAvatar(154).FinalizeDialog();
@@ -9251,22 +9251,29 @@ namespace COServer.Game.MsgNpc
                 case 2:
                     {
                         MsgClassPKWar.War war;
-                        if (MsgSchedules.ClassPkWar.GetWar(client, out war) != ProcesType.Dead)
+
+                        
+                        var warStatus = MsgSchedules.ClassPkWar.GetWar(client, out war);
+                        
+                        if (warStatus != ProcesType.Dead)
                         {
-                            if (war.CheckJoin())
+                            
+                            bool canJoin = war.CheckJoin();
+                            
+                            if (canJoin)
                             {
                                 client.Teleport(81, 62, MsgClassPKWar.MapID, war.DinamicID);
                             }
                             else
                             {
                                 data.AddText("I`m sorry, but the Class PK War is only held on Mondays.")
-                  .AddOption("Alright.", 255).AddAvatar(154).FinalizeDialog();
+                                    .AddOption("Alright.", 255).AddAvatar(154).FinalizeDialog();
                             }
                         }
                         else
                         {
                             data.AddText("I`m sorry, but the Class PK War is only held on Mondays and need level 130+!")
-                     .AddOption("Alright.", 255).AddAvatar(154).FinalizeDialog();
+                                .AddOption("Alright.", 255).AddAvatar(154).FinalizeDialog();
                         }
 
                         break;

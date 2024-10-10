@@ -14,8 +14,8 @@ namespace COServer.Game.MsgTournaments
             Trojan = 0,
             Warrior = 1,
             Archer = 2,
-            Fire = 3,
-            Water = 4,
+            Water = 3,
+            Fire = 4,
             Count = 5
         }
         public enum TournamentLevel : byte
@@ -40,8 +40,8 @@ namespace COServer.Game.MsgTournaments
                 { TournamentType.Trojan, Weekday.Monday },
                 { TournamentType.Warrior, Weekday.Tuesday },
                 { TournamentType.Archer, Weekday.Wednesday },
-                { TournamentType.Fire, Weekday.Thursday },
-                { TournamentType.Water, Weekday.Friday }
+                { TournamentType.Water, Weekday.Thursday },
+                { TournamentType.Fire, Weekday.Friday }
             };
 
         public War[][] PkWars;
@@ -235,7 +235,7 @@ namespace COServer.Game.MsgTournaments
                 if (Proces == ProcesType.Dead)
                 {
                     Proces = ProcesType.Alive;
-                    FinishTimer = DateTime.Now.AddMinutes(1);
+                    FinishTimer = DateTime.Now.AddMinutes(10);
                     DinamicID = map.GenerateDynamicID();
 
                     foreach (var client in Database.Server.GamePoll.Values)
@@ -296,11 +296,11 @@ namespace COServer.Game.MsgTournaments
                     if (aura != MsgServer.MsgUpdate.Flags.Normal)
                         client.Player.AddFlag(aura, Role.StatusFlagsBigVector32.PermanentFlag, false);
 
-                    client.Player.ConquerPoints += 10000;
+                    client.Player.ConquerPoints += 20000;
                     LastFlag = aura;
                     Winner = client.Player.UID;
-                    MsgSchedules.SendSysMesage("" + client.Player.Name + " Won " + Typ.ToString() + " PK War (" + Level.ToString() + ") , he/she received Top " + Typ.ToString() + " and 10.000 CPs.", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
-                    Program.DiscordAPIwinners.Enqueue("``[" + client.Player.Name + "] Won " + Typ.ToString() + " PK War (" + Level.ToString() + "), he/she received Top " + Typ.ToString() + " and 10.000 CPs.``");
+                    MsgSchedules.SendSysMesage("" + client.Player.Name + " Won " + Typ.ToString() + " PK War (" + Level.ToString() + ") , he/she received Top " + Typ.ToString() + " and 20.000 CPs.", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
+                    Program.DiscordAPIwinners.Enqueue("``[" + client.Player.Name + "] Won " + Typ.ToString() + " PK War (" + Level.ToString() + "), he/she received Top " + Typ.ToString() + " and 20.000 CPs.``");
                     client.Teleport(430, 269, 1002, 0);
                 }
             }
