@@ -313,7 +313,7 @@ namespace COServer.Game.MsgMonster
                                             }
                                             else
                                             {
-                                                DropItemID(killer, 729935, stream, 6);
+                                                DropItemID(killer, 729935   , stream, 6);
                                             }
                                             break;
                                         }
@@ -823,7 +823,7 @@ namespace COServer.Game.MsgMonster
                             }
 
                             // Novos itens com 15% de chance de drop
-                            if (Role.Core.Rate(15))
+                            if (Role.Core.Rate(5))
                             {
                                 // Gera um número aleatório entre 0 e 4 para escolher um dos cinco itens
                                 int randomIndex = Program.GetRandom.Next(0, 5);
@@ -1144,12 +1144,11 @@ namespace COServer.Game.MsgMonster
                                 string drop_name = Database.Server.ItemsBase[IDDrop].Name;
                                 SendSysMesage("The " + Name.ToString() + " has been destroyed by " + killer.Player.Name.ToString() + ", and dropped a " + drop_name + " ", Game.MsgServer.MsgMessage.ChatMode.Center, MsgMessage.MsgColor.red);
                             }
-                            else if (Role.Core.Rate(0.0001))
+                            else if (Role.Core.Rate(25))
                             {
-                                DropItemID(killer, Database.ItemType.DragonBall, stream);
+                                DropItemID(killer, 720393 ,stream);
 
-                                string drop_name = Database.Server.ItemsBase[Database.ItemType.DragonBall].Name;
-                                SendSysMesage("The " + Name.ToString() + " has been destroyed by " + killer.Player.Name.ToString() + ", and dropped a " + drop_name + " ", Game.MsgServer.MsgMessage.ChatMode.Center, MsgMessage.MsgColor.red);
+                                SendSysMesage("The " + Name.ToString() + " has been destroyed by " + killer.Player.Name.ToString() + ", and dropped a  3xExpotion ", Game.MsgServer.MsgMessage.ChatMode.Center, MsgMessage.MsgColor.red);
 
                             }
                         }
@@ -1177,7 +1176,7 @@ namespace COServer.Game.MsgMonster
                             if (Family.ID == 6005)
                                 itemid = 721015;
 
-                            if (Role.Core.Rate(5))
+                            if (Role.Core.Rate(15))
                             {
                                 ushort xx = X;
                                 ushort yy = Y;
