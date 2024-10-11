@@ -5070,24 +5070,11 @@ namespace COServer.Game.MsgServer
                                 }
                                 switch (item.Bound)
                                 {
-                                    //case ushort n when (n >= 5):
-                                    //    {
-                                    //        if (client.Player.Level >= 5)
-                                    //        {
-                                    //            client.Inventory.Add(stream, Database.ItemType.ExpBall, 1, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true); ;
-                                    //            client.Inventory.Add(stream, Database.ItemType.ExperiencePotion, 1, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true); ;
-                                    //        }
-                                    //        break;
-                                    //    }
-                                    //case ushort n when (n >= 10):
-                                    //    {
-                                    //        break;
-                                    //    }
                                     case 1:
                                         {
-                                            if (!client.Inventory.HaveSpace(12))
+                                            if (!client.Inventory.HaveSpace(17))
                                             {
-                                                client.SendSysMesage("Please make 12 spaces in your inventory!");
+                                                client.SendSysMesage("Please make 17 spaces in your inventory!");
                                                 break;
                                             }
                                             if (client.Player.Level >= 5)
@@ -5096,6 +5083,7 @@ namespace COServer.Game.MsgServer
                                                 client.Inventory.Add(stream, Database.ItemType.ExpBall, 2, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);
                                                 client.Inventory.Add(stream, Database.ItemType.ExperiencePotion, 1, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);
                                                 client.Inventory.Add(stream, 1000000, 10, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);
+                                                client.Inventory.Add(stream, 1072031, 5, 0, 0, 0, 0, 0, true);
                                             }
                                             else
                                             {
