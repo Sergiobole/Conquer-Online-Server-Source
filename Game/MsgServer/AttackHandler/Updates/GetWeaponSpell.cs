@@ -7,7 +7,7 @@ namespace COServer.Game.MsgServer.AttackHandler.Updates
     {
         public static void CheckExtraEffects(Client.GameClient client, ServerSockets.Packet stream)
         {
-            if (client.Equipment.RingEffect != Role.Flags.ItemEffect.None)
+            if (client.Equipment.RingEffect != Role.Flags.ItemEffect.None || client.Equipment.RightWeaponEffect == Role.Flags.ItemEffect.Stigma)
             {
                 if (Calculate.Base.Success(20))
                 {
@@ -47,24 +47,6 @@ namespace COServer.Game.MsgServer.AttackHandler.Updates
                     }
                 }
             }
-            //if (client.Equipment.RightWeaponEffect == Role.Flags.ItemEffect.Shield)
-            //{
-            //    if (Calculate.Base.Success(20))
-            //    {
-            //        MsgSpellAnimation MsgSpell = new MsgSpellAnimation(client.Player.UID
-            //               , 0, client.Player.X, client.Player.Y, 1090
-            //               , 4, 0);
-
-
-            //        if (!client.Player.ContainFlag(MsgUpdate.Flags.Shield))
-            //        {
-            //            client.Player.AddSpellFlag(MsgUpdate.Flags.Shield, (int)80, true);
-            //            MsgSpell.Targets.Enqueue(new MsgSpellAnimation.SpellObj(client.Player.UID, 0));
-            //            MsgSpell.SetStream(stream);
-            //            MsgSpell.Send(client);
-            //        }
-            //    }
-            //}
 
         }
         public unsafe static bool Check(InteractQuery Attack, ServerSockets.Packet stream, Client.GameClient client, Role.IMapObj Target)

@@ -18835,7 +18835,7 @@ namespace COServer.Game.MsgNpc
                                         }
                                     case 41:
                                         {
-                                            client.Inventory.Add(stream, 500077, 1, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, false, Role.Flags.ItemEffect.Shield);
+                                            client.Inventory.Add(stream, 500077, 1, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, false, Role.Flags.ItemEffect.Stigma);
                                             break;
                                         }
                                     case 132:
