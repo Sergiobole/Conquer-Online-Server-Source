@@ -14,6 +14,7 @@ namespace COServer.Game.MsgMonster
         public static void BossesTimer()
         {
             DateTime now = DateTime.Now;
+
             // Verifica se o spawn deve ocorrer a cada 1 hora
             if ((now - lastSpawnTime).TotalHours >= 1)
             {
@@ -27,8 +28,6 @@ namespace COServer.Game.MsgMonster
                         "will appear at " + now.Hour + ":00! Get ready to fight! You only have 5 minutes!",
                         " has spawned in " + Database.Server.MapName[1002] + " (564,792)!",
                         MsgServer.MsgStaticMessage.Messages.TeratoDragon);
-
-                    MsgSchedules.SendInvitation("TeratoDragon", 564, 792, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TeratoDragon);
                 }
                 else if (Nr == 2)
                 {
@@ -36,8 +35,6 @@ namespace COServer.Game.MsgMonster
                         "will appear at " + now.Hour + ":00! Get ready to fight! You only have 5 minutes!",
                         " has spawned in " + Database.Server.MapName[1000] + " (500,704)!",
                         MsgServer.MsgStaticMessage.Messages.TeratoDragon);
-
-                    MsgSchedules.SendInvitation("TeratoDragon", 500, 704, 1000, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TeratoDragon);
                 }
                 else if (Nr == 3)
                 {
@@ -45,8 +42,6 @@ namespace COServer.Game.MsgMonster
                         "will appear at " + now.Hour + ":00! Get ready to fight! You only have 5 minutes!",
                         " has spawned in " + Database.Server.MapName[1012] + " (568,564)!",
                         MsgServer.MsgStaticMessage.Messages.TeratoDragon);
-
-                    MsgSchedules.SendInvitation("TeratoDragon", 568, 564, 1020, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TeratoDragon);
                 }
                 else if (Nr == 4)
                 {
@@ -54,8 +49,6 @@ namespace COServer.Game.MsgMonster
                         "will appear at " + now.Hour + ":00! Get ready to fight! You only have 5 minutes!",
                         " has spawned in " + Database.Server.MapName[1105] + " (799,575)!",
                         MsgServer.MsgStaticMessage.Messages.TeratoDragon);
-
-                    MsgSchedules.SendInvitation("TeratoDragon", 799, 575, 1015, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TeratoDragon);
                 }
                 else if (Nr == 5)
                 {
@@ -63,13 +56,33 @@ namespace COServer.Game.MsgMonster
                     MsgMonster.BossesBase.SpawnHandler(1787, 48, 38, 20070, "Dragon",
                         "will appear at " + DateTime.Now.Hour + ":30! Get ready to fight! You only have 5 minutes left!",
                         " has spawned in Dragon Island!");
+                }
 
-                    MsgSchedules.SendInvitation("Dragon", 48, 38, 1787, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.DragonKing);
+                // Spawna o Titan e Ganoderma junto com o TeratoDragon ou Dragon
+                if (Nr <= 4) // Verifica se o TeratoDragon foi sorteado
+                {
+                    SpawnHandler(1020, 417, 625, 3134, "Titan",
+                        "A Titan has spawned in " + Database.Server.MapName[1020] + " (417, 625)! Get ready to fight!",
+                        " has spawned in " + Database.Server.MapName[1020] + " (417, 625)!");
+
+                    SpawnHandler(1011, 655, 799, 3130, "Ganoderma",
+                        "A Ganoderma has spawned in " + Database.Server.MapName[1011] + " (655, 799)! Get ready to fight!",
+                        " has spawned in " + Database.Server.MapName[1011] + " (655, 799)!");
+                }
+                else if (Nr == 5) // Verifica se o Dragon foi sorteado
+                {
+                    // Spawna o Titan e Ganoderma junto com o Dragon
+                    SpawnHandler(1020, 417, 625, 3134, "Titan", 
+                        "A Titan has spawned in " + Database.Server.MapName[1020] + " (417, 625)! Get ready to fight!",
+                        " has spawned in " + Database.Server.MapName[1020] + " (417, 625)!");
+
+                    SpawnHandler(1011, 655, 799, 3130, "Ganoderma",
+                        "A Ganoderma has spawned in " + Database.Server.MapName[1011] + " (655, 799)! Get ready to fight!",
+                        " has spawned in " + Database.Server.MapName[1011] + " (655, 799)!");
                 }
 
                 // Atualiza o tempo do último spawn
                 lastSpawnTime = now;
-
             }
         }
 
