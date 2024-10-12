@@ -5083,7 +5083,7 @@ namespace COServer.Game.MsgServer
                                                 client.Inventory.Add(stream, Database.ItemType.ExpBall, 2, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);
                                                 client.Inventory.Add(stream, Database.ItemType.ExperiencePotion, 1, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);
                                                 client.Inventory.Add(stream, 1000000, 10, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);
-                                                client.Inventory.Add(stream, 1072031, 5, 0, 0, 0, 0, 0, true);
+                                                client.Inventory.Add(stream, 1072031, 5, 0, 0, 0, 0, 0, false);
                                             }
                                             else
                                             {
@@ -6416,7 +6416,7 @@ namespace COServer.Game.MsgServer
                             }
                         case Database.ItemType.ExpBall:
                             {
-                                if (client.Player.Level >= 137)
+                                if (client.Player.Level >= 130)
                                 {
                                     // client.SendSysMesage("You are high level ! ", MsgMessage.ChatMode.TopLeft, MsgMessage.MsgColor.red);
                                     break;
@@ -6464,15 +6464,6 @@ namespace COServer.Game.MsgServer
                                 {
                                     var nextlevel = Database.Server.LevelInfo[Database.DBLevExp.Sort.User][(byte)(client.Player.Level)];
                                     ulong exp = (ulong)(nextlevel.Experience * 10 / 100);
-                                    //if (client.Player.Level >= 100 && client.Player.Level < 110)
-                                    //    exp = exp / 10;
-                                    //else if (client.Player.Level >= 110 && client.Player.Level < 120)
-                                    //    exp = exp / 10;
-                                    //else if (client.Player.Level >= 120 && client.Player.Level < 130)
-                                    //    exp = exp / 10;
-                                    //else if (client.Player.Level >= 130 && client.Player.Level < 137)
-                                    //    exp = exp / 10;
-
                                     client.Player.Experience += exp + 1;
                                     client.Player.SendUpdate(stream, (long)client.Player.Experience, MsgUpdate.DataType.Experience);
 
