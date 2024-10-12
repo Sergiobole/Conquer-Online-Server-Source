@@ -254,11 +254,23 @@ namespace COServer.Role
                 if (Role.Core.RateDouble(33))
                     Ore2 = 1072031;
             }
+
+            // Se Ore2 for igual a 1072031, garantir que sempre será 100% de chance
             if (Ore2 == 1072031)
-                i += 0.55;
-            if (Ore2 != 0 && Role.Core.RateDouble(0.045 + i))//ores type 2
             {
-                if (Ore2 != 1072031) { Ore2 += (uint)Program.GetRandom.Next(0, 9); }
+                i = 1.0; // 100% de chance
+            }
+            else
+            {
+                i += 0.55; // Mantém a lógica original para outros itens
+            }
+
+            if (Ore2 != 0 && Role.Core.RateDouble(1.0)) // Agora sempre 100% para 1072031
+            {
+                if (Ore2 != 1072031)
+                {
+                    Ore2 += (uint)Program.GetRandom.Next(0, 9);
+                }
                 if (client.Player.VipLevel >= 5 && client.Player.SkipBadOre == true)
                 {
                     return;
