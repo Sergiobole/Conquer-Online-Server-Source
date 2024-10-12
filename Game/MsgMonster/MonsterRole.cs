@@ -259,6 +259,7 @@ namespace COServer.Game.MsgMonster
                             if (killer.Map.AddGroundItem(ref xx, ref yy))
                             {
                                 // Faz o drop do item com ID 730001 na coordenada (xx, yy)
+                                DropItem(stream, killer.Player.UID, killer.Map, 723700, xx, yy, MsgFloorItem.MsgItem.ItemType.Item, 0, false, 0);
                                 DropItem(stream, killer.Player.UID, killer.Map, 730001, xx, yy, MsgFloorItem.MsgItem.ItemType.Item, 0, false, 0);
                             }
                         }
@@ -295,7 +296,7 @@ namespace COServer.Game.MsgMonster
                     uint EggCouler = (uint)Program.GetRandom.Next(1, 4);
                     uint LetraCauler = (uint)Program.GetRandom.Next(1, 8);
 
-                    if (killer.MobsKilled > 2000)
+                    if (killer.MobsKilled > 2500)
                     {
                         switch (ItemType)
                         {
@@ -639,7 +640,7 @@ namespace COServer.Game.MsgMonster
                     #region CleanWater
                     if (Map == 1212 && Family.ID == 8500)
                     {
-                        if (Role.Core.Rate(40)) // Chance de 40% CleanWater
+                        if (Role.Core.Rate(40)) // Chance de 40% para CleanWater
                         {
                             DropItemID(killer, Database.ItemType.CleanWater, stream);
                             Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a ClearWater in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
@@ -647,9 +648,19 @@ namespace COServer.Game.MsgMonster
                         }
                         else
                         {
-                            DropItemID(killer, Database.ItemType.Meteor, stream); // Dropar uma Meteor.
-                            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a Meteor in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
-                            Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] found a Meteor in WaterLord(428,418)!``");
+                            // 60% restante: 50% Meteor e 50% ExpBall
+                            if (Role.Core.Rate(50)) // Chance de 50% para Meteor
+                            {
+                                DropItemID(killer, Database.ItemType.Meteor, stream);
+                                Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a Meteor in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                                Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] found a Meteor in WaterLord(428,418)!``");
+                            }
+                            else // 50% para ExpBall
+                            {
+                                DropItemID(killer, Database.ItemType.ExpBall, stream);
+                                Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found an ExpBall in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                                Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] found an ExpBall in WaterLord(428,418)!``");
+                            }
                         }
                     }
                     #endregion
@@ -1136,6 +1147,7 @@ namespace COServer.Game.MsgMonster
                                 uint[] DropSpecialItems = new uint[] {
                                     Database.ItemType.Meteor,
                                     Database.ItemType.ExperiencePotion,
+                                    Database.ItemType.ExpBall,
                                 };
                                 uint IDDrop = DropSpecialItems[Program.GetRandom.Next(0, DropSpecialItems.Length)];
 
@@ -1143,12 +1155,15 @@ namespace COServer.Game.MsgMonster
 
                                 string drop_name = Database.Server.ItemsBase[IDDrop].Name;
                                 SendSysMesage("The " + Name.ToString() + " has been destroyed by " + killer.Player.Name.ToString() + ", and dropped a " + drop_name + " ", Game.MsgServer.MsgMessage.ChatMode.Center, MsgMessage.MsgColor.red);
+                                Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] been destroyed " + Name.ToString() + " and received a " + drop_name + ".``");
+
                             }
                             else if (Role.Core.Rate(25))
                             {
                                 DropItemID(killer, 720393 ,stream);
 
-                                SendSysMesage("The " + Name.ToString() + " has been destroyed by " + killer.Player.Name.ToString() + ", and dropped a  3xExpotion ", Game.MsgServer.MsgMessage.ChatMode.Center, MsgMessage.MsgColor.red);
+                                SendSysMesage("The " + Name.ToString() + " has been destroyed by " + killer.Player.Name.ToString() + ", and dropped a 3xExpotion ", Game.MsgServer.MsgMessage.ChatMode.Center, MsgMessage.MsgColor.red);
+                                Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] been destroyed " + Name.ToString() + " and received 3xExpotion``");
 
                             }
                         }
