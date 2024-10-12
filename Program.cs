@@ -29,16 +29,16 @@ namespace COServer
 
         public static VoteRank VoteRank;
         public static List<EventsLib.BaseEvent> Events = new List<EventsLib.BaseEvent>();
-        public static Discord DiscordAPI = new Discord("https://discord.com/api/webhooks/1279059333186850906/tXJNrPK4ANgx1KUmPBnwQSyBiIV1nUyoFUTBNV67DWgoGeTeUaBpM1U737lwBFiWm4HV");
-        public static Discord DiscordAPIsocket = new Discord("https://discord.com/api/webhooks/1279057888546914349/HV7GvJDn_dVM1sEgW5K2yCd76AghtitDm32TKmxZrnGiFXMWj644nfPEooahcPJGsunE");
-        public static Discord DiscordAPIevents = new Discord("https://discord.com/api/webhooks/1279064456009220131/prtX5o2LB7fyF1c_rg82NASmYi1QR4A_KcPaNJ8Oj0ApSM3r_bNMkvLtSPYBuwtIzp9B");
-        public static Discord DiscordAPIworld = new Discord("https://discord.com/api/webhooks/1292663136783962153/499N37AfkWp_86ACQt33mF17gGjbjqyfqrfbahN5VE_XAoaPOErKABFWOi-D-GGV6X12");
-        public static Discord DiscordAPIfoundslog = new Discord("https://discord.com/api/webhooks/1280114216195461154/z-1mIZ0yhrFwBkyxWsjdRqW8BGVtBdPySRb5KV_HMV5Hd_Jni4RhZHfuroctZ40Fsa8u");
-        public static Discord DiscordAPIQuest = new Discord("https://discord.com/api/webhooks/1283628275033313362/7VxErV7OX5HQKHlomFYZdUfiJiCjqt8jV467rY9V5oCHyuRY_pLcSNTfTHjyoB4oY9Rn");
-        public static Discord DiscordAPILotery = new Discord("https://discord.com/api/webhooks/1285649959533674598/3imSBiaHAyCWKrg-ubfbrTbo5OKkdtbolwN6pJzdSdJT_271lpNeuyIwVDpGR2AI1WWn");
-        public static Discord DiscordAPIRedDrop = new Discord("https://discord.com/api/webhooks/1290511233220345868/DvCYgFXSvvSMDbULJT-hu8_Tr--xKVUL7B5fdRcA1EbpaeCsZuFbkL6yWFoGYFbUBnRo");
-        public static Discord DiscordAPIwinners = new Discord("https://discord.com/api/webhooks/1290875109942493215/i6_-iFQfcOr8Se5QoIbHSr5jjDZO5RFyyEDYz27kA8B-LeCdXNVtRQ3pIfNBsiAD5zY9");
-        public static Discord DiscordAPIplus = new Discord("https://discord.com/api/webhooks/1293693826766209034/KOLB2UqS7KwiKELVlr88De18712rqtg6ZmiybvlqhdN3hZhYERYz0OsZq7wea7yE_xlf");
+        public static Discord DiscordAPI = new Discord("https://discord.com/api/webhooks/1294239949230571551/QiLYvAcTWpHW2PS4SsXIl0nRi6pUNc2wG8Z_jiUlUvWvGnnFJBSczFUt14X-TnUVn8ia");
+        public static Discord DiscordAPIsocket = new Discord("https://discord.com/api/webhooks/1294238200054812703/AHl2TTl6SJ2VdNHP_NueBbNcIENo_58Q1O0Zm9W5PEzBxgUWaZS5jybVabbqf0uGCsEW");
+        public static Discord DiscordAPIevents = new Discord("https://discord.com/api/webhooks/1294239015956119594/qCst95zXRy66jbHUsedllAU47wHM1GYkoI8VCDu3_kvo3oELJ7zlAzBk1nVJE4J4ecS2");
+        public static Discord DiscordAPIworld = new Discord("https://discord.com/api/webhooks/1294240243251150859/sRClctZpCoUReMuAWXu1Gd7YzbNwFDAnyl5zdnQjUl6OT565VV-4AM_D1Yr7OAQGKwM_");
+        public static Discord DiscordAPIfoundslog = new Discord("https://discord.com/api/webhooks/1294239789532315648/5ThwjJ1MCdEjzqIaN3-bSg-KJ6y425-wuP1juVW9cGxcx0AMJwVx3bZxvnRQRhFWoWYC");
+        public static Discord DiscordAPIQuest = new Discord("https://discord.com/api/webhooks/1294238566716805140/pc0Qsu4Kw9WtuFUGsCW9vXUMwgNeSOK2s0YtG_JXvHNNnD7RZYuojRW43bcvbiD_e6pz");
+        public static Discord DiscordAPILotery = new Discord("https://discord.com/api/webhooks/1294239212224385064/Ov086-5kATJBFwBnRMNB6RreLdCEr4gjzvXjCkhwGskfShbQhJywUsNPvh4HhiFMsrZT");
+        public static Discord DiscordAPIRedDrop = new Discord("https://discord.com/api/webhooks/1294239389479731271/rh-csKzv1NJiO1uF3ET-XdRg-4c19CcrNbuNNa5HGqJZtAETZEmwMBMNafvMmq_Jd_S5");
+        public static Discord DiscordAPIwinners = new Discord("https://discord.com/api/webhooks/1294238766587842620/D5HX_dyjFyAzs4A_O8lA7oNKtsmxA0VasO93biO4Z2wu4J5ep_Tv95siU0YwxQKY3712");
+        public static Discord DiscordAPIplus = new Discord("https://discord.com/api/webhooks/1294239567167094785/RZnWEUHBWzmE5a4S7HBoRHvBxTGnmwa4C_tGVg0jjor9I91yNXG7ydPwi2idUTxok-Oi");
         public static ulong CPsHuntedSinceRestart = 0;
         public static List<byte[]> LoadPackets = new List<byte[]>();
         public static List<uint> ProtectMapSpells = new List<uint>() { 1038 };

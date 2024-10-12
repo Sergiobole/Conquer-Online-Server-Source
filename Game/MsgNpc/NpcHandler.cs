@@ -13,6 +13,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using System.Xml.Linq;
+using System.Threading.Tasks;
 
 
 namespace COServer.Game.MsgNpc
@@ -559,7 +560,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            dialog.AddText("You do not have Online Points.\nYou need 1000 Online Points to exchange for a 3xExp.").AddAvatar(7);
+                            dialog.AddText("You do not have Online Points.\nYou need 500 Online Points to exchange for a 3xExp.").AddAvatar(7);
                         }
 
                         dialog.AddOption("Okay", 255);
@@ -588,14 +589,13 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            dialog.AddText("You do not have Online Points.\nYou need 1000 Online Points to exchange for a 3xExp.").AddAvatar(7);
+                            dialog.AddText("You do not have Online Points.\nYou need 500 Online Points to exchange for a Emerald.").AddAvatar(7);
                         }
 
                         dialog.AddOption("Okay", 255);
                         dialog.FinalizeDialog();
                         break;
                     }
-
             }
         }
 
@@ -2786,7 +2786,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 7)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -2850,7 +2850,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 20)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -2911,7 +2911,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 50)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3025,7 +3025,7 @@ namespace COServer.Game.MsgNpc
 
                         Console.WriteLine($"Attempting to transfer {foundsToTransfer} founds from {client.AccountName(client.Player.Name)} to {recipientPlayerName}");
 
-                        const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
+                        const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
 
                         try
                         {
@@ -3166,7 +3166,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 1)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3260,7 +3260,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 30)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3324,7 +3324,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 30)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3388,7 +3388,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 30)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=1597530012;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -12881,10 +12881,10 @@ namespace COServer.Game.MsgNpc
                             MsgSchedules.GuildWar.RewardLeader.Add(client.Player.UID);
                             MsgSchedules.GuildWar.Winner.LeaderReward -= 1;
                             client.Player.ConquerPoints += MsgGuildWar.GuildWarScrore.ConquerPointsReward;
-                            client.Inventory.Add(stream, 2100085, 1); // GoldTrophy
+                            client.Inventory.Add(stream, 2100055, 1); // bronzesilver
                             client.Player.AddFlag(MsgServer.MsgUpdate.Flags.TopGuildLeader, Role.StatusFlagsBigVector32.PermanentFlag, false);
                             Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("" + client.Player.Name + " , Guild Leader from " + client.Player.MyGuild.GuildName + " was rewarded with " + MsgGuildWar.GuildWarScrore.ConquerPointsReward.ToString() + " CPs, and a Gold Trophy for winning Guild War.", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.TopLeft).GetArray(stream));
-                            data.AddText("You've got 50,000 CPs.")
+                            data.AddText("You've got 100,000 CPs.")
                                 .AddOption("Thank you.", 255).AddAvatar(110).FinalizeDialog();
                         }
                         // Verificar se é o vice-líder da guilda
@@ -13043,7 +13043,8 @@ namespace COServer.Game.MsgNpc
                     }
                 case 2:
                     {
-                        if ((client.Player.GuildRank == Role.Flags.GuildMemberRank.DeputyLeader || client.Player.GuildRank == Role.Flags.GuildMemberRank.GuildLeader) && MsgSchedules.GuildWar.Winner.GuildID == client.Player.GuildID)
+                        if ((client.Player.GuildRank == Role.Flags.GuildMemberRank.DeputyLeader || client.Player.GuildRank == Role.Flags.GuildMemberRank.GuildLeader)
+                            && MsgSchedules.GuildWar.Winner.GuildID == client.Player.GuildID)
                         {
                             if (MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].Mesh == Role.SobNpc.StaticMesh.LeftGate)
                             {
@@ -13051,35 +13052,39 @@ namespace COServer.Game.MsgNpc
                                     .AddOption("Okay.", 255).FinalizeDialog();
                                 break;
                             }
-                            if (MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].HitPoints == 0)
-                                MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].HitPoints = MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].MaxHitPoints;
 
-                            MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].Mesh = Role.SobNpc.StaticMesh.LeftGate;
-
-                            MsgServer.MsgUpdate upd = new MsgServer.MsgUpdate(stream, MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].UID, 2);
-
-                            stream = upd.Append(stream, MsgServer.MsgUpdate.DataType.Mesh, (long)MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].Mesh);
-                            stream = upd.Append(stream, MsgServer.MsgUpdate.DataType.Hitpoints, (long)MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].HitPoints);
-                            stream = upd.GetArray(stream);
-                            foreach (var pclient in Database.Server.GamePoll.Values)
+                            // Adiciona um delay de 5 segundos antes de fechar o portão
+                            Task.Delay(5000).ContinueWith(t =>
                             {
-                                if (pclient.Player.Map == 1038)
+                                if (MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].HitPoints == 0)
+                                    MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].HitPoints = MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].MaxHitPoints;
+
+                                MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].Mesh = Role.SobNpc.StaticMesh.LeftGate;
+
+                                MsgServer.MsgUpdate upd = new MsgServer.MsgUpdate(stream, MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].UID, 2);
+
+                                stream = upd.Append(stream, MsgServer.MsgUpdate.DataType.Mesh, (long)MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].Mesh);
+                                stream = upd.Append(stream, MsgServer.MsgUpdate.DataType.Hitpoints, (long)MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].HitPoints);
+                                stream = upd.GetArray(stream);
+
+                                foreach (var pclient in Database.Server.GamePoll.Values)
                                 {
-                                    if (Role.Core.GetDistance(pclient.Player.X, pclient.Player.Y, MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].X
-                                        , MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].Y) <= Role.SobNpc.SeedDistrance)
+                                    if (pclient.Player.Map == 1038)
                                     {
-                                        pclient.Send(stream);
+                                        if (Role.Core.GetDistance(pclient.Player.X, pclient.Player.Y, MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].X,
+                                            MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].Y) <= Role.SobNpc.SeedDistrance)
+                                        {
+                                            pclient.Send(stream);
+                                        }
                                     }
                                 }
-                            }
+                            });
                         }
                         else
                         {
-
                             data.AddText("Only the Guild Leader or Deputy Leader can, from the guild which dominated the pole.")
                             .AddOption("Okay.", 255).FinalizeDialog();
                         }
-
 
                         break;
                     }
@@ -17287,11 +17292,11 @@ namespace COServer.Game.MsgNpc
 
                         if (user.Player.LotteryEntries < Role.Player.LotteryEntry(user.Player.VipLevel))
                         {
-                            if (user.Player.ConquerPoints >= 1000)
+                            if (user.Player.ConquerPoints >= 215)
                             {
                                 if (user.Inventory.HaveSpace(1))
                                 {
-                                    user.Player.ConquerPoints -= 1000;
+                                    user.Player.ConquerPoints -= 215;
                                     user.Player.LotteryEntries++;
                                     //reset lottery jade 
                                     Database.Lottery.GetRandomPrize(user, stream);
