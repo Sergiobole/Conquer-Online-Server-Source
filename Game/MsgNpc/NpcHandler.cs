@@ -13041,53 +13041,53 @@ namespace COServer.Game.MsgNpc
 
                         break;
                     }
-                case 2:
-                    {
-                        if ((client.Player.GuildRank == Role.Flags.GuildMemberRank.DeputyLeader || client.Player.GuildRank == Role.Flags.GuildMemberRank.GuildLeader)
-                            && MsgSchedules.GuildWar.Winner.GuildID == client.Player.GuildID)
+                    case 2:
                         {
-                            if (MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].Mesh == Role.SobNpc.StaticMesh.LeftGate)
+                            if ((client.Player.GuildRank == Role.Flags.GuildMemberRank.DeputyLeader || client.Player.GuildRank == Role.Flags.GuildMemberRank.GuildLeader)
+                                && MsgSchedules.GuildWar.Winner.GuildID == client.Player.GuildID)
                             {
-                                data.AddText("Gate~is~already~closed.")
-                                    .AddOption("Okay.", 255).FinalizeDialog();
-                                break;
-                            }
-
-                            // Adiciona um delay de 5 segundos antes de fechar o portão
-                            Task.Delay(5000).ContinueWith(t =>
-                            {
-                                if (MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].HitPoints == 0)
-                                    MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].HitPoints = MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].MaxHitPoints;
-
-                                MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].Mesh = Role.SobNpc.StaticMesh.LeftGate;
-
-                                MsgServer.MsgUpdate upd = new MsgServer.MsgUpdate(stream, MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].UID, 2);
-
-                                stream = upd.Append(stream, MsgServer.MsgUpdate.DataType.Mesh, (long)MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].Mesh);
-                                stream = upd.Append(stream, MsgServer.MsgUpdate.DataType.Hitpoints, (long)MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].HitPoints);
-                                stream = upd.GetArray(stream);
-
-                                foreach (var pclient in Database.Server.GamePoll.Values)
+                                if (MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].Mesh == Role.SobNpc.StaticMesh.LeftGate)
                                 {
-                                    if (pclient.Player.Map == 1038)
+                                    data.AddText("Gate~is~already~closed.")
+                                        .AddOption("Okay.", 255).FinalizeDialog();
+                                    break;
+                                }
+
+                                // Adiciona um delay de 5 segundos antes de fechar o portão
+                                Task.Delay(5000).ContinueWith(t =>
+                                {
+                                    if (MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].HitPoints == 0)
+                                        MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].HitPoints = MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].MaxHitPoints;
+
+                                    MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].Mesh = Role.SobNpc.StaticMesh.LeftGate;
+
+                                    MsgServer.MsgUpdate upd = new MsgServer.MsgUpdate(stream, MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].UID, 2);
+
+                                    stream = upd.Append(stream, MsgServer.MsgUpdate.DataType.Mesh, (long)MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].Mesh);
+                                    stream = upd.Append(stream, MsgServer.MsgUpdate.DataType.Hitpoints, (long)MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].HitPoints);
+                                    stream = upd.GetArray(stream);
+
+                                    foreach (var pclient in Database.Server.GamePoll.Values)
                                     {
-                                        if (Role.Core.GetDistance(pclient.Player.X, pclient.Player.Y, MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].X,
-                                            MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].Y) <= Role.SobNpc.SeedDistrance)
+                                        if (pclient.Player.Map == 1038)
                                         {
-                                            pclient.Send(stream);
+                                            if (Role.Core.GetDistance(pclient.Player.X, pclient.Player.Y, MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].X,
+                                                MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].Y) <= Role.SobNpc.SeedDistrance)
+                                            {
+                                                pclient.Send(stream);
+                                            }
                                         }
                                     }
-                                }
-                            });
-                        }
-                        else
-                        {
-                            data.AddText("Only the Guild Leader or Deputy Leader can, from the guild which dominated the pole.")
-                            .AddOption("Okay.", 255).FinalizeDialog();
-                        }
+                                });
+                            }
+                            else
+                            {
+                                data.AddText("Only the Guild Leader or Deputy Leader can, from the guild which dominated the pole.")
+                                .AddOption("Okay.", 255).FinalizeDialog();
+                            }
 
-                        break;
-                    }
+                            break;
+                        }
                 case 1:
                     {
                         if ((client.Player.GuildRank == Role.Flags.GuildMemberRank.DeputyLeader || client.Player.GuildRank == Role.Flags.GuildMemberRank.GuildLeader) && MsgSchedules.GuildWar.Winner.GuildID == client.Player.GuildID)
@@ -13170,35 +13170,39 @@ namespace COServer.Game.MsgNpc
                                     .AddOption("Okay.", 255).FinalizeDialog();
                                 break;
                             }
-                            if (MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].HitPoints == 0)
-                                MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].HitPoints = MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].MaxHitPoints;
 
-                            MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].Mesh = Role.SobNpc.StaticMesh.RightGate;
-
-                            MsgServer.MsgUpdate upd = new MsgServer.MsgUpdate(stream, MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].UID, 2);
-
-                            stream = upd.Append(stream, MsgServer.MsgUpdate.DataType.Mesh, (long)MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].Mesh);
-                            stream = upd.Append(stream, MsgServer.MsgUpdate.DataType.Hitpoints, (long)MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].HitPoints);
-                            stream = upd.GetArray(stream);
-                            foreach (var pclient in Database.Server.GamePoll.Values)
+                            // Adiciona um delay de 5 segundos antes de fechar o portão direito
+                            Task.Delay(5000).ContinueWith(t =>
                             {
-                                if (pclient.Player.Map == 1038)
+                                if (MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].HitPoints == 0)
+                                    MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].HitPoints = MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].MaxHitPoints;
+
+                                MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].Mesh = Role.SobNpc.StaticMesh.RightGate;
+
+                                MsgServer.MsgUpdate upd = new MsgServer.MsgUpdate(stream, MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].UID, 2);
+
+                                stream = upd.Append(stream, MsgServer.MsgUpdate.DataType.Mesh, (long)MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].Mesh);
+                                stream = upd.Append(stream, MsgServer.MsgUpdate.DataType.Hitpoints, (long)MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].HitPoints);
+                                stream = upd.GetArray(stream);
+
+                                foreach (var pclient in Database.Server.GamePoll.Values)
                                 {
-                                    if (Role.Core.GetDistance(pclient.Player.X, pclient.Player.Y, MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].X
-                                        , MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].Y) <= Role.SobNpc.SeedDistrance)
+                                    if (pclient.Player.Map == 1038)
                                     {
-                                        pclient.Send(stream);
+                                        if (Role.Core.GetDistance(pclient.Player.X, pclient.Player.Y, MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].X,
+                                            MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].Y) <= Role.SobNpc.SeedDistrance)
+                                        {
+                                            pclient.Send(stream);
+                                        }
                                     }
                                 }
-                            }
+                            });
                         }
                         else
                         {
-
                             data.AddText("Only Guild Leader or Deputy Leader can, from the guild which dominated the pole.")
                                 .AddOption("Okay.", 255).FinalizeDialog();
                         }
-
 
                         break;
                     }
