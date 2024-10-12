@@ -361,7 +361,7 @@ namespace COServer.Game.MsgTournaments
 
                 //Console.WriteLine($"Current Time: {now.ToUniversalTime().ToString()}");
 
-                DateTime eventEndTime = new DateTime(now.Year, now.Month, now.Day, 13, 0, 0);
+                DateTime eventEndTime = new DateTime(now.Year, now.Month, now.Day, 17, 0, 0);
                 if (now.DayOfWeek != DayOfWeek.Sunday)
                 {
                     eventEndTime = eventEndTime.AddDays(((int)DayOfWeek.Sunday - (int)now.DayOfWeek + 7) % 7);

@@ -115,7 +115,7 @@ namespace COServer.Game.MsgTournaments
             }
         }
         static List<string> SystemMsgs = new List<string>() {
-            "Guild War will begin at 13:00 on Saturdays, and will end at 13:00 on Sundays.",
+            "Guild War will begin at 17:00 on Saturdays, and will end at 17:00 on Sundays.",
             "Selling/Buying gears for real money or for items in other servers or just the attempt of doing it is forbidden and will result in a permanent ban.",
             "Join our discord server to be in touch with the community and suggest/report stuff.",
             "You can check all of our scheduled events on our website! Make sure you don't miss any of them!",
@@ -288,7 +288,7 @@ namespace COServer.Game.MsgTournaments
                     if (Now64.DayOfWeek == DayOfWeek.Sunday)
                     {
                         #region GuildWar
-                        if (Now64.Hour >= 10 && Now64.Hour < 13)
+                        if (Now64.Hour >= 14 && Now64.Hour < 17)
                         {
                             if (GuildWar.Proces == ProcesType.Dead)
                             {
@@ -322,7 +322,7 @@ namespace COServer.Game.MsgTournaments
                             }
 
                         }
-                        else if (Now64.Hour >= 13 && Now64.Minute == 0 && Now64.Second < 5)
+                        else if (Now64.Hour >= 17 && Now64.Minute == 0 && Now64.Second < 5)
                         {
                             if (GuildWar.Proces == ProcesType.Alive || GuildWar.Proces == ProcesType.Idle)
                                 GuildWar.CompleteEndGuildWar();
@@ -342,12 +342,12 @@ namespace COServer.Game.MsgTournaments
                     }
                     #region ClassPK
 
-                    if (Now64.Hour == 18 && Now64.Minute == 0)
+                    if (Now64.Hour == 22 && Now64.Minute == 0)
                     {
                         ClassPkWar.Start();
                         Program.DiscordAPIevents.Enqueue($"``ClassPK has started!``");
                     }
-                    if (Now64.Hour == 18 && Now64.Minute >= 10)
+                    if (Now64.Hour == 22 && Now64.Minute >= 10)
                     {
                         foreach (var war in ClassPkWar.PkWars)
                             foreach (var map in war)
