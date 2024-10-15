@@ -1803,7 +1803,7 @@ namespace COServer.Game.MsgServer
 
                                     break;
                                 }
-                            case "bring":
+                            case "tpto":
                                 {
                                     foreach (var user in Database.Server.GamePoll.Values)
                                     {
