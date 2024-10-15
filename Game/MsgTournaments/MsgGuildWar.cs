@@ -241,6 +241,8 @@ namespace COServer.Game.MsgTournaments
             {
                 if (!ScoreList.ContainsKey(player.Player.GuildID))
                 {
+                    Console.WriteLine($"Start - Guild {player.Player.MyGuild.GuildName} not found");
+
                     ScoreList.TryAdd(player.Player.GuildID, new GuildWarScrore()
                     {
                         GuildID = player.Player.MyGuild.Info.GuildID,
@@ -332,6 +334,8 @@ namespace COServer.Game.MsgTournaments
             {
                 if (!ScoreList.ContainsKey(client.GuildID))
                 {
+                    Console.WriteLine($"UpdateScore - Guild {client.MyGuild.GuildName} not found");
+
                     ScoreList.TryAdd(client.GuildID, new GuildWarScrore() { 
                         GuildID = client.MyGuild.Info.GuildID, 
                         Name = client.MyGuild.GuildName,
@@ -357,9 +361,6 @@ namespace COServer.Game.MsgTournaments
 
                 // Cálculo do tempo restante até as 13:00 de domingo
                 DateTime now = DateTime.Now;
-                //DateTime now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 13, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
-
-                //Console.WriteLine($"Current Time: {now.ToUniversalTime().ToString()}");
 
                 DateTime eventEndTime = new DateTime(now.Year, now.Month, now.Day, 17, 0, 0);
                 if (now.DayOfWeek != DayOfWeek.Sunday)
@@ -369,9 +370,7 @@ namespace COServer.Game.MsgTournaments
                 TimeSpan timeRemaining = eventEndTime - now;
 
                 // Formatação da mensagem de tempo restante
-                string timeRemainingMessage = $"Guild War ends in: {timeRemaining.Minutes}m {timeRemaining.Seconds}s";
-
-                
+                string timeRemainingMessage = $"GuildWar End In: [{timeRemaining.Hours}h {timeRemaining.Minutes}m {timeRemaining.Seconds}s]";
 
                 // Enviar a mensagem de tempo restante para acabar gw
                 using (var rec = new ServerSockets.RecycledPacket())
@@ -381,22 +380,24 @@ namespace COServer.Game.MsgTournaments
                         timeRemainingMessage,
                         MsgServer.MsgMessage.MsgColor.yellow,
                         MsgServer.MsgMessage.ChatMode.FirstRightCorner
-                    );     
-                    
+                    );
+
                     SendMapPacket(timeMsg.GetArray(stream));
                 }
+
                 // Enviar a mensagem de separação
                 using (var rec = new ServerSockets.RecycledPacket())
                 {
                     var stream = rec.GetStream();
                     Game.MsgServer.MsgMessage timeMsg = new MsgServer.MsgMessage(
-                        "------------------------------", //separador 
+                        "----------------------------------------", //separador 
                         MsgServer.MsgMessage.MsgColor.yellow,
-                        MsgServer.MsgMessage.ChatMode.ContinueRightCorner 
+                        MsgServer.MsgMessage.ChatMode.ContinueRightCorner
                     );
-                    
+
                     SendMapPacket(timeMsg.GetArray(stream));
                 }
+
                 var Array = ScoreList.Values.ToArray();
                 var DescendingList = Array.OrderByDescending(p => p.Score).ToArray();
                 for (int x = 0; x < DescendingList.Length; x++)
@@ -409,7 +410,7 @@ namespace COServer.Game.MsgTournaments
                     {
                         var stream = rec.GetStream();
                         Game.MsgServer.MsgMessage msg = new MsgServer.MsgMessage(
-                            $"No {x + 1}. {element.Name} ({element.Score}) - Guild Total Kills: {element.GuildKillCount}",
+                            $"No {x + 1}. {element.Name} [{element.Score}]",
                             MsgServer.MsgMessage.MsgColor.yellow,
                             x == 0 ? MsgServer.MsgMessage.ChatMode.ContinueRightCorner : MsgServer.MsgMessage.ChatMode.ContinueRightCorner
                         );
@@ -420,6 +421,25 @@ namespace COServer.Game.MsgTournaments
                     if (x == 6)
                         break;
                 }
+
+                // Enviar a mensagem de separação
+                using (var rec = new ServerSockets.RecycledPacket())
+                {
+                    var stream = rec.GetStream();
+                    Game.MsgServer.MsgMessage timeMsg = new MsgServer.MsgMessage(
+                        "----------------------------------------", //separador 
+                        MsgServer.MsgMessage.MsgColor.yellow,
+                        MsgServer.MsgMessage.ChatMode.ContinueRightCorner
+                    );
+
+                    SendMapPacket(timeMsg.GetArray(stream));
+                }
+
+                foreach (var guildScore in ScoreList)
+                    guildScore.Value.GuildKillCount = 0;
+
+                // Dicionário para armazenar jogadores e suas kills
+                var playerKills = new Dictionary<string, uint>();
 
                 foreach (var player in Database.Server.GamePoll.Values
                      .Where(e => e.Player.Map == 1038)
@@ -435,34 +455,89 @@ namespace COServer.Game.MsgTournaments
                             GuildKillCount = 0,
                         });
                     }
+                    else
+                    {
+                        ScoreList[player.Player.GuildID].GuildKillCount += (uint)player.TotalKillsGW;
+                    }
+
+                    // Adicionando jogadores ao dicionário de kills
+                    if (!playerKills.ContainsKey(player.Player.Name))
+                    {
+                        playerKills[player.Player.Name] = (uint)player.TotalKillsGW;
+                    }
+                    else
+                    {
+                        playerKills[player.Player.Name] += (uint)player.TotalKillsGW;
+                    }
                 }
 
                 var guilds = ScoreList.Values.ToArray();
-
-                Console.WriteLine($"QWIOEIQWEEWQ) 2 {guilds.Length}");
-
                 foreach (var guild in guilds)
                 {
-                    uint guildKills = 0;
-
-                    
-                    guild.GuildKillCount = guildKills;
-
-                    Console.WriteLine($"Guild {guild.Name}: {guild.GuildKillCount} kills.");
-
                     using (var rec = new ServerSockets.RecycledPacket())
                     {
                         var stream = rec.GetStream();
                         Game.MsgServer.MsgMessage msg = new MsgServer.MsgMessage(
-                        $"Guild {guild.Name} Total Kills: {guild.GuildKillCount}",
+                        $"Guild - [{guild.Name}] Total Kills: [{guild.GuildKillCount}]",
                         MsgServer.MsgMessage.MsgColor.yellow, MsgServer.MsgMessage.ChatMode.ContinueRightCorner);
 
                         // Enviar a mensagem ao mapa
                         SendMapPacket(msg.GetArray(stream));
                     }
                 }
+
+                // Enviar a mensagem de separação
+                using (var rec = new ServerSockets.RecycledPacket())
+                {
+                    var stream = rec.GetStream();
+                    Game.MsgServer.MsgMessage timeMsg = new MsgServer.MsgMessage(
+                        "----------------------------------------", //separador 
+                        MsgServer.MsgMessage.MsgColor.yellow,
+                        MsgServer.MsgMessage.ChatMode.ContinueRightCorner
+                    );
+
+                    SendMapPacket(timeMsg.GetArray(stream));
+                }
+                // Ordenar os jogadores por kills e exibir os 5 principais
+                var topPlayers = playerKills.OrderByDescending(k => k.Value).Take(5).ToList();
+
+                // Enviar a mensagem dos top 5 jogadores
+                using (var rec = new ServerSockets.RecycledPacket())
+                {
+                    var stream = rec.GetStream();
+
+                    // Remover a linha de título e usar a numeração
+                    for (int x = 0; x < topPlayers.Count; x++)
+                    {
+                        var topPlayer = topPlayers[x];
+
+                        // Criar a mensagem formatada para cada jogador
+                        string playerMessage = $"Player{x + 1}. {topPlayer.Key} Total Kills: [{topPlayer.Value}]";
+
+                        Game.MsgServer.MsgMessage msg = new MsgServer.MsgMessage(
+                            playerMessage,
+                            MsgServer.MsgMessage.MsgColor.yellow,
+                            MsgServer.MsgMessage.ChatMode.ContinueRightCorner
+                        );
+
+                        // Enviar a mensagem ao mapa
+                        SendMapPacket(msg.GetArray(stream));
+                    }
+                }
+                using (var rec = new ServerSockets.RecycledPacket())
+                {
+                    var stream = rec.GetStream();
+                    Game.MsgServer.MsgMessage timeMsg = new MsgServer.MsgMessage(
+                        "----------------------------------------", //separador 
+                        MsgServer.MsgMessage.MsgColor.yellow,
+                        MsgServer.MsgMessage.ChatMode.ContinueRightCorner
+                    );
+
+                    SendMapPacket(timeMsg.GetArray(stream));
+                }
             }
         }
+
 
 
 
