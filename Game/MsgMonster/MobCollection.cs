@@ -93,7 +93,7 @@ namespace COServer.Game.MsgMonster
             Program.DiscordAPIevents.Enqueue("``WaterLord Spawned.``");
 
             // Iniciar o temporizador para respawn
-            StartRespawnTimer(Famili, 40); // CleanWater
+            StartRespawnTimer(Famili, 20); // CleanWater
 
             return Mob;
         }
