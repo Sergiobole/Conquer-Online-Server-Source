@@ -2764,7 +2764,8 @@ namespace COServer.Game.MsgNpc
                         data.AddOption("4 - GoldPrizes = 50 Founds", 4);
                         data.AddOption("5 - PowerExpBall = 1 Founds", 11);
                         data.AddOption("6 - Garmets -7 255HP = 30 Founds", 23);
-                        
+                        data.AddOption("7 - PrayingStones", 24);
+
 
                         data.AddAvatar(63).FinalizeDialog();
                         break;
@@ -3242,8 +3243,35 @@ namespace COServer.Game.MsgNpc
                         }
                         break;
                     }
+                case 24:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                           .AddOption("Let me check.", 255)
+                           .AddAvatar(63).FinalizeDialog();
+                            break;
+                        }
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
 
-                   
+                        if (totalFounds <= 0)
+                        {
+                            data.AddText("You don't have enough founds");
+                            data.AddOption("Okay.", 255);
+                            data.AddAvatar(63).FinalizeDialog();
+                        }
+                        else
+                        {
+                            data.AddText(string.Format("You have found {0} items! PrayingStone.", totalFounds));
+                            data.AddOption("1 - PrayingStone(S) = 5 Founds", 40);
+                            data.AddOption("2 - PrayingStone(M) = 7 Founds", 41);
+                            data.AddOption("3 - PrayingStone(L) = 10 Found", 42);
+                            data.AddOption("Okay.", 255);
+                            data.AddAvatar(63).FinalizeDialog();
+                        }
+                        break;
+                    }
+
                 case 30:
                     {
                         if (!client.Inventory.HaveSpace(1))
@@ -3413,6 +3441,198 @@ namespace COServer.Game.MsgNpc
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
                                     Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
+
+                                    break;
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+                case 40:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 5)
+                        {
+
+                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 5
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 5);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário
+                                {
+                                    client.Inventory.Add(stream, 1200000, 0, 0, 0, 0, 0, 0, false);
+
+                                    data.AddText("You have successfully exchanged 5 FoundsPoints for a PrayingStone(S).")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take PrayingStone(S)``");
+
+                                    break;
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+                case 41:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 7)
+                        {
+
+                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 7
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 7);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário
+                                {
+                                    client.Inventory.Add(stream, 1200001, 0, 0, 0, 0, 0, 0, false);
+
+                                    data.AddText("You have successfully exchanged 7 FoundsPoints for a PrayingStone(M).")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take PrayingStone(M)``");
+
+                                    break;
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+                case 42:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 10)
+                        {
+
+                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 10
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 10);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário
+                                {
+                                    client.Inventory.Add(stream, 1200002, 0, 0, 0, 0, 0, 0, false);
+
+                                    data.AddText("You have successfully exchanged 10 FoundsPoints for a PrayingStone(L).")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take PrayingStone(L)``");
 
                                     break;
                                 }
@@ -3929,7 +4149,7 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        dialog.AddText("The ExpBall is an extremely miraculous item.\n")
+                        dialog.AddText("The ProfToken is an extremely miraculous item.\n")
                         .AddText("It can upgrade the proficiency of weapons very fast.\n")
                         .AddText("What would you like to improve?")
                         .AddOption("One handed weapon.", 1)
@@ -4015,40 +4235,55 @@ namespace COServer.Game.MsgNpc
                         if (client.MyProfs.ClientProf.ContainsKey(client.UplevelProficiency))
                         {
                             var myprof = client.MyProfs.ClientProf[client.UplevelProficiency];
+
+                            // Verifica se o nível da proficiência já é 12
                             if (myprof.Level >= 12)
                             {
                                 dialog.AddText("This weapon proficiency can't be leveled up anymore.");
                                 dialog.AddOption("Oh.", 255).AddAvatar(65).FinalizeDialog();
                                 return;
                             }
+
+                            // Verifica se o jogador tem pelo menos 10 ProfTokens (ID 159753) no inventário
                             client.UplevelProficiency = 0;
-                            if (client.Inventory.Contain(723700, myprof.Level))
+                            if (client.Inventory.Contain(159753, 10))
                             {
-                                client.Inventory.Remove(723700, myprof.Level, stream);
+                                // Remove 10 ProfTokens do inventário do jogador
+                                client.Inventory.Remove(159753, 10, stream);
+
+                                // Envia mensagem de sucesso ao jogador
                                 client.SendSysMesage("You've successfully leveled your weapon proficiency.", Game.MsgServer.MsgMessage.ChatMode.System);
+
+                                // Aumenta o nível da proficiência e reseta a experiência
                                 myprof.Level++;
                                 myprof.Experience = 0;
+
+                                // Envia atualização da proficiência para o cliente
                                 client.Send(stream.ProficiencyCreate(myprof.ID, myprof.Level, myprof.Experience, client.Player.UID));
                                 break;
                             }
                             else
                             {
-                                dialog.AddText("You don't have the required ExpBalls, I'm sorry I can't help you.");
+                                // Informa ao jogador que ele não tem ProfTokens suficientes
+                                dialog.AddText("You don't have enough ProfTokens, you need 10 to level up.");
                                 dialog.AddOption("Sorry.", 255).AddAvatar(65).FinalizeDialog();
                             }
                         }
                         else
                         {
+                            // Informa que o jogador não conhece essa proficiência
                             dialog.AddText("You don't know this proficiency.");
                             dialog.AddOption("Okay.", 255).AddAvatar(65).FinalizeDialog();
                             break;
                         }
                         break;
                     }
+
                 default:
                     {
                         if (Option == 255) return;
                         ushort prof = 0;
+
                         if (Option == 62)
                             prof = 611;
                         else if (Option == 150)
@@ -4066,24 +4301,34 @@ namespace COServer.Game.MsgNpc
                                 prof = ushort.Parse(reverse);
                             }
                         }
+
                         if (prof == 600) prof++;
+
+                        // Verifica se o jogador conhece a proficiência selecionada
                         if (client.MyProfs.ClientProf.ContainsKey(prof))
                         {
                             var myprof = client.MyProfs.ClientProf[prof];
+
+                            // Verifica se o nível da proficiência já é 12
                             if (myprof.Level >= 12)
                             {
                                 dialog.AddText("This weapon proficiency can't be leveled up anymore.");
                                 dialog.AddOption("Oh.", 255).AddAvatar(65).FinalizeDialog();
                                 return;
                             }
+
+                            // Define a proficiência que será upada
                             client.UplevelProficiency = prof;
-                            dialog.AddText("I need " + myprof.Level + " ExpBalls to be able to level up this weapon proficiency.");
+
+                            // Informa ao jogador que precisa de 10 ProfTokens para upar a proficiência
+                            dialog.AddText("I need 10 ProfTokens to be able to level up this weapon proficiency.");
                             dialog.AddOption("Here you go.", 100);
                             dialog.AddOption("Never~mind.", 255).AddAvatar(65).FinalizeDialog();
                             break;
                         }
                         else
                         {
+                            // Informa que o jogador não conhece essa proficiência
                             dialog.AddText("You don't know this proficiency.");
                             dialog.AddOption("Okay.", 255);
                             dialog.AddAvatar(65).FinalizeDialog();
@@ -10634,7 +10879,7 @@ namespace COServer.Game.MsgNpc
                                .AddOption("Learn~shield~skills.", 4)
                                .AddOption("Learn~XP~skills.", 10)
                                .AddOption("Learn~weapon~skills.", 20)
-                               //  .AddOption("Learn~Pure~Skills.", 21)
+                               .AddOption("Learn~Pure~Skills.", 21)
                                .AddOption("You~bet!", 255)
                                .AddAvatar(8).FinalizeDialog();
                         }
@@ -17241,7 +17486,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Are you sure you want to open this LotteryBox?")
-                            .AddOption("Pay 1000 CPS.", 2)
+                            .AddOption("Pay 215 Cps.", 2)
                             .AddOption("Use LotteryTicket.", 1)
                             .AddOption("No thanks.", 255)
                             .AddAvatar(123)
