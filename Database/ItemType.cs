@@ -113,7 +113,8 @@ namespace COServer.Database
             Letra4 = 7112171,
             Letra5 = 7112181,
             Letra6 = 7112191,
-            Letra7 = 7112201;
+            Letra7 = 7112201,
+            ProfToken = 159753;
 
 
 

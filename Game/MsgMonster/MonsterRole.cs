@@ -292,11 +292,11 @@ namespace COServer.Game.MsgMonster
                         DropItemID(killer, 1088000, stream, 6);
 
                     #region EggOrLetter [Quest]
-                    uint ItemType = (uint)Program.GetRandom.Next(1, 3); // 1 para Ovo, 2 para Letra
+                    uint ItemType = (uint)Program.GetRandom.Next(1, 4); // 1 para Ovo, 2 para Letra
                     uint EggCouler = (uint)Program.GetRandom.Next(1, 4);
                     uint LetraCauler = (uint)Program.GetRandom.Next(1, 8);
 
-                    if (killer.MobsKilled > 2500)
+                    if (killer.MobsKilled > 3000)
                     {
                         switch (ItemType)
                         {
@@ -455,6 +455,20 @@ namespace COServer.Game.MsgMonster
                                         #endregion
                                 }
                                 break;
+                            #endregion
+                            #region ProfToken
+                            case 3:
+                                {
+                                    if (killer.Player.VipLevel >= 6)
+                                    {
+                                        killer.Inventory.Add(stream, 159753, 1);
+                                    }
+                                    else
+                                    {
+                                        DropItemID(killer, 159753, stream, 6);
+                                    }
+                                    break;
+                                }
                                 #endregion
                         }
 
@@ -828,37 +842,16 @@ namespace COServer.Game.MsgMonster
                             DropItemNull(Database.ItemType.DragonBall, stream);
 
                             // Dances book com 5% de chance
-                            if (Role.Core.Rate(5))
+                            if (Role.Core.Rate(15))
                             {
                                 DropItemNull((uint)(725018 + Program.GetRandom.Next(1, 7)), stream);
                             }
 
                             // Novos itens com 15% de chance de drop
-                            if (Role.Core.Rate(5))
+                            if (Role.Core.Rate(15))
                             {
-                                // Gera um número aleatório entre 0 e 4 para escolher um dos cinco itens
-                                int randomIndex = Program.GetRandom.Next(0, 5);
-
-                                uint itemToDrop = 0;
-
-                                switch (randomIndex)
-                                {
-                                    case 0:
-                                        itemToDrop = 722840; // Item 1
-                                        break;
-                                    case 1:
-                                        itemToDrop = 722841; // Item 2
-                                        break;
-                                    case 2:
-                                        itemToDrop = 722842; // Item 3
-                                        break;
-                                    case 3:
-                                        itemToDrop = 1060101; // Item 4
-                                        break;
-                                    case 4:
-                                        itemToDrop = 730003; // Item 5
-                                        break;
-                                }
+                                // Define o item a ser dropado
+                                uint itemToDrop = 1200000; // Item 1
 
                                 DropItemNull(itemToDrop, stream);
                             }
