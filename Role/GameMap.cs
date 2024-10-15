@@ -388,6 +388,7 @@ namespace COServer.Role
             10137,
             10166,
             1767,
+            1212,//Cleanwatermap
         };
 
         public List<Portal> Portals = new List<Portal>();

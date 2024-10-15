@@ -29,7 +29,8 @@ namespace COServer.Database
         public static bool FullLoading = false;
         public static Dictionary<uint, string> SMapName = new Dictionary<uint, string>() { { 1002, "TwinCity" }, { 1015, "BirdIsland" }, { 1011, "PhoenixCastle" }, { 1000, "DesertCity" }, { 1020, "ApeMountain" }, { 1001, "MysticCastle" } };
 
-        public static Dictionary<uint, string> MapName = new Dictionary<uint, string>() { 
+        public static Dictionary<uint, string> MapName = new Dictionary<uint, string>() {
+            { 1212, "GlobeIsland"},                
             { 1015, "BirdIsland" },
             { 1014, "DragonPool" },
             { 1105, "MoonPlatform" },
@@ -38,6 +39,7 @@ namespace COServer.Database
             { 1000, "DesertCity" },
             { 1020, "ApeMountain" },
             { 1001, "MysticCastle" } };
+
         public static uint ResetServerDay = 0;
         public static bool ResetedAlready = false;
         public static WindowsAPI.IniFile Pets;

@@ -554,6 +554,11 @@ namespace COServer.Game.MsgServer
                             client.Teleport(724, 573, 1015);
                             return;
                         }
+                        if (client.Player.Map == 1212)
+                        {
+                            client.Teleport(439, 387, 1002);
+                            return;
+                        }
                         if (client.Player.Map == 1038)//  map
                         {
                             client.Teleport(428, 378, 1002, 0, true, true);

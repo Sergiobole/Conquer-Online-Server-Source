@@ -780,6 +780,7 @@ namespace COServer.Role
                             killer.Map == 1015 && Game.MsgTournaments.MsgSchedules.PoleDominationBI.IsFinished() ||
                             killer.Map == 1011 && Game.MsgTournaments.MsgSchedules.PoleDominationPC.IsFinished() ||
                             killer.Map == 1000 && Game.MsgTournaments.MsgSchedules.PoleDominationDC.IsFinished() ||
+                            killer.Map == 1212 ||
                             killer.Map == 1075 ||
                             killer.Map == 1076 )
                         {
@@ -1028,7 +1029,7 @@ namespace COServer.Role
                         foreach (var item in ItemsDrop.Values)
                             DropItem(item, (ushort)(x + 2), (ushort)(y + 2), stream);
                     }
-                    Program.DiscordAPIRedDrop.Enqueue($"``[{Name}] has been captured by [" + MyKillerName + "] and drop your item!! ``");
+                    Program.DiscordAPIRedDrop.Enqueue($"``[{Name}] has been captured by [" + killer.Name + "] and drop your item!! ``");
                 }
             }
             catch (Exception e) { Console.WriteLine(e.ToString()); }
