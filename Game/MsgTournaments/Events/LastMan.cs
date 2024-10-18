@@ -28,7 +28,7 @@ namespace COServer.Game.MsgTournaments
             {
                 FinishTimer = DateTime.Now.AddMinutes(1);
                 Mode = ProcesType.Alive;
-                MsgSchedules.SendInvitation("LastMan", 457, 356, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.LastMan);
+                MsgSchedules.SendInvitation("LastMan", 436, 353, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.LastMan);
                 MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
             }
         }
@@ -48,7 +48,7 @@ namespace COServer.Game.MsgTournaments
                 {
                     FinishTimer = DateTime.Now.AddMinutes(1);
                     Mode = ProcesType.Alive;
-                    MsgSchedules.SendInvitation("LastMan", 457, 356, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.LastMan);
+                    MsgSchedules.SendInvitation("LastMan", 436, 353, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.LastMan);
                     MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
                 }
             }
@@ -77,12 +77,33 @@ namespace COServer.Game.MsgTournaments
         public void GiveReward(Client.GameClient client, ServerSockets.Packet stream)
         {
             WinnerUID = client.Player.UID;
-            client.SendSysMesage("You received a DragonBallScroll.", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.red);
-            MsgSchedules.SendSysMesage("" + client.Player.Name + " has won " + Title + " and received a DragonBallScroll!", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
-            Program.DiscordAPIwinners.Enqueue("``[" + client.Player.Name + "] Won " + Title + " and received a DragonBallScroll.``");
-            client.Inventory.Add(stream, 720028, 1, 0, 0, 0, 0, 0, false); // Atualizado para adicionar DragonBallScroll
+
+            // Lista de itens e suas respectivas mensagens de anúncio
+            var rewards = new (uint ItemID, string ItemName)[]
+            {
+                    (1088001, "Meteor"),
+                    (730001, "+1Stone"),
+                    (720028, "DragonBallScroll"),
+                    (1088000, "DragonBall"),
+            };
+
+            // Gerador de números aleatórios para escolher o item
+            Random random = new Random();
+            var selectedReward = rewards[random.Next(rewards.Length)];
+
+            // Enviar mensagens ao jogador e ao sistema
+            client.SendSysMesage($"You received a {selectedReward.ItemName}.", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.red);
+            MsgSchedules.SendSysMesage($"{client.Player.Name} has won {Title} and received a {selectedReward.ItemName}!", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
+
+            // Anunciar no Discord
+            Program.DiscordAPIwinners.Enqueue($"``[{client.Player.Name}] Won {Title} and received a {selectedReward.ItemName}.``");
+
+            // Adicionar o item ao inventário
+            client.Inventory.Add(stream, selectedReward.ItemID, 1, 0, 0, 0, 0, 0, false);
+
+            // Restaurar a vida do jogador e teleportar
             client.Player.HitPoints = (int)client.Status.MaxHitpoints;
-            client.Teleport(301, 278, 1002);
+            client.Teleport(438, 387, 1002);
         }
 
         public void AddTop(Client.GameClient client)
