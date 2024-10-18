@@ -5120,7 +5120,6 @@ namespace COServer.Game.MsgServer
                                             if (client.Player.Level >= 15)
                                             {
                                                 item.Bound = 4;
-                                                client.Inventory.Add(stream, 1200001, 1, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);
                                                 client.Inventory.Add(stream, Database.ItemType.ExperiencePotion, 1, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);
                                                 client.Inventory.Add(stream, 721626, 3, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);
                                                 client.Inventory.Add(stream, 721625, 3, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);
@@ -9195,7 +9194,6 @@ namespace COServer.Game.MsgServer
                                     client.Inventory.Add(stream, 160138, 0, 0, 3, 0, Role.Flags.Gem.EmptySocket, Role.Flags.Gem.NoSocket, false); //bots -3 & elite (B)
                                     client.Inventory.Add(stream, 723712, 0, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, false); // +1 Pack - non bound
                                     client.Inventory.AddItemWitchStack(3001283, 0, 3, stream);   // 3 ExpBalls
-                                    client.Inventory.AddItemWitchStack(1200001, 0, 1, stream);  // PrayingStone(M)
                                     client.Inventory.AddItemWitchStack(723711, 0, 5, stream);  //// MeteorTearPack - 5
                                     client.CreateBoxDialog("You received~1~Socket~Lv70EliteBoots(-3%),~a~+1~StonePack,~3~EXPBalls(F),~a~7~Days`~Blessing~Stone(F),~and~5~Meteor~Tear~Packs.");
 
@@ -9226,7 +9224,6 @@ namespace COServer.Game.MsgServer
                                     client.Inventory.Add(stream, 120128, 0, 0, 3, 0, Role.Flags.Gem.EmptySocket, Role.Flags.Gem.NoSocket, false); //Necklace -3 & elite 
                                     client.Inventory.Add(stream, 723712, 0, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, false); // +1 Pack - non bound
                                     client.Inventory.AddItemWitchStack(3001283, 0, 3, stream);   // 3 ExpBalls
-                                    client.Inventory.AddItemWitchStack(1200001, 0, 1, stream);  // PrayingStone(M)
                                     client.Inventory.AddItemWitchStack(723711, 0, 5, stream);  //// MeteorTearPack - 5
                                     client.CreateBoxDialog("You received~1~Socket~Lv67~Elite~Necklace(-3%),~a~+1~StonePack,~3~EXPBalls(F),~a~7~Days`~Blessing~Stone(F),~and~5~Meteor~Tear~Packs.");
 
@@ -9256,7 +9253,6 @@ namespace COServer.Game.MsgServer
                                     client.Inventory.Add(stream, 150138, 0, 0, 3, 0, Role.Flags.Gem.EmptySocket, Role.Flags.Gem.NoSocket, false); //Ring -3 & elite 
                                     client.Inventory.Add(stream, 723712, 0, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, false); // +1 Pack - non bound
                                     client.Inventory.AddItemWitchStack(3001283, 0, 3, stream);   // 3 ExpBalls
-                                    client.Inventory.AddItemWitchStack(1200001, 0, 1, stream);  // PrayingStone(M)
                                     client.Inventory.AddItemWitchStack(723711, 0, 5, stream);  //// MeteorTearPack - 5
                                     client.CreateBoxDialog("You received~1~Socket~Lv70~EliteRing(-3%),~a~+1~StonePack,~3~EXPBalls(F),~a~7~Days`~Blessing~Stone(F),~and~5~Meteor~Tear~Packs.");
 
@@ -9285,7 +9281,6 @@ namespace COServer.Game.MsgServer
                                     client.Inventory.Add(stream, 121128, 0, 0, 3, 0, Role.Flags.Gem.EmptySocket, Role.Flags.Gem.NoSocket, false); //Bag -3 & elite 
                                     client.Inventory.Add(stream, 723712, 0, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, false); // +1 Pack - non bound
                                     client.Inventory.AddItemWitchStack(3001283, 0, 3, stream);   // 3 ExpBalls
-                                    client.Inventory.AddItemWitchStack(1200001, 0, 1, stream);  // PrayingStone(M)
                                     client.Inventory.AddItemWitchStack(723711, 0, 5, stream);  //// MeteorTearPack - 5
                                     client.CreateBoxDialog("You received~1~Socket~Lv67~Elite~Bag(-3%),~a~+1~StonePack,~3~EXPBalls(F),~a~7~Days`~Blessing~Stone(F),~and~5~Meteor~Tear~Packs.");
 
@@ -9314,7 +9309,6 @@ namespace COServer.Game.MsgServer
                                     client.Inventory.Add(stream, 152148, 0, 0, 3, 0, Role.Flags.Gem.EmptySocket, Role.Flags.Gem.NoSocket, false); //Bracelet -3 & elite 
                                     client.Inventory.Add(stream, 723712, 0, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, false); // +1 Pack - non bound
                                     client.Inventory.AddItemWitchStack(3001283, 0, 3, stream);   // 3 ExpBalls
-                                    client.Inventory.AddItemWitchStack(1200001, 0, 1, stream);  // PrayingStone(M)
                                     client.Inventory.AddItemWitchStack(723711, 0, 5, stream);  //// MeteorTearPack - 5
                                     client.CreateBoxDialog("You received~1~Socket~Lv75EliteBracelet(-3%),~a~+1~StonePack,~3~EXPBalls(F),~a~7~Days`~Blessing~Stone(F),~and~5~Meteor~Tear~Packs.");
 
@@ -9343,7 +9337,6 @@ namespace COServer.Game.MsgServer
                                     client.Inventory.Add(stream, 117068, 0, 0, 3, 0, Role.Flags.Gem.EmptySocket, Role.Flags.Gem.NoSocket, false); //Earings -3 & elite 
                                     client.Inventory.Add(stream, 723712, 0, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, false); // +1 Pack - non bound
                                     client.Inventory.AddItemWitchStack(3001283, 0, 3, stream);   // 3 ExpBalls
-                                    client.Inventory.AddItemWitchStack(1200001, 0, 1, stream);  // PrayingStone(M)
                                     client.Inventory.AddItemWitchStack(723711, 0, 5, stream);  //// MeteorTearPack - 5
                                     client.CreateBoxDialog("You received~1~Socket~Lv67~EliteEarrings(-3%),~a~+1~StonePack,~3~EXPBalls(F),~a~7~Days`~Blessing~Stone(F),~and~5~Meteor~Tear~Packs.");
 
