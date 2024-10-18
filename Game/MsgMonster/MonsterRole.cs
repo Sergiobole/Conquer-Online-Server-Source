@@ -658,23 +658,13 @@ namespace COServer.Game.MsgMonster
                         {
                             DropItemID(killer, Database.ItemType.CleanWater, stream);
                             Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a ClearWater in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
-                            Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] found a ClearWater in WaterLord(428,418)!``");
+                            Program.DiscordAPIwinners.Enqueue($"``[{killer.Player.Name}] found a ClearWater in WaterLord(428,418)!``");
                         }
-                        else
+                        else if (Role.Core.Rate(60)) // Chance de 60% para Meteor
                         {
-                            // 60% restante: 50% Meteor e 50% ExpBall
-                            if (Role.Core.Rate(50)) // Chance de 50% para Meteor
-                            {
-                                DropItemID(killer, Database.ItemType.Meteor, stream);
-                                Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a Meteor in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
-                                Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] found a Meteor in WaterLord(428,418)!``");
-                            }
-                            else // 50% para ExpBall
-                            {
-                                DropItemID(killer, Database.ItemType.ExpBall, stream);
-                                Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found an ExpBall in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
-                                Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] found an ExpBall in WaterLord(428,418)!``");
-                            }
+                            DropItemID(killer, Database.ItemType.Meteor, stream);
+                            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a Meteor in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                            Program.DiscordAPIwinners.Enqueue($"``[{killer.Player.Name}] found a Meteor in WaterLord(428,418)!``");
                         }
                     }
                     #endregion
@@ -1130,6 +1120,54 @@ namespace COServer.Game.MsgMonster
                     }
                     #endregion
 
+                    #region Garmet-3
+
+                    if (Map == 1351)// lab1
+                    {
+                        if (Family.ID == 3141) //Slinger
+                        {
+                            if (Role.Core.Rate(0.0005))
+                            {
+                                killer.Inventory.Add(stream, 2000050, 1);
+                                Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} Find GarmertQuestToken1 in lab 1!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                            }
+                        }
+                    }
+                    if (Map == 1352)// lab2
+                    {
+                        if (Family.ID == 3144) //Bladeling
+                        {
+                            if (Role.Core.Rate(0.0005))
+                            {
+                                killer.Inventory.Add(stream, 2000051, 1);
+                                Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} Find GarmertQuestToken2 in lab 2!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                            }
+                        }
+                    }
+                    if (Map == 1353)// lab3
+                    {
+                        if (Family.ID == 3148) //FiendBat
+                        {
+                            if (Role.Core.Rate(0.0003))
+                            {
+                                killer.Inventory.Add(stream, 2000053, 1);
+                                Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} Find GarmertQuestToken3 in lab 3!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                            }
+                        }
+                    }
+                    if (Map == 1354)// lab4
+                    {
+                        if (Family.ID == 3155) //MinotaurL120
+                        {
+                            if (Role.Core.Rate(0.0002))
+                            {
+                                killer.Inventory.Add(stream, 2000054, 1);
+                                Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} Find GarmertQuestToken4 in lab 4!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                            }
+                        }
+                    }
+                    #endregion
+
                     #region Titan GonoDerma
                     if (Map == 1011 || Map == 1020)
                     {
@@ -1140,7 +1178,6 @@ namespace COServer.Game.MsgMonster
                                 uint[] DropSpecialItems = new uint[] {
                                     Database.ItemType.Meteor,
                                     Database.ItemType.ExperiencePotion,
-                                    Database.ItemType.ExpBall,
                                 };
                                 uint IDDrop = DropSpecialItems[Program.GetRandom.Next(0, DropSpecialItems.Length)];
 
@@ -1155,8 +1192,8 @@ namespace COServer.Game.MsgMonster
                             {
                                 DropItemID(killer, 720393 ,stream);
 
-                                SendSysMesage("The " + Name.ToString() + " has been destroyed by " + killer.Player.Name.ToString() + ", and dropped a 3xExpotion ", Game.MsgServer.MsgMessage.ChatMode.Center, MsgMessage.MsgColor.red);
-                                Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] been destroyed " + Name.ToString() + " and received 3xExpotion``");
+                                SendSysMesage("The " + Name.ToString() + " has been destroyed by " + killer.Player.Name.ToString() + " and received a ExpPotion3x", Game.MsgServer.MsgMessage.ChatMode.Center, MsgMessage.MsgColor.red);
+                                Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] been destroyed " + Name.ToString() + " and received a ExpPotion3x!``");
 
                             }
                         }
@@ -1184,7 +1221,7 @@ namespace COServer.Game.MsgMonster
                             if (Family.ID == 6005)
                                 itemid = 721015;
 
-                            if (Role.Core.Rate(15))
+                            if (Role.Core.Rate(10))
                             {
                                 ushort xx = X;
                                 ushort yy = Y;
@@ -1204,42 +1241,42 @@ namespace COServer.Game.MsgMonster
                         {
                             if (Role.Core.Rate(0.056))//SkyToken
                             {
-                                DropItemID(killer, 721537, stream);
+                                killer.Inventory.Add(stream, 721537, 1);
                             }
                         }
-                        if (Family.ID == 3141 || Family.ID == 3143)//lAB1
+                        if (Family.ID == 3141 || Family.ID == 3143)
                         {
                             if (Role.Core.Rate(0.05))
                             {
-                                DropItemID(killer, 721533, stream);
+                                DropItemID(killer, 721533, stream); ///Diamont
                             }
                         }
                         if (Family.ID == 3144)//lab2
                         {
                             if (Role.Core.Rate(0.05))
                             {
-                                DropItemID(killer, 721534, stream);
+                                DropItemID(killer, 721534, stream); //diamont
                             }
                         }
                         if (Family.ID == 3145)
                         {
                             if (Role.Core.Rate(0.004))
                             {
-                                DropItemID(killer, 721538, stream);
+                                killer.Inventory.Add(stream, 721538, 1); //EarthToken
                             }
                         }
                         if (Family.ID == 3147)//lab3 1353
                         {
                             if (Role.Core.Rate(0.5))
                             {
-                                DropItemID(killer, 721535, stream);
+                                DropItemID(killer, 721535, stream); //diamont
                             }
                         }
                         if (Family.ID == 3148)
                         {
                             if (Role.Core.Rate(0.004))
                             {
-                                DropItemID(killer, 721539, stream);//soul tokken
+                                killer.Inventory.Add(stream, 721539, 1);//soul tokken
                             }
                         }
                         if (Family.ID == 3155 || Family.ID == 3156)//lab3 1353
@@ -1304,10 +1341,10 @@ namespace COServer.Game.MsgMonster
                                         else
                                             Amount = Family.ItemGenerator.GenerateGold(out ItemID);
                                     }
-                                    DropItem(stream, killer.Player.UID, killer.Map, ItemID, xx, yy, MsgFloorItem.MsgItem.ItemType.Money, Amount, false, 0);
+                                    DropItem(stream, killer.Player.UID, killer.Map, ItemID, xx, yy, MsgFloorItem.MsgItem.ItemType.Money, Amount, false, 0); ///dropgold
                                 }
                             }
-                        }
+                        }   
                         if (killer.Player.BlessTime > 0 ? rand > 150 && rand < 700 : rand > 200 && rand < 800)//&& rand < 770)
                         {
                             ushort xx = X;

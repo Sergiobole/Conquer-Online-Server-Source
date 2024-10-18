@@ -308,6 +308,124 @@ namespace COServer.Game.MsgNpc
             }
         }
         #endregion
+
+
+        #region Garmert-3
+        [NpcAttribute(NpcID.Garmert3Npc)]
+        private static void Garmert3Npc(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        {
+            Dialog dialog = new Dialog(client, stream);
+            switch (Option)
+            {
+                case 0:
+                    {
+                        dialog.AddText("Hello " + client.Player.Name + ", you need the 4xTokensGarmerts and 2xSuperTortoiseGem to trade for a Garmert Random -3! \n[TokenGarmert1], [TokenGarmert2], [TokenGarmert3], [TokenGarmert4], [2xSuperTortoiseGem]?\n")
+                             .AddOption("How to find the tokens?.", 33)
+                             .AddOption("Yes~I~Have.", 1)
+                             .AddOption("Just passing by.")
+                             .AddAvatar(63).FinalizeDialog();
+
+                        break;
+                    }
+                case 33:
+                    {
+
+                        dialog.Text(
+                                    "The tokens are dropped in the\n" +
+                                    "Lab1: Monsters -> Slinger drops [TokenGarmert1]\n" +
+                                    "Lab2: Monsters -> Bladeling drops [TokenGarmert2]\n" +
+                                    "Lab3: Monsters -> FiendBat drops [TokenGarmert3]\n" +
+                                    "Lab4: Monsters -> Minotaur L120 drops [TokenGarmert4]\n")
+
+                        .AddOption("Thanks.")
+                        .AddAvatar(63).FinalizeDialog();
+                        break;
+
+                    }
+                case 1:
+                    {
+                        if (client.Inventory.Contain(2000050, 1) && client.Inventory.Contain(2000051, 1) && client.Inventory.Contain(2000053, 1) && client.Inventory.Contain(2000054, 1) && client.Inventory.Contain(700073, 2))
+                        {
+                            // Remove os itens necessários
+                            client.Inventory.Remove(2000050, 1, stream);
+                            client.Inventory.Remove(2000051, 1, stream);
+                            client.Inventory.Remove(2000053, 1, stream);
+                            client.Inventory.Remove(2000054, 1, stream);
+                            client.Inventory.Remove(700073, 2, stream);
+
+                            // Lista de IDs dos itens (70% de chance)
+                            int[] mainItemList = new int[]
+                            {
+                                182365, 182325, 181385, 182335, 182345, 182385, 181375, 182605, 181365, 181345,
+                                182315, 181335, 191305, 181305, 181405, 181505, 181605, 181705, 181805, 181905,
+                                181315, 181415, 181515, 181615, 181715, 181815, 181915, 181325, 181425, 181525,
+                                181625, 181725, 181825, 181925, 181355
+                            };
+
+                            // Lista de IDs adicionais (30% de chance)
+                            int[] additionalItemList = new int[]
+                            {
+                                189685, 189065, 195415,
+                                193725, 194795, 194375, 192465, 192475, 193400, 192495, 181555, 181110, 181120,
+                                181130, 181140, 181150, 181100, 192505, 192665, 192525, 192535, 192545, 192675,
+                                192685, 192695, 188905, 188915, 199415, 199535, 182605, 187325, 188495, 188965,
+                                188955, 189015, 189035, 189045, 192425, 192605, 192625, 192785, 193245, 194325,
+                                194385, 189325, 189135, 189145, 193585, 193595, 189155, 183915, 194995, 194935,
+                                198555, 198565, 198745, 199555, 197555, 198705, 198715, 198725, 198735, 198755,
+                                198765, 198775, 198785, 198795, 198805, 198815, 193575, 183805, 194395, 187890,
+                                194975, 189925, 195015, 195035, 195025, 182015, 182025, 182035, 182045, 182055,
+                                193205, 193635, 192635, 188255, 199545, 199565, 199575, 199595, 199605, 199615,
+                                199625, 199635, 199645, 199655, 199665, 199675, 199685, 199695, 199705, 199715,
+                                199725, 199735, 199745, 199755, 199765, 199775, 199785, 199795, 188190, 188180,
+                                199855, 195745, 195755, 195765, 195775, 195785, 195795, 195815, 195825, 195835,
+                                183815, 183835, 183875, 183885, 187705, 189070, 189120, 193645, 193665, 193705,
+                                193715, 193735, 193855, 193865, 193875, 193885, 193925, 193995, 194055, 194065,
+                                194075, 194085, 194095, 194115, 194155, 194185, 194225, 194235, 194255, 194265,
+                                194275, 194295, 195045, 195845, 199855, 199105, 183755, 193475, 193495, 194135,
+                                194175, 183905, 199815, 183795, 194335, 194025, 193485, 183845, 194105, 194285,
+                                193895, 194005, 183825, 193465
+                            };
+
+                            // Gera um número aleatório para decidir de qual lista sortear
+                            Random rnd = new Random();
+                            int choice = rnd.Next(100); // Gera um número entre 0 e 99
+
+                            int randomItem;
+
+                            if (choice < 70) // 70% de chance para a lista principal
+                            {
+                                int randomIndex = rnd.Next(mainItemList.Length);
+                                randomItem = mainItemList[randomIndex];
+                            }
+                            else // 30% de chance para a lista adicional
+                            {
+                                int randomIndex = rnd.Next(additionalItemList.Length);
+                                randomItem = additionalItemList[randomIndex];
+                            }
+
+                            // Adiciona o item aleatório ao inventário
+                            client.Inventory.Add(stream, (uint)randomItem, 1, 0, 3, 0, 0, 0, false); ///gamert-3quest
+
+                            // Envia a mensagem global com o nome da recompensa
+                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"[{client.Player.Name}] has claimed RandomGarmert -3 from Garmert-3QuestNpc!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+
+                            // Envia a mensagem para o Discord através da API
+                            Program.DiscordAPIQuest.Enqueue($"[{client.Player.Name}] has claimed RandomGarmert -3 from Garmert-3QuestNpc!");
+                        }
+                        else
+                        {
+                            dialog.Text("You don’t have the necessary.\n")
+                                 .AddText("Check your Gems and Tokens.")
+                                 .AddOption("Okay.", 255)
+                                 .AddAvatar(211).FinalizeDialog();
+                        }
+                        break;
+                    }
+
+            }
+        }
+        #endregion
+
         #region ArenaDuel
         #region Join
         //[NpcAttribute(NpcID.ArenaDuel)]
