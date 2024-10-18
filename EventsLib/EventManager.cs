@@ -636,18 +636,14 @@ namespace COServer.EventsLib
                     }
                 }
                 if (killed.Player.Map == 1038)
-                {
-                    Console.WriteLine($"2 - Player {killer.Player.Name} killed {killed.Player.Name}");
-
+                {  
                     if (killer.Player.GuildID != killed.Player.GuildID)
                     {
                         killer.TotalKillsGW++;
-                        Console.WriteLine($"Total kills: {killer.TotalKillsGW}");
                     }
                 }
                 if (killed.Player.Map == guildsdm.map)
                 {
-                    //Console.WriteLine(killed.Player.Name);
                     killed.Teleport(430, 329, 1002);
 
                     using (var rec = new ServerSockets.RecycledPacket())
