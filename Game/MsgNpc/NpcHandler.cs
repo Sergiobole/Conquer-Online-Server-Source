@@ -85,15 +85,15 @@ namespace COServer.Game.MsgNpc
                             client.Inventory.Remove(729937, 1, stream);
 
                             string rewardName = "";
-                            switch (Program.GetRandom.Next(1, 7))
+                            switch (Program.GetRandom.Next(1, 6))
                             {
                                 case 1:
                                     client.Inventory.Add(stream, ItemType.Stone_1, 1);
                                     rewardName = "Stone +1";
                                     break;
                                 case 2:
-                                    client.Inventory.Add(stream, ItemType.Meteor, 1);
-                                    rewardName = "Meteor";
+                                    client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
+                                    rewardName = "Meteor Scroll";
                                     break;
                                 case 3:
                                     client.Inventory.Add(stream, ItemType.DragonBall, 1);
@@ -106,10 +106,6 @@ namespace COServer.Game.MsgNpc
                                 case 5:
                                     client.Inventory.Add(stream, ItemType.DragonBallScroll, 1);
                                     rewardName = "Dragon Ball Scroll";
-                                    break;
-                                case 6:
-                                    client.Inventory.Add(stream, ItemType.Stone_2, 1);
-                                    rewardName = "Stone +2";
                                     break;
                             }
 
@@ -170,8 +166,8 @@ namespace COServer.Game.MsgNpc
                                     rewardName = "Stone +1";
                                     break;
                                 case 2:
-                                    client.Inventory.Add(stream, ItemType.Meteor, 1);
-                                    rewardName = "Meteor";
+                                    client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
+                                    rewardName = "Meteor Scroll";
                                     break;
                                 case 3:
                                     client.Inventory.Add(stream, ItemType.DragonBall, 1);
@@ -184,10 +180,6 @@ namespace COServer.Game.MsgNpc
                                 case 5:
                                     client.Inventory.Add(stream, ItemType.DragonBallScroll, 1);
                                     rewardName = "Dragon Ball Scroll";
-                                    break;
-                                case 6:
-                                    client.Inventory.Add(stream, ItemType.Stone_2, 1);
-                                    rewardName = "Stone +2";
                                     break;
                             }
 
@@ -220,7 +212,7 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        dialog.AddText("Hello " + client.Player.Name + "You need the 6 Super Gems to trade for SuperToroiseGem. \nAre you have [PhoenixGem, RainbowGem, KylinGem, VioletGem, MoonGem, DragonGem]?")
+                        dialog.AddText("Hello [" + client.Player.Name + "] You need the 6 SuperGem to trade for SuperTortoiseGem!\nAre you need:\n[PhoenixGem, RainbowGem, KylinGem, VioletGem, MoonGem, DragonGem]!")
                          .AddOption("Yes~I~Have.", 1)
                          .AddOption("Just passing by.")
                          .AddAvatar(63).FinalizeDialog();
@@ -269,7 +261,7 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        dialog.AddText("Hello " + client.Player.Name + "You need the 6 Super Gems to trade for MiraculousGourd. \nAre you have [PhoenixGem, RainbowGem, KylinGem, VioletGem, MoonGem, DragonGem]?\n")
+                        dialog.AddText("Hello [" + client.Player.Name + "] You need the 6 SuperGems to trade for MiraculousGourd!\nAre you need:\n[PhoenixGem, RainbowGem, KylinGem, VioletGem, MoonGem, DragonGem]!")
                          .AddOption("Yes~I~Have.", 1)
                          .AddOption("Just passing by.")
                          .AddAvatar(63).FinalizeDialog();
@@ -319,8 +311,8 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        dialog.AddText("Hello " + client.Player.Name + ", you need the 4xTokensGarmerts and 2xSuperTortoiseGem to trade for a Garmert Random -3! \n[TokenGarmert1], [TokenGarmert2], [TokenGarmert3], [TokenGarmert4], [2xSuperTortoiseGem]?\n")
-                             .AddOption("How to find the tokens?.", 33)
+                        dialog.AddText("Hello " + client.Player.Name + ", this is a Halloween-Quest!\nYou need to collect the following items:\n[4x TokensGarmerts] and [1x SuperTortoiseGem]!\n") 
+                             .AddOption("How to find the tokens?", 33)
                              .AddOption("Yes~I~Have.", 1)
                              .AddOption("Just passing by.")
                              .AddAvatar(63).FinalizeDialog();
@@ -330,28 +322,25 @@ namespace COServer.Game.MsgNpc
                 case 33:
                     {
 
-                        dialog.Text(
-                                    "The tokens are dropped in the\n" +
-                                    "Lab1: Monsters -> Slinger drops [TokenGarmert1]\n" +
-                                    "Lab2: Monsters -> Bladeling drops [TokenGarmert2]\n" +
-                                    "Lab3: Monsters -> FiendBat drops [TokenGarmert3]\n" +
-                                    "Lab4: Monsters -> Minotaur L120 drops [TokenGarmert4]\n")
-
-                        .AddOption("Thanks.")
-                        .AddAvatar(63).FinalizeDialog();
+                        dialog.AddText("Twin City: Monsters -> Pheasant drops [TokenGarmert1]\n")
+                              .AddText("Ape Mountain: Monsters -> Macaque drops [TokenGarmert2]\n")
+                              .AddText("Phoenix Castle: Monsters -> Bandit drops [TokenGarmert3]\n")
+                              .AddText("Bird Island: Monsters -> Birdman drops [TokenGarmert4]\n")
+                              .AddOption("Thanks.")
+                              .AddAvatar(63).FinalizeDialog();
                         break;
 
                     }
                 case 1:
                     {
-                        if (client.Inventory.Contain(2000050, 1) && client.Inventory.Contain(2000051, 1) && client.Inventory.Contain(2000053, 1) && client.Inventory.Contain(2000054, 1) && client.Inventory.Contain(700073, 2))
+                        if (client.Inventory.Contain(2000050, 1) && client.Inventory.Contain(2000051, 1) && client.Inventory.Contain(2000053, 1) && client.Inventory.Contain(2000054, 1) && client.Inventory.Contain(700073, 1))
                         {
                             // Remove os itens necessários
                             client.Inventory.Remove(2000050, 1, stream);
                             client.Inventory.Remove(2000051, 1, stream);
                             client.Inventory.Remove(2000053, 1, stream);
                             client.Inventory.Remove(2000054, 1, stream);
-                            client.Inventory.Remove(700073, 2, stream);
+                            client.Inventory.Remove(700073, 1, stream);
 
                             // Lista de IDs dos itens (70% de chance)
                             int[] mainItemList = new int[]
@@ -407,10 +396,10 @@ namespace COServer.Game.MsgNpc
                             client.Inventory.Add(stream, (uint)randomItem, 1, 0, 3, 0, 0, 0, false); ///gamert-3quest
 
                             // Envia a mensagem global com o nome da recompensa
-                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"[{client.Player.Name}] has claimed RandomGarmert -3 from Garmert-3QuestNpc!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                            Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"[{client.Player.Name}] has claimed RandomGarmert -3 from Halloween Quest!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
 
                             // Envia a mensagem para o Discord através da API
-                            Program.DiscordAPIQuest.Enqueue($"[{client.Player.Name}] has claimed RandomGarmert -3 from Garmert-3QuestNpc!");
+                            Program.DiscordAPIQuest.Enqueue($"[{client.Player.Name}] has claimed RandomGarmert -3 from Halloween Quest!");
                         }
                         else
                         {
@@ -499,17 +488,111 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         // Exibe o diálogo inicial com os pontos online do usuário e uma opção para trocar por um token VIP de 7 dias
-                        dialog.AddText($"Hello, you will earn 1 OnlinePoint for every minute you stay online in Twin City.\nIn other maps, you will earn 0.5 points per minute.\nYou currently have [ {client.Player.OnlinePoints} ] OnlinePoints.").AddAvatar(7);
-                        dialog.AddOption("1 - [7 Days VIP] = 8.000", 1);
-                        dialog.AddOption("2 - [30 Days VIP] = 22.000", 2);                  
-                        dialog.AddOption("3 - [DBScroll] = 1.000", 3);
-                        dialog.AddOption("4 - [MoonBox] = 2.000", 4);
-                        dialog.AddOption("5 - [MetScroll] = 500", 5);
-                        dialog.AddOption("6 - [3xExp] = 500", 6);
-                        dialog.AddOption("7 - [Emerald] = 500", 7);
+                        dialog.AddText($"You will earn 1 OnlinePoint for every minute you stay online in Twin City.\nIn other maps, you will earn 0.5 points per minute.\nYou currently have [ {client.Player.OnlinePoints} ] OnlinePoints.").AddAvatar(7);
+                        dialog.AddOption("1 - [Vips] ", 45);
+                        dialog.AddOption("2 - [PrayingStones] ", 55);
+                        dialog.AddOption("3 - [DBScroll / MetScroll] ", 65);
+                        dialog.AddOption("4 - [Promotions / Exp3x] ", 75);
                         dialog.AddOption("Okay", 255);
                         dialog.FinalizeDialog();
                         break;
+                    }
+                #region PrayingStones
+                case 55:
+                    {                       
+                        dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
+                        dialog.AddOption("PrayingStone(3) = 3.000", 56);
+                        dialog.AddOption("PrayingStone(7) = 5.000", 57);
+                        dialog.AddOption("PrayingStone(30) = 10.000", 58);
+                        dialog.FinalizeDialog();
+                            break;
+                      
+                    }
+                case 56:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
+                            dialog.AddOption("Let me check.", 255);
+                            dialog.FinalizeDialog();
+                            break;
+                        }
+                        if (client.Player.OnlinePoints >= 3000)
+                        {
+                            client.Player.OnlinePoints -= 3000;
+                            client.Inventory.Add(stream, 1200000, 1, 0, 0, 0, 0, 0, false);
+                            dialog.AddText("You have successfully exchanged 3.000 Online Points for a 3-Days PrayingStone(S).").AddAvatar(7);
+                            Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : exchanged 3.000 Online Points for a 3-Days PrayingStone(S)``");
+                        }
+                        else
+                        {
+                            dialog.AddText("You do not have Online Points.\nYou need exchanged 3.000 Online Points for a 3-Days PrayingStone(S).").AddAvatar(7);
+                        }
+
+                        dialog.AddOption("Okay", 255);
+                        dialog.FinalizeDialog();
+                        break;
+                    }
+                case 57:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
+                            dialog.AddOption("Let me check.", 255);
+                            dialog.FinalizeDialog();
+                            break;
+                        }
+                        if (client.Player.OnlinePoints >= 5000)
+                        {
+                            client.Player.OnlinePoints -= 5000;
+                            client.Inventory.Add(stream, 1200001, 1, 0, 0, 0, 0, 0, false);
+                            dialog.AddText("You have successfully exchanged 5.000 Online Points for a 7-Days PrayingStone(M).").AddAvatar(7);
+                            Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : exchanged 5.000 Online Points for a 7-Days PrayingStone(M)``");
+                        }
+                        else
+                        {
+                            dialog.AddText("You do not have Online Points.\nYou need exchanged 5.000 Online Points for a 7-Days PrayingStone(M).").AddAvatar(7);
+                        }
+
+                        dialog.AddOption("Okay", 255);
+                        dialog.FinalizeDialog();
+                        break;
+                    }
+                case 58:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
+                            dialog.AddOption("Let me check.", 255);
+                            dialog.FinalizeDialog();
+                            break;
+                        }
+                        if (client.Player.OnlinePoints >= 10000)
+                        {
+                            client.Player.OnlinePoints -= 10000;
+                            client.Inventory.Add(stream, 1200002, 1, 0, 0, 0, 0, 0, false);
+                            dialog.AddText("You have successfully exchanged 10.000 Online Points for a 3-Days PrayingStone(L).").AddAvatar(7);
+                            Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : exchanged 10.000 Online Points for a 30-Days PrayingStone(L)``");
+                        }
+                        else
+                        {
+                            dialog.AddText("You do not have Online Points.\nYou need exchanged 10.000 Online Points for a 30-Days PrayingStone(L).").AddAvatar(7);
+                        }
+
+                        dialog.AddOption("Okay", 255);
+                        dialog.FinalizeDialog();
+                        break;
+                    }
+                #endregion
+                #region VipsOnlinePoints
+                case 45:
+                    {
+                        dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
+                        dialog.AddOption("Vip 7  Days = 8.000", 1);
+                        dialog.AddOption("Vip 30 Days = 22.000", 2);
+                        dialog.FinalizeDialog();
+                        break;
+
                     }
                 case 1:
                     {
@@ -542,7 +625,6 @@ namespace COServer.Game.MsgNpc
                     }
                 case 2:
                     {
-                        // Verifica se há espaço suficiente no inventário para o novo item
                         if (!client.Inventory.HaveSpace(1))
                         {
                             dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
@@ -550,11 +632,8 @@ namespace COServer.Game.MsgNpc
                             dialog.FinalizeDialog();
                             break;
                         }
-
-                        // Verifica se o jogador tem pontos online suficientes para trocar pelo VIP de 30 dias
                         if (client.Player.OnlinePoints >= 22000)
                         {
-                            // Deduz os pontos online e adiciona o VIP de 30 dias ao inventário
                             client.Player.OnlinePoints -= 22000;
                             client.Inventory.Add(stream, 780010, 1, 0, 0, 0, 0, 0, true);
                             dialog.AddText("You have successfully exchanged 22.000 Online Points for a 30-Days VIP Token.").AddAvatar(7);
@@ -569,9 +648,19 @@ namespace COServer.Game.MsgNpc
                         dialog.FinalizeDialog();
                         break;
                     }
+                #endregion
+                #region Dbs/Mets
+                case 65:
+                    {
+                        dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
+                        dialog.AddOption("DBScroll = 1.000", 3);
+                        dialog.AddOption("MetScroll = 500", 4);
+                        dialog.FinalizeDialog();
+                        break;
+
+                    }
                 case 3:
                     {
-                        // Verifica se há espaço suficiente no inventário para o novo item
                         if (!client.Inventory.HaveSpace(1))
                         {
                             dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
@@ -579,11 +668,8 @@ namespace COServer.Game.MsgNpc
                             dialog.FinalizeDialog();
                             break;
                         }
-
-                        // Verifica se o jogador tem pontos online suficientes
                         if (client.Player.OnlinePoints >= 1000)
                         {
-                            // Deduz os pontos online e adiciona o item 
                             client.Player.OnlinePoints -= 1000;
                             client.Inventory.Add(stream, 720028, 1, 0, 0, 0, 0, 0, false);
                             dialog.AddText("You have successfully exchanged 1.000 Online Points for a DbScroll.").AddAvatar(7);
@@ -599,35 +685,6 @@ namespace COServer.Game.MsgNpc
                         break;
                     }
                 case 4:
-                    {
-                        // Verifica se há espaço suficiente no inventário para o novo item
-                        if (!client.Inventory.HaveSpace(1))
-                        {
-                            dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
-                            dialog.AddOption("Let me check.", 255);
-                            dialog.FinalizeDialog();
-                            break;
-                        }
-
-                        // Verifica se o jogador tem pontos online suficientes
-                        if (client.Player.OnlinePoints >= 2000)
-                        {
-                            // Deduz os pontos online e adiciona o item 
-                            client.Player.OnlinePoints -= 2000;
-                            client.Inventory.Add(stream, 721080, 1, 0, 0, 0, 0, 0, false);
-                            dialog.AddText("You have successfully exchanged 2.000 Online Points for a MoonBox.").AddAvatar(7);
-                            Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take MoonBox Online Points``");
-                        }
-                        else
-                        {
-                            dialog.AddText("You do not have Online Points.\nYou need 2.000 Online Points to exchange for a MoonBox.").AddAvatar(7);
-                        }
-
-                        dialog.AddOption("Okay", 255);
-                        dialog.FinalizeDialog();
-                        break;
-                    }
-                case 5:
                     {
                         // Verifica se há espaço suficiente no inventário para o novo item
                         if (!client.Inventory.HaveSpace(1))
@@ -656,9 +713,20 @@ namespace COServer.Game.MsgNpc
                         dialog.FinalizeDialog();
                         break;
                     }
-                case 6:
+                #endregion
+                #region Promotion/Exps
+                case 75:
                     {
-                        // Verifica se há espaço suficiente no inventário para o novo item
+                        dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
+                        dialog.AddOption("MoonBox = 4.000", 5);
+                        dialog.AddOption("3xExp = 2.000", 6);
+                        dialog.AddOption("Emereald = 2.000", 7);
+                        dialog.FinalizeDialog();
+                        break;
+
+                    }
+                case 5:
+                    {
                         if (!client.Inventory.HaveSpace(1))
                         {
                             dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
@@ -666,19 +734,42 @@ namespace COServer.Game.MsgNpc
                             dialog.FinalizeDialog();
                             break;
                         }
-
-                        // Verifica se o jogador tem pontos online suficientes
-                        if (client.Player.OnlinePoints >= 500)
+                        if (client.Player.OnlinePoints >= 4000)
                         {
-                            // Deduz os pontos online e adiciona o item 
-                            client.Player.OnlinePoints -= 500;
+
+                            client.Player.OnlinePoints -= 4000;
+                            client.Inventory.Add(stream, 721080, 1, 0, 0, 0, 0, 0, false);
+                            dialog.AddText("You have successfully exchanged 4.000 Online Points for a MoonBox.").AddAvatar(7);
+                            Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take MoonBox Online Points``");
+                        }
+                        else
+                        {
+                            dialog.AddText("You do not have Online Points.\nYou need 4.000 Online Points to exchange for a MoonBox.").AddAvatar(7);
+                        }
+
+                        dialog.AddOption("Okay", 255);
+                        dialog.FinalizeDialog();
+                        break;
+                    }
+                case 6:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
+                            dialog.AddOption("Let me check.", 255);
+                            dialog.FinalizeDialog();
+                            break;
+                        }
+                        if (client.Player.OnlinePoints >= 2000)
+                        {
+                            client.Player.OnlinePoints -= 2000;
                             client.Inventory.Add(stream, 720393, 1, 0, 0, 0, 0, 0, false);
-                            dialog.AddText("You have successfully exchanged 500 Online Points for a 3xExp.").AddAvatar(7);
+                            dialog.AddText("You have successfully exchanged 2000 Online Points for a 3xExp.").AddAvatar(7);
                             Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take 3xExp Online Points``");
                         }
                         else
                         {
-                            dialog.AddText("You do not have Online Points.\nYou need 500 Online Points to exchange for a 3xExp.").AddAvatar(7);
+                            dialog.AddText("You do not have Online Points.\nYou need 2000 Online Points to exchange for a 3xExp.").AddAvatar(7);
                         }
 
                         dialog.AddOption("Okay", 255);
@@ -697,23 +788,24 @@ namespace COServer.Game.MsgNpc
                         }
 
                         // Verifica se o jogador tem pontos online suficientes
-                        if (client.Player.OnlinePoints >= 500)
+                        if (client.Player.OnlinePoints >= 2000)
                         {
                             // Deduz os pontos online e adiciona o item 
-                            client.Player.OnlinePoints -= 500;
+                            client.Player.OnlinePoints -= 2000;
                             client.Inventory.Add(stream, 1080001, 1, 0, 0, 0, 0, 0, false);
-                            dialog.AddText("You have successfully exchanged 500 Online Points for a Emerald.").AddAvatar(7);
+                            dialog.AddText("You have successfully exchanged 2000 Online Points for a Emerald.").AddAvatar(7);
                             Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Emerald Online Points``");
                         }
                         else
                         {
-                            dialog.AddText("You do not have Online Points.\nYou need 500 Online Points to exchange for a Emerald.").AddAvatar(7);
+                            dialog.AddText("You do not have Online Points.\nYou need 2000 Online Points to exchange for a Emerald.").AddAvatar(7);
                         }
 
                         dialog.AddOption("Okay", 255);
                         dialog.FinalizeDialog();
                         break;
                     }
+                    #endregion
             }
         }
 
@@ -4718,7 +4810,7 @@ namespace COServer.Game.MsgNpc
             }
         }
         #endregion
-        #region BlueMouse
+        #region ratoazul
         [NpcAttribute(NpcID.GeneralJudd)]
         public static void GeneralJudd(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
         {
@@ -4801,12 +4893,15 @@ namespace COServer.Game.MsgNpc
                                 {
                                     client.Inventory.Add(stream, Database.ItemType.DragonBall, 1);
                                     Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("As lucky  " + client.Player.Name + " has retrieved treasures stolen by Blue Mouses and won a DragonBall!", "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
+                                    Program.DiscordAPIwinners.Enqueue("``[" + client.Player.Name + "] has retrieved treasures stolen by Blue Mouses and won a DragonBall!``");
                                 }
                                 else
                                 {
                                     client.Inventory.Add(stream, Database.ItemType.MeteorScroll, 1);
                                     dialog.AddText("Here you are! Good luck.")
-                          .AddOption("Thanks, bye.", 255).AddAvatar(95).FinalizeDialog();
+                                    .AddOption("Thanks, bye.", 255).AddAvatar(95).FinalizeDialog();
+                                    Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("As lucky  " + client.Player.Name + " has retrieved treasures stolen by Blue Mouses and won a MeteorScroll!", "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
+                                    Program.DiscordAPIwinners.Enqueue("``[" + client.Player.Name + "] has retrieved treasures stolen by Blue Mouses and won a MeteorScroll!``");
                                 }
                             }
 
@@ -5222,7 +5317,7 @@ namespace COServer.Game.MsgNpc
                                 dialog.AddText("You need at least 2 free spaces in your inventory before trying to catch me!").
                                     AddOption("Oh.", 255).AddAvatar(7).FinalizeDialog();
                             }
-                            else if (Role.Core.Rate(70))
+                            else if (Role.Core.Rate(50))
                             {
                                 dialog.AddText("Oh, my god! Narrowly escaped! Bye, bye!").
                                 AddOption("Damn", 255).AddAvatar(7).FinalizeDialog();
@@ -5267,7 +5362,7 @@ namespace COServer.Game.MsgNpc
                                 dialog.AddText("You need at least 3 free spaces in your inventory before trying to catch me!").
                                     AddOption("Oh.", 255).AddAvatar(7).FinalizeDialog();
                             }
-                            else if (Role.Core.Rate(60))
+                            else if (Role.Core.Rate(50))
                             {
                                 dialog.AddText("Oh, my god! Narrowly escaped! Bye, bye!").
                                 AddOption("Damn!", 255).AddAvatar(7).FinalizeDialog();
@@ -8187,15 +8282,15 @@ namespace COServer.Game.MsgNpc
                             string rewardName = ""; // Variável para armazenar o nome da recompensa
 
                             // Escolher uma recompensa aleatória
-                            switch (Program.GetRandom.Next(1, 7))
+                            switch (Program.GetRandom.Next(1, 6))
                             {
                                 case 1:
                                     client.Inventory.Add(stream, ItemType.Stone_1, 1);
                                     rewardName = "Stone 1";
                                     break;
                                 case 2:
-                                    client.Inventory.Add(stream, ItemType.Meteor, 1);
-                                    rewardName = "Meteor";
+                                    client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
+                                    rewardName = "Meteor Scroll";
                                     break;
                                 case 3:
                                     client.Inventory.Add(stream, ItemType.DragonBall, 1);
@@ -8209,10 +8304,7 @@ namespace COServer.Game.MsgNpc
                                     client.Inventory.Add(stream, ItemType.DragonBallScroll, 1);
                                     rewardName = "Dragon Ball Scroll";
                                     break;
-                                case 6:
-                                    client.Inventory.Add(stream, ItemType.Stone_2, 1);
-                                    rewardName = "Stone 2";
-                                    break;
+                               
                             }
 
                             // Enviar mensagem global informando sobre a premiação específica
@@ -10997,7 +11089,7 @@ namespace COServer.Game.MsgNpc
                                .AddOption("Learn~shield~skills.", 4)
                                .AddOption("Learn~XP~skills.", 10)
                                .AddOption("Learn~weapon~skills.", 20)
-                               .AddOption("Learn~Pure~Skills.", 21)
+                               //.AddOption("Learn~Pure~Skills.", 21)
                                .AddOption("You~bet!", 255)
                                .AddAvatar(8).FinalizeDialog();
                         }
