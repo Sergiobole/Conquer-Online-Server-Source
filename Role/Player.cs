@@ -782,6 +782,10 @@ namespace COServer.Role
                             killer.Map == 1000 && Game.MsgTournaments.MsgSchedules.PoleDominationDC.IsFinished() ||
                             killer.Map == 1212 ||
                             killer.Map == 1075 ||
+                            killer.Map == 1025 ||
+                            killer.Map == 1026 ||
+                            killer.Map == 1027 ||
+                            killer.Map == 1028 ||
                             killer.Map == 1076 )
                         {
                             if (DynamicID == 0)
