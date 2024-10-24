@@ -851,44 +851,34 @@ namespace COServer.Game.MsgMonster
                     #region SnakeKing
                     if (Map == 1063 && Family.ID == 3102)
                     {
-                        switch (Program.GetRandom.Next(0, 5))
+                        switch (Program.GetRandom.Next(0, 4))
                         {
                             case 1:
                                 {
-                                    if (Role.Core.RateDouble(40))
-                                    {
-                                        for (byte i = 0; i < 5; i++)
-                                            DropItemID(killer, Database.ItemType.Meteor, stream);
-                                    }
+                                    DropItemID(killer, Database.ItemType.MeteorScroll, stream);
+                                    Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + killer.Player.Name + " found a MeteorScroll from killing SnakeKing.", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                                    Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] killing Snake King and received a MeteorScroll``");
                                     break;
                                 }
                             case 2:
                                 {
-                                    if (Role.Core.Rate(5))
-                                    {
-                                        DropItemID(killer, Database.ItemType.DragonBall, stream);
-                                        Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + killer.Player.Name + " found a DragonBall from killing SnakeKing.", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
-                                    }
+                                    DropItemID(killer, Database.ItemType.DragonBallScroll, stream);
+                                    Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + killer.Player.Name + " found a DragonBallScroll from killing SnakeKing.", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                                    Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] killing Snake King and received a DragonBallScroll``");
                                     break;
                                 }
                             case 3:
                                 {
                                     DropItemID(killer, Database.ItemType.Stone_1, stream);
+                                    Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + killer.Player.Name + " found a  Stone +1 from killing SnakeKing.", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                                    Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] killing SnakeKing and received a Stone +1``");
                                     break;
                                 }
                             case 4:
                                 {
-                                    if (Role.Core.Rate(5))
-                                    {
-                                        var gem = Program.GetRandom.Next(0, 8);
-                                        var item = (uint)(700000 + gem * 10 + Program.GetRandom.Next(2, 4));
-                                        DropItemID(killer, item, stream);
-                                    }
-                                    break;
-                                }
-                            case 5:
-                                {
-                                    DropItemID(killer, Database.ItemType.Meteor, stream);
+                                    DropItemID(killer, Database.ItemType.Stone_2, stream);
+                                    Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + killer.Player.Name + " found a  Stone +2 from killing SnakeKing.", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                                    Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] killing SnakeKing and received a Stone +2``");
                                     break;
                                 }
                         }
@@ -1201,7 +1191,7 @@ namespace COServer.Game.MsgMonster
                     {
                         if (Family.ID == 3130 || Family.ID == 3134)//titan/ ganoderma
                         {
-                            if (Role.Core.Rate(75))
+                            if (Role.Core.Rate(60))
                             {
                                 uint[] DropSpecialItems = new uint[] {
                                     Database.ItemType.Meteor,
@@ -1216,7 +1206,7 @@ namespace COServer.Game.MsgMonster
                                 Program.DiscordAPIwinners.Enqueue("``[" + killer.Player.Name + "] been destroyed " + Name.ToString() + " and received a " + drop_name + ".``");
 
                             }
-                            else if (Role.Core.Rate(25))
+                            else if (Role.Core.Rate(40))
                             {
                                 DropItemID(killer, 720393 ,stream);
 
