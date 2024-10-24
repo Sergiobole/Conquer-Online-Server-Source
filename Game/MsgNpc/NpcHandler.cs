@@ -159,7 +159,7 @@ namespace COServer.Game.MsgNpc
 
 
                             string rewardName = "";
-                            switch (Program.GetRandom.Next(1, 7))
+                            switch (Program.GetRandom.Next(1, 6))
                             {
                                 case 1:
                                     client.Inventory.Add(stream, ItemType.Stone_1, 1);
@@ -174,8 +174,8 @@ namespace COServer.Game.MsgNpc
                                     rewardName = "Dragon Ball";
                                     break;
                                 case 4:
-                                    client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
-                                    rewardName = "Meteor Scroll";
+                                    client.Inventory.Add(stream, ItemType.Stone_2, 1);
+                                    rewardName = "Stone +2";
                                     break;
                                 case 5:
                                     client.Inventory.Add(stream, ItemType.DragonBallScroll, 1);
@@ -719,7 +719,7 @@ namespace COServer.Game.MsgNpc
                     {
                         dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
                         dialog.AddOption("MoonBox = 4.000", 5);
-                        dialog.AddOption("3xExp = 2.000", 6);
+                        dialog.AddOption("3xExp = 500", 6);
                         dialog.AddOption("Emereald = 2.000", 7);
                         dialog.FinalizeDialog();
                         break;
@@ -760,16 +760,16 @@ namespace COServer.Game.MsgNpc
                             dialog.FinalizeDialog();
                             break;
                         }
-                        if (client.Player.OnlinePoints >= 2000)
+                        if (client.Player.OnlinePoints >= 500)
                         {
-                            client.Player.OnlinePoints -= 2000;
+                            client.Player.OnlinePoints -= 500;
                             client.Inventory.Add(stream, 720393, 1, 0, 0, 0, 0, 0, false);
-                            dialog.AddText("You have successfully exchanged 2000 Online Points for a 3xExp.").AddAvatar(7);
+                            dialog.AddText("You have successfully exchanged 500 Online Points for a 3xExp.").AddAvatar(7);
                             Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take 3xExp Online Points``");
                         }
                         else
                         {
-                            dialog.AddText("You do not have Online Points.\nYou need 2000 Online Points to exchange for a 3xExp.").AddAvatar(7);
+                            dialog.AddText("You do not have Online Points.\nYou need 500 Online Points to exchange for a 3xExp.").AddAvatar(7);
                         }
 
                         dialog.AddOption("Okay", 255);
@@ -3937,14 +3937,14 @@ namespace COServer.Game.MsgNpc
                         data.AddText("Dear " + client.Player.Name + ", you currently have [" + client.Player.VotePoints + "] Vote Points.\n")
                             .AddText("Would you like to trade them for some rewards?")
                         
-                        .AddOption("1 - 3xExp (1 VPs)", 17)
+                        .AddOption("1 - 3xExp (2 VPs)", 17)
                         .AddOption("2 - RTG. (5 VPs)", 11)
                         .AddOption("3 - RDG. (5 VPs)", 12)
                         .AddOption("4 - RPG. (5 VPs)", 13)
                         .AddOption("5 - RVG. (5 VPs)", 14)
                         .AddOption("6 - RMG. (5 VPs)", 15)
                         .AddOption("7 - RRG. (5 VPs)", 16)
-                        .AddOption("Next.", 32)
+                        .AddOption("Next.", 32) 
                         .AddAvatar(3).FinalizeDialog();
                         break;
                     }
@@ -4051,11 +4051,11 @@ namespace COServer.Game.MsgNpc
                 #endregion
                 case 17:
                     {
-                        if (client.Player.VotePoints >= 1)
+                        if (client.Player.VotePoints >= 2)
                         {
-                            if (client.Inventory.HaveSpace(1))
+                            if (client.Inventory.HaveSpace(2))
                             {
-                                client.Player.VotePoints -= 1;
+                                client.Player.VotePoints -= 2;
                                 client.Inventory.Add(stream, 720393);//ExpPill
                             }
                             else client.SendSysMesage("You don`t have enough space in your inventory.");
@@ -4069,27 +4069,12 @@ namespace COServer.Game.MsgNpc
                         data.AddText("Dear " + client.Player.Name + ", you currently have [" + client.Player.VotePoints + "] Vote Points.\n")
                             .AddText("Would you like to trade them for some rewards?")
 
-                        .AddOption("1 - MeteorScroll. (1 VPs)", 25)
+
                         .AddOption("2 - Moonbox. (5 VPs)", 26)
                         .AddOption("Finish.", 255)
                         .AddAvatar(3).FinalizeDialog();
                         break;
                     }
-                case 25:
-                    {
-                        if (client.Player.VotePoints >= 1)
-                        {
-                            if (client.Inventory.HaveSpace(1))
-                            {
-                                client.Player.VotePoints -= 1;
-                                client.Inventory.Add(stream, 720027);//MeteorScroll
-                            }
-                            else client.SendSysMesage("You don`t have enough space in your inventory.");
-                        }
-                        else client.SendSysMesage("You don`t have enough points.");
-                        break;
-                    }
-
                 case 26:
                     {
                         if (client.Player.VotePoints >= 1)
@@ -4897,11 +4882,21 @@ namespace COServer.Game.MsgNpc
                                 }
                                 else
                                 {
-                                    client.Inventory.Add(stream, Database.ItemType.MeteorScroll, 1);
+                                    // 40% chance for MeteorScroll, 60% for Meteor
+                                    if (Role.Core.Rate(40)) // 40% chance
+                                    {
+                                        client.Inventory.Add(stream, Database.ItemType.MeteorScroll, 1);
+                                        Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("As lucky  " + client.Player.Name + " has retrieved treasures stolen by Blue Mouses and won a MeteorScroll!", "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
+                                        Program.DiscordAPIwinners.Enqueue("``[" + client.Player.Name + "] has retrieved treasures stolen by Blue Mouses and won a MeteorScroll!``");
+                                    }
+                                    else // 60% chance for Meteor
+                                    {
+                                        client.Inventory.Add(stream, Database.ItemType.Meteor, 5);
+                                        Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("As lucky  " + client.Player.Name + " has retrieved treasures stolen by Blue Mouses and won a 5xMeteor!", "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
+                                    }
+
                                     dialog.AddText("Here you are! Good luck.")
                                     .AddOption("Thanks, bye.", 255).AddAvatar(95).FinalizeDialog();
-                                    Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("As lucky  " + client.Player.Name + " has retrieved treasures stolen by Blue Mouses and won a MeteorScroll!", "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
-                                    Program.DiscordAPIwinners.Enqueue("``[" + client.Player.Name + "] has retrieved treasures stolen by Blue Mouses and won a MeteorScroll!``");
                                 }
                             }
 
@@ -5317,7 +5312,7 @@ namespace COServer.Game.MsgNpc
                                 dialog.AddText("You need at least 2 free spaces in your inventory before trying to catch me!").
                                     AddOption("Oh.", 255).AddAvatar(7).FinalizeDialog();
                             }
-                            else if (Role.Core.Rate(50))
+                            else if (Role.Core.Rate(70))
                             {
                                 dialog.AddText("Oh, my god! Narrowly escaped! Bye, bye!").
                                 AddOption("Damn", 255).AddAvatar(7).FinalizeDialog();
@@ -5362,7 +5357,7 @@ namespace COServer.Game.MsgNpc
                                 dialog.AddText("You need at least 3 free spaces in your inventory before trying to catch me!").
                                     AddOption("Oh.", 255).AddAvatar(7).FinalizeDialog();
                             }
-                            else if (Role.Core.Rate(50))
+                            else if (Role.Core.Rate(60))
                             {
                                 dialog.AddText("Oh, my god! Narrowly escaped! Bye, bye!").
                                 AddOption("Damn!", 255).AddAvatar(7).FinalizeDialog();
@@ -8286,7 +8281,7 @@ namespace COServer.Game.MsgNpc
                             {
                                 case 1:
                                     client.Inventory.Add(stream, ItemType.Stone_1, 1);
-                                    rewardName = "Stone 1";
+                                    rewardName = "Stone+1";
                                     break;
                                 case 2:
                                     client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
@@ -8297,8 +8292,8 @@ namespace COServer.Game.MsgNpc
                                     rewardName = "Dragon Ball";
                                     break;
                                 case 4:
-                                    client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
-                                    rewardName = "Meteor Scroll";
+                                    client.Inventory.Add(stream, ItemType.Stone_2, 1);
+                                    rewardName = "Stone+2";
                                     break;
                                 case 5:
                                     client.Inventory.Add(stream, ItemType.DragonBallScroll, 1);
@@ -19534,7 +19529,7 @@ namespace COServer.Game.MsgNpc
                                             if (client.Inventory.Contain(Database.ItemType.Meteor, 1))
                                             {
                                                 Random random = new Random();
-                                                int chance = random.Next(1, 2000);
+                                                int chance = random.Next(1, 3000);
 
                                                 var itemLevel = Database.Server.ItemsBase[DataItem.ITEM_ID].Level;
 
