@@ -5885,12 +5885,8 @@ namespace COServer.Game.MsgServer
                                 }
                                 else
                                 {
-#if Arabic
-                                            client.SendSysMesage("Please make 10 more spaces in your inventory.");
-#else
                                     client.SendSysMesage("Please make 10 more spaces in your inventory.");
-#endif
-
+                                    client.SendSysMesage("Please make 10 more spaces in your inventory.");
                                 }
                                 break;
                             }
@@ -5903,14 +5899,9 @@ namespace COServer.Game.MsgServer
                                     client.Inventory.Add(stream, 1088000, 10, 0);
                                 }
                                 else
-                                {
-#if Arabic
-                                    
-                                     client.SendSysMesage("Please make 9 more spaces in your inventory.");
-#else
-
-                                    client.SendSysMesage("Please make 9 more spaces in your inventory.");
-#endif
+                                {                               
+                                      client.SendSysMesage("Please make 9 more spaces in your inventory.");
+                                      client.SendSysMesage("Please make 9 more spaces in your inventory.");
                                 }
                                 break;
                             }
@@ -9359,9 +9350,6 @@ namespace COServer.Game.MsgServer
                                 if (client.Inventory.HaveSpace(4))
                                 {
                                     client.Inventory.Update(item, Role.Instance.AddMode.REMOVE, stream);
-
-
-
                                     client.Inventory.Add(stream, 561138, 0, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, false); //ironwand
                                     client.Inventory.Add(stream, 131068, 0, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, false); //lightarmour
                                     client.Inventory.Add(stream, 117068, 0, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, false); //HeartofOcean
@@ -9371,16 +9359,41 @@ namespace COServer.Game.MsgServer
                                 }
                                 else
                                 {
-#if Arabic
-                                     client.SendSysMesage("Please make 4 more spaces in your inventory.");
-#else
                                     client.SendSysMesage("Please make 4 more spaces in your inventory.");
-#endif
+                                }
+                                break;
+                            }
+                        case 723792:  //MetScrollPack
+                            {
+                                if (client.Inventory.HaveSpace(9))
+                                {
+                                    client.Inventory.Update(item, Role.Instance.AddMode.REMOVE, stream);
+                                    client.Inventory.Add(stream, 720027, 10, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, false); //MetScrollPack
+                                    client.SendSysMesage("Congratulations! You just got 10 MetScrollPack ..!");
 
+                                }
+                                else
+                                {
+                                    client.SendSysMesage("Please make 9 more spaces in your inventory.");
                                 }
                                 break;
                             }
 
+                        case 723793:  //DbScrollPack
+                            {
+                                if (client.Inventory.HaveSpace(9))
+                                {
+                                    client.Inventory.Update(item, Role.Instance.AddMode.REMOVE, stream);
+                                    client.Inventory.Add(stream, 720028, 10, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, false); //DbScrollPack
+                                    client.SendSysMesage("Congratulations! You just got 10 DbScrollPack ..!");
+
+                                }
+                                else
+                                {
+                                    client.SendSysMesage("Please make 9 more spaces in your inventory.");
+                                }
+                                break;
+                            }
 
                         case 720707:
                             {

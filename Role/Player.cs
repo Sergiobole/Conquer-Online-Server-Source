@@ -551,11 +551,11 @@ namespace COServer.Role
         public ushort GetAddStamina()
         {
             if (OnTransform)
-                return 1;
+                return 2;
             switch (Action)
             {
                 case Role.Flags.ConquerAction.Sit:
-                    return 6;
+                    return 12;
                 default:
                     return 2;
             }

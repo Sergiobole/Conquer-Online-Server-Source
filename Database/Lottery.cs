@@ -18,31 +18,31 @@ namespace COServer.Database
         };
         public static List<uint> RateH3 = new List<uint>()
         {
-            730001,191905,181655,700001,700011,700021,700031,700041,700051,700061
+            730001,191905,181655,700001,700011,700021,700031,700041,700051,700061,730003
         };
         public static List<uint> RateH4 = new List<uint>()
         {
-            700002,700012,700022,700032,700042,700052,700062
+            700002,700012,700022,700032,700042,700052,700062,730003
         };
         public static List<uint> RateH5 = new List<uint>()
         {
-            2100025,2100045,722057,700072
+            2100025,2100045,722057,700072,730004
         };
-        //public static List<uint> Super1SocItems = new List<uint>()
+        //public static list<uint> super1socitems = new list<uint>()
         //{
-        //   Empty.
+        //   empty.
         //};
-        //public static List<uint> Super2SocItems = new List<uint>()
+        //public static list<uint> super2socitems = new list<uint>()
         //{
-        //   Empty.
+        //   empty.
         //};
-        //public static List<uint> SuperNoSocItems = new List<uint>()
+        //public static list<uint> supernosocitems = new list<uint>()
         //{
-        //   Empty.
+        //   empty.
         //};
-        //public static List<uint> ElitePlus8Items = new List<uint>()
+        //public static list<uint> eliteplus8items = new list<uint>()
         //{
-        //   Empty.
+        //   empty.
         //};
         public static void GetRandomPrize(GameClient Client, Packet stream)
         //{

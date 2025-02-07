@@ -32,7 +32,7 @@ namespace COServer
         public static Discord DiscordAPI = new Discord("https://discord.com/api/webhooks/1294239949230571551/QiLYvAcTWpHW2PS4SsXIl0nRi6pUNc2wG8Z_jiUlUvWvGnnFJBSczFUt14X-TnUVn8ia");
         public static Discord DiscordAPIsocket = new Discord("https://discord.com/api/webhooks/1294238200054812703/AHl2TTl6SJ2VdNHP_NueBbNcIENo_58Q1O0Zm9W5PEzBxgUWaZS5jybVabbqf0uGCsEW");
         public static Discord DiscordAPIevents = new Discord("https://discord.com/api/webhooks/1294239015956119594/qCst95zXRy66jbHUsedllAU47wHM1GYkoI8VCDu3_kvo3oELJ7zlAzBk1nVJE4J4ecS2");
-        public static Discord DiscordAPIworld = new Discord("https://discord.com/api/webhooks/1294240243251150859/sRClctZpCoUReMuAWXu1Gd7YzbNwFDAnyl5zdnQjUl6OT565VV-4AM_D1Yr7OAQGKwM_");
+        public static Discord DiscordAPIworld = new Discord("https://discord.com/api/webhooks/1300202450984370348/fJPOwpXTKUELLYH8UtU4g2ZEuhRqsORpJYlHNKZhVcX59UUFrnL_9Ya0ukIfX4Hl2UgE");
         public static Discord DiscordAPIfoundslog = new Discord("https://discord.com/api/webhooks/1294239789532315648/5ThwjJ1MCdEjzqIaN3-bSg-KJ6y425-wuP1juVW9cGxcx0AMJwVx3bZxvnRQRhFWoWYC");
         public static Discord DiscordAPIQuest = new Discord("https://discord.com/api/webhooks/1294238566716805140/pc0Qsu4Kw9WtuFUGsCW9vXUMwgNeSOK2s0YtG_JXvHNNnD7RZYuojRW43bcvbiD_e6pz");
         public static Discord DiscordAPILotery = new Discord("https://discord.com/api/webhooks/1294239212224385064/Ov086-5kATJBFwBnRMNB6RreLdCEr4gjzvXjCkhwGskfShbQhJywUsNPvh4HhiFMsrZT");
@@ -447,91 +447,46 @@ namespace COServer
             {
                 var stream = rec.GetStream();
                 OnMainternance = true;
-                Console.WriteLine("The server will be brought down for maintenance in 5 minutes. Please log off immediately to avoid data loss.");
-                MsgMessage msg = new MsgMessage("The server will be brought down for maintenance in 5 minutes. Please log off immediately to avoid data loss.", "ALLUSERS", "GM", MsgMessage.MsgColor.red, MsgMessage.ChatMode.Center);
-                SendGlobalPackets.Enqueue(msg.GetArray(stream));
             }
-            Thread.Sleep(1000 * 30);
-            using (var rec = new ServerSockets.RecycledPacket())
+
+            int totalSeconds = 5 * 60; // 5 minutos
+            int interval = 30; // Intervalo de 30 segundos
+
+            for (int timeLeft = totalSeconds; timeLeft > 0; timeLeft -= interval)
             {
-                var stream = rec.GetStream();
-                Console.WriteLine("The server will be brought down for maintenance in 4 minutes and 30 seconds. Please log off immediately to avoid data loss.");
-                MsgMessage msg = new MsgMessage("The server will be brought down for maintenance in 4 minutes and 30 seconds. Please log off immediately to avoid data loss.", "ALLUSERS", "GM", MsgMessage.MsgColor.red, MsgMessage.ChatMode.Center);
-                SendGlobalPackets.Enqueue(msg.GetArray(stream));
+                string message;
+
+                if (timeLeft > 60)
+                    message = $"The server will be brought down for maintenance in {timeLeft / 60} minutes.";
+                else if (timeLeft == 60)
+                    message = "The server will be brought down for maintenance in 1 minute.";
+                else
+                    message = $"The server will be brought down for maintenance in {timeLeft} seconds.";
+
+                message += " Please log off immediately to avoid data loss.";
+
+                Console.WriteLine(message);
+
+                using (var rec = new ServerSockets.RecycledPacket())
+                {
+                    var stream = rec.GetStream();
+                    MsgMessage msg = new MsgMessage(message, "ALLUSERS", "GM", MsgMessage.MsgColor.red, MsgMessage.ChatMode.Center);
+                    SendGlobalPackets.Enqueue(msg.GetArray(stream));
+                }
+
+                Thread.Sleep(1000 * interval);
             }
-            Thread.Sleep(1000 * 30);
-            using (var rec = new ServerSockets.RecycledPacket())
-            {
-                var stream = rec.GetStream();
-                Console.WriteLine("The server will be brought down for maintenance in 4 minutes. Please log off immediately to avoid data loss.");
-                MsgMessage msg = new MsgMessage("The server will be brought down for maintenance in 4 minutes. Please log off immediately to avoid data loss.", "ALLUSERS", "GM", MsgMessage.MsgColor.red, MsgMessage.ChatMode.Center);
-                SendGlobalPackets.Enqueue(msg.GetArray(stream));
-            }
-            Thread.Sleep(1000 * 30);
-            using (var rec = new ServerSockets.RecycledPacket())
-            {
-                var stream = rec.GetStream();
-                Console.WriteLine("The server will be brought down for maintenance in 3 minutes and 30 seconds. Please log off immediately to avoid data loss.");
-                MsgMessage msg = new MsgMessage("The server will be brought down for maintenance in 3 minutes and 30 seconds. Please log off immediately to avoid data loss.", "ALLUSERS", "GM", MsgMessage.MsgColor.red, MsgMessage.ChatMode.Center);
-                SendGlobalPackets.Enqueue(msg.GetArray(stream));
-            }
-            Thread.Sleep(1000 * 30);
-            using (var rec = new ServerSockets.RecycledPacket())
-            {
-                var stream = rec.GetStream();
-                Console.WriteLine("The server will be brought down for maintenance in 3 minutes. Please log off immediately to avoid data loss.");
-                MsgMessage msg = new MsgMessage("The server will be brought down for maintenance in 3 minutes. Please log off immediately to avoid data loss.", "ALLUSERS", "GM", MsgMessage.MsgColor.red, MsgMessage.ChatMode.Center);
-                SendGlobalPackets.Enqueue(msg.GetArray(stream));
-            }
-            Thread.Sleep(1000 * 30);
-            using (var rec = new ServerSockets.RecycledPacket())
-            {
-                var stream = rec.GetStream();
-                Console.WriteLine("The server will be brought down for maintenance in 2 minutes and 30 seconds. Please log off immediately to avoid data loss.");
-                MsgMessage msg = new MsgMessage("The server will be brought down for maintenance in 2 minutes and 30 seconds. Please log off immediately to avoid data loss.", "ALLUSERS", "GM", MsgMessage.MsgColor.red, MsgMessage.ChatMode.Center);
-                SendGlobalPackets.Enqueue(msg.GetArray(stream));
-            }
-            Thread.Sleep(1000 * 30);
-            using (var rec = new ServerSockets.RecycledPacket())
-            {
-                var stream = rec.GetStream();
-                Console.WriteLine("The server will be brought down for maintenance in 2 minutes. Please log off immediately to avoid data loss.");
-                MsgMessage msg = new MsgMessage("The server will be brought down for maintenance in 2 minutes. Please log off immediately to avoid data loss.", "ALLUSERS", "GM", MsgMessage.MsgColor.red, MsgMessage.ChatMode.Center);
-            }
-            Thread.Sleep(1000 * 30);
-            using (var rec = new ServerSockets.RecycledPacket())
-            {
-                var stream = rec.GetStream();
-                Console.WriteLine("The server will be brought down for maintenance in 1 minute and 30 seconds. Please log off immediately to avoid data loss.");
-                MsgMessage msg = new MsgMessage("The server will be brought down for maintenance in 1 minute and 30 seconds. Please log off immediately to avoid data loss.", "ALLUSERS", "GM", MsgMessage.MsgColor.red, MsgMessage.ChatMode.Center);
-                SendGlobalPackets.Enqueue(msg.GetArray(stream));
-            }
-            Thread.Sleep(1000 * 30);
-            using (var rec = new ServerSockets.RecycledPacket())
-            {
-                var stream = rec.GetStream();
-                Console.WriteLine("The server will be brought down for maintenance in 1 minute. Please log off immediately to avoid data loss.");
-                MsgMessage msg = new MsgMessage("The server will be brought down for maintenance in 1 minute. Please log off immediately to avoid data loss.", "ALLUSERS", "GM", MsgMessage.MsgColor.red, MsgMessage.ChatMode.Center);
-                SendGlobalPackets.Enqueue(msg.GetArray(stream));
-            }
-            Thread.Sleep(1000 * 30);
-            using (var rec = new ServerSockets.RecycledPacket())
-            {
-                var stream = rec.GetStream();
-                Console.WriteLine("The server will be brought down for maintenance in 30 seconds. Please log off immediately to avoid data loss.");
-                MsgMessage msg = new MsgMessage("The server will be brought down for maintenance in 30 seconds. Please log off immediately to avoid data loss.", "ALLUSERS", "GM", MsgMessage.MsgColor.red, MsgMessage.ChatMode.Center);
-                SendGlobalPackets.Enqueue(msg.GetArray(stream));
-            }
-            Thread.Sleep(1000 * 20);
+
+            // Mensagem final antes de desligar o servidor
             using (var rec = new ServerSockets.RecycledPacket())
             {
                 var stream = rec.GetStream();
                 MsgMessage msg = new MsgMessage("Server maintenance. Please log off immediately to avoid data loss.", "ALLUSERS", "GM", MsgMessage.MsgColor.red, MsgMessage.ChatMode.Center);
                 SendGlobalPackets.Enqueue(msg.GetArray(stream));
             }
-            Thread.Sleep(1000 * 10);
-            ProcessConsoleEvent(0);
 
+            Thread.Sleep(10000); // Espera 10 segundos antes de desligar
+            ProcessConsoleEvent(0);
             Environment.Exit(0);
         }
 

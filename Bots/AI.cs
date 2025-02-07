@@ -8,13 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using static COServer.Bots.Enumerator;
-//wrriten by malic aka jason  xD
+
+
 namespace COServer.Bots
 {
-
-	/// <summary>
-	/// Description of AIBot.
-	/// </summary>
 	public class AI
 	{
 		private int JumpSpeed = 0;
@@ -25,10 +22,7 @@ namespace COServer.Bots
 
 		private SkillType SkillType;
 
-		/// <summary>
-		/// Set Level of AI
-		/// </summary>
-		/// <param name="Level">Difficult of AI</param>
+
 		public void SetLevel(BotLevel Level)
 		{
 			this.Level = Level;
@@ -66,7 +60,7 @@ namespace COServer.Bots
 			}
 		}
 
-		// Fields and Properties 
+
 		public GameClient Bot;
 
 		public DateTime ToStart;
@@ -141,7 +135,7 @@ namespace COServer.Bots
 							Database.Server.GamePoll.TryAdd(Bot.Player.UID, Bot);
 							Bot.Player.View.Role();
 							BeginJumpBot(Oppenent);
-						//	ToStart = DateTime.Now.AddSeconds(2);
+
 							break;
 						}
 				}
@@ -176,9 +170,6 @@ namespace COServer.Bots
 		}
 		public void Attack()
 		{
-			//if (DateTime.Now < ToStart)
-			//	return;
-			//if (Level == BotLevel.Insane) return;
 			if (DateTime.Now >= LastAtttack.AddMilliseconds(500))
 			{
 				if (Core.GetDistance(Bot.Player.X, Bot.Player.Y, Bot.Player.Target.X, Bot.Player.Target.Y) <= 10)
@@ -277,7 +268,6 @@ namespace COServer.Bots
 						if (Bot.Player.MyHits <= 0)
 						{
 							Bot.Player.Target.Owner.SendSysMesage("You've lost, better luck next time!");
-							//Bot.Player.Target.DynamicID = 0;
 							Bot.Player.Target.Owner.Teleport(454, 294, 1002);
 							Bot.Player.Target.MyHits = 0;
 							Bot.Player.MyHits = 0;

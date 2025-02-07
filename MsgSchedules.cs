@@ -103,8 +103,7 @@ namespace COServer.Game.MsgTournaments
             Program.DiscordAPI.Enqueue($"`` Server Online ``");
         }
 
-        internal unsafe static void SendSysMesage(string Messaj, Game.MsgServer.MsgMessage.ChatMode ChatType = Game.MsgServer.MsgMessage.ChatMode.TopLeft
-           , Game.MsgServer.MsgMessage.MsgColor color = Game.MsgServer.MsgMessage.MsgColor.white, bool SendScren = false)
+        internal unsafe static void SendSysMesage(string Messaj, Game.MsgServer.MsgMessage.ChatMode ChatType = Game.MsgServer.MsgMessage.ChatMode.TopLeft, Game.MsgServer.MsgMessage.MsgColor color = Game.MsgServer.MsgMessage.MsgColor.white, bool SendScren = false)
         {
             using (var rec = new ServerSockets.RecycledPacket())
             {

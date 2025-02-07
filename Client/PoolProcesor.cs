@@ -468,7 +468,6 @@ namespace COServer.Client
                         {
                             client.Player.XPCount = 0;
                             client.Player.AddFlag(Game.MsgServer.MsgUpdate.Flags.XPList, 20, true);
-                            //   client.Player.SendString(stream, Game.MsgServer.MsgStringPacket.StringID.Effect, true, new string[1] { "xp" });
                         }
                     }
                 }

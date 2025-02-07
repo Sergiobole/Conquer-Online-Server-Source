@@ -38,7 +38,8 @@ namespace COServer.Game.MsgMonster
             3130,
             3134,
             20300,
-            213883
+            213883,
+            8500
         };
 
         public Client.GameClient AttackerScarofEarthl;
@@ -650,15 +651,15 @@ namespace COServer.Game.MsgMonster
                     #region CleanWater
                     if (Map == 1212 && Family.ID == 8500)
                     {
-                        if (Role.Core.Rate(40)) // Chance de 40% para CleanWater
+                        if (Role.Core.Rate(40)) 
                         {
                             DropItemID(killer, Database.ItemType.CleanWater, stream);
                             Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a ClearWater in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
                             Program.DiscordAPIwinners.Enqueue($"``[{killer.Player.Name}] found a ClearWater in WaterLord(428,418)!``");
                         }
-                        else if (Role.Core.Rate(60)) // Chance de 60% para Meteor
+                        else if (Role.Core.Rate(60)) 
                         {
-                            DropItemID(killer, Database.ItemType.Meteor, stream);
+                            DropItemID(killer, Database.ItemType.DragonBall, stream);
                             Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a Meteor in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
                             Program.DiscordAPIwinners.Enqueue($"``[{killer.Player.Name}] found a Meteor in WaterLord(428,418)!``");
                         }
@@ -726,14 +727,15 @@ namespace COServer.Game.MsgMonster
                         }
                     }
                     #endregion
-                    if (Map == 1011 && Family.ID == 0007 /*|| Map == 1015 && (Family.ID == 14 || Family.ID == 18)*/)
+                    #region ArmyToken
+                    if (Map == 1011 && Family.ID == 0007)
                     {
                         if (Role.Core.RateDouble(0.23))
                         {
                             DropItemID(killer, 721263, stream);
                         }
 
-                        if (Role.Core.Rate(0.005))
+                        if (Role.Core.Rate(0.0001))
                         {
                             if (killer.Inventory.HaveSpace(1))
                             {
@@ -742,7 +744,7 @@ namespace COServer.Game.MsgMonster
                             else DropItemID(killer, 721117, stream);
                         }
                     }
-                    // undone
+                    #endregion
                     #region AncientDevil
                     if (Map == 1082)
                     {

@@ -10,8 +10,8 @@ namespace COServer.Game.MsgMonster
 {
     public class BossesBase
     {
-        
 
+        public static DateTime lastCleanwaterSpawnTime = DateTime.Now; // Armazena o último spawn do Cleanwater
         public static DateTime lastGanodermaTitanSpawnTime = DateTime.Now; // Armazena o último spawn de Ganoderma e Titan
         public static DateTime lastSpawnTime = DateTime.Now; // Armazena o último spawn dos outros bosses
 
@@ -20,7 +20,7 @@ namespace COServer.Game.MsgMonster
             DateTime now = DateTime.Now;
 
             // Verifica se o spawn dos bosses regulares (TeratoDragon e Dragon) deve ocorrer a cada 1 hora
-            if ((now - lastSpawnTime).TotalHours >= 1)
+            if ((now - lastSpawnTime).TotalMinutes >= 30)
             {
                 Random R = new Random();
                 int Nr = R.Next(1, 6); // Sorteio de local, agora com 6 opções
@@ -92,6 +92,17 @@ namespace COServer.Game.MsgMonster
                 // Atualiza o tempo do último spawn de Ganoderma e Titan
                 lastGanodermaTitanSpawnTime = now;
 
+            }
+
+            // Verifica se o Cleanwater deve spawnar a cada 1 hora
+            if ((now - lastCleanwaterSpawnTime).TotalHours >= 1)
+            {
+                SpawnHandler(1212, 428, 418, 8500, "Cleanwater",
+                    "Cleanwater has spawned in " + Database.Server.MapName[1212] + " (428, 418)! Get ready to fight!",
+                    " has spawned in " + Database.Server.MapName[1212] + " (428, 418)!");
+                Program.DiscordAPIevents.Enqueue("``Cleanwater Spawned in map 1212 (428, 418)!``");
+
+                lastCleanwaterSpawnTime = now;
             }
         }
 

@@ -41,14 +41,6 @@ namespace COServer.Game.MsgMonster
         {
             if (DMap == null)
                 ReadMap();
-
-            // Se for o monstro 8500, usa a lógica específica
-            if (Famili.ID == 8500)
-            {
-                return SpawnFixedMonster(Famili, dinamicid, 428, 418, 1212);
-            }
-
-            // Lógica para os outros monstros
             return SpawnNormalMonsters(Famili, RemoveOnDead, dinamicid, justone);
         }
 
@@ -88,13 +80,6 @@ namespace COServer.Game.MsgMonster
             {
                 DMap.View.EnterMap<MonsterRole>(Mob);
             }
-
-            // Adicionar chamada para o Discord API
-            Program.DiscordAPIevents.Enqueue("``WaterLord Spawned.``");
-
-            // Iniciar o temporizador para respawn
-            StartRespawnTimer(Famili, 20); // CleanWater
-
             return Mob;
         }
 
@@ -118,13 +103,6 @@ namespace COServer.Game.MsgMonster
             return Mob;
         }
 
-        private async void StartRespawnTimer(MonsterFamily Famili, int minutes)
-        {
-            await Task.Delay(TimeSpan.FromMinutes(minutes));
-
-            // Após o delay, respawnar o monstro 8500 nas coordenadas fixas no mapa 1212
-            Add(Famili, RemoveOnDead: false, dinamicid: 0, justone: true);
-        }
 
         public void TryObtainSpawnXY(MonsterFamily Monster, out ushort X, out ushort Y)
         {

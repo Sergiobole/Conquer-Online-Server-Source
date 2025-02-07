@@ -54,9 +54,7 @@ namespace COServer.Database
         public bool CheckStatus(Role.Player player)
         {
             return true;
-            //var clas_stast = this[PositionArray(player.Class)];
-            //Instant stat = clas_stast[(byte)Math.Min(120, (int)player.Level)];
-            //return (player.Strength >= stat.Strenght && player.Agility >= stat.Agility && player.Spirit >= stat.Spirit && player.Vitality >= stat.Vitality);
+
         }
         public string InfoStr(byte Class, byte Level)
         {

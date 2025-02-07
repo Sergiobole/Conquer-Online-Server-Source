@@ -17,10 +17,6 @@ namespace COServer.Bots
 			Hard = 4,
 			Insane = 5
 		}
-
-		/// <summary>
-		/// Description of BotType.
-		/// </summary>
 		public enum BotType
 		{
 			EventBot = 0,
@@ -28,10 +24,6 @@ namespace COServer.Bots
 			TournamentBot = 2,
 			AFKBot = 3
 		}
-
-		/// <summary>
-		/// Description of SkillType.
-		/// </summary>
 		public enum SkillType
 		{
 			ScentSword,

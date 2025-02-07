@@ -1033,7 +1033,7 @@
             this.ForeColor = System.Drawing.Color.Transparent;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Controlpanel";
-            this.Text = "DarkPhoenix Gaming Control";
+            this.Text = "Carniato Controller.";
             this.Load += new System.EventHandler(this.Control_Load);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();

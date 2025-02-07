@@ -224,6 +224,7 @@
     <Compile Include="Database\TutorInfo.cs" />
     <Compile Include="Database\VIPSsystem.cs" />
     <Compile Include="Database\VoteSystem.cs" />
+    <Compile Include="Game\MsgServer\VendorDiscordNotifier.cs" />
     <Compile Include="Game\MsgTournaments\Events\Ss_Fb.cs" />
     <Compile Include="Game\MsgTournaments\ArenaDuel.cs" />
     <Compile Include="Game\MsgTournaments\Events\FirstKiller.cs" />

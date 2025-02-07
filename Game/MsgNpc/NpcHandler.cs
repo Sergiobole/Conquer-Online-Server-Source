@@ -2997,7 +2997,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 7)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3061,7 +3061,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 20)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3122,7 +3122,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 50)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3236,7 +3236,7 @@ namespace COServer.Game.MsgNpc
 
                         Console.WriteLine($"Attempting to transfer {foundsToTransfer} founds from {client.AccountName(client.Player.Name)} to {recipientPlayerName}");
 
-                        const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
+                        const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
 
                         try
                         {
@@ -3377,7 +3377,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 1)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3445,9 +3445,9 @@ namespace COServer.Game.MsgNpc
                         else
                         {
                             data.AddText(string.Format("You have found {0} items! All gamerts have 255 HP, and -7 Bless costs 30 Founds.", totalFounds));
-                            data.AddOption("1 - NinjaGarmet    ", 30);
-                            data.AddOption("2 - Raiden        ", 31);
-                            data.AddOption("3 - Phoenix(S)  ", 32);
+                            data.AddOption("1 - RunaroundSue    ", 30);
+                            data.AddOption("2 - DevilishBell    ", 31);
+                            data.AddOption("3 - WealthyArab(R)  ", 32);
                             data.AddOption("Okay.", 255);
                             data.AddAvatar(63).FinalizeDialog();
                         }
@@ -3498,7 +3498,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 30)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3517,7 +3517,7 @@ namespace COServer.Game.MsgNpc
 
                                 // Adiciona o item ao inventário
                                 {
-                                    client.Inventory.Add(stream, 193715, 0, 0, 7, 255, 0, 0, false);
+                                    client.Inventory.Add(stream, 194085, 0, 0, 7, 255, 0, 0, false);
 
                                     data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
                                         .AddOption("Thanks.", 255)
@@ -3562,7 +3562,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 30)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3581,7 +3581,7 @@ namespace COServer.Game.MsgNpc
 
                                 // Adiciona o item ao inventário
                                 {
-                                    client.Inventory.Add(stream, 183835, 0, 0, 7, 255, 0, 0, false);
+                                    client.Inventory.Add(stream, 195045, 0, 0, 7, 255, 0, 0, false);
 
                                     data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
                                         .AddOption("Thanks.", 255)
@@ -3626,7 +3626,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 30)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3645,7 +3645,7 @@ namespace COServer.Game.MsgNpc
 
                                 // Adiciona o item ao inventário
                                 {
-                                    client.Inventory.Add(stream, 195015, 0, 0, 7, 255, 0, 0, false);
+                                    client.Inventory.Add(stream, 182025, 0, 0, 7, 255, 0, 0, false);
 
                                     data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
                                         .AddOption("Thanks.", 255)
@@ -3690,7 +3690,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 5)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3754,7 +3754,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 7)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3818,7 +3818,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 10)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=15975300123;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4840,28 +4840,34 @@ namespace COServer.Game.MsgNpc
                     }
                 case 6:
                     {
+                        // Verifica se o jogador possui apenas o item 722515 e nenhum dos outros itens
                         if (client.Inventory.Contain(722515, 1)
                             && !client.Inventory.Contain(722512, 1)
                             && !client.Inventory.Contain(722513, 1)
                             && !client.Inventory.Contain(722514, 1))
                         {
+                            // Remove o item 722515 do inventário do jogador
                             client.Inventory.Remove(722515, 1, stream);
-                            if (Role.Core.Rate(Global.LUCKY_BLUE_MOUSE_RATE))
-                            {
-                                client.Inventory.Add(stream, Database.ItemType.DragonBall, 1);
-                                Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("As lucky  " + client.Player.Name + " has retrieved treasures stolen by Blue Mouses and won a DragonBall!", "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
-                            }
-                            else
+
+                            // Define a chance de 40% para MeteorScroll e 60% para Meteor
+                            if (Role.Core.Rate(40)) // 40% de chance para MeteorScroll
                             {
                                 client.Inventory.Add(stream, Database.ItemType.MeteorScroll, 1);
-                                dialog.AddText("Here you are! Good Luck.")
-                      .AddOption("Thanks, bye.", 255).AddAvatar(95).FinalizeDialog();
+                                dialog.AddText("Here you are! Good Luck with the MeteorScroll.")
+                                      .AddOption("Thanks, bye.", 255).AddAvatar(95).FinalizeDialog();
+                                Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("As lucky " + client.Player.Name + " has retrieved treasures stolen by Blue Mouses and won a MeteorScroll!", "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
+                                Program.DiscordAPIwinners.Enqueue("``[" + client.Player.Name + "] has retrieved treasures stolen by Blue Mouses and won a MeteorScroll!``");
+                            }
+                            else // Se a sorte não for atendida, dropa Meteor
+                            {
+                                client.Inventory.Add(stream, Database.ItemType.Meteor, 5);
+                                Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("Lucky " + client.Player.Name + " has retrieved a 5xMeteor!", "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
                             }
                         }
 
                         else if (client.Inventory.Contain(722514, 1)
-                            && client.Inventory.Contain(722513, 1)
-                            && client.Inventory.Contain(722512, 1))
+                              && client.Inventory.Contain(722513, 1)
+                              && client.Inventory.Contain(722512, 1))
                         {
                             if (!client.Inventory.HaveSpace(3))
                             {
@@ -4874,32 +4880,23 @@ namespace COServer.Game.MsgNpc
                                 client.Inventory.Remove(722514, 1, stream);
                                 client.Inventory.Remove(722513, 1, stream);
                                 client.Inventory.Remove(722512, 1, stream);
-                                if (Role.Core.Rate(Global.LUCKY_BLUE_MOUSE_RATE))
-                                {
-                                    client.Inventory.Add(stream, Database.ItemType.DragonBall, 1);
-                                    Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("As lucky  " + client.Player.Name + " has retrieved treasures stolen by Blue Mouses and won a DragonBall!", "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
-                                    Program.DiscordAPIwinners.Enqueue("``[" + client.Player.Name + "] has retrieved treasures stolen by Blue Mouses and won a DragonBall!``");
-                                }
-                                else
-                                {
-                                    // 40% chance for MeteorScroll, 60% for Meteor
-                                    if (Role.Core.Rate(40)) // 40% chance
-                                    {
-                                        client.Inventory.Add(stream, Database.ItemType.MeteorScroll, 1);
-                                        Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("As lucky  " + client.Player.Name + " has retrieved treasures stolen by Blue Mouses and won a MeteorScroll!", "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
-                                        Program.DiscordAPIwinners.Enqueue("``[" + client.Player.Name + "] has retrieved treasures stolen by Blue Mouses and won a MeteorScroll!``");
-                                    }
-                                    else // 60% chance for Meteor
-                                    {
-                                        client.Inventory.Add(stream, Database.ItemType.Meteor, 5);
-                                        Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("As lucky  " + client.Player.Name + " has retrieved treasures stolen by Blue Mouses and won a 5xMeteor!", "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
-                                    }
 
-                                    dialog.AddText("Here you are! Good luck.")
-                                    .AddOption("Thanks, bye.", 255).AddAvatar(95).FinalizeDialog();
+                                // 40% chance for MeteorScroll, 60% for Meteor
+                                if (Role.Core.Rate(40)) // 40% chance
+                                {
+                                    client.Inventory.Add(stream, Database.ItemType.MeteorScroll, 1);
+                                    Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("As lucky " + client.Player.Name + " has retrieved treasures stolen by Blue Mouses and won a MeteorScroll!", "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
+                                    Program.DiscordAPIwinners.Enqueue("``[" + client.Player.Name + "] has retrieved treasures stolen by Blue Mouses and won a MeteorScroll!``");
                                 }
+                                else // 60% chance for Meteor
+                                {
+                                    client.Inventory.Add(stream, Database.ItemType.Meteor, 5);
+                                    Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("As lucky " + client.Player.Name + " has retrieved treasures stolen by Blue Mouses and won a 5xMeteor!", "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
+                                }
+
+                                dialog.AddText("Here you are! Good luck.")
+                                .AddOption("Thanks, bye.", 255).AddAvatar(95).FinalizeDialog();
                             }
-
                         }
 
                         else if (client.Inventory.Contain(722514, 1) && client.Inventory.Contain(722513, 1))
@@ -4942,6 +4939,8 @@ namespace COServer.Game.MsgNpc
                             }
 
                         }
+
+
                         else if (client.Inventory.Contain(722514, 1))
                         {
                             if (!client.Inventory.HaveSpace(3))
@@ -4961,6 +4960,28 @@ namespace COServer.Game.MsgNpc
                             }
 
                         }
+
+                        else if (client.Inventory.Contain(722512, 1))
+                        {
+                            if (!client.Inventory.HaveSpace(3))
+                            {
+                                dialog.AddText("I'm sorry but your inventory is full. Free 3 spaces.")
+                                 .AddOption("I see.", 255).AddAvatar(95).FinalizeDialog();
+                                break;
+                            }
+                            else
+                            {
+                                client.Inventory.Remove(722512, 1, stream);
+
+                                client.Inventory.Add(stream, Database.ItemType.Meteor, 3);
+                                dialog.AddText("Here you are! Good luck.")
+                      .AddOption("Thanks, bye.", 255).AddAvatar(95).FinalizeDialog();
+
+                            }
+
+                        }
+
+
                         else if (client.Inventory.Contain(722513, 1))
                         {
                             if (!client.Inventory.HaveSpace(2))
@@ -7293,7 +7314,9 @@ namespace COServer.Game.MsgNpc
                         if (client.Inventory.Contain(721117, 1))
                         {
                             client.Inventory.Remove(721117, 1, stream);
-                            Role.Player.Reward(client, stream, "Exchange ArmyToken.");
+                            client.Inventory.Add(stream, 720027, 1);
+                            Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("As lucky " + client.Player.Name + " has retrieved Army Token and won a MeteorScroll!", "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
+                            Program.DiscordAPIwinners.Enqueue("``[" + client.Player.Name + "] has retrieved Army Token and won a MeteorScroll!``");
                             data.AddText("Wow, you actually did it! You've brung great honor today, so here is your reward.")
                            .AddOption("Thanks!", 255)
                            .AddAvatar(3).FinalizeDialog();
@@ -8277,29 +8300,16 @@ namespace COServer.Game.MsgNpc
                             string rewardName = ""; // Variável para armazenar o nome da recompensa
 
                             // Escolher uma recompensa aleatória
-                            switch (Program.GetRandom.Next(1, 6))
+                            switch (Program.GetRandom.Next(1, 2))
                             {
                                 case 1:
-                                    client.Inventory.Add(stream, ItemType.Stone_1, 1);
-                                    rewardName = "Stone+1";
-                                    break;
-                                case 2:
-                                    client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
-                                    rewardName = "Meteor Scroll";
-                                    break;
-                                case 3:
-                                    client.Inventory.Add(stream, ItemType.DragonBall, 1);
-                                    rewardName = "Dragon Ball";
-                                    break;
-                                case 4:
                                     client.Inventory.Add(stream, ItemType.Stone_2, 1);
                                     rewardName = "Stone+2";
                                     break;
-                                case 5:
+                                case 2:
                                     client.Inventory.Add(stream, ItemType.DragonBallScroll, 1);
                                     rewardName = "Dragon Ball Scroll";
                                     break;
-                               
                             }
 
                             // Enviar mensagem global informando sobre a premiação específica
@@ -13321,7 +13331,7 @@ namespace COServer.Game.MsgNpc
                         if (client.Player.GuildRank == Role.Flags.GuildMemberRank.GuildLeader && MsgSchedules.GuildWar.Winner.LeaderReward > 0
                              && !MsgSchedules.GuildWar.RewardLeader.Contains(client.Player.UID))
                         {
-                            if (!client.Inventory.HaveSpace(3))
+                            if (!client.Inventory.HaveSpace(39))
                             {
                                 data.AddText("Please make more space in your inventory.")
                                     .AddOption("Let me check.", 255).AddAvatar(110).FinalizeDialog();
@@ -13332,9 +13342,15 @@ namespace COServer.Game.MsgNpc
                             MsgSchedules.GuildWar.Winner.LeaderReward -= 1;
                             client.Player.ConquerPoints += MsgGuildWar.GuildWarScrore.ConquerPointsReward;
                             client.Inventory.Add(stream, 2100055, 1); // bronzesilver
+                            client.Inventory.Add(stream, 721259, 5); // celestialstone
+                            client.Inventory.Add(stream, 723712, 5); // packstone+1
+                            client.Inventory.Add(stream, 1200001, 5); //PrayingStone(M)
+                            client.Inventory.Add(stream, 720027, 18); // MeteorScroll
+                            client.Inventory.Add(stream, 720393, 5); // Expill
+
                             client.Player.AddFlag(MsgServer.MsgUpdate.Flags.TopGuildLeader, Role.StatusFlagsBigVector32.PermanentFlag, false);
                             Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("" + client.Player.Name + " , Guild Leader from " + client.Player.MyGuild.GuildName + " was rewarded with " + MsgGuildWar.GuildWarScrore.ConquerPointsReward.ToString() + " CPs, and a Gold Trophy for winning Guild War.", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.TopLeft).GetArray(stream));
-                            data.AddText("You've got 100,000 CPs.")
+                            data.AddText("You've got 150,000 CPs.")
                                 .AddOption("Thank you.", 255).AddAvatar(110).FinalizeDialog();
                         }
                         // Verificar se é o vice-líder da guilda
@@ -19529,7 +19545,7 @@ namespace COServer.Game.MsgNpc
                                             if (client.Inventory.Contain(Database.ItemType.Meteor, 1))
                                             {
                                                 Random random = new Random();
-                                                int chance = random.Next(1, 3000);
+                                                int chance = random.Next(1, 2500);
 
                                                 var itemLevel = Database.Server.ItemsBase[DataItem.ITEM_ID].Level;
 

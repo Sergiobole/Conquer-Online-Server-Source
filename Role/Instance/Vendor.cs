@@ -85,11 +85,16 @@ namespace COServer.Role.Instance
                 return false;
             if (!Items.ContainsKey(DataItem.UID))
             {
+               
                 VendorItem VItem = new VendorItem();
                 VItem.DataItem = DataItem;
                 VItem.CostType = CostType;
                 VItem.AmountCost = Amout;
                 Items.TryAdd(DataItem.UID, VItem);
+
+                string itemName = Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID);
+                VendorDiscordNotifier.AddItem(Owner.Player.Name, itemName, Amout, DataItem.Plus);
+
                 return true;
             }
             return false;
