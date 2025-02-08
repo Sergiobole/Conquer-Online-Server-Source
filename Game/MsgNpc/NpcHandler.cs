@@ -60,6 +60,7 @@ namespace COServer.Game.MsgNpc
             }
         }
         #endregion
+
         #region EggQuest
         [NpcAttribute(NpcID.EggQuest)]
         private static void EggQuest(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -203,6 +204,7 @@ namespace COServer.Game.MsgNpc
         }
 
         #endregion
+
         #region Super TotoiseQuest
         [NpcAttribute(NpcID.TotoiseQuest)]
         private static void TotoiseQuest(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -300,7 +302,6 @@ namespace COServer.Game.MsgNpc
             }
         }
         #endregion
-
 
         #region Garmert-3
         [NpcAttribute(NpcID.Garmert3Npc)]
@@ -415,7 +416,6 @@ namespace COServer.Game.MsgNpc
         }
         #endregion
 
-        #region ArenaDuel
         #region Join
         //[NpcAttribute(NpcID.ArenaDuel)]
         //public static void ArenaDuel(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -478,6 +478,7 @@ namespace COServer.Game.MsgNpc
         //}
         //#endregion
         #endregion
+
         #region OnlinePoint
         [NpcAttribute(NpcID.OnlinePointsReward)]
         public static void OnlinePointsReward(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -810,6 +811,7 @@ namespace COServer.Game.MsgNpc
         }
 
         #endregion
+
         #region Events
         #region Tops
         #region Ss_Fb
@@ -2080,6 +2082,7 @@ namespace COServer.Game.MsgNpc
         #endregion
         #endregion
         #endregion
+
         #region ArenaRoom
         [NpcAttribute(NpcID.ArenaRoom)]
         public static void ArenaRoom(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -2205,6 +2208,7 @@ namespace COServer.Game.MsgNpc
             }
         }
         #endregion
+
         #region Events Manager
         [NpcAttribute(NpcID.AllTournaments)]
         public static void AllTournaments(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -2328,6 +2332,7 @@ namespace COServer.Game.MsgNpc
             }
         }
         #endregion
+
         #region gender
         [NpcAttribute(NpcID.DrYinYang)]
         public static void DrYinYang(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -2475,6 +2480,7 @@ namespace COServer.Game.MsgNpc
                         break;
                     }
                 #endregion
+
                 #region Wirthdraw Db
                 case 11:
                     {
@@ -2961,213 +2967,21 @@ namespace COServer.Game.MsgNpc
                                 .AddAvatar(63).FinalizeDialog();
                             break;
                         }
-
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
 
-                        // Mostra os fundos disponíveis e as opções de compra
-
-                        data.AddText(string.Format("You have {0} founds, Buy Founds in CoGolden.com!", totalFounds));
-                        data.AddOption("1 - Transfer Founds", 5);
-                        data.AddOption("2 - 7 Day VIP = 7 Founds", 2);
-                        data.AddOption("3 - 30 Day VIP = 20 Founds", 3);
-                        data.AddOption("4 - GoldPrizes = 50 Founds", 4);
-                        data.AddOption("5 - PowerExpBall = 1 Founds", 11);
-                        data.AddOption("6 - Garmets -7 255HP = 30 Founds", 23);
-                        data.AddOption("7 - PrayingStones", 24);
-
-
+                        data.AddText(string.Format("You have {0} founds available! Buy more founds at CoGolden.com!\n", totalFounds));
+                        data.AddOption("1 - [Transfer Founds]", 1);
+                        data.AddOption("2 - [VIP Founds]", 2);
+                        data.AddOption("3 - [Prize Founds]", 3);
+                        data.AddOption("4 - [Garments]", 4);
+                        data.AddOption("5 - [Utility Founds]", 5);
+                        data.AddOption("6 - [Surprise Box]", 90);
                         data.AddAvatar(63).FinalizeDialog();
                         break;
                     }
                 #endregion
-                case 2:
-                    {
-                        if (!client.Inventory.HaveSpace(1))
-                        {
-                            data.AddText("Please make 1 more space in your inventory.")
-                                .AddOption("Let me check.", 255)
-                                .AddAvatar(63);
-                                
-                        }
-
-                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
-
-                        if (totalFounds >= 7)
-                        {
-
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
-                            try
-                            {
-                                using (var conn = new MySqlConnection(ConnectionString))
-                                {
-                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
-                                    {
-                                        conn.Open();
-
-                                        // Atualiza os fundos subtraindo 7
-                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 7);
-                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
-
-                                        cmd.ExecuteNonQuery();
-                                    }
-                                }
-
-                                // Adiciona o item ao inventário
-                                {
-                                    client.Inventory.Add(stream, 780000, 1, 0, 0, 0, 0, 0, false);
-
-                                    data.AddText("You have successfully exchanged 7 FoundsPoints for a 7-Days VIP Token.")
-                                        .AddOption("Thanks.", 255)
-                                        .AddAvatar(63).FinalizeDialog();
-                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Vip 7-Days``");
-
-                                    break;
-                                }
-                            }
-                            catch (MySqlException sqlEx)
-                            {
-                                Console.WriteLine("MySQL error: " + sqlEx.Message);
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine("An error occurred: " + ex.Message);
-                            }
-                        }
-                        else
-                        {
-                            data.AddText("No have Founds.")
-                            .AddOption("Let me check.", 255)
-                            .AddAvatar(63).FinalizeDialog();
-
-                        }
-
-                        break;
-                    }
-                case 3:
-                    {
-                        if (!client.Inventory.HaveSpace(1))
-                        {
-                            data.AddText("Please make 1 more space in your inventory.")
-                                .AddOption("Let me check.", 255)
-                                .AddAvatar(63);
-                                
-                            return; // Use return instead of break to exit the method
-                        }
-
-                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
-
-                        if (totalFounds >= 20)
-                        {
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
-                            try
-                            {
-                                using (var conn = new MySqlConnection(ConnectionString))
-                                {
-                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
-                                    {
-                                        conn.Open();
-
-                                        // Atualiza os fundos subtraindo 20
-                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 20);
-                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
-
-                                        cmd.ExecuteNonQuery();
-                                    }
-                                }
-
-                                // Adiciona o item ao inventário
-                                {
-                                    client.Inventory.Add(stream, 780010, 1, 0, 0, 0, 0, 0, false);
-                                    data.AddText("You have successfully exchanged 20 FoundsPoints for a 30-Days VIP Token.")
-                                        .AddOption("Thanks.", 255)
-                                        .AddAvatar(63).FinalizeDialog();
-                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Vip 30 Days``");
-                                }
-                            }
-                            catch (MySqlException sqlEx)
-                            {
-                                Console.WriteLine("MySQL error: " + sqlEx.Message);
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine("An error occurred: " + ex.Message);
-                            }
-                        }
-                        else
-                        {
-                            data.AddText("No have Founds.")
-                            .AddOption("Let me check.", 255)
-                            .AddAvatar(63).FinalizeDialog();
-
-                        }
-
-                        break;
-                    }
-                case 4:
-                    {
-                        if (!client.Inventory.HaveSpace(1))
-                        {
-                            data.AddText("Please make 1 more space in your inventory.")
-                                .AddOption("Let me check.", 255)
-                                .AddAvatar(63);
-
-                            return; // Use return instead of break to exit the method
-                        }
-
-                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
-
-                        if (totalFounds >= 50)
-                        {
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
-                            try
-                            {
-                                using (var conn = new MySqlConnection(ConnectionString))
-                                {
-                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
-                                    {
-                                        conn.Open();
-
-                                        // Atualiza os fundos subtraindo 50
-                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 50);
-                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
-
-                                        cmd.ExecuteNonQuery();
-                                    }
-                                }
-
-                                // Adiciona o item ao inventário 
-                                {
-                                    client.Inventory.Add(stream, 2100075, 1, 0, 1, 0, 0, 0, true);
-                                    data.AddText("You have successfully exchanged 50 FoundsPoints for a Gold-Prize.")
-                                        .AddOption("Thanks.", 255)
-                                        .AddAvatar(63).FinalizeDialog();
-                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Gold-Prize``");
-                                }   
-                            }
-                            catch (MySqlException sqlEx)
-                            {
-                                Console.WriteLine("MySQL error: " + sqlEx.Message);
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine("An error occurred: " + ex.Message);
-                            }
-                        }
-                        else
-                        {
-                            data.AddText("No have Founds.")
-                            .AddOption("Let me check.", 255)
-                            .AddAvatar(63).FinalizeDialog();
-
-                        }
-
-                        break;
-                    }
-                case 5:
+                #region Transferencia Menu Founds
+                case 1:
                     {
                         data.AddText("Insert the amount of founds that you want to transfer to another player.");
                         data.AddInput("Amount of founds: ", 6).AddAvatar(6).FinalizeDialog();
@@ -3202,7 +3016,6 @@ namespace COServer.Game.MsgNpc
                            .AddInput("Player Login:", 7).AddAvatar(6).FinalizeDialog();
                         break;
                     }
-
                 case 7: // Recebe o nome do jogador para transferência
                     {
                         string recipientPlayerName = Input.Trim();
@@ -3355,13 +3168,19 @@ namespace COServer.Game.MsgNpc
 
                         break; // Sai do case
                     }
-
-
-
-
-
-
-                case 11:
+                #endregion
+                #region Vips Menu Founds
+                case 2:{
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+                        data.AddText(string.Format("You have {0} founds, Buy Founds in CoGolden.com!", totalFounds));
+                        data.AddOption("1 - [7 Day VIP = 7 Founds]", 21);
+                        data.AddOption("2 - [30 Day VIP = 20 Founds]", 22)
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+                        break;
+                    }
+                case 21:
                     {
                         if (!client.Inventory.HaveSpace(1))
                         {
@@ -3369,13 +3188,13 @@ namespace COServer.Game.MsgNpc
                                 .AddOption("Let me check.", 255)
                                 .AddAvatar(63);
 
-                            return; 
+                            return; // Use return instead of break to exit the method
                         }
 
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Founds: " + totalFounds);
 
-                        if (totalFounds >= 1)
+                        if (totalFounds >= 7)
                         {
                             const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
                             try
@@ -3386,8 +3205,8 @@ namespace COServer.Game.MsgNpc
                                     {
                                         conn.Open();
 
-                                        // Atualiza os fundos subtraindo 1
-                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 1);
+                                        // Atualiza os fundos subtraindo 7
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 7);
                                         cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
 
                                         cmd.ExecuteNonQuery();
@@ -3396,11 +3215,11 @@ namespace COServer.Game.MsgNpc
 
                                 // Adiciona o item ao inventário
                                 {
-                                    client.Inventory.Add(stream, 722057, 1, 0, 0, 0, 0, 0, false);
-                                    data.AddText("You have successfully exchanged 1 Founds Points for a PowerExpBall.")
+                                    client.Inventory.Add(stream, 780000, 1, 0, 0, 0, 0, 0, false);
+                                    data.AddText("You have successfully exchanged 7 FoundsPoints for a 7-Days VIP Token.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
-                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take PowerExpBall``");
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Vip 7 Days``");
                                 }
                             }
                             catch (MySqlException sqlEx)
@@ -3422,82 +3241,22 @@ namespace COServer.Game.MsgNpc
 
                         break;
                     }
-
-
-
-                case 23:
-                    {
-                        if (!client.Inventory.HaveSpace(1))
-                        {
-                            data.AddText("Please make 1 more space in your inventory.")
-                           .AddOption("Let me check.", 255)
-                           .AddAvatar(63).FinalizeDialog();
-                            break;
-                        }
-                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-
-                        if (totalFounds <= 0)
-                        {
-                            data.AddText("You don't have enough founds");
-                            data.AddOption("Okay.", 255);
-                            data.AddAvatar(63).FinalizeDialog();
-                        }
-                        else
-                        {
-                            data.AddText(string.Format("You have found {0} items! All gamerts have 255 HP, and -7 Bless costs 30 Founds.", totalFounds));
-                            data.AddOption("1 - RunaroundSue    ", 30);
-                            data.AddOption("2 - DevilishBell    ", 31);
-                            data.AddOption("3 - WealthyArab(R)  ", 32);
-                            data.AddOption("Okay.", 255);
-                            data.AddAvatar(63).FinalizeDialog();
-                        }
-                        break;
-                    }
-                case 24:
-                    {
-                        if (!client.Inventory.HaveSpace(1))
-                        {
-                            data.AddText("Please make 1 more space in your inventory.")
-                           .AddOption("Let me check.", 255)
-                           .AddAvatar(63).FinalizeDialog();
-                            break;
-                        }
-                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-
-                        if (totalFounds <= 0)
-                        {
-                            data.AddText("You don't have enough founds");
-                            data.AddOption("Okay.", 255);
-                            data.AddAvatar(63).FinalizeDialog();
-                        }
-                        else
-                        {
-                            data.AddText(string.Format("You have found {0} items! PrayingStone.", totalFounds));
-                            data.AddOption("1 - PrayingStone(S) = 5 Founds", 40);
-                            data.AddOption("2 - PrayingStone(M) = 7 Founds", 41);
-                            data.AddOption("3 - PrayingStone(L) = 10 Found", 42);
-                            data.AddOption("Okay.", 255);
-                            data.AddAvatar(63).FinalizeDialog();
-                        }
-                        break;
-                    }
-
-                case 30:
+                case 22:
                     {
                         if (!client.Inventory.HaveSpace(1))
                         {
                             data.AddText("Please make 1 more space in your inventory.")
                                 .AddOption("Let me check.", 255)
                                 .AddAvatar(63);
-
+                                
+                            return; // Use return instead of break to exit the method
                         }
 
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Founds: " + totalFounds);
 
-                        if (totalFounds >= 30)
+                        if (totalFounds >= 20)
                         {
-
                             const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
                             try
                             {
@@ -3507,8 +3266,8 @@ namespace COServer.Game.MsgNpc
                                     {
                                         conn.Open();
 
-                                        // Atualiza os fundos subtraindo 30
-                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 30);
+                                        // Atualiza os fundos subtraindo 20
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 20);
                                         cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
 
                                         cmd.ExecuteNonQuery();
@@ -3517,14 +3276,11 @@ namespace COServer.Game.MsgNpc
 
                                 // Adiciona o item ao inventário
                                 {
-                                    client.Inventory.Add(stream, 194085, 0, 0, 7, 255, 0, 0, false);
-
-                                    data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
+                                    client.Inventory.Add(stream, 780010, 1, 0, 0, 0, 0, 0, false);
+                                    data.AddText("You have successfully exchanged 20 FoundsPoints for a 30-Days VIP Token.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
-                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
-
-                                    break;
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Vip 30 Days``");
                                 }
                             }
                             catch (MySqlException sqlEx)
@@ -3544,6 +3300,21 @@ namespace COServer.Game.MsgNpc
 
                         }
 
+                        break;
+                    }
+                #endregion
+                #region Prizes Menu Founds
+                case 3:
+                    {
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+                        data.AddText(string.Format("You have {0} founds, Buy Founds in CoGolden.com!", totalFounds));
+                        data.AddOption("1 - [GoldPrize = 50 Founds]", 31);
+                        data.AddOption("2 - [MiraculousGourd = 10 Founds]", 32);
+                        data.AddOption("3 - [Sash(M) = 10 Founds]", 33);
+                        data.AddOption("4 - [Sash(L) = 15 Founds]", 34)
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
                         break;
                     }
                 case 31:
@@ -3554,14 +3325,14 @@ namespace COServer.Game.MsgNpc
                                 .AddOption("Let me check.", 255)
                                 .AddAvatar(63);
 
+                            return; // Use return instead of break to exit the method
                         }
 
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Founds: " + totalFounds);
 
-                        if (totalFounds >= 30)
+                        if (totalFounds >= 50)
                         {
-
                             const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
                             try
                             {
@@ -3571,25 +3342,22 @@ namespace COServer.Game.MsgNpc
                                     {
                                         conn.Open();
 
-                                        // Atualiza os fundos subtraindo 30
-                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 30);
+                                        // Atualiza os fundos subtraindo 50
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 50);
                                         cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
 
                                         cmd.ExecuteNonQuery();
                                     }
                                 }
 
-                                // Adiciona o item ao inventário
+                                // Adiciona o item ao inventário 
                                 {
-                                    client.Inventory.Add(stream, 195045, 0, 0, 7, 255, 0, 0, false);
-
-                                    data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
+                                    client.Inventory.Add(stream, 2100075, 1, 0, 1, 0, 0, 0, true);
+                                    data.AddText("You have successfully exchanged 50 FoundsPoints for a Gold-Prize.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
-                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
-
-                                    break;
-                                }
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Gold-Prize``");
+                                }   
                             }
                             catch (MySqlException sqlEx)
                             {
@@ -3618,14 +3386,14 @@ namespace COServer.Game.MsgNpc
                                 .AddOption("Let me check.", 255)
                                 .AddAvatar(63);
 
+                            return; // Use return instead of break to exit the method
                         }
 
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Founds: " + totalFounds);
 
-                        if (totalFounds >= 30)
+                        if (totalFounds >= 10)
                         {
-
                             const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
                             try
                             {
@@ -3635,24 +3403,21 @@ namespace COServer.Game.MsgNpc
                                     {
                                         conn.Open();
 
-                                        // Atualiza os fundos subtraindo 30
-                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 30);
+                                        // Atualiza os fundos subtraindo 10
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 10);
                                         cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
 
                                         cmd.ExecuteNonQuery();
                                     }
                                 }
 
-                                // Adiciona o item ao inventário
+                                // Adiciona o item ao inventário 
                                 {
-                                    client.Inventory.Add(stream, 182025, 0, 0, 7, 255, 0, 0, false);
-
-                                    data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
+                                    client.Inventory.Add(stream, 2100025, 1, 0, 0, 0, 0, 0, true);
+                                    data.AddText("You have successfully exchanged 10 FoundsPoints for a MiraculousGourd.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
-                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
-
-                                    break;
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take MiraculousGourd``");
                                 }
                             }
                             catch (MySqlException sqlEx)
@@ -3674,8 +3439,171 @@ namespace COServer.Game.MsgNpc
 
                         break;
                     }
+                case 33:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+
+                            return; // Use return instead of break to exit the method
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 10)
+                        {
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 10
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 10);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário 
+                                {
+                                    client.Inventory.Add(stream, 1100006, 1, 0, 0, 0, 0, 0, true);
+                                    data.AddText("You have successfully exchanged 10 FoundsPoints for a Sash(M).")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Sash(M)``");
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+                case 34:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+
+                            return; // Use return instead of break to exit the method
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 15)
+                        {
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 15
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 15);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário 
+                                {
+                                    client.Inventory.Add(stream, 1100009, 1, 0, 0, 0, 0, 0, true);
+                                    data.AddText("You have successfully exchanged 15 FoundsPoints for a Sash(L).")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Sash(L)``");
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+                #endregion
+                #region Utils Menu Founds
+                case 5:
+                    {
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+                        data.AddText(string.Format("You have {0} founds, Buy Founds in CoGolden.com!", totalFounds));
+                        data.AddOption("1 - [Praying Stones]", 40);
+                        data.AddOption("2 - [Power ExpBalls]", 50)
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+                        break;
+                    }
+                #region RegionPlaystones Founds
                 case 40:
                     {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                           .AddOption("Let me check.", 255)
+                           .AddAvatar(63).FinalizeDialog();
+                            break;
+                        }
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+
+                        if (totalFounds <= 0)
+                        {
+                            data.AddText("You don't have enough founds");
+                            data.AddOption("Okay.", 255);
+                            data.AddAvatar(63).FinalizeDialog();
+                        }
+                        else
+                        {
+                            data.AddText(string.Format("You have found {0} items! PrayingStone.", totalFounds));
+                            data.AddOption("1 - [PrayingStone(S) = 5 Founds]", 41);
+                            data.AddOption("2 - [PrayingStone(M) = 7 Founds]", 42);
+                            data.AddOption("3 - [PrayingStone(L) = 10 Found]", 43);
+                            data.AddOption("Okay.", 255);
+                            data.AddAvatar(63).FinalizeDialog();
+                        }
+                        break;
+                    }
+                case 41:{
                         if (!client.Inventory.HaveSpace(1))
                         {
                             data.AddText("Please make 1 more space in your inventory.")
@@ -3738,7 +3666,7 @@ namespace COServer.Game.MsgNpc
 
                         break;
                     }
-                case 41:
+                case 42:
                     {
                         if (!client.Inventory.HaveSpace(1))
                         {
@@ -3802,7 +3730,7 @@ namespace COServer.Game.MsgNpc
 
                         break;
                     }
-                case 42:
+                case 43:
                     {
                         if (!client.Inventory.HaveSpace(1))
                         {
@@ -3866,6 +3794,377 @@ namespace COServer.Game.MsgNpc
 
                         break;
                     }
+                #endregion
+                #region RegionPowerBalls Founds
+                case 50:
+                    {
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+                        data.AddText(string.Format("You have {0} founds, Buy Founds in CoGolden.com!", totalFounds));
+                        data.AddOption("1 - [1 PowerExpBalls = 1 Founds]", 51)
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+                        break;
+                    }
+                case 51:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+
+                            return; 
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 1)
+                        {
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 1
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 1);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário
+                                {
+                                    client.Inventory.Add(stream, 722057, 1, 0, 0, 0, 0, 0, false);
+                                    data.AddText("You have successfully exchanged 1 Founds Points for a PowerExpBall.")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take PowerExpBall``");
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+                #endregion
+
+                #endregion
+                #region Garmet Menu Founds
+                case 4:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                           .AddOption("Let me check.", 255)
+                           .AddAvatar(63).FinalizeDialog();
+                            break;
+                        }
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+
+                        if (totalFounds <= 0)
+                        {
+                            data.AddText("You don't have enough founds");
+                            data.AddOption("Okay.", 255);
+                            data.AddAvatar(63).FinalizeDialog();
+                        }
+                        else
+                        {
+                            data.AddText(string.Format("You have found {0} items! All gamerts have 255 HP, and -7 Bless costs 30 Founds.", totalFounds));
+                            data.AddOption("1 - [RunaroundSue]    ", 60);
+                            data.AddOption("2 - [DevilishBell]    ", 61);
+                            data.AddOption("3 - [WealthyArab(R)]  ", 62);
+                            data.AddOption("Okay.", 255);
+                            data.AddAvatar(63).FinalizeDialog();
+                        }
+                        break;
+                    }
+                case 60:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 30)
+                        {
+
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 30
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 30);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário
+                                {
+                                    client.Inventory.Add(stream, 194085, 0, 0, 7, 255, 0, 0, false);
+
+                                    data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
+
+                                    break;
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+                case 61:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 30)
+                        {
+
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 30
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 30);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário
+                                {
+                                    client.Inventory.Add(stream, 195045, 0, 0, 7, 255, 0, 0, false);
+
+                                    data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
+
+                                    break;
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+                case 62:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 30)
+                        {
+
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 30
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 30);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário
+                                {
+                                    client.Inventory.Add(stream, 182025, 0, 0, 7, 255, 0, 0, false);
+
+                                    data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
+
+                                    break;
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+                #endregion
+                #region SupriseBox Menu Founds
+                case 90:
+                    {
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+                        data.AddText(string.Format("You have {0} founds, Buy Founds in CoGolden.com!", totalFounds));
+                        data.AddOption("1 - [SurpriseBox = 1 Founds]", 91)
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+                        break;
+                    }
+                case 91:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+
+                            return; // Use return instead of break to exit the method
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Founds: " + totalFounds);
+
+                        if (totalFounds >= 1)
+                        {
+                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 1
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 1);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário
+                                {
+                                    client.Inventory.Add(stream, 722178, 1, 0, 0, 0, 0, 0, false);
+                                    data.AddText("You have successfully exchanged 1 FoundsPoints for a SurpriseBox.")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take a SurpriseBox``");
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Founds.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
+                #endregion
 
             }
         }
@@ -7920,6 +8219,7 @@ namespace COServer.Game.MsgNpc
         }
 
         #endregion
+
         #region VIPFREE
         [NpcAttribute(NpcID.vipfree)]
         public static void vipfree(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -17804,6 +18104,7 @@ namespace COServer.Game.MsgNpc
         }
 
         #endregion
+
         private static byte baseGemRequest = 0;
         private static uint BASE_GEM_ID = 0, cost = 0;
         [NpcAttribute(NpcID.GemCompose)]
@@ -22436,4 +22737,3 @@ namespace COServer.Game.MsgNpc
 
     }
 }
-#endregion
