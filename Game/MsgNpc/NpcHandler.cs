@@ -4566,56 +4566,41 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-
                         data.AddText("You're eligible to vote!\n")
                             .AddText("Please remember you may only vote once every 12 hours.")
                             .AddOption("1 - Vote.", 41)
-                            .AddOption("2 - Check rank.", 70)
                             .AddOption("3 - Exchange points.", 60)
-                            .AddOption("I`ll think about it.", 255)
+                            .AddOption("I'll think about it.", 255)
                             .AddAvatar(3)
                             .FinalizeDialog();
                         break;
                     }
-                case 70:
-                    {
-                        var ranks = Program.VoteRank.GetRanks;
-                        data.AddText("Top 5 Highest Voters.\n");
-                        if (ranks != null)
-                        {
-                            for (int i = 0; i < ranks.Length; i++)
-                            {
-                                uint Rank = (uint)(i + 1);
-                                var hero = ranks[i];
-                                data.AddText("Rank " + Rank + ": " + hero.Name + " - Points: [" + hero.VoteCount + "].\n");
-                            }
-                        }
-                        else data.AddText("-No One.\n");
-                             data.AddText("Your Vote Count: " + client.CountVote + ".\n");
-                             data.AddOption("I`ll think about it.", 255)
-                                 .AddAvatar(3)
-                                 .FinalizeDialog();
-                        break;
 
-                    }
                 case 41:
                     {
-                        if (Database.VoteSystem.CanVote(client))
+                        string playerIP = client.Socket.RemoteIp; // Obtém o IP do jogador
+
+                        if (Database.VoteSystem.CanVote(client)) // Verifica se o jogador pode votar pelo IP
                         {
                             client.SendSysMesage("https://www.xtremetop100.com/in.php?site=1132376247", MsgMessage.ChatMode.WebSite, MsgMessage.MsgColor.red, false);
                             client.Player.StartVote = true;
                             client.Player.StartVoteStamp = Time32.Now.AddSeconds(30);
                             client.SendSysMesage("Please wait for the system to check your vote.");
+
+                            // Agora, devemos garantir que o voto seja salvo na base de dados
+                            Database.VoteSystem.CheckUp(client); // Chama o método para processar o voto e atualizar a base de dados
                         }
                         else
                         {
-                            data.AddText("You've already claimed your reward for voting. You may only vote once every 12 hour per IP address.")
-                             .AddOption("I~see.", 255)
-                             .AddAvatar(3).FinalizeDialog();
+                            data.AddText("You've already claimed your reward for voting. You may only vote once every 12 hours per IP address.")
+                                .AddOption("I see.", 255)
+                                .AddAvatar(3)
+                                .FinalizeDialog();
                         }
                         break;
-
                     }
+
+
                 #region vote reward
                 case 60:
                     {
@@ -8606,6 +8591,7 @@ namespace COServer.Game.MsgNpc
 
         #endregion
 
+
         #region VIPFREE
         [NpcAttribute(NpcID.vipfree)]
         public static void vipfree(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -9262,9 +9248,6 @@ namespace COServer.Game.MsgNpc
                         dialog.Text(" visit CoGolden.com or our Discord server for more information!\n");
                         dialog.Text("So, what do you want to know?\n");
                         dialog.Option("1 - How to get started?", 1);
-                        dialog.Option("2 - I want to level up.", 101);
-                        //dialog.Option("Vote.", 7);
-                        //dialog.Option("Vote Rewards", 70);
                         dialog.AddOption("3 - Give me Vip-AutoLoot.", 55);
                         dialog.Option("Next.", 32);
                         dialog.AddAvatar(71).FinalizeDialog();
@@ -9276,183 +9259,7 @@ namespace COServer.Game.MsgNpc
                         client.Inventory.Add(stream, 720374, 1, 0, 0, 0, 0, 0, true);
                         break;
                     }
-                case 101:
-                    {
-                        client.Teleport(431 ,391, 1002);
-                        break;
-                    }
-                case 70:
-                    {
-                        dialog.Text("Hello" + client.Player.Name + "I'm the server Vote Reward!\n");
-                        dialog.Text("Choose your reward:");
-                        dialog.Option("ExpPotion - 1 Vote Point.", 71);
-                        dialog.Option("STG - 10 Vote Point.", 61);
-                        if (client.Player.VipLevel != 6)
-                        {
-                            dialog.Option("2 Days Char VIP - 5 Vote Points.", 72);
-                        }
-                        dialog.Option("DragonBall - 3 Vote Points.", 143);
-                        dialog.Option("MoonBox - 3 Vote Points.", 144);
-                        dialog.Option("Never~mind. ", 255);
 
-                        dialog.AddAvatar(71).FinalizeDialog();
-                        break;
-                    }
-                case 61:
-                    {
-                        if (client.Player.VotePoints >= 10)
-                        {
-                            client.Player.VotePoints -= 10;
-                            client.Inventory.Add(stream, 700073, 1);
-                        }
-                        break;
-                    }
-                case 144:
-                    {
-                        if (client.Player.VotePoints >= 4)
-                        {
-                            client.Player.VotePoints -= 4;
-                            client.Inventory.Add(stream, 721080, 1);
-                        }
-                        break;
-                    }
-                case 143:
-                    {
-                        if (client.Player.VotePoints >= 3)
-                        {
-                            client.Player.VotePoints -= 3;
-                            client.Inventory.Add(stream, 1088000, 1);
-                        }
-                        break;
-                    }
-                case 71:
-                    {
-                        if (client.Player.VotePoints >= 1)
-                        {
-                            //client.Player.VotePoints -= 1;
-                            //client.Player.RateExp = 2;
-                            client.Player.DExpTime = 3600;
-                            client.Player.CreateExtraExpPacket(stream);
-                            client.SendSysMesage("You've received x2 EXP for 1 hour.", MsgMessage.ChatMode.System, MsgMessage.MsgColor.red);
-                        }
-                        break;
-
-                    }
-                case 72:
-                    {
-                        if (client.Player.VipLevel != 6)
-                        {
-                            if (client.Player.VotePoints >= 5)
-                            {
-                                if (DateTime.Now > client.Player.ExpireVip)
-                                    client.Player.ExpireVip = DateTime.Now.AddDays(2);
-                                else
-                                    client.Player.ExpireVip = client.Player.ExpireVip.AddDays(2);
-
-                                client.Player.VipLevel = 6;
-                                client.Player.VotePoints -= 5;
-
-                                client.Player.SendUpdate(stream, client.Player.VipLevel, Game.MsgServer.MsgUpdate.DataType.VIPLevel);
-
-                                client.Player.UpdateVip(stream);
-                                client.SendSysMesage("You`ve received VIP6 for 2 days.");
-                            }
-                        }
-                        break;
-                    }
-                case 32:
-                    {
-                        dialog.Text("I'm here to help players throughout their experience while playing CoGolden!\n");
-                        dialog.Text("I'll give my best on answering the most common questions, but I must advise you to either contact a PM or");
-                        dialog.Text(" visit CoGolden.com or our Discord server for more information!\n");
-                        dialog.Text("So, what do you want to know?\n");
-                        dialog.Option("Quests.", 30);
-                        dialog.Option("VIP.", 31);
-                        dialog.Option("Sockets.", 35);
-                        dialog.Option("Mining.", 36);
-                        dialog.Option("CPs.", 37);
-                        dialog.Option("Next.", 100);
-                        dialog.Option("Never~mind.", 255);
-                        dialog.AddAvatar(71).FinalizeDialog();
-
-                        break;
-                    }
-                case 100:
-                    {
-                        dialog.Text("I'm here to help players throughout their experience while playing CoGolden!\n");
-                        dialog.Text("I'll give my best on answering the most common questions, but I must advise you to either contact a PM or");
-                        dialog.Text(" visit CoPrivate.net or our Discord server for more information!\n");
-                        dialog.Text("So, what do you want to know?\n");
-                        dialog.Option("First, and Second Reborn.", 29);
-                        dialog.Option("Plus Items.", 38);
-                        dialog.Option("Gear.", 39);
-                        dialog.Option("Commands.", 40);
-                        //dialog.Option("OnlineRewards", 10);
-                        dialog.Option("Never~mind.", 255);
-                        dialog.AddAvatar(71).FinalizeDialog();
-                        break;
-                    }
-                #region Items
-                case 35:
-                    {
-                        dialog.AddText("While upgrading your gear level or quality in Twin City at Artisan Wind or Market at Magic Artisan, you have a chance that your item will be socketed.\n")
-                              .AddText("You can also talk to BlacksmithLee in the market, he can assist you in creating your first socket in your item for 12 DragonBalls.")
-                              .AddOption("Thanks!", 255).AddAvatar(71).FinalizeDialog();
-                        break;
-                    }
-                case 36:
-                    {
-                        dialog.AddText("With VIP, you can use the command @skipore to skip all ores while mining.\n")
-                              .AddText("Mining is also one of the only ways to get any gems right now.")
-                              .AddOption("Thanks!", 255).AddAvatar(71).FinalizeDialog();
-                        break;
-                    }
-                case 37:
-                    {
-                        dialog.AddText("You can talk to Exchange NPC in the market to exchange Gold for CPs, or CPs for gold.")
-                              .AddOption("Thanks!", 255).AddAvatar(71).FinalizeDialog();
-                        break;
-                    }
-                case 38:
-                    {
-                        dialog.AddText("You can only get Plus Items from hunting or events.")
-                              .AddOption("Thanks!", 255).AddAvatar(71).FinalizeDialog();
-                        break;
-                    }
-                case 39:
-                    {
-                        dialog.AddText("The only way you're going to build gear is by hunting or purchasing gear from players in-game for Gold or CPs.")
-                              .AddOption("Thanks!", 255).AddAvatar(71).FinalizeDialog();
-                        break;
-                    }
-                case 40:
-                    {
-                        dialog.AddText("Please check our Information page on our website, or join our Discord for all available in-game commands!")
-                              .AddOption("Thanks!", 255).AddAvatar(71).FinalizeDialog();
-                        break;
-                    }
-                #endregion
-                case 31:
-                    {
-                        dialog.AddText("We're offering VIP through our website Donation page. In case you want to know more about it you should check out CoGolden.com\n")
-                              .AddText("VIP has several benefits such as auto-packing Meteors, DragonBalls, dropped item notifications on +1 and blessed items, no ores while mining, and among other benefits! Check our website for more information!\n")
-                              .AddOption("Thanks!", 255).AddAvatar(71).FinalizeDialog();
-                        break;
-                    }
-                case 30:
-                    {
-                        dialog.AddText("We have all the original Conquer Online quests, and a lot of them you have to do to get certain in-game items.\n")
-                              .AddText("We hope you enjoy yourself here at CoGolden")
-                              .AddOption("Thanks!", 255).AddAvatar(71).FinalizeDialog();
-                        break;
-                    }
-                case 29:
-                    {
-                        dialog.AddText("Please join our Discord server from our website.\n")
-                              .AddText("We look forward to meeting you there.")
-                              .AddOption("Thanks!", 255).AddAvatar(71).FinalizeDialog();
-                        break;
-                    }
                 #region VIP Share
                 /*   case 29:
                        {

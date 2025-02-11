@@ -24,7 +24,7 @@ namespace COServer.Game.MsgMonster
             tick = Tick;
             count = 0;
         }
-    }//a7a yasta eh ely enta 3amlo dah enta nayk el Ppl ana hnzel youm el arb3 hnzl a3mel 4o8l 3ala el ray2 m3a yousef w enta etfrg bs xd
+    }
 
     public struct SpecialItemWatcher
     {
@@ -67,12 +67,14 @@ namespace COServer.Game.MsgMonster
 
         public MobItemGenerator(MonsterFamily family)
         {
+
+            // Chances Drop items
             Family = family;
-            Refined = new MobRateWatcher(450);//500 / Family.Level);//1000 / Family.Level);
-            Unique = new MobRateWatcher(900);//2000 / Family.Level);//4000 / Family.Level);
-            Elite = new MobRateWatcher(4000);//4000 / Family.Level);//8000 / Family.Level);
-            Super = new MobRateWatcher(15000);//5000 / Family.Level);//10000 / Family.Level);
-            PlusOne = new MobRateWatcher(2500);//2000 / Family.Level);//3000 / Family.Level);
+            Refined = new MobRateWatcher(450);
+            Unique = new MobRateWatcher(900);
+            Elite = new MobRateWatcher(4000);
+            Super = new MobRateWatcher(15000);
+            PlusOne = new MobRateWatcher(2500);
             OneSocketItem = new MobRateWatcher(1000000);
             TwoSocketItem = new MobRateWatcher(2000000);
 
@@ -80,11 +82,6 @@ namespace COServer.Game.MsgMonster
             ThereBless = new MobRateWatcher(1000000);
             FiveBless = new MobRateWatcher(2000000);
 
-            //Refined = new MobRateWatcher(10000 / Family.Level);
-            //Unique = new MobRateWatcher(40000 / Family.Level);
-            //Elite = new MobRateWatcher(80000 / Family.Level);
-            //Super = new MobRateWatcher(1000000 / Family.Level);
-            //PlusOne = new MobRateWatcher(60000 / Family.Level);
 
 
             DropHp = new MobRateWatcher(99999999);
@@ -282,8 +279,7 @@ namespace COServer.Game.MsgMonster
         }
         public uint GenerateGold(out uint ItemID, bool normal = false, bool twin = false)
         {
-            ////uint amount = (uint)Program.GetRandom.Next(2000, 20000);
-            uint amount = (uint)Program.GetRandom.Next(100, 1000);//Family.DropMoney);
+            uint amount = (uint)Program.GetRandom.Next(100, 1000);
 
             ItemID = Database.ItemType.MoneyItemID(amount);
             return amount;
