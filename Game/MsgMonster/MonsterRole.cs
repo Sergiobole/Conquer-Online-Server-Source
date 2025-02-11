@@ -659,9 +659,9 @@ namespace COServer.Game.MsgMonster
                         }
                         else if (Role.Core.Rate(60)) 
                         {
-                            DropItemID(killer, Database.ItemType.DragonBall, stream);
-                            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a Meteor in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
-                            Program.DiscordAPIwinners.Enqueue($"``[{killer.Player.Name}] found a Meteor in WaterLord(428,418)!``");
+                            DropItemID(killer, Database.ItemType.DragonBallScroll, stream);
+                            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a DragonBallScroll in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                            Program.DiscordAPIwinners.Enqueue($"``[{killer.Player.Name}] found a DragonBallScroll in WaterLord(428,418)!``");
                         }
                     }
                     #endregion
@@ -1254,7 +1254,7 @@ namespace COServer.Game.MsgMonster
                         }
                     }
                     #endregion
-
+                    #region laab maps and mobs
                     else if (Map == 1351 || Map == 1352 || Map == 1353 || Map == 1354)
                     {
                         if (Family.ID == 3142)
@@ -1337,8 +1337,9 @@ namespace COServer.Game.MsgMonster
                             }
                             return;
                         }
+
                         ushort rand = (ushort)(Program.GetRandom.Next() % 1000);
-                        byte count = (byte)(Program.GetRandom.Next(1, 4));
+                        byte count = 1;
                         if (rand > 10 && rand < 700)
                         {
                             ushort xx = X;
@@ -1364,7 +1365,8 @@ namespace COServer.Game.MsgMonster
                                     DropItem(stream, killer.Player.UID, killer.Map, ItemID, xx, yy, MsgFloorItem.MsgItem.ItemType.Money, Amount, false, 0); ///dropgold
                                 }
                             }
-                        }   
+                        }
+                        #region Drop Items Players With Dead
                         if (killer.Player.BlessTime > 0 ? rand > 150 && rand < 700 : rand > 200 && rand < 800)//&& rand < 770)
                         {
                             ushort xx = X;
@@ -1428,7 +1430,9 @@ namespace COServer.Game.MsgMonster
                                 }
                             }
                         }
+                        #endregion
                     }
+                    #endregion
                 }
 
             }

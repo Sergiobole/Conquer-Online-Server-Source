@@ -221,6 +221,11 @@ namespace COServer.Database
                 write.Write<int>("Character", "DepositSMets", client.Player.DepositSMets);
                 write.Write<int>("Character", "DepositDbs", client.Player.DepositDbs);
                 write.Write<int>("Character", "DepositSDbs", client.Player.DepositSDbs);
+
+                write.Write<int>("Character", "DepositStone1", client.Player.DepositStone1);
+                write.Write<int>("Character", "DepositStone2", client.Player.DepositStone2);
+                write.Write<int>("Character", "DepositStone3", client.Player.DepositStone3);
+                write.Write<int>("Character", "DepositStone4", client.Player.DepositStone4);
                 SaveClientItems(client);
                 SaveClientSpells(client);
                 SaveClientProfs(client);
@@ -450,6 +455,12 @@ namespace COServer.Database
             client.Player.DepositSMets = reader.ReadInt32("Character", "DepositSMets", 0);
             client.Player.DepositDbs = reader.ReadInt32("Character", "DepositDbs", 0);
             client.Player.DepositSDbs = reader.ReadInt32("Character", "DepositSDbs", 0);
+
+            client.Player.DepositStone1 = reader.ReadInt32("Character", "DepositStone1", 0);
+            client.Player.DepositStone2 = reader.ReadInt32("Character", "DepositStone2", 0);
+            client.Player.DepositStone3 = reader.ReadInt32("Character", "DepositStone3", 0);
+            client.Player.DepositStone4 = reader.ReadInt32("Character", "DepositStone4", 0);
+
 
             LoadClientItems(client);
             LoadClientSpells(client);

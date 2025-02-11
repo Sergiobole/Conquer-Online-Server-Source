@@ -18,6 +18,11 @@ namespace COServer.Role
         public int DepositMets = 0;
         public int DepositSMets = 0;
         public int DepositSDbs = 0;
+        public int DepositStone1 = 0;
+        public int DepositStone2 = 0;
+        public int DepositStone3 = 0;
+        public int DepositStone4 = 0;
+
         #region RobotAuto
         public string SocketedItemsStatus => this.LootSocketedItems ? "[Enabled]" : "[Disabled]";
         public string QualityItemsStatus => this.LootQualityItems ? "[Enabled]" : "[Disabled]";
@@ -918,11 +923,6 @@ namespace COServer.Role
 
         public void CheckDropItems(Role.Player killer, ServerSockets.Packet stream)
         {
-            // Removed the Drop Items.
-            //if (this.Robot == true)
-            //{
-            //    return;
-            //}
             try
             {
                 ushort x = X;

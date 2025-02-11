@@ -64,7 +64,6 @@ namespace COServer.Game.MsgMonster
         private MobRateWatcher DropMp;
 
         private MobRateWatcher Meteor;
-        //private MobRateWatcher DragonBalls;
 
         public MobItemGenerator(MonsterFamily family)
         {
@@ -73,13 +72,13 @@ namespace COServer.Game.MsgMonster
             Unique = new MobRateWatcher(900);//2000 / Family.Level);//4000 / Family.Level);
             Elite = new MobRateWatcher(4000);//4000 / Family.Level);//8000 / Family.Level);
             Super = new MobRateWatcher(15000);//5000 / Family.Level);//10000 / Family.Level);
-            PlusOne = new MobRateWatcher(3500);//2000 / Family.Level);//3000 / Family.Level);
-            OneSocketItem = new MobRateWatcher(40000);
-            TwoSocketItem = new MobRateWatcher(60000);
+            PlusOne = new MobRateWatcher(2500);//2000 / Family.Level);//3000 / Family.Level);
+            OneSocketItem = new MobRateWatcher(1000000);
+            TwoSocketItem = new MobRateWatcher(2000000);
 
-            OneBless = new MobRateWatcher(50000);
-            ThereBless = new MobRateWatcher(75000);
-            FiveBless = new MobRateWatcher(200000);
+            OneBless = new MobRateWatcher(500000);
+            ThereBless = new MobRateWatcher(1000000);
+            FiveBless = new MobRateWatcher(2000000);
 
             //Refined = new MobRateWatcher(10000 / Family.Level);
             //Unique = new MobRateWatcher(40000 / Family.Level);
@@ -88,10 +87,9 @@ namespace COServer.Game.MsgMonster
             //PlusOne = new MobRateWatcher(60000 / Family.Level);
 
 
-            DropHp = new MobRateWatcher(50);
-            DropMp = new MobRateWatcher(50);
+            DropHp = new MobRateWatcher(99999999);
+            DropMp = new MobRateWatcher(99999999);
             Meteor = new MobRateWatcher((int)ProjectControl.Vip_Drop_Meteors);
-         //   DragonBalls = new MobRateWatcher(35000);//5000 / Family.Level);
         }
         public List<uint> GenerateBossFamily()
         {
@@ -170,13 +168,6 @@ namespace COServer.Game.MsgMonster
                 if (Database.Server.ItemsBase.TryGetValue(Family.DropMPItem, out DbItem))
                     return Family.DropMPItem;
             }
-            //if (DragonBalls)
-            //{
-            //    dwItemQuality = 0;
-            //    Special = true;
-            //    if (Database.Server.ItemsBase.TryGetValue(Database.ItemType.DragonBall, out DbItem))
-            //        return Database.ItemType.DragonBall;
-            //}
 
             if (Meteor)
             {
@@ -233,17 +224,11 @@ namespace COServer.Game.MsgMonster
                     dwItemLev = ((dwItemSort == 900) ? Family.DropShield : Family.DropWeapon);
                 }
             }
-            /*if (dwItemLev == 99)
-            {
-               dwItemLev =0;
-            }*/
-
             if (dwItemLev != 99)
             {
                 dwItemLev = AlterItemLevel(dwItemLev, dwItemSort);
 
                 uint idItemType = (dwItemSort * 1000) + (dwItemLev * 10) + dwItemQuality;
-                // Database.ItemType.DBItem DbItem;
                 if (Database.Server.ItemsBase.TryGetValue(idItemType, out DbItem))
                 {
                     ushort position = Database.ItemType.ItemPosition(idItemType);
@@ -260,35 +245,25 @@ namespace COServer.Game.MsgMonster
         {
             if (PlusOne)
                 return 1;
-            //if (PlusTwo)
-            //    return 2;
             return 0;
         }
         public byte GenerateBless()
         {
-            //if (Program.GetRandom.Next(0, 1000) < 100) // 10%
-            //{
-            //    int selector = Program.GetRandom.Next(0, 100);
-            //    if (selector < 1)
             if (ThereBless)
                 return 3;
-            //else
-            //if (selector < 2)
             else if (OneBless)
                 return 1;
             else if (FiveBless)
                 return 5;
-            //}
             return 0;
         }
         public byte GenerateSocketCount(uint ItemID)
         {
             if (ItemID >= 410000 && ItemID <= 580339)
             {
-            //    int nRate = Program.GetRandom.Next(0, 1000) % 100;
-                if (TwoSocketItem) // 5%
+                if (TwoSocketItem)
                     return 2;
-                else if (OneSocketItem) // 15%
+                else if (OneSocketItem) 
                     return 1;
             }
             return 0;
@@ -308,7 +283,7 @@ namespace COServer.Game.MsgMonster
         public uint GenerateGold(out uint ItemID, bool normal = false, bool twin = false)
         {
             ////uint amount = (uint)Program.GetRandom.Next(2000, 20000);
-            uint amount = (uint)Program.GetRandom.Next(250, 1500);//Family.DropMoney);
+            uint amount = (uint)Program.GetRandom.Next(100, 1000);//Family.DropMoney);
 
             ItemID = Database.ItemType.MoneyItemID(amount);
             return amount;

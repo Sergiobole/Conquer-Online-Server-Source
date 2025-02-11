@@ -20,7 +20,7 @@ namespace COServer.Game.MsgMonster
             DateTime now = DateTime.Now;
 
             // Verifica se o spawn dos bosses regulares (TeratoDragon e Dragon) deve ocorrer a cada 1 hora
-            if ((now - lastSpawnTime).TotalMinutes >= 30)
+            if ((now - lastSpawnTime).TotalHours >= 1)
             {
                 Random R = new Random();
                 int Nr = R.Next(1, 6); // Sorteio de local, agora com 6 opções
@@ -95,7 +95,7 @@ namespace COServer.Game.MsgMonster
             }
 
             // Verifica se o Cleanwater deve spawnar a cada 1 hora
-            if ((now - lastCleanwaterSpawnTime).TotalHours >= 1)
+            if ((now - lastCleanwaterSpawnTime).TotalHours >= 30)
             {
                 SpawnHandler(1212, 428, 418, 8500, "Cleanwater",
                     "Cleanwater has spawned in " + Database.Server.MapName[1212] + " (428, 418)! Get ready to fight!",

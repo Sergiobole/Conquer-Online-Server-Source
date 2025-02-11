@@ -2465,6 +2465,7 @@ namespace COServer.Game.MsgNpc
 
                         data.AddText("Welcome to CoGolden Bank, you can withdraw your Meteors and DragonBalls that were stored in your VIP Bank here.");
                         data.AddOption("Withdraw.", 2);
+                        data.AddOption("Deposit", 3);
                         data.FinalizeDialog();
 
                         break;
@@ -2472,14 +2473,397 @@ namespace COServer.Game.MsgNpc
                 case 2:
                     {
                         data.AddText("What would you like to withdraw?");
-                        data.AddOption("DragonBalls.", 11);
+                        data.AddOption("DragonBalls", 11);
                         data.AddOption("DBScrolls.", 12);
                         data.AddOption("Meteors.", 13);
                         data.AddOption("MeteorScrolls.", 14);
+                        data.AddOption("Stones.", 60);
+                        data.FinalizeDialog();
+                        break;
+                    }
+
+                case 3:
+                    {
+                        data.AddText("What would you like to Deposit?");
+                        data.AddOption("DragonBalls and DBScrolls", 21);
+                        data.AddOption("Meteors and MeteorScrolls.", 40);
+                        data.AddOption("Stones.", 50);
                         data.FinalizeDialog();
                         break;
                     }
                 #endregion
+
+                #region Wirthdraw Stones
+                case 60:
+                    {
+                        data.AddText("What would you like to withdraw?");
+                        data.AddOption("Stone +1", 61);
+                        data.AddOption("Stone +2.", 71);
+                        data.AddOption("Stone +3", 81);
+                        data.AddOption("Stone +4", 91);
+                        data.FinalizeDialog();
+                        break;
+                    }
+
+
+                #region Wirthdraw Stones+1
+                case 61:
+                    {
+                        data.AddText($"You have: {client.Player.DepositStone1} \n");
+                        data.AddText($"How many Stone +1 would you like to withdraw?");
+                        data.AddInput($"Amount:", 62);
+                        data.FinalizeDialog();
+                        break;
+                    }
+                case 62:
+                    {
+                        byte space = byte.Parse(Input);
+                        if (client.Player.DepositStone1 >= space && space > 0)
+                        {
+                            if (client.Inventory.HaveSpace(space))
+                            {
+
+                                client.Inventory.Add(stream, Database.ItemType.Stone_1, space);
+                                client.Player.DepositStone1 -= space;
+                                data.AddText($"You've successfully withdrew {space} and you now have {client.Player.DepositStone1} Stone +1.");
+                                data.AddOption("Thanks.", 255);
+                                data.FinalizeDialog();
+
+                            }
+                            else
+                            {
+                                data.AddText($"Sorry, but you don't have {space} free spaces in your inventory.");
+                                data.AddOption("Okay.", 255);
+                                data.FinalizeDialog();
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            data.AddText($"You don't have that amount.");
+                            data.AddOption("Okay.", 255);
+                            data.FinalizeDialog();
+                        }
+                        break;
+                    }
+                #endregion
+                #region Wirthdraw Stones+2
+                case 71:
+                    {
+                        data.AddText($"You have: {client.Player.DepositStone2} \n");
+                        data.AddText($"How many Stone +2 would you like to withdraw?");
+                        data.AddInput($"Amount:", 72);
+                        data.FinalizeDialog();
+                        break;
+                    }
+                case 72:
+                    {
+                        byte space = byte.Parse(Input);
+                        if (client.Player.DepositStone2 >= space && space > 0)
+                        {
+                            if (client.Inventory.HaveSpace(space))
+                            {
+
+                                client.Inventory.Add(stream, Database.ItemType.Stone_2, space);
+                                client.Player.DepositStone2 -= space;
+                                data.AddText($"You've successfully withdrew {space} and you now have {client.Player.DepositStone2} Stone +2.");
+                                data.AddOption("Thanks.", 255);
+                                data.FinalizeDialog();
+
+                            }
+                            else
+                            {
+                                data.AddText($"Sorry, but you don't have {space} free spaces in your inventory.");
+                                data.AddOption("Okay.", 255);
+                                data.FinalizeDialog();
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            data.AddText($"You don't have that amount.");
+                            data.AddOption("Okay.", 255);
+                            data.FinalizeDialog();
+                        }
+                        break;
+                    }
+                #endregion
+                #region Wirthdraw Stones+3
+                case 81:
+                    {
+                        data.AddText($"You have: {client.Player.DepositStone3} \n");
+                        data.AddText($"How many Stone +3 would you like to withdraw?");
+                        data.AddInput($"Amount:", 82);
+                        data.FinalizeDialog();
+                        break;
+                    }
+                case 82:
+                    {
+                        byte space = byte.Parse(Input);
+                        if (client.Player.DepositStone3 >= space && space > 0)
+                        {
+                            if (client.Inventory.HaveSpace(space))
+                            {
+
+                                client.Inventory.Add(stream, Database.ItemType.Stone_3, space);
+                                client.Player.DepositStone3 -= space;
+                                data.AddText($"You've successfully withdrew {space} and you now have {client.Player.DepositStone3} Stone +3.");
+                                data.AddOption("Thanks.", 255);
+                                data.FinalizeDialog();
+
+                            }
+                            else
+                            {
+                                data.AddText($"Sorry, but you don't have {space} free spaces in your inventory.");
+                                data.AddOption("Okay.", 255);
+                                data.FinalizeDialog();
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            data.AddText($"You don't have that amount.");
+                            data.AddOption("Okay.", 255);
+                            data.FinalizeDialog();
+                        }
+                        break;
+                    }
+                #endregion
+                #region Wirthdraw Stones+4
+                case 91:
+                    {
+                        data.AddText($"You have: {client.Player.DepositStone2} \n");
+                        data.AddText($"How many Stone +2 would you like to withdraw?");
+                        data.AddInput($"Amount:", 92);
+                        data.FinalizeDialog();
+                        break;
+                    }
+                case 92:
+                    {
+                        byte space = byte.Parse(Input);
+                        if (client.Player.DepositStone4 >= space && space > 0)
+                        {
+                            if (client.Inventory.HaveSpace(space))
+                            {
+
+                                client.Inventory.Add(stream, Database.ItemType.Stone_4, space);
+                                client.Player.DepositStone4 -= space;
+                                data.AddText($"You've successfully withdrew {space} and you now have {client.Player.DepositStone4} Stone +4.");
+                                data.AddOption("Thanks.", 255);
+                                data.FinalizeDialog();
+
+                            }
+                            else
+                            {
+                                data.AddText($"Sorry, but you don't have {space} free spaces in your inventory.");
+                                data.AddOption("Okay.", 255);
+                                data.FinalizeDialog();
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            data.AddText($"You don't have that amount.");
+                            data.AddOption("Okay.", 255);
+                            data.FinalizeDialog();
+                        }
+                        break;
+                    }
+                #endregion
+                #endregion
+                #region Deposit Stones
+                case 50:
+                    {
+                        data.AddText("Want Deposit your Stones?.\n")
+                            .AddOption("Deposit~a~Stone+1.", 51)
+                            .AddOption("Deposit~a~Stone+2.", 52)
+                            .AddOption("Deposit~a~Stone+3.", 53)
+                            .AddOption("Deposit~a~Stone+4.", 54)
+                            .AddOption("I~have~nothing.", 255).AddAvatar(7).FinalizeDialog();
+
+                        break;
+                    }
+                case 51:
+                    {
+                        if (client.Inventory.Contain(Database.ItemType.Stone_1, 1))
+                        {
+                            client.Inventory.Remove(Database.ItemType.Stone_1, 1, stream);
+                            client.Player.DepositStone1++;
+                            Console.WriteLine(client.Player.DepositStone1);
+
+                            client.CreateBoxDialog("Congratulations! Deposit your Deposit Stone +1!");
+                        }
+                        else
+                        {
+                            data.AddText("Where~is~your~Stone+1?")
+                          .AddOption("I'll be right back.", 255).AddAvatar(7).FinalizeDialog();
+                        }
+
+
+                        break;
+                    }
+                case 52:
+                    {
+                        if (client.Inventory.Contain(Database.ItemType.Stone_2, 1))
+                        {
+                            client.Inventory.Remove(Database.ItemType.Stone_2, 1, stream);
+                            client.Player.DepositStone2++;
+                            Console.WriteLine(client.Player.DepositStone2);
+
+                            client.CreateBoxDialog("Congratulations! Deposit your Deposit Stone +2!");
+                        }
+                        else
+                        {
+                            data.AddText("Where~is~your~Stone+2?")
+                          .AddOption("I'll be right back.", 255).AddAvatar(7).FinalizeDialog();
+                        }
+
+
+                        break;
+                    }
+                case 53:
+                    {
+                        if (client.Inventory.Contain(Database.ItemType.Stone_3, 1))
+                        {
+                            client.Inventory.Remove(Database.ItemType.Stone_3, 1, stream);
+                            client.Player.DepositStone3++;
+                            Console.WriteLine(client.Player.DepositStone3);
+
+                            client.CreateBoxDialog("Congratulations! Deposit your Deposit Stone +3!");
+                        }
+                        else
+                        {
+                            data.AddText("Where~is~your~Stone+3?")
+                          .AddOption("I'll be right back.", 255).AddAvatar(7).FinalizeDialog();
+                        }
+
+
+                        break;
+                    }
+                case 54:
+                    {
+                        if (client.Inventory.Contain(Database.ItemType.Stone_4, 1))
+                        {
+                            client.Inventory.Remove(Database.ItemType.Stone_4, 1, stream);
+                            client.Player.DepositStone4++;
+                            Console.WriteLine(client.Player.DepositStone4);
+
+                            client.CreateBoxDialog("Congratulations! Deposit your Deposit Stone +4!");
+                        }
+                        else
+                        {
+                            data.AddText("Where~is~your~Stone+4?")
+                          .AddOption("I'll be right back.", 255).AddAvatar(7).FinalizeDialog();
+                        }
+
+
+                        break;
+                    }
+
+
+
+                #endregion
+
+
+                #region Deposit Meteors
+                case 40:
+                    {
+                        data.AddText("Want Deposit your Meteors?.\n")
+                            .AddOption("Deposit~a~Meteors.", 41)
+                            .AddOption("Deposit~a~MeteorsScroll.", 42)
+                            .AddOption("I~have~nothing.", 255).AddAvatar(7).FinalizeDialog();
+
+                        break;
+                    }
+                case 41:
+                    {
+                        if (client.Inventory.Contain(Database.ItemType.Meteor, 1))
+                        {
+                            client.Inventory.Remove(Database.ItemType.Meteor, 1, stream);
+                            client.Player.DepositMets++;
+                            Console.WriteLine(client.Player.DepositMets);
+
+                            client.CreateBoxDialog("Congratulations! Deposit your Meteors!");
+                        }
+                        else
+                        {
+                            data.AddText("Where~is~your~Meteors?")
+                          .AddOption("I'll be right back.", 255).AddAvatar(7).FinalizeDialog();
+                        }
+
+
+                        break;
+                    }
+                case 42:
+                    {
+                        if (client.Inventory.Contain(Database.ItemType.MeteorScroll, 1))
+                        {
+                            client.Inventory.Remove(Database.ItemType.MeteorScroll, 1, stream);
+                            client.Player.DepositSMets++;
+                            Console.WriteLine(client.Player.DepositSMets);
+
+                            client.CreateBoxDialog("Congratulations! Deposit your MeteorScroll!");
+                        }
+                        else
+                        {
+                            data.AddText("Where~is~your~MeteorScroll?")
+                          .AddOption("I'll be right back.", 255).AddAvatar(7).FinalizeDialog();
+                        }
+
+
+                        break;
+                    }
+                #endregion
+                #region Deposit Dbs
+                case 21:
+                    {
+                        data.AddText("Want Deposit your DragonBall?.\n")
+                            .AddOption("Deposit~a~DragonBall.", 211)
+                            .AddOption("Deposit~a~DragonBallScroll.", 212)                        
+                            .AddOption("I~have~nothing.", 255).AddAvatar(7).FinalizeDialog();
+
+                        break;
+                    }
+                case 211:
+                    {
+                        if (client.Inventory.Contain(Database.ItemType.DragonBall, 1))
+                        {
+                            client.Inventory.Remove(Database.ItemType.DragonBall, 1, stream);
+                            client.Player.DepositDbs++;
+                            Console.WriteLine(client.Player.DepositDbs);
+
+                            client.CreateBoxDialog("Congratulations! Deposit your DragonBall!");
+                        }
+                        else
+                        {
+                            data.AddText("Where~is~your~DragonBall?")
+                          .AddOption("I'll be right back.", 255).AddAvatar(7).FinalizeDialog();
+                        }
+
+
+                        break;
+                    }
+                case 212:
+                    {
+                        if (client.Inventory.Contain(Database.ItemType.DragonBallScroll, 1))
+                        {
+                            client.Inventory.Remove(Database.ItemType.DragonBallScroll, 1, stream);
+                            client.Player.DepositSDbs++;
+                            Console.WriteLine(client.Player.DepositSDbs);
+
+                            client.CreateBoxDialog("Congratulations! Deposit your DragonBallScroll!");
+                        }
+                        else
+                        {
+                            data.AddText("Where~is~your~DragonBallScroll?")
+                          .AddOption("I'll be right back.", 255).AddAvatar(7).FinalizeDialog();
+                        }
+
+
+                        break;
+                    }
+                #endregion
+
 
                 #region Wirthdraw Db
                 case 11:
@@ -2562,7 +2946,9 @@ namespace COServer.Game.MsgNpc
                         break;
                     }
                 #endregion
-                #region Wirthdraw 
+
+
+                #region Wirthdraw Meteors
 
                 case 13:
                     {
@@ -8231,28 +8617,28 @@ namespace COServer.Game.MsgNpc
                     {
                         if (client.Player.VipLevel == 0)
                         {
-                            client.Player.ExpireVip = DateTime.Now.AddDays(30);
+                            client.Player.ExpireVip = DateTime.Now.AddDays(7);
                             client.Player.VipLevel = 6;
-                            dialog.Text("You've claimed VIP6 for 30 days, have fun and enjoy!")
+                            dialog.Text("You've claimed VIP6 for 7 days, have fun and enjoy!")
                                 .AddOption("Thank you!", 255).FinalizeDialog();
                         }
                         else
                         {
                             dialog.Text("You've claimed free VIP.").AddOption("Oh.", 255).FinalizeDialog();
                         }
-                        /* if (client.Player.Class >= 40 && client.Player.Class <= 45)
+                        if (client.Player.Class >= 40 && client.Player.Class <= 45)
                          {
-                             dialog.AddText("Hello , i'm here to give you a VIP Level 6 for free 30 day! but its once per account so we recommand to use it on your archer")
+                             dialog.AddText("Hello , i'm here to give you a VIP Level 6 for free 7 day! but its once per account so we recommand to use it on your archer")
                                  .AddOption("Claim It", 1)
-     .AddOption("I~see.", 255)
-     .AddAvatar(63).FinalizeDialog();
+                                 .AddOption("I~see.", 255)
+                                 .AddAvatar(63).FinalizeDialog();
                          }
                          else
                          {
                              dialog.AddText("you are not archer class it will work only with archer class !")
- .AddOption("I~see.", 255)
- .AddAvatar(63).FinalizeDialog();
-                         }*/
+                                     .AddOption("I~see.", 255)
+                                     .AddAvatar(63).FinalizeDialog();
+                         }
                         break;
 
                     }
@@ -19767,7 +20153,7 @@ namespace COServer.Game.MsgNpc
                                                 if (client.Inventory.Contain(Database.ItemType.Meteor, 1))
                                                 {
                                                     Random random = new Random();
-                                                    int chance = random.Next(1, 700);
+                                                    int chance = random.Next(1, 600);
 
                                                     var itemLevel = Database.Server.ItemsBase[DataItem.ITEM_ID].Level;
 
@@ -19846,7 +20232,7 @@ namespace COServer.Game.MsgNpc
                                             if (client.Inventory.Contain(Database.ItemType.Meteor, 1))
                                             {
                                                 Random random = new Random();
-                                                int chance = random.Next(1, 2500);
+                                                int chance = random.Next(1, 2000);
 
                                                 var itemLevel = Database.Server.ItemsBase[DataItem.ITEM_ID].Level;
 
