@@ -44,6 +44,7 @@ namespace COServer.Database
 
         };
         public const uint
+
             MaxPlus = 12,
             MaxEnchant = 255,
             MaxDurability = 7099,
@@ -114,7 +115,9 @@ namespace COServer.Database
             Letra5 = 7112181,
             Letra6 = 7112191,
             Letra7 = 7112201,
-            ProfToken = 159753;
+            ProfToken = 159753,
+            MetScrollPack = 723792,
+            DbScrollPack = 723793;
 
 
 

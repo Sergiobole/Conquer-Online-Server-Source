@@ -225,8 +225,12 @@
     <Compile Include="Database\VIPSsystem.cs" />
     <Compile Include="Database\VoteSystem.cs" />
     <Compile Include="Game\Data\MarketRepository.cs" />
+    <Compile Include="Game\Data\MiningRepository.cs" />
+    <Compile Include="Game\Data\VoteRepository.cs" />
     <Compile Include="Game\Models\MarketItem.cs" />
+    <Compile Include="Game\Models\VotesModels.cs" />
     <Compile Include="Game\MsgServer\VendorDiscordNotifier.cs" />
+    <Compile Include="Game\MsgServer\VoteSystem.cs" />
     <Compile Include="Game\MsgTournaments\Events\Ss_Fb.cs" />
     <Compile Include="Game\MsgTournaments\ArenaDuel.cs" />
     <Compile Include="Game\MsgTournaments\Events\FirstKiller.cs" />

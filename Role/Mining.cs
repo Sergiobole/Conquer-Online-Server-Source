@@ -99,15 +99,21 @@ namespace COServer.Role
                 return item.Name;
             }
             return "";
+
         }
         private static void Mine(ServerSockets.Packet stream, uint GemID, uint GemID2, uint GemID3, uint GemID4, uint Ore1, uint Ore2, uint Ore3, uint Ore4, Client.GameClient client)
         {
             double i = 0;
             bool IsSuperGem = false;
             bool IsRefindGem = false;
+            string playerName = client.Player.Name;
+
+            string itemName = GetItemName(GemID); // Nome original do item
+
+            DateTime minedAt = DateTime.Now;
             if (client.Player.Map == 1029) i = 0.02;
 
-            if (GemID != 0 && Role.Core.RateDouble(Global.MINING_DROP_GEMS + i))//ores type 2
+            if (GemID != 0 && Role.Core.RateDouble(Global.MINING_DROP_GEMS + i)) // ores type 2
             {
                 if (Role.Core.RateDouble(Global.MINING_DROP_GEMS_REFIND))
                 {
@@ -119,22 +125,28 @@ namespace COServer.Role
                     GemID += 2;
                     IsSuperGem = true;
                 }
+
+                itemName = GetItemName(GemID);
+
+
                 if (IsSuperGem)
                 {
-                    Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + client.Player.Name + " has found a Super " + GetItemName(GemID) + ".", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
-                    client.SendSysMesage($"You've gained a {GetItemName(GemID)}", MsgMessage.ChatMode.TopLeft);
-
+                    Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + client.Player.Name + " has found a Super " + itemName + ".", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                    client.SendSysMesage($"You've gained a {itemName}", MsgMessage.ChatMode.TopLeft);
                 }
                 else if (IsRefindGem)
                 {
-                    client.SendSysMesage($"You have gained a {GetItemName(GemID)}", MsgMessage.ChatMode.TopLeft);
-                    Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + client.Player.Name + " has found a Refined " + GetItemName(GemID) + ".", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                    client.SendSysMesage($"You have gained a {itemName}", MsgMessage.ChatMode.TopLeft);
+                    Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + client.Player.Name + " has found a Refined " + itemName + ".", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
                 }
                 else
                 {
-                    client.SendSysMesage($"You've gained a {GetItemName(GemID)}", MsgMessage.ChatMode.TopLeft);
+                    client.SendSysMesage($"You've gained a {itemName}", MsgMessage.ChatMode.TopLeft);
                 }
+
                 client.Inventory.Add(stream, GemID, 1);
+                COServer.Database.MiningRepository.InsertMinedItem(client.Player.Name, itemName, DateTime.Now);
+
                 return;
             }
 
@@ -150,6 +162,10 @@ namespace COServer.Role
                     GemID2 += 2;
                     IsSuperGem = true;
                 }
+
+                // Obtenha o nome do item após as modificações
+                itemName = GetItemName(GemID2);
+
                 if (IsSuperGem)
                 {
                     Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + client.Player.Name + " has found a Super " + GetItemName(GemID2) + ".", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
@@ -165,11 +181,13 @@ namespace COServer.Role
                     client.SendSysMesage($"You've gained a {GetItemName(GemID2)}", MsgMessage.ChatMode.TopLeft);
                 }
                 client.Inventory.Add(stream, GemID2, 1);
+                COServer.Database.MiningRepository.InsertMinedItem(client.Player.Name, itemName, DateTime.Now);
                 return;
             }
 
             if (GemID3 != 0 && Role.Core.RateDouble(Global.MINING_DROP_GEMS + i))//ores type 2
             {
+ 
                 if (Role.Core.RateDouble(Global.MINING_DROP_GEMS_REFIND))
                 {
                     IsRefindGem = true;
@@ -180,6 +198,10 @@ namespace COServer.Role
                     GemID3 += 2;
                     IsSuperGem = true;
                 }
+
+                // Obtenha o nome do item após as modificações
+                itemName = GetItemName(GemID3);
+
                 if (IsSuperGem)
                 {
                     client.SendSysMesage($"You've gained a {GetItemName(GemID3)}", MsgMessage.ChatMode.TopLeft);
@@ -196,11 +218,13 @@ namespace COServer.Role
                     client.SendSysMesage($"You've gained a {GetItemName(GemID3)}", MsgMessage.ChatMode.TopLeft);
                 }
                 client.Inventory.Add(stream, GemID3, 1);
+                COServer.Database.MiningRepository.InsertMinedItem(client.Player.Name, itemName, DateTime.Now);
                 return;
             }
 
             if (GemID4 != 0 && Role.Core.RateDouble(Global.MINING_DROP_GEMS + i))//ores type 2
             {
+
                 if (Role.Core.RateDouble(Global.MINING_DROP_GEMS_REFIND))
                 {
                     IsRefindGem = true;
@@ -211,6 +235,10 @@ namespace COServer.Role
                     GemID4 += 2;
                     IsSuperGem = true;
                 }
+
+                // Obtenha o nome do item após as modificações
+                itemName = GetItemName(GemID4);
+
                 if (IsSuperGem)
                 {
                     client.SendSysMesage($"You've gained a {GetItemName(GemID4)}", MsgMessage.ChatMode.TopLeft);
@@ -227,6 +255,7 @@ namespace COServer.Role
                     client.SendSysMesage($"You've gained a {GetItemName(GemID4)}", MsgMessage.ChatMode.TopLeft);
                 }
                 client.Inventory.Add(stream, GemID4, 1);
+                COServer.Database.MiningRepository.InsertMinedItem(client.Player.Name, itemName, DateTime.Now);
                 return;
             }
 
@@ -310,7 +339,6 @@ namespace COServer.Role
                     return;
                 }
             }
-
             if (Role.Core.RateDouble(Global.MINING_DROP_DRAGONBALL))
             {
                 client.Inventory.Add(stream, Database.ItemType.DragonBall, 1);

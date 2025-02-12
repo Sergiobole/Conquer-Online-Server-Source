@@ -289,7 +289,7 @@ namespace COServer.Game.MsgMonster
                         DropItemID(killer, 1088000, stream, 6);
 
                     #region EggOrLetter [Quest]
-                    uint ItemType = (uint)Program.GetRandom.Next(1, 4); // 1 para Ovo, 2 para Letra
+                    uint ItemType = (uint)Program.GetRandom.Next(1, 4); 
                     uint EggCouler = (uint)Program.GetRandom.Next(1, 4);
                     uint LetraCauler = (uint)Program.GetRandom.Next(1, 8);
 
@@ -486,6 +486,7 @@ namespace COServer.Game.MsgMonster
 
                                 killer.Inventory.Add(stream, 1088000, ProjectControl.Max_DragonBall_Vip);
                                 killer.SendSysMesage("[VIP] You've got " + ProjectControl.Max_DragonBall_Vip + " DragonBalls in your Inventory.", MsgMessage.ChatMode.TopLeft);
+                                Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a DragonBall!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.Center).GetArray(stream));
                                 if (killer.Inventory.Contain(1088000, 10))
                                 {
                                     killer.Inventory.Remove(1088000, 10, stream);
@@ -583,20 +584,6 @@ namespace COServer.Game.MsgMonster
                     else
                         killer.Player.DbCount += Program.GetRandom.Next(1, 10);
 
-                    if (killer.Player.DbCount >= 10000)
-                    {
-                        killer.Player.SendString(stream, MsgStringPacket.StringID.Effect, true, "downnumber1");
-                        killer.Player.DbCount = 0;
-                        Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a DragonBall!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.Center).GetArray(stream));
-                        if (killer.Player.VipLevel >= 5)
-                        {
-                            killer.Inventory.Add(stream, Database.ItemType.DragonBall, 1);
-                        }
-                        else
-                        {
-                            DropItemID(killer, Database.ItemType.DragonBall, stream);
-                        }
-                    }
 
                     if (killer.Player.VipLevel > 0)
                     {

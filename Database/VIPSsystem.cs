@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using MySql.Data.MySqlClient;
 
 namespace COServer.Database
 {
     public class VIPSystem
     {
-
+        private static readonly string ConnectionString = "Server=localhost;Uid=root;Password=123456789;Database=zq;";
         public class User
         {
             public uint UID;
@@ -21,6 +22,38 @@ namespace COServer.Database
 
         private static List<User> UsersPoll = new List<User>();
 
+        public static bool HasClaimedFreeVip(string ip)
+        {
+            using (var conn = new MySqlConnection(ConnectionString))
+            {
+                conn.Open();
+                string query = "SELECT 1 FROM vip_claims WHERE ip = @ip LIMIT 1";
+                // Usando o nome totalmente qualificado para evitar conflitos
+                using (var cmd = new MySql.Data.MySqlClient.MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ip", ip);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        return reader.HasRows;
+                    }
+                }
+            }
+        }
+
+        public static void SaveVipClaim(uint playerId, string ip)
+        {
+            using (var conn = new MySqlConnection(ConnectionString))
+            {
+                conn.Open();
+                string query = "INSERT INTO vip_claims (player_id, ip) VALUES (@playerId, @ip)";
+                using (var cmd = new MySql.Data.MySqlClient.MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@playerId", playerId);
+                    cmd.Parameters.AddWithValue("@ip", ip);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 
         public static bool TryGetObject(uint UID, string IP, out User obj)
         {
@@ -47,38 +80,26 @@ namespace COServer.Database
         }
         public static void CheckUp(Client.GameClient client)
         {
-
-            if (!client.Player.CanClaimFreeVip && client.Player.VipLevel == 0)
+            // Exemplo de verificação extra, caso necessário
+            string clientIP = client.Socket.RemoteIp;
+            if (!HasClaimedFreeVip(clientIP) && client.Player.VipLevel == 0)
             {
-                User _user;
-                if (CanClaimVIP(client))
+                client.Player.ExpireVip = DateTime.Now.AddDays(7);
+                client.Player.VipLevel = 6;
+                SaveVipClaim(client.Player.UID, clientIP);
+
+                using (var rec = new ServerSockets.RecycledPacket())
                 {
-                    client.SendSysMesage("You`ve already received the VIP on another account!");
-                    return;
+                    var stream = rec.GetStream();
+                    client.Player.SendUpdate(stream, client.Player.VipLevel, Game.MsgServer.MsgUpdate.DataType.VIPLevel);
+                    client.Player.UpdateVip(stream);
                 }
-                else
-                {
-                    _user = new User();
-                    _user.UID = client.Player.UID;
-                    _user.IP = client.Socket.RemoteIp;
-                    _user.CanClaimFreeVip += 1;
-
-                    UsersPoll.Add(_user);
-
-                    client.Player.ExpireVip = DateTime.Now.AddDays(7);
-                    client.Player.VipLevel = 6;
-
-                    using (var rec = new ServerSockets.RecycledPacket())
-                    {
-                        var stream = rec.GetStream();
-                        client.Player.SendUpdate(stream, client.Player.VipLevel, Game.MsgServer.MsgUpdate.DataType.VIPLevel);
-
-                        client.Player.UpdateVip(stream);
-                    }
-                    client.Player.CanClaimFreeVip = true;
-
-                    client.SendSysMesage("You`ve received free VIP 6 (7 days).");
-                }
+                client.Player.CanClaimFreeVip = true;
+                client.SendSysMesage("You`ve received free VIP 6 (7 days).");
+            }
+            else
+            {
+                client.SendSysMesage("You`ve already received the VIP on another account!");
             }
         }
         public static void Save()

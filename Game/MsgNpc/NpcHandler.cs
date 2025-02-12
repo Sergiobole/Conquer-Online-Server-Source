@@ -4566,39 +4566,71 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        data.AddText("You're eligible to vote!\n")
-                            .AddText("Please remember you may only vote once every 12 hours.")
-                            .AddOption("1 - Vote.", 41)
-                            .AddOption("3 - Exchange points.", 60)
-                            .AddOption("I'll think about it.", 255)
-                            .AddAvatar(3)
-                            .FinalizeDialog();
-                        break;
-                    }
+                        DateTime? lastVoteTime = COServer.Game.Data.VoteRepository.GetLastVoteTime(client.Player.Name);
 
-                case 41:
-                    {
-                        string playerIP = client.Socket.RemoteIp; // Obtém o IP do jogador
-
-                        if (Database.VoteSystem.CanVote(client)) // Verifica se o jogador pode votar pelo IP
+                        if (lastVoteTime.HasValue)
                         {
-                            client.SendSysMesage("https://www.xtremetop100.com/in.php?site=1132376247", MsgMessage.ChatMode.WebSite, MsgMessage.MsgColor.red, false);
+                            TimeSpan timeSinceLastVote = DateTime.Now - lastVoteTime.Value;
+
+                            if (timeSinceLastVote.TotalHours < 12)
+                            {
+                                TimeSpan timeRemaining = TimeSpan.FromHours(12) - timeSinceLastVote;
+
+                                string timeLeftMessage = $"You must wait {timeRemaining.Hours} hours and {timeRemaining.Minutes} minutes before voting again.";
+                                client.SendSysMesage(timeLeftMessage, MsgMessage.ChatMode.System, MsgMessage.MsgColor.Blue, false);
+
+                                data.AddText("Please remember you may only vote once every 12 hours.")
+                                    .AddOption("1 - Vote.", 41)
+                                    .AddOption("3 - Exchange points.", 60)
+                                    .AddOption("I'll think about it.", 255)
+                                    .AddAvatar(3)
+                                    .FinalizeDialog();
+                            }
+                            else
+                            {
+                                COServer.Game.MsgServer.VoteSystem.AddVote(client.Player.Name, client.Socket.RemoteIp); 
+
+                                client.SendSysMesage("You have voted successfully! Thank you for your participation.", MsgMessage.ChatMode.System, MsgMessage.MsgColor.Blue, false);
+                                client.Player.StartVote = true;
+                                client.Player.StartVoteStamp = Time32.Now.AddSeconds(30);
+                                client.SendSysMesage("Please wait for the system to check your vote.");
+
+                                Database.VoteSystem.CheckUp(client);
+
+                                data.AddText("You're eligible to vote!\n")
+                                    .AddText("Please remember you may only vote once every 12 hours.")
+                                    .AddOption("1 - Vote.", 41)
+                                    .AddOption("3 - Exchange points.", 60)
+                                    .AddOption("I'll think about it.", 255)
+                                    .AddAvatar(3)
+                                    .FinalizeDialog();
+                            }
+                        }
+                        else
+                        {
+                            COServer.Game.MsgServer.VoteSystem.AddVote(client.Player.Name, client.Socket.RemoteIp);
+
+                            client.SendSysMesage("You have voted successfully! Thank you for your participation.", MsgMessage.ChatMode.System, MsgMessage.MsgColor.Blue, false);
                             client.Player.StartVote = true;
                             client.Player.StartVoteStamp = Time32.Now.AddSeconds(30);
                             client.SendSysMesage("Please wait for the system to check your vote.");
 
-                            // Agora, devemos garantir que o voto seja salvo na base de dados
-                            Database.VoteSystem.CheckUp(client); // Chama o método para processar o voto e atualizar a base de dados
-                        }
-                        else
-                        {
-                            data.AddText("You've already claimed your reward for voting. You may only vote once every 12 hours per IP address.")
-                                .AddOption("I see.", 255)
+                            Database.VoteSystem.CheckUp(client);  
+
+                            data.AddText("You're eligible to vote!\n")
+                                .AddText("Please remember you may only vote once every 12 hours.")
+                                .AddOption("1 - Vote.", 41)
+                                .AddOption("3 - Exchange points.", 60)
+                                .AddOption("I'll think about it.", 255)
                                 .AddAvatar(3)
                                 .FinalizeDialog();
                         }
+
                         break;
                     }
+
+
+
 
 
                 #region vote reward
@@ -4607,7 +4639,7 @@ namespace COServer.Game.MsgNpc
                         data.AddText("Dear " + client.Player.Name + ", you currently have [" + client.Player.VotePoints + "] Vote Points.\n")
                             .AddText("Would you like to trade them for some rewards?")
                         
-                        .AddOption("1 - 3xExp (2 VPs)", 17)
+                        .AddOption("1 - 3xExp (1 VPs)", 17)
                         .AddOption("2 - RTG. (5 VPs)", 11)
                         .AddOption("3 - RDG. (5 VPs)", 12)
                         .AddOption("4 - RPG. (5 VPs)", 13)
@@ -4721,11 +4753,11 @@ namespace COServer.Game.MsgNpc
                 #endregion
                 case 17:
                     {
-                        if (client.Player.VotePoints >= 2)
+                        if (client.Player.VotePoints >= 1)
                         {
-                            if (client.Inventory.HaveSpace(2))
+                            if (client.Inventory.HaveSpace(1))
                             {
-                                client.Player.VotePoints -= 2;
+                                client.Player.VotePoints -= 1;
                                 client.Inventory.Add(stream, 720393);//ExpPill
                             }
                             else client.SendSysMesage("You don`t have enough space in your inventory.");
@@ -8597,51 +8629,44 @@ namespace COServer.Game.MsgNpc
         public static void vipfree(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
         {
             Dialog dialog = new Dialog(client, stream);
+            // Obtenha o IP do cliente
+            string clientIP = client.Socket.RemoteIp;
+
             switch (Option)
             {
                 case 0:
+                    // Se o IP ainda não foi usado para resgatar o VIP, permite o resgate
+                    if (!Database.VIPSystem.HasClaimedFreeVip(clientIP))
                     {
-                        if (client.Player.VipLevel == 0)
-                        {
-                            client.Player.ExpireVip = DateTime.Now.AddDays(7);
-                            client.Player.VipLevel = 6;
-                            dialog.Text("You've claimed VIP6 for 7 days, have fun and enjoy!")
-                                .AddOption("Thank you!", 255).FinalizeDialog();
-                        }
-                        else
-                        {
-                            dialog.Text("You've claimed free VIP.").AddOption("Oh.", 255).FinalizeDialog();
-                        }
-                        if (client.Player.Class >= 40 && client.Player.Class <= 45)
-                         {
-                             dialog.AddText("Hello , i'm here to give you a VIP Level 6 for free 7 day! but its once per account so we recommand to use it on your archer")
-                                 .AddOption("Claim It", 1)
-                                 .AddOption("I~see.", 255)
-                                 .AddAvatar(63).FinalizeDialog();
-                         }
-                         else
-                         {
-                             dialog.AddText("you are not archer class it will work only with archer class !")
-                                     .AddOption("I~see.", 255)
-                                     .AddAvatar(63).FinalizeDialog();
-                         }
-                        break;
+                        client.Player.ExpireVip = DateTime.Now.AddDays(7);
+                        client.Player.VipLevel = 6;
+                        // Salva na DB com playerId e IP
+                        Database.VIPSystem.SaveVipClaim(client.Player.UID, clientIP);
 
+                        dialog.Text("You've claimed VIP6 for 7 days, have fun and enjoy!")
+                              .AddOption("Thank you!", 255)
+                              .FinalizeDialog();
                     }
+                    else
+                    {
+                        dialog.Text("You've already claimed free VIP.")
+                              .AddOption("Oh.", 255)
+                              .FinalizeDialog();
+                    }
+                    break;
+
                 case 1:
+                    if (!Database.VIPSystem.HasClaimedFreeVip(clientIP))
                     {
-
-                        if (!client.Player.CanClaimFreeVip)
-                        {
-                            Database.VIPSystem.CheckUp(client);
-                        }
-                        else
-                        {
-                            dialog.Text("You've already claimed free VIP.").AddOption("Oh.", 255).FinalizeDialog();
-
-                        }
-                        break;
+                        Database.VIPSystem.CheckUp(client);
                     }
+                    else
+                    {
+                        dialog.Text("You've already claimed free VIP from this IP.")
+                              .AddOption("Oh.", 255)
+                              .FinalizeDialog();
+                    }
+                    break;
             }
         }
 
@@ -20658,17 +20683,52 @@ namespace COServer.Game.MsgNpc
                         data.AddText("Hunting for treasure is an exciting thing.\n")
                             .AddText("~However,~they~also~pile~up~in~your~inventories.")
                             .AddOption("Pack~+1~Stones.", 1)
-                          //.AddOption("Pack~+2~Stones.", 3)
-                          //.AddOption("Pack~+3~Stones.", 5)
-                          //.AddOption("Pack~Normal~Gems.", 7)
-                          //.AddOption("Pack~EXP~Balls~for~me!", 32)
                             .AddOption("Pack~Meteors.", 34)
                             .AddOption("Pack~DragonBalls.", 36)
+                            .AddOption("Pack~Meteors Srolls.", 41)
+                            .AddOption("Pack~DBScroll.", 51)
+                            //.AddOption("Pack~Normal~Gems.", 7)
+                            //.AddOption("Pack~EXP~Balls~for~me!", 32)
                             .AddOption("Just~passing~by.", 255)
                             .AddAvatar(7).FinalizeDialog();
 
                         break;
                     }
+
+                case 1:
+                    {
+                        data.AddText("5 +1 Stones can be packed into a +1 Stone Pack. Would you like me to pack them for you?")
+                 .AddOption("Yes,~please.", 2)
+                 .AddOption("Bye.", 255)
+                 .AddAvatar(7).FinalizeDialog();
+
+
+                        break;
+                    }
+                case 2:
+                    {
+
+                        if (client.Inventory.Contain(730001, 5, 1))
+                        {
+                            client.Inventory.Remove(730001, 5, stream);
+                            client.Inventory.Add(stream, 723712, 1, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);
+                        }
+                        else if (client.Inventory.Contain(730001, 5, 0))
+                        {
+                            client.Inventory.Remove(730001, 5, stream);
+                            client.Inventory.Add(stream, 723712, 1);
+                        }
+                        else
+                        {
+                            data.AddText("Sorry, you don`t have 5 +1 Stones.")
+                            .AddOption("My~bad.", 255)
+                            .AddAvatar(7).FinalizeDialog();
+                        }
+
+                        break;
+                    }
+
+
                 case 36:
                     {
                         data.AddText("10 DragonBalls can be packed into a DBScroll.\n")
@@ -20727,305 +20787,7 @@ namespace COServer.Game.MsgNpc
 
                         break;
                     }
-                case 32:
-                    {
-                        data.AddText("Pay 100,000 Silver and give me 5 EXP Balls, I can pack them into an EXP Ball Gift Box for you!")
-                            .AddOption("Pack~EXP~Balls~for~me!", 33)
-                            .AddOption("Bye.", 255)
-                            .AddAvatar(7).FinalizeDialog();
 
-                        break;
-                    }
-                case 33:
-                    {
-                        if (client.Inventory.Contain(722136, 30))
-                        {
-                            if (client.Player.Money >= 100000)
-                            {
-                                client.Player.Money -= 100000;
-                                client.Player.SendUpdate(stream, client.Player.Money, MsgServer.MsgUpdate.DataType.Money);
-                                client.Inventory.Remove(722136, 30, stream);
-                                client.Inventory.Add(stream, 720757, 1);
-                            }
-                            else
-                            {
-                                data.AddText("You do not have 100,000 silvers with you.")
-                                    .AddOption("My~bad.", 255)
-                                    .AddAvatar(7).FinalizeDialog();
-                            }
-                        }
-                        else
-                        {
-                            data.AddText("Sorry, you don`t have 30 EXP Balls.")
-                                .AddOption("My~bad.", 255)
-                                .AddAvatar(7).FinalizeDialog();
-                        }
-
-                        break;
-                    }
-                case 7:
-                    {
-                        data.AddText("Which kind of Normal Gems do you want to pack up?")
-                          //.AddOption("Glory~Gems.", 8)
-                          //.AddOption("Thunder~Gems.", 9)
-                            .AddOption("Kylin~Gems.", 10)
-                            .AddOption("Rainbow~Gems.", 11)
-                            .AddOption("Fury~Gems.", 12)
-                            .AddOption("Next~page.", 13)
-                            .AddAvatar(7).FinalizeDialog();
-
-                        break;
-                    }
-                case 13:
-                    {
-                        data.AddText("Which kind of Normal Gems do you want to pack up?")
-                  .AddOption("Dragon~Gems.", 14)
-                  .AddOption("Phoenix~Gems.", 15)
-                  .AddOption("Violet~Gems.", 16)
-                  .AddOption("Moon~Gems.", 17)
-                  .AddOption("Tortoise~Gems.", 18)
-                  .AddOption("Back~page.", 7)
-                  .AddOption("Just~passing~by.", 255)
-                  .AddAvatar(7).FinalizeDialog();
-
-                        break;
-                    }
-                case 18:
-                    {
-                        data.AddText("5 Normal Tortoise Gems can be packed into a Tortoise Gem Pack! Would you like me to pack them for you?")
-                 .AddOption("Yes,~please.", 29)
-                 .AddOption("Bye.", 255)
-                 .AddAvatar(7).FinalizeDialog();
-
-
-                        break;
-                    }
-                case 29:
-                    {
-                        if (client.Inventory.Contain((uint)(700000 + (uint)Role.Flags.Gem.NormalTortoiseGem), 5))
-                        {
-                            client.Inventory.Remove((uint)(700000 + (uint)Role.Flags.Gem.NormalTortoiseGem), 5, stream);
-                            client.Inventory.Add(stream, 727069, 1);
-                        }
-                        else
-                        {
-                            data.AddText("Sorry, you don`t have 5 Tortoise Gems.")
-                  .AddOption("My~bad.", 255)
-                  .AddAvatar(7).FinalizeDialog();
-                        }
-
-                        break;
-                    }
-                case 17:
-                    {
-                        data.AddText("5 Normal Moon Gems can be packed into a Moon Gem Pack! Would you like me to pack them for you?")
-                  .AddOption("Yes,~please.", 28)
-                  .AddOption("Bye.", 255)
-                  .AddAvatar(7).FinalizeDialog();
-
-                        break;
-                    }
-                case 28:
-                    {
-                        if (client.Inventory.Contain((uint)(700000 + (uint)Role.Flags.Gem.NormalMoonGem), 5))
-                        {
-                            client.Inventory.Remove((uint)(700000 + (uint)Role.Flags.Gem.NormalMoonGem), 5, stream);
-                            client.Inventory.Add(stream, 727068, 1);
-                        }
-                        else
-                        {
-                            data.AddText("Sorry, you don`t have 5 Moon Gems.")
-                  .AddOption("My~bad.", 255)
-                  .AddAvatar(7).FinalizeDialog();
-                        }
-
-
-                        break;
-                    }
-                case 16:
-                    {
-                        data.AddText("5 Normal Violet Gems can be packed into a Violet Gem Pack! Would you like me to pack them for you?")
-                 .AddOption("Yes,~please.", 27)
-                 .AddOption("Bye.", 255)
-                 .AddAvatar(7).FinalizeDialog();
-
-                        break;
-                    }
-                case 27:
-                    {
-                        if (client.Inventory.Contain((uint)(700000 + (uint)Role.Flags.Gem.NormalVioletGem), 5))
-                        {
-                            client.Inventory.Remove((uint)(700000 + (uint)Role.Flags.Gem.NormalVioletGem), 5, stream);
-                            client.Inventory.Add(stream, 727067, 1);
-                        }
-                        else
-                        {
-                            data.AddText("Sorry, you don`t have 5 Violet Gems.")
-                  .AddOption("My~bad.", 255)
-                  .AddAvatar(7).FinalizeDialog();
-                        }
-
-
-                        break;
-                    }
-                case 15:
-                    {
-                        data.AddText("5 Normal Phoenix Gems can be packed into a Phoenix Gem Pack! Would you like me to pack them for you?")
-                .AddOption("Yes,~please.", 26)
-                .AddOption("Bye.", 255)
-                .AddAvatar(7).FinalizeDialog();
-
-                        break;
-                    }
-                case 26:
-                    {
-                        if (client.Inventory.Contain((uint)(700000 + (uint)Role.Flags.Gem.NormalPhoenixGem), 5))
-                        {
-                            client.Inventory.Remove((uint)(700000 + (uint)Role.Flags.Gem.NormalPhoenixGem), 5, stream);
-                            client.Inventory.Add(stream, 727066, 1);
-                        }
-                        else
-                        {
-                            data.AddText("Sorry, you don`t have 5 Phoenix Gems.")
-                  .AddOption("My~bad.", 255)
-                  .AddAvatar(7).FinalizeDialog();
-                        }
-
-
-                        break;
-                    }
-                case 14:
-                    {
-                        data.AddText("5 Normal Dragon Gems can be packed into a Dragon Gem Pack! Would you like me to pack them for you?")
-                  .AddOption("Yes,~please.", 25)
-                  .AddOption("Bye.", 255)
-                  .AddAvatar(7).FinalizeDialog();
-
-
-                        break;
-                    }
-                case 25:
-                    {
-                        if (client.Inventory.Contain((uint)(700000 + (uint)Role.Flags.Gem.NormalDragonGem), 5))
-                        {
-                            client.Inventory.Remove((uint)(700000 + (uint)Role.Flags.Gem.NormalDragonGem), 5, stream);
-                            client.Inventory.Add(stream, 727065, 1);
-                        }
-                        else
-                        {
-                            data.AddText("Sorry, you don`t have 5 Dragon Gems.")
-                  .AddOption("My~bad.", 255)
-                  .AddAvatar(7).FinalizeDialog();
-                        }
-
-
-                        break;
-                    }
-                case 12:
-                    {
-                        data.AddText("5 Normal Fury Gems can be packed into a Fury Gem Pack! Would you like me to pack them for you?")
-                  .AddOption("Yes,~please.", 24)
-                  .AddOption("Bye.", 255)
-                  .AddAvatar(7).FinalizeDialog();
-
-
-                        break;
-                    }
-                case 24:
-                    {
-                        if (client.Inventory.Contain((uint)(700000 + (uint)Role.Flags.Gem.NormalFuryGem), 5))
-                        {
-                            client.Inventory.Remove((uint)(700000 + (uint)Role.Flags.Gem.NormalFuryGem), 5, stream);
-                            client.Inventory.Add(stream, 727064, 1);
-                        }
-                        else
-                        {
-                            data.AddText("Sorry, you don`t have 5 Fury Gems.")
-                  .AddOption("My~bad.", 255)
-                  .AddAvatar(7).FinalizeDialog();
-                        }
-
-
-                        break;
-                    }
-                case 11:
-                    {
-                        data.AddText("5 Normal Rainbow Gems can be packed into a Rainbow Gem Pack! Would you like me to pack them for you?")
-                 .AddOption("Yes,~please.", 23)
-                 .AddOption("Bye.", 255)
-                 .AddAvatar(7).FinalizeDialog();
-
-                        break;
-                    }
-                case 23:
-                    {
-                        if (client.Inventory.Contain((uint)(700000 + (uint)Role.Flags.Gem.NormalRainbowGem), 5))
-                        {
-                            client.Inventory.Remove((uint)(700000 + (uint)Role.Flags.Gem.NormalRainbowGem), 5, stream);
-                            client.Inventory.Add(stream, 727063, 1);
-                        }
-                        else
-                        {
-                            data.AddText("Sorry, you don`t have 5 Rainbow Gems.")
-                  .AddOption("My~bad.", 255)
-                  .AddAvatar(7).FinalizeDialog();
-                        }
-
-                        break;
-                    }
-                case 10:
-                    {
-                        data.AddText("5 Normal Kylin Gems can be packed into a Kylin Gem Pack! Would you like me to pack them for you?")
-                  .AddOption("Yes,~please.", 22)
-                  .AddOption("Bye.", 255)
-                  .AddAvatar(7).FinalizeDialog();
-
-                        break;
-                    }
-                case 22:
-                    {
-                        if (client.Inventory.Contain((uint)(700000 + (uint)Role.Flags.Gem.NormalKylinGem), 5))
-                        {
-                            client.Inventory.Remove((uint)(700000 + (uint)Role.Flags.Gem.NormalKylinGem), 5, stream);
-                            client.Inventory.Add(stream, 727062, 1);
-                        }
-                        else
-                        {
-                            data.AddText("Sorry, you don`t have 5 Kylin Gems.")
-                  .AddOption("My~bad.", 255)
-                  .AddAvatar(7).FinalizeDialog();
-                        }
-
-
-                        break;
-                    }
-                case 9:
-                    {
-                        data.AddText("5 Normal Thunder Gems can be packed into a Thunder Gem Pack! Would you like me to pack them for you?")
-                 .AddOption("Yes,~please.", 21)
-                 .AddOption("Bye.", 255)
-                 .AddAvatar(7).FinalizeDialog();
-
-
-                        break;
-                    }
-                case 21:
-                    {
-                        if (client.Inventory.Contain((uint)(700000 + (uint)Role.Flags.Gem.NormalThunderGem), 5))
-                        {
-                            client.Inventory.Remove((uint)(700000 + (uint)Role.Flags.Gem.NormalThunderGem), 5, stream);
-                            client.Inventory.Add(stream, 727061, 1);
-                        }
-                        else
-                        {
-                            data.AddText("Sorry, you don`t have 5 Thunder Gems.")
-                  .AddOption("My~bad.", 255)
-                  .AddAvatar(7).FinalizeDialog();
-                        }
-
-
-                        break;
-                    }
 
                 case 8:
                     {
@@ -21053,93 +20815,64 @@ namespace COServer.Game.MsgNpc
 
                         break;
                     }
-                case 5:
-                    {
-                        data.AddText("10 +3 Stones can be packed into a +3 Stone Pack. Would you like me to pack them for you?")
-                .AddOption("Yes,~please.", 6)
-                .AddOption("Bye.", 255)
-                .AddAvatar(7).FinalizeDialog();
 
+
+                case 41:
+                    {
+                        data.AddText("10 MetScroll can be packed into a MetScrollPack.\n")
+                            .AddText("Would you like me to pack them for you?")
+                            .AddOption("Yes,~please.", 42)
+                            .AddOption("Never~mind.", 255)
+                            .AddAvatar(7).FinalizeDialog();
 
                         break;
                     }
-                case 6:
-                    {
-                        if (client.Inventory.Contain(730003, 10))
+                case 42:
+                    
+                        if (client.Inventory.Contain(Database.ItemType.MeteorScroll, 10))
                         {
-                            client.Inventory.Remove(730003, 10, stream);
-                            client.Inventory.Add(stream, 729023, 1);
+                            client.Inventory.Remove(Database.ItemType.MeteorScroll, 10, stream);
+                            client.Inventory.Add(stream, Database.ItemType.MetScrollPack, 1);
                         }
                         else
                         {
-                            data.AddText("Sorry, you don`t have 10 +3 Stones.")
-                  .AddOption("My~bad.", 255)
-                  .AddAvatar(7).FinalizeDialog();
+                            data.AddText("Sorry, you don`t have 10 MeteorScroll.")
+                                .AddOption("My~bad.", 255)
+                                .AddAvatar(7).FinalizeDialog();
                         }
 
                         break;
-                    }
-                case 3:
-                    {
-                        data.AddText("10 +2 Stones can be packed into a +2 Stone Pack. Would you like me to pack them for you?")
-                  .AddOption("Yes,~please.", 4)
-                  .AddOption("Bye.", 255)
-                  .AddAvatar(7).FinalizeDialog();
 
+                case 51:
+                    {
+                        data.AddText("10 DBScroll can be packed into a DbScrollPack.\n")
+                            .AddText("Would you like me to pack them for you?")
+                            .AddOption("Yes,~please.", 52)
+                            .AddOption("Never~mind.", 255)
+                            .AddAvatar(7).FinalizeDialog();
 
                         break;
                     }
-                case 4:
+                case 52:
+
+                    if (client.Inventory.Contain(Database.ItemType.DragonBallScroll, 10))
                     {
-                        if (client.Inventory.Contain(730002, 10))
-                        {
-                            client.Inventory.Remove(730002, 10, stream);
-                            client.Inventory.Add(stream, 729022, 1);
-                        }
-                        else
-                        {
-                            data.AddText("Sorry, you don`t have 10 +2 Stones.")
-                  .AddOption("My~bad.", 255)
-                  .AddAvatar(7).FinalizeDialog();
-                        }
-
-
-
-                        break;
+                        client.Inventory.Remove(Database.ItemType.DragonBallScroll, 10, stream);
+                        client.Inventory.Add(stream, Database.ItemType.DbScrollPack, 1);
                     }
-                case 1:
+                    else
                     {
-                        data.AddText("5 +1 Stones can be packed into a +1 Stone Pack. Would you like me to pack them for you?")
-                 .AddOption("Yes,~please.", 2)
-                 .AddOption("Bye.", 255)
-                 .AddAvatar(7).FinalizeDialog();
-
-
-                        break;
-                    }
-                case 2:
-                    {
-
-                        if (client.Inventory.Contain(730001, 5, 1))
-                        {
-                            client.Inventory.Remove(730001, 5, stream);
-                            client.Inventory.Add(stream, 723712, 1, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);
-                        }
-                        else if (client.Inventory.Contain(730001, 5, 0))
-                        {
-                            client.Inventory.Remove(730001, 5, stream);
-                            client.Inventory.Add(stream, 723712, 1);
-                        }
-                        else
-                        {
-                            data.AddText("Sorry, you don`t have 5 +1 Stones.")
+                        data.AddText("Sorry, you don`t have 10 DragonBallScroll.")
                             .AddOption("My~bad.", 255)
                             .AddAvatar(7).FinalizeDialog();
-                        }
-
-                        break;
                     }
+
+                    break;
+
+
             }
+
+
         }
         [NpcAttribute(NpcID.UnknowMan)]
         public static void UnknowMan(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)

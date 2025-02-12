@@ -82,9 +82,13 @@ namespace COServer.Game.MsgTournaments
             var rewards = new (uint ItemID, string ItemName)[]
             {
                     (1088001, "Meteor"),
+                    (720027, "MeteorScroll"),
                     (730001, "+1Stone"),
-                    (720028, "DragonBallScroll"),
                     (1088000, "DragonBall"),
+                    (720028, "DragonBallScroll"),
+                    (720028, "DragonBallScroll"),
+                    (720028, "DragonBallScroll"),
+                 
             };
 
             // Gerador de números aleatórios para escolher o item
