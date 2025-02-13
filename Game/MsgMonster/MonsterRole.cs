@@ -1228,7 +1228,7 @@ namespace COServer.Game.MsgMonster
                             if (Family.ID == 6005)
                                 itemid = 721015;
 
-                            if (Role.Core.Rate(10))
+                            if (Role.Core.Rate(5))
                             {
                                 ushort xx = X;
                                 ushort yy = Y;

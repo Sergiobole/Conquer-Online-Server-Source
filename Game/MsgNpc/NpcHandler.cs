@@ -86,7 +86,7 @@ namespace COServer.Game.MsgNpc
                             client.Inventory.Remove(729937, 1, stream);
 
                             string rewardName = "";
-                            switch (Program.GetRandom.Next(1, 6))
+                            switch (Program.GetRandom.Next(1, 5))
                             {
                                 case 1:
                                     client.Inventory.Add(stream, ItemType.Stone_1, 1);
@@ -103,10 +103,6 @@ namespace COServer.Game.MsgNpc
                                 case 4:
                                     client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
                                     rewardName = "Meteor Scroll";
-                                    break;
-                                case 5:
-                                    client.Inventory.Add(stream, ItemType.DragonBallScroll, 1);
-                                    rewardName = "Dragon Ball Scroll";
                                     break;
                             }
 
@@ -130,7 +126,7 @@ namespace COServer.Game.MsgNpc
         }
         #endregion
 
-        #region EggQuest
+        #region Letter
         [NpcAttribute(NpcID.letterquest)]
         private static void letterquest(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
         {
@@ -160,7 +156,7 @@ namespace COServer.Game.MsgNpc
 
 
                             string rewardName = "";
-                            switch (Program.GetRandom.Next(1, 6))
+                            switch (Program.GetRandom.Next(1, 5))
                             {
                                 case 1:
                                     client.Inventory.Add(stream, ItemType.Stone_1, 1);
@@ -175,12 +171,8 @@ namespace COServer.Game.MsgNpc
                                     rewardName = "Dragon Ball";
                                     break;
                                 case 4:
-                                    client.Inventory.Add(stream, ItemType.Stone_2, 1);
-                                    rewardName = "Stone +2";
-                                    break;
-                                case 5:
-                                    client.Inventory.Add(stream, ItemType.DragonBallScroll, 1);
-                                    rewardName = "Dragon Ball Scroll";
+                                    client.Inventory.Add(stream, ItemType.Meteor, 1);
+                                    rewardName = "Meteor";
                                     break;
                             }
 
@@ -2453,7 +2445,7 @@ namespace COServer.Game.MsgNpc
         }
         #endregion
 
-        #region nonvip bank
+        #region bank mkt
         [NpcAttribute(NpcID.JasonNpc)]
         public static void JasonNpc(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
         {
@@ -2632,8 +2624,8 @@ namespace COServer.Game.MsgNpc
                 #region Wirthdraw Stones+4
                 case 91:
                     {
-                        data.AddText($"You have: {client.Player.DepositStone2} \n");
-                        data.AddText($"How many Stone +2 would you like to withdraw?");
+                        data.AddText($"You have: {client.Player.DepositStone4} \n");
+                        data.AddText($"How many Stone +4 would you like to withdraw?");
                         data.AddInput($"Amount:", 92);
                         data.FinalizeDialog();
                         break;
@@ -2670,6 +2662,7 @@ namespace COServer.Game.MsgNpc
                         break;
                     }
                 #endregion
+
                 #endregion
                 #region Deposit Stones
                 case 50:
@@ -4567,70 +4560,44 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         DateTime? lastVoteTime = COServer.Game.Data.VoteRepository.GetLastVoteTime(client.Player.Name);
+                        bool canVote = !lastVoteTime.HasValue || (DateTime.Now - lastVoteTime.Value).TotalHours >= 12;
 
-                        if (lastVoteTime.HasValue)
+                        if (!canVote)
                         {
-                            TimeSpan timeSinceLastVote = DateTime.Now - lastVoteTime.Value;
-
-                            if (timeSinceLastVote.TotalHours < 12)
-                            {
-                                TimeSpan timeRemaining = TimeSpan.FromHours(12) - timeSinceLastVote;
-
-                                string timeLeftMessage = $"You must wait {timeRemaining.Hours} hours and {timeRemaining.Minutes} minutes before voting again.";
-                                client.SendSysMesage(timeLeftMessage, MsgMessage.ChatMode.System, MsgMessage.MsgColor.Blue, false);
-
-                                data.AddText("Please remember you may only vote once every 12 hours.")
-                                    .AddOption("1 - Vote.", 41)
-                                    .AddOption("3 - Exchange points.", 60)
-                                    .AddOption("I'll think about it.", 255)
-                                    .AddAvatar(3)
-                                    .FinalizeDialog();
-                            }
-                            else
-                            {
-                                COServer.Game.MsgServer.VoteSystem.AddVote(client.Player.Name, client.Socket.RemoteIp); 
-
-                                client.SendSysMesage("You have voted successfully! Thank you for your participation.", MsgMessage.ChatMode.System, MsgMessage.MsgColor.Blue, false);
-                                client.Player.StartVote = true;
-                                client.Player.StartVoteStamp = Time32.Now.AddSeconds(30);
-                                client.SendSysMesage("Please wait for the system to check your vote.");
-
-                                Database.VoteSystem.CheckUp(client);
-
-                                data.AddText("You're eligible to vote!\n")
-                                    .AddText("Please remember you may only vote once every 12 hours.")
-                                    .AddOption("1 - Vote.", 41)
-                                    .AddOption("3 - Exchange points.", 60)
-                                    .AddOption("I'll think about it.", 255)
-                                    .AddAvatar(3)
-                                    .FinalizeDialog();
-                            }
-                        }
-                        else
-                        {
-                            COServer.Game.MsgServer.VoteSystem.AddVote(client.Player.Name, client.Socket.RemoteIp);
-
-                            client.SendSysMesage("You have voted successfully! Thank you for your participation.", MsgMessage.ChatMode.System, MsgMessage.MsgColor.Blue, false);
-                            client.Player.StartVote = true;
-                            client.Player.StartVoteStamp = Time32.Now.AddSeconds(30);
-                            client.SendSysMesage("Please wait for the system to check your vote.");
-
-                            Database.VoteSystem.CheckUp(client);  
-
-                            data.AddText("You're eligible to vote!\n")
-                                .AddText("Please remember you may only vote once every 12 hours.")
-                                .AddOption("1 - Vote.", 41)
-                                .AddOption("3 - Exchange points.", 60)
-                                .AddOption("I'll think about it.", 255)
-                                .AddAvatar(3)
-                                .FinalizeDialog();
+                            TimeSpan timeRemaining = TimeSpan.FromHours(12) - (DateTime.Now - lastVoteTime.Value);
+                            string timeLeftMessage = $"You must wait {timeRemaining.Hours} hours and {timeRemaining.Minutes} minutes before voting again.";
+                            client.SendSysMesage(timeLeftMessage, MsgMessage.ChatMode.System, MsgMessage.MsgColor.Blue, false);
                         }
 
+                        data.AddText("You're eligible to vote!\n")
+                            .AddText("Please remember you may only vote once every 12 hours.")
+                            .AddOption("1 - Vote.", canVote ? (byte)41 : (byte)0)
+                            .AddOption("3 - Exchange points.", 60)
+                            .AddOption("I'll think about it.", 255)
+                            .AddAvatar(3)
+                            .FinalizeDialog();
                         break;
                     }
+                  case 41: // Opção para votar
+                    {
+                        DateTime? lastVoteTime = COServer.Game.Data.VoteRepository.GetLastVoteTime(client.Player.Name);
+                        if (lastVoteTime.HasValue && (DateTime.Now - lastVoteTime.Value).TotalHours < 12)
+                        {
+                            client.SendSysMesage("You have already voted recently. Please wait before voting again.", MsgMessage.ChatMode.System, MsgMessage.MsgColor.Blue, false);
+                            break;
+                        }
 
+                        client.SendSysMesage("https://www.xtremetop100.com/in.php?site=1132376247", MsgMessage.ChatMode.WebSite, MsgMessage.MsgColor.red, false);
+                        COServer.Game.MsgServer.VoteSystem.AddVote(client.Player.Name, client.Socket.RemoteIp);
 
+                        client.SendSysMesage("You have voted successfully! Thank you for your participation.", MsgMessage.ChatMode.System, MsgMessage.MsgColor.Blue, false);
+                        client.Player.StartVote = true;
+                        client.Player.StartVoteStamp = Time32.Now.AddSeconds(30);
+                        client.SendSysMesage("Please wait for the system to check your vote.");
 
+                        Database.VoteSystem.CheckUp(client);
+                        break;
+                    }
 
 
                 #region vote reward
@@ -7429,11 +7396,6 @@ namespace COServer.Game.MsgNpc
                             }
                         }
                         client.Teleport(608, 632, 1700);
-                        //else
-                        //{
-                        //    client.Teleport(608, 632, 1700);
-
-                        //}
                         break;
                     }
                 case 4:
@@ -8997,15 +8959,27 @@ namespace COServer.Game.MsgNpc
                             string rewardName = ""; // Variável para armazenar o nome da recompensa
 
                             // Escolher uma recompensa aleatória
-                            switch (Program.GetRandom.Next(1, 2))
+                            switch (Program.GetRandom.Next(1, 5))
                             {
                                 case 1:
-                                    client.Inventory.Add(stream, ItemType.Stone_2, 1);
-                                    rewardName = "Stone+2";
+                                    client.Inventory.Add(stream, ItemType.Stone_1, 1);
+                                    rewardName = "Stone+1";
                                     break;
                                 case 2:
-                                    client.Inventory.Add(stream, ItemType.DragonBallScroll, 1);
+                                    client.Inventory.Add(stream, ItemType.Meteor, 1);
                                     rewardName = "Dragon Ball Scroll";
+                                    break;
+                                case 3:
+                                    client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
+                                    rewardName = "MeteorScroll";
+                                    break;
+                                case 4:
+                                    client.Inventory.Add(stream, ItemType.DragonBall, 1);
+                                    rewardName = "Dragon Ball ";
+                                    break;
+                                case 5:
+                                    client.Inventory.Add(stream, ItemType.MeteorTear, 1);
+                                    rewardName = "Meteor ";
                                     break;
                             }
 
@@ -10113,20 +10087,20 @@ namespace COServer.Game.MsgNpc
                                 else
                                 {
                                     data.AddText("Please make 2 more spaces in your inventory.")
-                                               .AddOption("Let me check.", 255)
-                                               .AddAvatar(8).FinalizeDialog();
+                                         .AddOption("Let me check.", 255)
+                                         .AddAvatar(8).FinalizeDialog();
                                 }
                             }
                             else
                             {
                                 data.AddText("Sorry, the war isn't finished, or other players are still alive.")
-               .AddOption("Okay.", 255).AddAvatar(154).FinalizeDialog();
+                                    .AddOption("Okay.", 255).AddAvatar(154).FinalizeDialog();
                             }
                         }
                         else
                         {
                             data.AddText("Sorry, the war isn't finished.")
-                .AddOption("Okay.", 255).AddAvatar(154).FinalizeDialog();
+                                .AddOption("Okay.", 255).AddAvatar(154).FinalizeDialog();
                         }
                         break;
 
@@ -10156,10 +10130,10 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("The Weekly PK War will take place during 20:00 and 20:19 on Friday,")
-                                               .AddText("and you'll be admitted into tournament during 20:00 and 20:19, Come! You will be impressed.")
-                                          .AddOption("Sign~me~up.", 1)
-                                          .AddOption("I'll come later. ", 255)
-                                          .AddAvatar(63).FinalizeDialog();
+                            .AddText("and you'll be admitted into tournament during 20:00 and 20:19, Come! You will be impressed.")
+                            .AddOption("Sign~me~up.", 1)
+                            .AddOption("I'll come later. ", 255)
+                            .AddAvatar(63).FinalizeDialog();
 
 
                         break;
@@ -10173,8 +10147,8 @@ namespace COServer.Game.MsgNpc
                         else
                         {
                             data.AddText("Please sign up between 20:00 and 20:20 every Saturday.")
-            .AddOption("I see. ", 255)
-            .AddAvatar(63).FinalizeDialog();
+                                .AddOption("I see. ", 255)
+                                .AddAvatar(63).FinalizeDialog();
                         }
 
 
@@ -10220,19 +10194,19 @@ namespace COServer.Game.MsgNpc
                                 else
                                 {
                                     data.AddText("Sorry, the war is not finished, or other players are still alive.")
-                   .AddOption("Ah ok", 255).AddAvatar(154).FinalizeDialog();
+                                        .AddOption("Ah ok", 255).AddAvatar(154).FinalizeDialog();
                                 }
                             }
                             else
                             {
                                 data.AddText("Sorry, the war is not finished")
-                    .AddOption("Ah ok", 255).AddAvatar(154).FinalizeDialog();
+                                    .AddOption("Ah ok", 255).AddAvatar(154).FinalizeDialog();
                             }
                         }
                         else
                         {
                             data.AddText("Sorry, the war is finished, or other players are still alive.")
-           .AddOption("Ah ok", 255).AddAvatar(154).FinalizeDialog();
+                                .AddOption("Ah ok", 255).AddAvatar(154).FinalizeDialog();
                         }
 
                         break;
@@ -21748,16 +21722,16 @@ namespace COServer.Game.MsgNpc
                     {
                         data.AddText("I`m the TC Captain, I`m in charge of the public security around here.\n")
                             .AddText("If you can help me, I'll reward you.")
-                            .AddOption("I'd like to help.", 240)
+                            .AddOption("I'd like to help.", 222)
                             .AddOption("I'll think about it.", 255)
                             .AddAvatar(10).FinalizeDialog();
                         break;
                     }
-                case 240:
+                case 222:
                     {
                         data.AddText("I have some jobs for you to do here! The Pheasants outside Twin City are becoming more and more aggressive!\n")
                              .AddText("I want you to defeat 10 of them. This is for the safety of the people in Twin City.")
-                             .AddOption("I'm ready.", 230)
+                             .AddOption("I'm ready.", 223)
                              .AddOption("Never~mind.", 255)
                              .AddAvatar(10).FinalizeDialog();
 
@@ -21782,7 +21756,7 @@ namespace COServer.Game.MsgNpc
 
                         break;
                     }
-                case 230:
+                case 223:
                     {
                         if (client.Player.TCCaptainTimes == 3)
                         {
@@ -21860,6 +21834,9 @@ namespace COServer.Game.MsgNpc
                                 data.AddAvatar(102).FinalizeDialog();
                             }
                             else
+                            {
+
+                            }
                             {
                                 var DBMap = Database.Server.ServerMaps[next_map];
                                 data.AddText("You are powerfull now. I suggest you to go Captain of " + DBMap.Name + ", because i heard that is ")

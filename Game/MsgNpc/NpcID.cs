@@ -476,7 +476,7 @@ namespace COServer.Game.MsgNpc
         DesertBoxer = 101625,
         PheonixBoxer = 101627,
         BirdBoxer = 101629,
-        TCCaptain = 2001,
+        TCCaptain = 15555,
         PCCaptain = 2002,
         AMCaptain = 2003,
         DCCaptain = 2004,
