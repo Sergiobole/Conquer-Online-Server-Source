@@ -113,12 +113,11 @@ namespace COServer.Game.MsgServer
                         client.Inventory.Add(stream, 723751, 1, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);//leafBlade
                         if (client.Player.Class == 40)
                         {
-                            client.Inventory.Add(stream, 500301, 1);
+                            client.Inventory.Add(stream, 723700, 1);
                             client.Inventory.Add(stream, 1050000, 10);
                         }
                         else if (client.Player.Class == 100)
                         {
-                            client.Inventory.Add(stream, 421301, 1);
                             if (!client.MySpells.ClientSpells.ContainsKey((ushort)Role.Flags.SpellID.Thunder))
                                 client.MySpells.Add(stream, (ushort)Role.Flags.SpellID.Thunder);
                             if (!client.MySpells.ClientSpells.ContainsKey((ushort)Role.Flags.SpellID.Cure))

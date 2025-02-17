@@ -438,12 +438,13 @@ namespace COServer.Client
 
             return (ulong)Experience;
         }
+        #region XPLevel lvl137 Level137 uplevel
         public void IncreaseExperience(ServerSockets.Packet stream, uint Experience, Role.Flags.ExperienceEffect effect = Role.Flags.ExperienceEffect.None, bool PowerExp = false)
         {
             if (Player.CursedTimer > 2)
                 return;
             if (Player.ContainFlag(MsgUpdate.Flags.Ghost)) return;
-            if (Player.Level < 137)
+            if (Player.Level < 130)
             {
                 if (effect != Role.Flags.ExperienceEffect.None)
                 {
@@ -452,7 +453,7 @@ namespace COServer.Client
                 if (Player.Map == 1300 && Player.Level >= 130)
                     Experience *= 50;
                 else if (Player.Level < 130)
-                    Experience *= Program.ServerConfig.UserExpRate * 2;
+                    Experience *= Program.ServerConfig.UserExpRate ;
 
                 if (Player.Owner.GemValues(Role.Flags.Gem.NormalRainbowGem) > 0)
                     Experience += Experience * Player.Owner.GemValues(Role.Flags.Gem.NormalRainbowGem) / 100;
@@ -485,7 +486,7 @@ namespace COServer.Client
                     Player.Experience -= Database.Server.LevelInfo[Database.DBLevExp.Sort.User][(byte)Player.Level].Experience;
                     ushort newlev = (ushort)(Player.Level + 1);
                     UpdateLevel(stream, newlev);
-                    if (Player.Level >= 137)
+                    if (Player.Level >= 130)
                     {
                         Player.Experience = 0;
                         break;
@@ -517,6 +518,7 @@ namespace COServer.Client
                 }
             }
         }
+        #endregion
         public string InfoLevelUpdate(double amount = 600)
         {
             ulong ReceiveExperience = GainExpBall(amount, false, Role.Flags.ExperienceEffect.None, true);

@@ -17,7 +17,7 @@ namespace COServer
         LUCKY_TIME_CRIT_RATE_MONSTER = 5,
         MINING_DROP_GEMS = 0.3,  //porcentagem de gems.
         MINING_DROP_GEMS_SUPER = 0.05,
-        MINING_DROP_GEMS_REFIND = 0.2,
+        MINING_DROP_GEMS_REFIND = 0.1,
         MINING_DROP_DRAGONBALL = 0; //Drop de Dragonball na mina.
     }
 }

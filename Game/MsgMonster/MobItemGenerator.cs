@@ -78,7 +78,7 @@ namespace COServer.Game.MsgMonster
             OneSocketItem = new MobRateWatcher(1000000);
             TwoSocketItem = new MobRateWatcher(2000000);
 
-            OneBless = new MobRateWatcher(500000);
+            OneBless = new MobRateWatcher(50000);
             ThereBless = new MobRateWatcher(1000000);
             FiveBless = new MobRateWatcher(2000000);
 
@@ -86,7 +86,7 @@ namespace COServer.Game.MsgMonster
 
             DropHp = new MobRateWatcher(99999999);
             DropMp = new MobRateWatcher(99999999);
-            Meteor = new MobRateWatcher((int)ProjectControl.Vip_Drop_Meteors);
+            Meteor = new MobRateWatcher(1000);
         }
         public List<uint> GenerateBossFamily()
         {
