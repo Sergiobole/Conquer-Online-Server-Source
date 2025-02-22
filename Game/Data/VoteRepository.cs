@@ -57,21 +57,47 @@ namespace COServer.Game.Data
         public static void InsertVoteDb(VotesModels item)
         {
             string query = @"
-                INSERT INTO votesystem (Id, Ip, Timestamp, VotePoints) 
-                VALUES (@Id, @Ip, @Timestamp, 1)
-                ON DUPLICATE KEY UPDATE 
-                    VotePoints = VotePoints + 1,
-                    Timestamp = VALUES(Timestamp);";
+        INSERT INTO votesystem (Id, Ip, Timestamp, VotePoints) 
+        VALUES (@Id, @Ip, NOW(), 1)
+        ON DUPLICATE KEY UPDATE 
+            VotePoints = VotePoints + 1,
+            Timestamp = NOW();";
 
             using (var connection = new MySqlConnection(ConnectionString))
             {
+                connection.Open();
+                using (var command = new MySqlCommand("SELECT Timestamp FROM votesystem WHERE Ip = @Ip", connection))
+                {
+                    command.Parameters.AddWithValue("@Ip", item.Ip);
+                    var lastVoteTime = command.ExecuteScalar();
+
+                    if (lastVoteTime != null)
+                    {
+                        DateTime lastVoteDateTime = Convert.ToDateTime(lastVoteTime);
+                        TimeSpan timeSinceLastVote = DateTime.Now - lastVoteDateTime;
+
+                        if (timeSinceLastVote.TotalHours < 12)
+                        {
+                            return; 
+                        }
+                        else
+                        {
+                            command.CommandText = @"
+                        UPDATE votesystem 
+                        SET VotePoints = VotePoints + 1, 
+                            Timestamp = NOW() 
+                        WHERE Ip = @Ip;";
+                            command.ExecuteNonQuery();
+                            return;
+                        }
+                    }
+                }
+
+                // Se não existe o IP, insere um novo voto
                 using (var command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", item.Id);
                     command.Parameters.AddWithValue("@Ip", item.Ip);
-                    command.Parameters.AddWithValue("@Timestamp", item.Timestamp);
-
-                    connection.Open();
                     command.ExecuteNonQuery();
                 }
             }
