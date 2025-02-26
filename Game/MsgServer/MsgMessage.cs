@@ -2340,7 +2340,7 @@ namespace COServer.Game.MsgServer
                                 }
                             case "semper":
                                 {
-                                    client.SendSysMesage("Welcome to CoGolden!", ChatMode.TopLeftSystem);
+                                    client.SendSysMesage("Welcome to OrigensCO!", ChatMode.TopLeftSystem);
                                     break;
                                 }
                             case "sempercastle":

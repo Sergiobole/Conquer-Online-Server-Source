@@ -120,8 +120,8 @@ namespace COServer.Game.MsgTournaments
             "You can check all of our scheduled events on our website! Make sure you don't miss any of them!",
             "Administrators have [GM/PM] in their names, do not trust anyone else claiming to be a [GM].",
             "Make sure you keep yourself updated about the server and all the changes introduced! These can be seen on our website!",
-            "Thanks for supporting CoGolden! We will keep on working to provide the best for our players!",
-            "Talk to CoGolden NPC in Twin City for information about the game.",
+            "Thanks for supporting OrigensCO! We will keep on working to provide the best for our players!",
+            "Talk to OrigensCO NPC in Twin City for information about the game.",
             "Remember to vote! By voting you're helping to increase the community and you can earn some cool rewards for it!",
             "Top Weekly Voter will receive 10.000 CPs."
         };

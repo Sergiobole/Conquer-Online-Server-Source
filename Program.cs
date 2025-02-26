@@ -115,7 +115,7 @@ namespace COServer
             public static string IPAddres = "144.217.173.221";
             public static ushort GamePort = 5816;
             public static string ServerName = "CoPrivate";
-            public static string OfficialWebSite = "cogolden.com";
+            public static string OfficialWebSite = "origensco.com";
             public static ushort Port_BackLog;
             public static ushort Port_ReceiveSize = 4096;
             public static ushort Port_SendSize = 4096;//8191
@@ -176,7 +176,7 @@ namespace COServer
                 System.Console.WriteLine("  ");
                 System.Console.WriteLine("  ");
                 Console.WriteLine("The server is ready for incoming connections!\n", ConsoleColor.Green);
-                DiscordAPI.Enqueue("``CoGolden is now online, you can login!``");
+                DiscordAPI.Enqueue("``OrigensCO is now online, you can login!``");
                 using (Database.MySqlCommand cmd = new Database.MySqlCommand(Database.MySqlCommandType.SELECT).Select("configuration"))
                 {
                     using (Database.MySqlReader r = new Database.MySqlReader(cmd))
@@ -799,7 +799,7 @@ namespace COServer
                 return false;
             if (name.ToLower().Contains("semperfoo"))
                 return false;
-            if (name.ToLower().Contains("CoGolden"))
+            if (name.ToLower().Contains("OrigensCO"))
                 return false;
             if (name.ToLower().Contains("fuckers"))
                 return false;

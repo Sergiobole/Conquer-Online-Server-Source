@@ -3895,7 +3895,7 @@ namespace COServer.Game.MsgServer
                                     client.Inventory.Add(stream, 152209, 1, 6, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);//bag
                                     //152066
                                 }
-                                client.CreateBoxDialog("Welcome to CoGolden!");
+                                client.CreateBoxDialog("Welcome to OrigensCO!");
                                 break;
                             }
                         case 723584:

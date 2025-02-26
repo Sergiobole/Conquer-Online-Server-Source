@@ -2455,7 +2455,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
 
-                        data.AddText("Welcome to CoGolden Bank, you can withdraw your Meteors and DragonBalls that were stored in your VIP Bank here.");
+                        data.AddText("Welcome to OrigensCO Bank, you can withdraw your Meteors and DragonBalls that were stored in your VIP Bank here.");
                         data.AddOption("Withdraw.", 2);
                         data.AddOption("Deposit", 3);
                         data.FinalizeDialog();
@@ -3348,7 +3348,7 @@ namespace COServer.Game.MsgNpc
                         }
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
 
-                        data.AddText(string.Format("You have {0} founds available! Buy more founds at CoGolden.com!\n", totalFounds));
+                        data.AddText(string.Format("You have {0} founds available! Buy more founds at OrigensCO.com!\n", totalFounds));
                         data.AddOption("1 - [Transfer Founds]", 1);
                         data.AddOption("2 - [VIP Founds]", 2);
                         data.AddOption("3 - [Prize Founds]", 3);
@@ -3552,7 +3552,7 @@ namespace COServer.Game.MsgNpc
                 case 2:{
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Founds: " + totalFounds);
-                        data.AddText(string.Format("You have {0} founds, Buy Founds in CoGolden.com!", totalFounds));
+                        data.AddText(string.Format("You have {0} founds, Buy Founds in OrigensCO.com!", totalFounds));
                         data.AddOption("1 - [7 Day VIP = 7 Founds]", 21);
                         data.AddOption("2 - [30 Day VIP = 20 Founds]", 22)
                             .AddOption("Let me check.", 255)
@@ -3687,7 +3687,7 @@ namespace COServer.Game.MsgNpc
                     {
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Founds: " + totalFounds);
-                        data.AddText(string.Format("You have {0} founds, Buy Founds in CoGolden.com!", totalFounds));
+                        data.AddText(string.Format("You have {0} founds, Buy Founds in OrigensCO.com!", totalFounds));
                         data.AddOption("1 - [GoldPrize = 50 Founds]", 31);
                         data.AddOption("2 - [MiraculousGourd = 10 Founds]", 32);
                         data.AddOption("3 - [Sash(M) = 10 Founds]", 33);
@@ -3946,7 +3946,7 @@ namespace COServer.Game.MsgNpc
                     {
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Founds: " + totalFounds);
-                        data.AddText(string.Format("You have {0} founds, Buy Founds in CoGolden.com!", totalFounds));
+                        data.AddText(string.Format("You have {0} founds, Buy Founds in OrigensCO.com!", totalFounds));
                         data.AddOption("1 - [Praying Stones]", 40);
                         data.AddOption("2 - [Power ExpBalls]", 50)
                             .AddOption("Let me check.", 255)
@@ -4179,7 +4179,7 @@ namespace COServer.Game.MsgNpc
                     {
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Founds: " + totalFounds);
-                        data.AddText(string.Format("You have {0} founds, Buy Founds in CoGolden.com!", totalFounds));
+                        data.AddText(string.Format("You have {0} founds, Buy Founds in OrigensCO.com!", totalFounds));
                         data.AddOption("1 - [1 PowerExpBalls = 1 Founds]", 51)
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
@@ -4476,7 +4476,7 @@ namespace COServer.Game.MsgNpc
                     {
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Founds: " + totalFounds);
-                        data.AddText(string.Format("You have {0} founds, Buy Founds in CoGolden.com!", totalFounds));
+                        data.AddText(string.Format("You have {0} founds, Buy Founds in OrigensCO.com!", totalFounds));
                         data.AddOption("1 - [SurpriseBox = 1 Founds]", 91)
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
@@ -9242,9 +9242,9 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        dialog.Text("I'm here to help players throughout their experience while playing CoGolden!\n");
+                        dialog.Text("I'm here to help players throughout their experience while playing OrigensCO!\n");
                         dialog.Text("I'll give my best on answering the most common questions, but I must advise you to either contact a PM or");
-                        dialog.Text(" visit CoGolden.com or our Discord server for more information!\n");
+                        dialog.Text(" visit OrigensCO.com or our Discord server for more information!\n");
                         dialog.Text("So, what do you want to know?\n");
                         dialog.Option("1 - How to get started?", 1);
                         dialog.AddOption("3 - Give me Vip-AutoLoot.", 55);
@@ -10595,7 +10595,7 @@ namespace COServer.Game.MsgNpc
                     }
                 case 111:
                     {
-                           data.AddText("You`ll be another hero in the world of CoGolden!\n")
+                           data.AddText("You`ll be another hero in the world of OrigensCO!\n")
                                .AddText("Would you like to learn something about your class promotion and quests?");
                         if (client.Player.Class == 100)
                             data.AddOption("Get promoted.", 1);
@@ -20334,7 +20334,7 @@ namespace COServer.Game.MsgNpc
                                 data.AddAvatar(102).FinalizeDialog();
                                 break;
                             }
-                            data.AddText("Demons are taking control over CoGolden.\n");
+                            data.AddText("Demons are taking control over OrigensCO.\n");
                             data.AddText("My family is the only one that can make a contract with humans to purify the world from these demons.\n");
                             data.AddText("I can give you two ExpBalls as a reward for doing it, but you can only do it once per day.\n");
                             data.AddText("What would you like to do?");
