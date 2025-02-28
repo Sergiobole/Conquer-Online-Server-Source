@@ -96,6 +96,7 @@ namespace COServer.Database
                 }
                 client.Player.CanClaimFreeVip = true;
                 client.SendSysMesage("You`ve received free VIP 6 (7 days).");
+
             }
             else
             {

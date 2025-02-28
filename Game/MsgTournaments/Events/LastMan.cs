@@ -85,10 +85,7 @@ namespace COServer.Game.MsgTournaments
                     (720027, "MeteorScroll"),
                     (730001, "+1Stone"),
                     (1088000, "DragonBall"),
-                    (720028, "DragonBallScroll"),
-                    (720028, "DragonBallScroll"),
-                    (720028, "DragonBallScroll"),
-                 
+            
             };
 
             // Gerador de números aleatórios para escolher o item

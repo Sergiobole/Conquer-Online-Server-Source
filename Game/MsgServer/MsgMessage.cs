@@ -637,6 +637,17 @@ namespace COServer.Game.MsgServer
                                     client.SendSysMesage("VIP Mining : Skill All Ores " + client.Player.SkipBadOre);
                                     break;
                                 }
+
+                            case "commands":
+                                {
+                                    client.SendSysMesage("@skipore => SkipOres");                                    
+                                    client.SendSysMesage("@scroll tc => Twin City scroll. citys => pc ac bi");
+                                    client.SendSysMesage("@agi => Adjust your Atributtes. @str @vit @spi");
+                                    client.SendSysMesage("@stuck => If stuck, this will help you");
+                                    client.SendSysMesage("@dc => Disconnect from the server");
+                                    client.SendSysMesage("@clear => Clear your inventory");
+                                    break;
+                                }
                             case "vip":
                                 {
                                     foreach (var user in Database.Server.GamePoll.Values)

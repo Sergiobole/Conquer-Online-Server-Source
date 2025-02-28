@@ -20,7 +20,7 @@ namespace COServer.Game.MsgServer
                     PlayerItems[playerName] = new List<string>();
                 }
                 string plusText = plus > 0 ? $" +{plus}" : "";
-                PlayerItems[playerName].Add($"🛒 {playerName} colocou à venda: {itemName}{plusText} por CPS💎{amount}");
+                PlayerItems[playerName].Add($"🛒 {playerName} listed for sale: {itemName}{plusText} for CPS💎{amount.ToString("#,0").Replace(",", "k")}");
 
 
                 MarketRepository.InsertMarketItem(new MarketItem
@@ -52,7 +52,7 @@ namespace COServer.Game.MsgServer
                 {
            
                     string message = string.Join("\n", PlayerItems[playerName]);
-                    Program.DiscordAPIwinners.Enqueue($"```{message}```");
+                    Program.DiscordAPITapete.Enqueue($"```{message}```");
 
                     // Limpa a lista de itens e remove o timer para esse jogador
                     PlayerItems.Remove(playerName);

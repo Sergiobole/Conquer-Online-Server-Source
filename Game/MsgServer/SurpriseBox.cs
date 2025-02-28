@@ -37,7 +37,7 @@ namespace COServer.Game.MsgServer
             uint reward;
             int chance = Role.Core.Random.Next(1, 101); 
 
-            if (chance <= 1) 
+            if (chance <= 0.2) 
             {
                 Role.Flags.Gem socktwo = Role.Flags.Gem.EmptySocket;
                 Role.Flags.Gem sockone = Role.Flags.Gem.EmptySocket;
@@ -48,9 +48,9 @@ namespace COServer.Game.MsgServer
                 client.Inventory.Add(stream, reward, 1, 0, 0, 0, sockone, socktwo, false);
                 client.SendSysMesage("You hit the jackpot! Check your inventory for an amazing reward!");
                 Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"Congratulations [{client.Player.Name}] on winning a rare [ItemTwoSocket] in SurpriseBox!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
-                Program.DiscordAPILotery.Enqueue($"```🎉 Congratulations [{client.Player.Name}] on winning a rare [ItemTwoSocket] in SurpriseBox🎁!```");
+                Program.DiscordAPISurpriseBox.Enqueue($"```🎉 Congratulations [{client.Player.Name}] on winning a rare [ItemTwoSocket] in SurpriseBox🎁!```");
             }
-            else if (chance <= 3) 
+            else if (chance <= 1) 
             {
                 Role.Flags.Gem sockone = Role.Flags.Gem.EmptySocket;
                 reward = VeryHigh1Socket[Role.Core.Random.Next(0, VeryHigh1Socket.Count)];
@@ -59,17 +59,17 @@ namespace COServer.Game.MsgServer
                 client.Inventory.Add(stream, reward, 1, 0, 0, 0, sockone, 0, false);
                 client.SendSysMesage("Incredible! You've received a rare reward! Check your inventory.");
                 Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"Congratulations [{client.Player.Name}] on winning a rare [ItemOneSocket] in SurpriseBox!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
-                Program.DiscordAPILotery.Enqueue($"```🔥 Congratulations [{client.Player.Name}] on winning a rare [ItemOneSocket] in SurpriseBox🎁!```");
+                Program.DiscordAPISurpriseBox.Enqueue($"```🔥 Congratulations [{client.Player.Name}] on winning a rare [ItemOneSocket] in SurpriseBox🎁!```");
             }
-            else if (chance <= 5) 
+            else if (chance <= 4) 
             {
-                byte randomValue = Convert.ToByte(Role.Core.Random.Next(3, 6));
+                byte randomValue = Convert.ToByte(Role.Core.Random.Next(3, 5));
                 reward = VeryHighPlus[Role.Core.Random.Next(0, VeryHighPlus.Count)];
 
                 client.Inventory.Add(stream, reward, 1, randomValue, 0, 0, 0, 0, false);
                 client.SendSysMesage("You've unlocked a powerful item! Check your inventory!");
                 Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"Congratulations [{client.Player.Name}] on winning powerful [+{randomValue}PlusItem] in SurpriseBox!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
-                Program.DiscordAPILotery.Enqueue($"```💎 Congratulations [{client.Player.Name}] on winning powerful [+{randomValue}PlusItem] in SurpriseBox🎁!```");
+                Program.DiscordAPISurpriseBox.Enqueue($"```💎 Congratulations [{client.Player.Name}] on winning powerful [+{randomValue}PlusItem] in SurpriseBox🎁!```");
             }
             else if (chance <= 15) // 15% de chance para item raro
             {

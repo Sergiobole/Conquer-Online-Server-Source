@@ -444,7 +444,7 @@ namespace COServer.Client
             if (Player.CursedTimer > 2)
                 return;
             if (Player.ContainFlag(MsgUpdate.Flags.Ghost)) return;
-            if (Player.Level < 130)
+            if (Player.Level < 137)
             {
                 if (effect != Role.Flags.ExperienceEffect.None)
                 {
@@ -486,7 +486,7 @@ namespace COServer.Client
                     Player.Experience -= Database.Server.LevelInfo[Database.DBLevExp.Sort.User][(byte)Player.Level].Experience;
                     ushort newlev = (ushort)(Player.Level + 1);
                     UpdateLevel(stream, newlev);
-                    if (Player.Level >= 130)
+                    if (Player.Level >= 137)
                     {
                         Player.Experience = 0;
                         break;

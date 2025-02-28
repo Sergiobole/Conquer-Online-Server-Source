@@ -1054,7 +1054,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Top LastMan War For All Classes Every Hour\n")
-                            .AddText("The Winner Get [ DragonBallScroll ]")
+                            .AddText("The Winner Get [ Stone +1 ]")
                             .AddOption("Okey, Enter Me.", 1)
                             .AddOption("I will come later. ", 255)
                             .AddAvatar(63).FinalizeDialog();
@@ -8608,6 +8608,9 @@ namespace COServer.Game.MsgNpc
                         dialog.Text("You've claimed VIP6 for 7 days, have fun and enjoy!")
                               .AddOption("Thank you!", 255)
                               .FinalizeDialog();
+                        Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"Congratulations [{client.Player.Name}] on claiming a free 7-day VIP!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                        Program.DiscordAPIClainFreeVip.Enqueue($"```💎 Congratulations [{client.Player.Name}] on claiming a free 7-day VIP```");
+                        
                     }
                     else
                     {
@@ -9912,7 +9915,7 @@ namespace COServer.Game.MsgNpc
                             data.AddText($"Select your reward:")
                                 .AddOption("MeteorScroll - 30 Points.", 4)
                                 .AddOption("Emerald - 40 Points.", 5)
-                                .AddOption("DragonBallScroll - 40 Points.", 6)
+                                .AddOption("DragonBall - 40 Points.", 6)
                                 .AddOption("LifeFruitBasket - 50 Points.", 7)
                                 .AddOption("MoonBox - 150 Points.", 8)
                                 .AddOption("Stone +2 - 100 Points.", 9)
@@ -9969,8 +9972,8 @@ namespace COServer.Game.MsgNpc
                         if (client.Player.TreasureBoxesPoint >= 40)
                         {
                             client.Player.TreasureBoxesPoint -= 40;
-                            client.Inventory.Add(stream, 720028, 1, 0, 0, 0, 0, 0, false);
-                            data.AddText($"You've received 1 DragonBallScroll! You now have: {client.Player.TreasureBoxesPoint} points!")
+                            client.Inventory.Add(stream, 1088000, 1, 0, 0, 0, 0, 0, false);
+                            data.AddText($"You've received 1 DragonBall! You now have: {client.Player.TreasureBoxesPoint} points!")
                                 .AddOption("Thanks!", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
@@ -19959,7 +19962,7 @@ namespace COServer.Game.MsgNpc
                                                 if (client.Inventory.Contain(Database.ItemType.Meteor, 1))
                                                 {
                                                     Random random = new Random();
-                                                    int chance = random.Next(1, 600);
+                                                    int chance = random.Next(1, 650);
 
                                                     var itemLevel = Database.Server.ItemsBase[DataItem.ITEM_ID].Level;
 
@@ -20038,7 +20041,7 @@ namespace COServer.Game.MsgNpc
                                             if (client.Inventory.Contain(Database.ItemType.Meteor, 1))
                                             {
                                                 Random random = new Random();
-                                                int chance = random.Next(1, 2000);
+                                                int chance = random.Next(1, 2555);
 
                                                 var itemLevel = Database.Server.ItemsBase[DataItem.ITEM_ID].Level;
 
