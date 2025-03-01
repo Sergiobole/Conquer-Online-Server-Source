@@ -3348,13 +3348,13 @@ namespace COServer.Game.MsgNpc
                         }
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
 
-                        data.AddText(string.Format("You have {0} founds available! Buy more founds at OrigensCO.com!\n", totalFounds));
-                        data.AddOption("1 - [Transfer Founds]", 1);
-                        data.AddOption("2 - [VIP Founds]", 2);
-                        data.AddOption("3 - [Prize Founds]", 3);
+                        data.AddText(string.Format("You have {0} founds available! Buy more Coins at OrigensCO.com!\n", totalFounds));
+                        data.AddOption("1 - [Transfer Coins]", 1);
+                        data.AddOption("2 - [VIPs]", 2);
+                        data.AddOption("3 - [Prizes]", 3);
                         data.AddOption("4 - [Garments]", 4);
-                        data.AddOption("5 - [Utility Founds]", 5);
-                        data.AddOption("6 - [Surprise Box]", 90);
+                        data.AddOption("5 - [Utilitys]", 5);
+                        data.AddOption("6 - [SurpriseBoxs]", 90);
                         data.AddAvatar(63).FinalizeDialog();
                         break;
                     }
@@ -3362,8 +3362,8 @@ namespace COServer.Game.MsgNpc
                 #region Transferencia Menu Founds
                 case 1:
                     {
-                        data.AddText("Insert the amount of founds that you want to transfer to another player.");
-                        data.AddInput("Amount of founds: ", 6).AddAvatar(6).FinalizeDialog();
+                        data.AddText("Insert the amount of Coins that you want to transfer to another player.");
+                        data.AddInput("Amount of Coins: ", 6).AddAvatar(6).FinalizeDialog();
                         break;
                     }
                 case 6: // Recebe o valor a ser transferido
@@ -3371,7 +3371,7 @@ namespace COServer.Game.MsgNpc
                         // Verifica se a entrada é um número válido
                         if (!int.TryParse(Input, out int foundsToTransfer) || foundsToTransfer <= 0)
                         {
-                            data.AddText("Please enter a valid amount of founds to transfer.")
+                            data.AddText("Please enter a valid amount of Coins to transfer.")
                                 .AddOption("Okay", 255)
                                 .AddAvatar(63).FinalizeDialog();
                             break;
@@ -3380,18 +3380,18 @@ namespace COServer.Game.MsgNpc
                         // Armazena o valor de foundsToTransfer no client para ser acessado no case 7
                         client.FoundsToTransfer = foundsToTransfer;
 
-                        Console.WriteLine($"Founds to transfer set to: {foundsToTransfer}");
+                        Console.WriteLine($"Coins to transfer set to: {foundsToTransfer}");
 
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         if (foundsToTransfer > totalFounds)
                         {
-                            data.AddText($"Sorry, you only have {totalFounds} founds.")
+                            data.AddText($"Sorry, you only have {totalFounds} Coins.")
                                 .AddOption("Okay.", 255)
                                 .AddAvatar(63).FinalizeDialog();
                             break;
                         }
 
-                        data.AddText("Please enter the LOGIN the player that you want to send founds.")
+                        data.AddText("Please enter the LOGIN the player that you want to send Coins.")
                            .AddInput("Player Login:", 7).AddAvatar(6).FinalizeDialog();
                         break;
                     }
@@ -3410,7 +3410,7 @@ namespace COServer.Game.MsgNpc
                         // Verifique se o remetente está tentando enviar founds para si mesmo
                         if (recipientPlayerName.Equals(client.AccountName(client.Player.Name), StringComparison.OrdinalIgnoreCase))
                         {
-                            data.AddText("You cannot send founds to yourself.")
+                            data.AddText("You cannot send Coins to yourself.")
                                 .AddOption("Okay.", 255)
                                 .AddAvatar(63).FinalizeDialog();
                             break;
@@ -3420,13 +3420,13 @@ namespace COServer.Game.MsgNpc
 
                         if (foundsToTransfer <= 0)
                         {
-                            data.AddText("An error occurred. Invalid founds to transfer.")
+                            data.AddText("An error occurred. Invalid Coins to transfer.")
                                 .AddOption("Okay", 255)
                                 .AddAvatar(63).FinalizeDialog();
                             break;
                         }
 
-                        Console.WriteLine($"Attempting to transfer {foundsToTransfer} founds from {client.AccountName(client.Player.Name)} to {recipientPlayerName}");
+                        Console.WriteLine($"Attempting to transfer {foundsToTransfer} Coins from {client.AccountName(client.Player.Name)} to {recipientPlayerName}");
 
                         const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
 
@@ -3454,7 +3454,7 @@ namespace COServer.Game.MsgNpc
                                 int senderFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                                 if (senderFounds < foundsToTransfer)
                                 {
-                                    data.AddText("Insufficient funds. Please check your balance and try again.")
+                                    data.AddText("Insufficient Coins. Please check your balance and try again.")
                                         .AddOption("Okay.", 255)
                                         .AddAvatar(63).FinalizeDialog();
                                     break;
@@ -3525,10 +3525,10 @@ namespace COServer.Game.MsgNpc
                                 }
                             }
 
-                            data.AddText($"Successfully transferred {foundsToTransfer} founds to {recipientPlayerName}.")
+                            data.AddText($"Successfully transferred {foundsToTransfer} Coins to {recipientPlayerName}.")
                                 .AddOption("Thanks.", 255)
                                 .AddAvatar(63).FinalizeDialog();
-                            Program.DiscordAPIfoundslog.Enqueue($"` {client.Player.Name} transferred {foundsToTransfer} founds to {recipientPlayerName}.");
+                            Program.DiscordAPIfoundslog.Enqueue($"` {client.Player.Name} transferred {foundsToTransfer} Coins to {recipientPlayerName}.");
                         }
                         catch (MySqlException sqlEx)
                         {
@@ -3551,10 +3551,10 @@ namespace COServer.Game.MsgNpc
                 #region Vips Menu Founds
                 case 2:{
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
-                        data.AddText(string.Format("You have {0} founds, Buy Founds in OrigensCO.com!", totalFounds));
-                        data.AddOption("1 - [7 Day VIP = 7 Founds]", 21);
-                        data.AddOption("2 - [30 Day VIP = 20 Founds]", 22)
+                        Console.WriteLine("Coins: " + totalFounds);
+                        data.AddText(string.Format("You have {0} Coins, Buy Coins in OrigensCO.com!", totalFounds));
+                        data.AddOption("1 - [7 Day VIP = 7 Coins]", 21);
+                        data.AddOption("2 - [30 Day VIP = 20 Coins]", 22)
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
                         break;
@@ -3595,7 +3595,7 @@ namespace COServer.Game.MsgNpc
                                 // Adiciona o item ao inventário
                                 {
                                     client.Inventory.Add(stream, 780000, 1, 0, 0, 0, 0, 0, false);
-                                    data.AddText("You have successfully exchanged 7 FoundsPoints for a 7-Days VIP Token.")
+                                    data.AddText("You have successfully exchanged 7 Coins for a 7-Days VIP Token.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
                                     Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Vip 7 Days``");
@@ -3612,7 +3612,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("No have Founds.")
+                            data.AddText("No have Coins.")
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
 
@@ -3632,7 +3632,7 @@ namespace COServer.Game.MsgNpc
                         }
 
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
+                        Console.WriteLine("Coins: " + totalFounds);
 
                         if (totalFounds >= 20)
                         {
@@ -3656,7 +3656,7 @@ namespace COServer.Game.MsgNpc
                                 // Adiciona o item ao inventário
                                 {
                                     client.Inventory.Add(stream, 780010, 1, 0, 0, 0, 0, 0, false);
-                                    data.AddText("You have successfully exchanged 20 FoundsPoints for a 30-Days VIP Token.")
+                                    data.AddText("You have successfully exchanged 20 Coins for a 30-Days VIP Token.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
                                     Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Vip 30 Days``");
@@ -3673,7 +3673,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("No have Founds.")
+                            data.AddText("No have Coins.")
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
 
@@ -3687,11 +3687,11 @@ namespace COServer.Game.MsgNpc
                     {
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Founds: " + totalFounds);
-                        data.AddText(string.Format("You have {0} founds, Buy Founds in OrigensCO.com!", totalFounds));
-                        data.AddOption("1 - [GoldPrize = 50 Founds]", 31);
-                        data.AddOption("2 - [MiraculousGourd = 10 Founds]", 32);
-                        data.AddOption("3 - [Sash(M) = 10 Founds]", 33);
-                        data.AddOption("4 - [Sash(L) = 15 Founds]", 34)
+                        data.AddText(string.Format("You have {0} Coins, Buy Coins in OrigensCO.com!", totalFounds));
+                        data.AddOption("1 - [GoldPrize = 50 Coins]", 31);
+                        data.AddOption("2 - [MiraculousGourd = 10 Coins]", 32);
+                        data.AddOption("3 - [Sash(M) = 10 Coins]", 33);
+                        data.AddOption("4 - [Sash(L) = 15 Coins]", 34)
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
                         break;
@@ -3732,7 +3732,7 @@ namespace COServer.Game.MsgNpc
                                 // Adiciona o item ao inventário 
                                 {
                                     client.Inventory.Add(stream, 2100075, 1, 0, 1, 0, 0, 0, true);
-                                    data.AddText("You have successfully exchanged 50 FoundsPoints for a Gold-Prize.")
+                                    data.AddText("You have successfully exchanged 50 Coins for a Gold-Prize.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
                                     Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Gold-Prize``");
@@ -3749,7 +3749,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("No have Founds.")
+                            data.AddText("No have Coins.")
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
 
@@ -3793,7 +3793,7 @@ namespace COServer.Game.MsgNpc
                                 // Adiciona o item ao inventário 
                                 {
                                     client.Inventory.Add(stream, 2100025, 1, 0, 0, 0, 0, 0, true);
-                                    data.AddText("You have successfully exchanged 10 FoundsPoints for a MiraculousGourd.")
+                                    data.AddText("You have successfully exchanged 10 Coins for a MiraculousGourd.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
                                     Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take MiraculousGourd``");
@@ -3810,7 +3810,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("No have Founds.")
+                            data.AddText("No have Coins.")
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
 
@@ -3830,7 +3830,7 @@ namespace COServer.Game.MsgNpc
                         }
 
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
+                        Console.WriteLine("Coins: " + totalFounds);
 
                         if (totalFounds >= 10)
                         {
@@ -3871,7 +3871,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("No have Founds.")
+                            data.AddText("No have Coins.")
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
 
@@ -3891,7 +3891,7 @@ namespace COServer.Game.MsgNpc
                         }
 
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
+                        Console.WriteLine("Coins: " + totalFounds);
 
                         if (totalFounds >= 15)
                         {
@@ -3915,7 +3915,7 @@ namespace COServer.Game.MsgNpc
                                 // Adiciona o item ao inventário 
                                 {
                                     client.Inventory.Add(stream, 1100009, 1, 0, 0, 0, 0, 0, true);
-                                    data.AddText("You have successfully exchanged 15 FoundsPoints for a Sash(L).")
+                                    data.AddText("You have successfully exchanged 15 Coins for a Sash(L).")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
                                     Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Sash(L)``");
@@ -3932,7 +3932,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("No have Founds.")
+                            data.AddText("No have Coins.")
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
 
@@ -3945,8 +3945,8 @@ namespace COServer.Game.MsgNpc
                 case 5:
                     {
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
-                        data.AddText(string.Format("You have {0} founds, Buy Founds in OrigensCO.com!", totalFounds));
+                        Console.WriteLine("Coins: " + totalFounds);
+                        data.AddText(string.Format("You have {0} Coins, Buy Founds in OrigensCO.com!", totalFounds));
                         data.AddOption("1 - [Praying Stones]", 40);
                         data.AddOption("2 - [Power ExpBalls]", 50)
                             .AddOption("Let me check.", 255)
@@ -3967,16 +3967,16 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds <= 0)
                         {
-                            data.AddText("You don't have enough founds");
+                            data.AddText("You don't have enough Coins");
                             data.AddOption("Okay.", 255);
                             data.AddAvatar(63).FinalizeDialog();
                         }
                         else
                         {
                             data.AddText(string.Format("You have found {0} items! PrayingStone.", totalFounds));
-                            data.AddOption("1 - [PrayingStone(S) = 5 Founds]", 41);
-                            data.AddOption("2 - [PrayingStone(M) = 7 Founds]", 42);
-                            data.AddOption("3 - [PrayingStone(L) = 10 Found]", 43);
+                            data.AddOption("1 - [PrayingStone(S) = 5 Coins]", 41);
+                            data.AddOption("2 - [PrayingStone(M) = 7 Coins]", 42);
+                            data.AddOption("3 - [PrayingStone(L) = 10 Coins]", 43);
                             data.AddOption("Okay.", 255);
                             data.AddAvatar(63).FinalizeDialog();
                         }
@@ -3992,7 +3992,7 @@ namespace COServer.Game.MsgNpc
                         }
 
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
+                        Console.WriteLine("Coins: " + totalFounds);
 
                         if (totalFounds >= 5)
                         {
@@ -4018,7 +4018,7 @@ namespace COServer.Game.MsgNpc
                                 {
                                     client.Inventory.Add(stream, 1200000, 0, 0, 0, 0, 0, 0, false);
 
-                                    data.AddText("You have successfully exchanged 5 FoundsPoints for a PrayingStone(S).")
+                                    data.AddText("You have successfully exchanged 5 Coins for a PrayingStone(S).")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
                                     Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take PrayingStone(S)``");
@@ -4037,7 +4037,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("No have Founds.")
+                            data.AddText("No have Coins.")
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
 
@@ -4056,7 +4056,7 @@ namespace COServer.Game.MsgNpc
                         }
 
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
+                        Console.WriteLine("Coins: " + totalFounds);
 
                         if (totalFounds >= 7)
                         {
@@ -4082,7 +4082,7 @@ namespace COServer.Game.MsgNpc
                                 {
                                     client.Inventory.Add(stream, 1200001, 0, 0, 0, 0, 0, 0, false);
 
-                                    data.AddText("You have successfully exchanged 7 FoundsPoints for a PrayingStone(M).")
+                                    data.AddText("You have successfully exchanged 7 Coins for a PrayingStone(M).")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
                                     Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take PrayingStone(M)``");
@@ -4101,7 +4101,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("No have Founds.")
+                            data.AddText("No have Coins.")
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
 
@@ -4120,7 +4120,7 @@ namespace COServer.Game.MsgNpc
                         }
 
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
+                        Console.WriteLine("Coins: " + totalFounds);
 
                         if (totalFounds >= 10)
                         {
@@ -4146,7 +4146,7 @@ namespace COServer.Game.MsgNpc
                                 {
                                     client.Inventory.Add(stream, 1200002, 0, 0, 0, 0, 0, 0, false);
 
-                                    data.AddText("You have successfully exchanged 10 FoundsPoints for a PrayingStone(L).")
+                                    data.AddText("You have successfully exchanged 10 Coins for a PrayingStone(L).")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
                                     Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take PrayingStone(L)``");
@@ -4165,7 +4165,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("No have Founds.")
+                            data.AddText("No have Coins.")
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
 
@@ -4178,9 +4178,9 @@ namespace COServer.Game.MsgNpc
                 case 50:
                     {
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
-                        data.AddText(string.Format("You have {0} founds, Buy Founds in OrigensCO.com!", totalFounds));
-                        data.AddOption("1 - [1 PowerExpBalls = 1 Founds]", 51)
+                        Console.WriteLine("Coins: " + totalFounds);
+                        data.AddText(string.Format("You have {0} Coins, Buy Coins in OrigensCO.com!", totalFounds));
+                        data.AddOption("1 - [1 PowerExpBalls = 1 Coins]", 51)
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
                         break;
@@ -4197,7 +4197,7 @@ namespace COServer.Game.MsgNpc
                         }
 
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
+                        Console.WriteLine("Coins: " + totalFounds);
 
                         if (totalFounds >= 1)
                         {
@@ -4221,7 +4221,7 @@ namespace COServer.Game.MsgNpc
                                 // Adiciona o item ao inventário
                                 {
                                     client.Inventory.Add(stream, 722057, 1, 0, 0, 0, 0, 0, false);
-                                    data.AddText("You have successfully exchanged 1 Founds Points for a PowerExpBall.")
+                                    data.AddText("You have successfully exchanged 1 Coins for a PowerExpBall.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
                                     Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take PowerExpBall``");
@@ -4238,7 +4238,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("No have Founds.")
+                            data.AddText("No have Coins.")
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
 
@@ -4269,7 +4269,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText(string.Format("You have found {0} items! All gamerts have 255 HP, and -7 Bless costs 30 Founds.", totalFounds));
+                            data.AddText(string.Format("You have Coins {0} items! All gamerts have 255 HP, and -7 Bless costs 30 Coins.", totalFounds));
                             data.AddOption("1 - [RunaroundSue]    ", 60);
                             data.AddOption("2 - [DevilishBell]    ", 61);
                             data.AddOption("3 - [WealthyArab(R)]  ", 62);
@@ -4315,7 +4315,7 @@ namespace COServer.Game.MsgNpc
                                 {
                                     client.Inventory.Add(stream, 194085, 0, 0, 7, 255, 0, 0, false);
 
-                                    data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
+                                    data.AddText("You have successfully exchanged 30 Coins for a Garmet VIP.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
                                     Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
@@ -4334,7 +4334,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("No have Founds.")
+                            data.AddText("No have Coins.")
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
 
@@ -4353,7 +4353,7 @@ namespace COServer.Game.MsgNpc
                         }
 
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
+                        Console.WriteLine("Coins: " + totalFounds);
 
                         if (totalFounds >= 30)
                         {
@@ -4379,7 +4379,7 @@ namespace COServer.Game.MsgNpc
                                 {
                                     client.Inventory.Add(stream, 195045, 0, 0, 7, 255, 0, 0, false);
 
-                                    data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
+                                    data.AddText("You have successfully exchanged 30 Coins for a Garmet VIP.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
                                     Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
@@ -4398,7 +4398,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("No have Founds.")
+                            data.AddText("No have Coins.")
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
 
@@ -4417,7 +4417,7 @@ namespace COServer.Game.MsgNpc
                         }
 
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
+                        Console.WriteLine("Coins: " + totalFounds);
 
                         if (totalFounds >= 30)
                         {
@@ -4443,7 +4443,7 @@ namespace COServer.Game.MsgNpc
                                 {
                                     client.Inventory.Add(stream, 182025, 0, 0, 7, 255, 0, 0, false);
 
-                                    data.AddText("You have successfully exchanged 30 FoundsPoints for a Garmet VIP.")
+                                    data.AddText("You have successfully exchanged 30 Coins for a Garmet VIP.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
                                     Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take Garmet``");
@@ -4462,7 +4462,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("No have Founds.")
+                            data.AddText("No have Coins.")
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
 
@@ -4475,8 +4475,8 @@ namespace COServer.Game.MsgNpc
                 case 90:
                     {
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
-                        data.AddText(string.Format("You have {0} founds, Buy Founds in OrigensCO.com!", totalFounds));
+                        Console.WriteLine("Coins: " + totalFounds);
+                        data.AddText(string.Format("You have {0} Coins, Buy Coins in OrigensCO.com!", totalFounds));
                         data.AddOption("1 - [SurpriseBox = 1 Founds]", 91)
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
@@ -4494,7 +4494,7 @@ namespace COServer.Game.MsgNpc
                         }
 
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
-                        Console.WriteLine("Founds: " + totalFounds);
+                        Console.WriteLine("Coins: " + totalFounds);
 
                         if (totalFounds >= 1)
                         {
@@ -4518,7 +4518,7 @@ namespace COServer.Game.MsgNpc
                                 // Adiciona o item ao inventário
                                 {
                                     client.Inventory.Add(stream, 722178, 1, 0, 0, 0, 0, 0, false);
-                                    data.AddText("You have successfully exchanged 1 FoundsPoints for a SurpriseBox.")
+                                    data.AddText("You have successfully exchanged 1 Coins for a SurpriseBox.")
                                         .AddOption("Thanks.", 255)
                                         .AddAvatar(63).FinalizeDialog();
                                     Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take a SurpriseBox``");
@@ -4535,7 +4535,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("No have Founds.")
+                            data.AddText("No have Coins.")
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
 
