@@ -40,7 +40,7 @@
             if (attacked.UID == Game.MsgTournaments.MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.RightGate].UID
                 || attacked.UID == Game.MsgTournaments.MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.LeftGate].UID
                 && Game.MsgTournaments.MsgSchedules.GuildWar.Proces == MsgTournaments.ProcesType.Dead && attacked.HitPoints == 0)
-                return true;
+                return false;
             else
             if (attacked.HitPoints == 0)
                 return false;
@@ -165,50 +165,50 @@
             //}
             #endregion
             #region PoleDomination
-            if (attacked.UID == Game.MsgTournaments.MsgSchedules.PoleDomination.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
-            {
-                if (client.Player.MyGuild == null)
-                    return false;
-                if (Game.MsgTournaments.MsgSchedules.PoleDomination.Furnitures[Role.SobNpc.StaticMesh.Pole].HitPoints == 0)
-                    return false;
-                if (client.Player.GuildID == Game.MsgTournaments.MsgSchedules.PoleDomination.Winner.GuildID)
-                    return false;
-                if (Game.MsgTournaments.MsgSchedules.PoleDomination.IsFinished())
-                    return false;
-            }
-            if (attacked.UID == Game.MsgTournaments.MsgSchedules.PoleDominationBI.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
-            {
-                if (client.Player.MyGuild == null)
-                    return false;
-                if (Game.MsgTournaments.MsgSchedules.PoleDominationBI.Furnitures[Role.SobNpc.StaticMesh.Pole].HitPoints == 0)
-                    return false;
-                if (client.Player.GuildID == Game.MsgTournaments.MsgSchedules.PoleDominationBI.Winner.GuildID)
-                    return false;
-                if (Game.MsgTournaments.MsgSchedules.PoleDominationBI.IsFinished())
-                    return false;
-            }
-            if (attacked.UID == Game.MsgTournaments.MsgSchedules.PoleDominationDC.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
-            {
-                if (client.Player.MyGuild == null)
-                    return false;
-                if (Game.MsgTournaments.MsgSchedules.PoleDominationDC.Furnitures[Role.SobNpc.StaticMesh.Pole].HitPoints == 0)
-                    return false;
-                if (client.Player.GuildID == Game.MsgTournaments.MsgSchedules.PoleDominationDC.Winner.GuildID)
-                    return false;
-                if (Game.MsgTournaments.MsgSchedules.PoleDominationDC.IsFinished())
-                    return false;
-            }
-            if (attacked.UID == Game.MsgTournaments.MsgSchedules.PoleDominationPC.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
-            {
-                if (client.Player.MyGuild == null)
-                    return false;
-                if (Game.MsgTournaments.MsgSchedules.PoleDominationPC.Furnitures[Role.SobNpc.StaticMesh.Pole].HitPoints == 0)
-                    return false;
-                if (client.Player.GuildID == Game.MsgTournaments.MsgSchedules.PoleDominationPC.Winner.GuildID)
-                    return false;
-                if (Game.MsgTournaments.MsgSchedules.PoleDominationPC.IsFinished())
-                    return false;
-            }
+            //if (attacked.UID == Game.MsgTournaments.MsgSchedules.PoleDomination.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
+            //{
+            //    if (client.Player.MyGuild == null)
+            //        return false;
+            //    if (Game.MsgTournaments.MsgSchedules.PoleDomination.Furnitures[Role.SobNpc.StaticMesh.Pole].HitPoints == 0)
+            //        return false;
+            //    if (client.Player.GuildID == Game.MsgTournaments.MsgSchedules.PoleDomination.Winner.GuildID)
+            //        return false;
+            //    if (Game.MsgTournaments.MsgSchedules.PoleDomination.IsFinished())
+            //        return false;
+            //}
+            //if (attacked.UID == Game.MsgTournaments.MsgSchedules.PoleDominationBI.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
+            //{
+            //    if (client.Player.MyGuild == null)
+            //        return false;
+            //    if (Game.MsgTournaments.MsgSchedules.PoleDominationBI.Furnitures[Role.SobNpc.StaticMesh.Pole].HitPoints == 0)
+            //        return false;
+            //    if (client.Player.GuildID == Game.MsgTournaments.MsgSchedules.PoleDominationBI.Winner.GuildID)
+            //        return false;
+            //    if (Game.MsgTournaments.MsgSchedules.PoleDominationBI.IsFinished())
+            //        return false;
+            //}
+            //if (attacked.UID == Game.MsgTournaments.MsgSchedules.PoleDominationDC.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
+            //{
+            //    if (client.Player.MyGuild == null)
+            //        return false;
+            //    if (Game.MsgTournaments.MsgSchedules.PoleDominationDC.Furnitures[Role.SobNpc.StaticMesh.Pole].HitPoints == 0)
+            //        return false;
+            //    if (client.Player.GuildID == Game.MsgTournaments.MsgSchedules.PoleDominationDC.Winner.GuildID)
+            //        return false;
+            //    if (Game.MsgTournaments.MsgSchedules.PoleDominationDC.IsFinished())
+            //        return false;
+            //}
+            //if (attacked.UID == Game.MsgTournaments.MsgSchedules.PoleDominationPC.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
+            //{
+            //    if (client.Player.MyGuild == null)
+            //        return false;
+            //    if (Game.MsgTournaments.MsgSchedules.PoleDominationPC.Furnitures[Role.SobNpc.StaticMesh.Pole].HitPoints == 0)
+            //        return false;
+            //    if (client.Player.GuildID == Game.MsgTournaments.MsgSchedules.PoleDominationPC.Winner.GuildID)
+            //        return false;
+            //    if (Game.MsgTournaments.MsgSchedules.PoleDominationPC.IsFinished())
+            //        return false;
+            //}
             #endregion
             if (attacked.UID == 890)
             {

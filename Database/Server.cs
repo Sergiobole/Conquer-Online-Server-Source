@@ -167,10 +167,10 @@ namespace COServer.Database
             Game.MsgTournaments.MsgSchedules._EliteGuildWar.CreateFurnitures();
             //Game.MsgTournaments.MsgSchedules._FirePoleWar.CreateFurnitures();
             #region PoleDomination
-            Game.MsgTournaments.MsgSchedules.PoleDomination.CreateFurnitures();
-            Game.MsgTournaments.MsgSchedules.PoleDominationBI.CreateFurnitures();
-            Game.MsgTournaments.MsgSchedules.PoleDominationDC.CreateFurnitures();
-            Game.MsgTournaments.MsgSchedules.PoleDominationPC.CreateFurnitures();
+            //Game.MsgTournaments.MsgSchedules.PoleDomination.CreateFurnitures();
+            //Game.MsgTournaments.MsgSchedules.PoleDominationBI.CreateFurnitures();
+            //Game.MsgTournaments.MsgSchedules.PoleDominationDC.CreateFurnitures();
+            //Game.MsgTournaments.MsgSchedules.PoleDominationPC.CreateFurnitures();
             #endregion
             Game.MsgTournaments.MsgSchedules.ClassPkWar.Load();
             Game.MsgTournaments.MsgSchedules.CouplesPKWar.Load();
