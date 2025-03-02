@@ -261,44 +261,6 @@ namespace COServer.Role
             //    Game.MsgTournaments.MsgSchedules._FirePoleWar.UpdateScore(killer.Player, Damage);
             //}
             #endregion
-            #region PoleDomination
-            //else if (UID == Game.MsgTournaments.MsgSchedules.PoleDomination.Furnitures[StaticMesh.Pole].UID)
-            //{
-            //    uint Damage = (uint)HitPoints;
-            //    if (HitPoints > 0)
-            //    {
-            //        HitPoints = 0;
-            //    }
-            //    Game.MsgTournaments.MsgSchedules.PoleDomination.UpdateScore(killer.Player, Damage);
-            //}
-            //else if (UID == Game.MsgTournaments.MsgSchedules.PoleDominationBI.Furnitures[StaticMesh.Pole].UID)
-            //{
-            //    uint Damage = (uint)HitPoints;
-            //    if (HitPoints > 0)
-            //    {
-            //        HitPoints = 0;
-            //    }
-            //    Game.MsgTournaments.MsgSchedules.PoleDominationBI.UpdateScore(killer.Player, Damage);
-            //}
-            //else if (UID == Game.MsgTournaments.MsgSchedules.PoleDominationDC.Furnitures[StaticMesh.Pole].UID)
-            //{
-            //    uint Damage = (uint)HitPoints;
-            //    if (HitPoints > 0)
-            //    {
-            //        HitPoints = 0;
-            //    }
-            //    Game.MsgTournaments.MsgSchedules.PoleDominationDC.UpdateScore(killer.Player, Damage);
-            //}
-            //else if (UID == Game.MsgTournaments.MsgSchedules.PoleDominationPC.Furnitures[StaticMesh.Pole].UID)
-            //{
-            //    uint Damage = (uint)HitPoints;
-            //    if (HitPoints > 0)
-            //    {
-            //        HitPoints = 0;
-            //    }
-            //    Game.MsgTournaments.MsgSchedules.PoleDominationPC.UpdateScore(killer.Player, Damage);
-            //}
-            #endregion
             else if (HitPoints > 0)
             {
                 HitPoints = 0;

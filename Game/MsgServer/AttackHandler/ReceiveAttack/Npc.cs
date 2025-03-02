@@ -45,16 +45,6 @@
                     Game.MsgTournaments.MsgSchedules._EliteGuildWar.UpdateScore(client.Player, obj.Damage);
                 //if (attacked.UID == Game.MsgTournaments.MsgSchedules._FirePoleWar.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
                 //    Game.MsgTournaments.MsgSchedules._FirePoleWar.UpdateScore(client.Player, obj.Damage);
-                #region PoleDomination
-                //if (attacked.UID == Game.MsgTournaments.MsgSchedules.PoleDomination.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
-                //    Game.MsgTournaments.MsgSchedules.PoleDomination.UpdateScore(client.Player, obj.Damage);
-                //if (attacked.UID == Game.MsgTournaments.MsgSchedules.PoleDominationBI.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
-                //    Game.MsgTournaments.MsgSchedules.PoleDominationBI.UpdateScore(client.Player, obj.Damage);
-                //if (attacked.UID == Game.MsgTournaments.MsgSchedules.PoleDominationDC.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
-                //    Game.MsgTournaments.MsgSchedules.PoleDominationDC.UpdateScore(client.Player, obj.Damage);
-                //if (attacked.UID == Game.MsgTournaments.MsgSchedules.PoleDominationPC.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
-                //    Game.MsgTournaments.MsgSchedules.PoleDominationPC.UpdateScore(client.Player, obj.Damage);
-                #endregion
                 if (attacked.UID == Game.MsgTournaments.MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
                     Game.MsgTournaments.MsgSchedules.GuildWar.UpdateScore(client.Player, obj.Damage);
 
