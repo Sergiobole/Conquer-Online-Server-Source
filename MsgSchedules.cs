@@ -15,6 +15,9 @@ namespace COServer.Game.MsgTournaments
         public static Time32 Stamp = Time32.Now.AddMilliseconds(KernelThread.TournamentsStamp);
         public static Dictionary<TournamentType, ITournament> Tournaments = new Dictionary<TournamentType, ITournament>();
         public static ITournament CurrentTournament;
+
+        internal static DateTime LastClassPKStart = DateTime.MinValue;
+
         #region PoleDomination
         internal static MsgPoleDomination PoleDomination;
         internal static MsgPoleDominationBI PoleDominationBI;
@@ -135,6 +138,13 @@ namespace COServer.Game.MsgTournaments
                     DateTime Now64 = DateTime.Now;
                     if (!Database.Server.FullLoading)
                         return;
+
+                    // Reseta o ClassPK se o dia mudou
+                    if (LastClassPKStart.Date != Now64.Date && LastClassPKStart != DateTime.MinValue)
+                    {
+                        ClassPkWar.Stop(); // Reseta o torneio para o próximo dia
+                    }
+
                     if ((Now64.Hour == 7 && Now64.Minute == 30 || Now64.Hour == 17 && Now64.Minute == 30))
                         DisCity.Open();
                     CurrentTournament.CheckUp();
@@ -340,11 +350,16 @@ namespace COServer.Game.MsgTournaments
                         }
                     }
                     #region ClassPK
-
                     if (Now64.Hour == 22 && Now64.Minute == 0)
                     {
-                        ClassPkWar.Start();
-                        Program.DiscordAPIevents.Enqueue($"``ClassPK has started!``");
+                        // Verifica se o evento ainda não foi disparado hoje
+                        if (LastClassPKStart.Date != Now64.Date)
+                        {
+                            // Reseta o estado do torneio antes de iniciar
+                            ClassPkWar.Stop(); // Para o torneio atual, se estiver rodando
+                            ClassPkWar.Start(); // Inicia o torneio com base no dia atual
+                            LastClassPKStart = Now64; // Atualiza a última execução
+                        }
                     }
                     if (Now64.Hour == 22 && Now64.Minute >= 10)
                     {
@@ -363,6 +378,7 @@ namespace COServer.Game.MsgTournaments
                                 }
                             }
                     }
+                    #endregion
                 }
                 #endregion
                 catch (Exception e)
@@ -374,4 +390,3 @@ namespace COServer.Game.MsgTournaments
         }
     }
 }
-#endregion

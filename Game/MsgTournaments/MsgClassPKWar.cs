@@ -6,6 +6,7 @@ namespace COServer.Game.MsgTournaments
 {
     public class MsgClassPKWar
     {
+        public static string CurrentClass { get; private set; } // Classe do dia
         public const ushort MapID = 1764;
         public const string FilleName = "\\ClassPkWar.ini";
 
@@ -81,13 +82,15 @@ namespace COServer.Game.MsgTournaments
                             PkWars[(byte)typ][(byte)x] = new War(typ, x, ProcesType.Dead);
                         }
 
+
                         foreach (var war in PkWars[(byte)typ])
                         {
+
                             war.Start(Database.Server.ServerMaps[MapID]);
                         }
                     }
                 }
-
+                    
                 Proces = ProcesType.Idle;
             }
         }
@@ -238,11 +241,22 @@ namespace COServer.Game.MsgTournaments
                     FinishTimer = DateTime.Now.AddMinutes(10);
                     DinamicID = map.GenerateDynamicID();
 
+                    MsgSchedules.SendSysMesage($"Class PK War for {Typ.ToString()} has started! Join the tournament now!",
+                        MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
+
+                    Program.DiscordAPIevents.Enqueue($"``ClassPK for {Typ.ToString()} has started!``");
+
+ 
                     foreach (var client in Database.Server.GamePoll.Values)
                     {
-                        client.Player.MessageBox("", new Action<Client.GameClient>(p => p.Teleport(436, 244, 1002, 0)), null, 60);
-
+                        var playerType = MsgClassPKWar.GetMyTournamentType(client);
+                        if (playerType == Typ) // Only players of the matching class
+                        {
+                            client.Player.MessageBox($"Class PK War for {Typ.ToString()} has started! Do you want to join?",
+                                new Action<Client.GameClient>(p => p.Teleport(436, 244, MapID, DinamicID)), null, 60);
+                        }
                     }
+                    Console.WriteLine($"ClassPK tournament for {Typ.ToString()} started. DinamicID: {DinamicID}, Time: {DateTime.Now}");
                 }
             }
             internal void Stop()

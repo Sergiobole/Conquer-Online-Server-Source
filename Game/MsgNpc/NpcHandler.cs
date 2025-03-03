@@ -20,7 +20,7 @@ namespace COServer.Game.MsgNpc
 {
     public unsafe class NpcHandler
     {
-        #region test
+        #region FrozenGrotto
         [NpcAttribute(NpcID.test)]
         public static void test(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
         {
@@ -60,7 +60,6 @@ namespace COServer.Game.MsgNpc
             }
         }
         #endregion
-
         #region EggQuest
         [NpcAttribute(NpcID.EggQuest)]
         private static void EggQuest(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -125,7 +124,6 @@ namespace COServer.Game.MsgNpc
             }
         }
         #endregion
-
         #region Letter
         [NpcAttribute(NpcID.letterquest)]
         private static void letterquest(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -196,7 +194,6 @@ namespace COServer.Game.MsgNpc
         }
 
         #endregion
-
         #region Super TotoiseQuest
         [NpcAttribute(NpcID.TotoiseQuest)]
         private static void TotoiseQuest(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -245,7 +242,6 @@ namespace COServer.Game.MsgNpc
             }
         }
         #endregion
-
         #region MiraculosQuest
         [NpcAttribute(NpcID.MiraculosQuest)]
         private static void MiraculosQuest(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -294,7 +290,6 @@ namespace COServer.Game.MsgNpc
             }
         }
         #endregion
-
         #region Garmert-3
         [NpcAttribute(NpcID.Garmert3Npc)]
         private static void Garmert3Npc(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -407,7 +402,6 @@ namespace COServer.Game.MsgNpc
             }
         }
         #endregion
-
         #region Join
         //[NpcAttribute(NpcID.ArenaDuel)]
         //public static void ArenaDuel(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -470,7 +464,6 @@ namespace COServer.Game.MsgNpc
         //}
         //#endregion
         #endregion
-
         #region OnlinePoint
         [NpcAttribute(NpcID.OnlinePointsReward)]
         public static void OnlinePointsReward(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -803,7 +796,6 @@ namespace COServer.Game.MsgNpc
         }
 
         #endregion
-
         #region Events
         #region Tops
         #region Ss_Fb
@@ -2074,7 +2066,6 @@ namespace COServer.Game.MsgNpc
         #endregion
         #endregion
         #endregion
-
         #region ArenaRoom
         [NpcAttribute(NpcID.ArenaRoom)]
         public static void ArenaRoom(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -2200,7 +2191,6 @@ namespace COServer.Game.MsgNpc
             }
         }
         #endregion
-
         #region Events Manager
         [NpcAttribute(NpcID.AllTournaments)]
         public static void AllTournaments(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -2324,7 +2314,6 @@ namespace COServer.Game.MsgNpc
             }
         }
         #endregion
-
         #region gender
         [NpcAttribute(NpcID.DrYinYang)]
         public static void DrYinYang(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -2444,7 +2433,6 @@ namespace COServer.Game.MsgNpc
             }
         }
         #endregion
-
         #region bank mkt
         [NpcAttribute(NpcID.JasonNpc)]
         public static void JasonNpc(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -4547,8 +4535,7 @@ namespace COServer.Game.MsgNpc
 
             }
         }
-        #endregion
-        
+        #endregion        
         #region votemanager
         [NpcAttribute(NpcID.VotePointsReward)]
         public static void VotePointsReward(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -8584,8 +8571,6 @@ namespace COServer.Game.MsgNpc
         }
 
         #endregion
-
-
         #region VIPFREE
         [NpcAttribute(NpcID.vipfree)]
         public static void vipfree(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -8636,7 +8621,6 @@ namespace COServer.Game.MsgNpc
         }
 
         #endregion
-
         #region EggEvent
         [NpcAttribute(NpcID.Commandereasterquest)]
         public static void Commandereasterquest(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)

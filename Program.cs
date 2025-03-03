@@ -37,7 +37,7 @@ namespace COServer
         public static Discord DiscordAPIQuest = new Discord("https://discord.com/api/webhooks/1344900130062602310/7TulMmij4Ze7x86umCH0Qq6QnLVK5L-YTWSzVO_FcD3rl53j4fnNO94DyMbEv6MtrnD8");
         public static Discord DiscordAPILotery = new Discord("https://discord.com/api/webhooks/1294239212224385064/Ov086-5kATJBFwBnRMNB6RreLdCEr4gjzvXjCkhwGskfShbQhJywUsNPvh4HhiFMsrZT");
         public static Discord DiscordAPIRedDrop = new Discord("https://discord.com/api/webhooks/1344901857507545160/jo29SM0a5-G0jQ-SDLNMxsWgYPqvYe-InBgkk8ltP-Q11Clh5NPFg-VpyhP5RcCZtYnf");
-        public static Discord DiscordAPIwinners = new Discord("https://discord.com/api/webhooks/1294238766587842620/D5HX_dyjFyAzs4A_O8lA7oNKtsmxA0VasO93biO4Z2wu4J5ep_Tv95siU0YwxQKY3712");
+        public static Discord DiscordAPIwinners = new Discord("https://discord.com/api/webhooks/1346216518521852057/m3yJrq-OXLUlGXI-zcjGru8h65UbUriLdCUiynjeea0vtkbmpjOwxBtK_p-cGdQg9pIB");
         public static Discord DiscordAPIplus = new Discord("https://discord.com/api/webhooks/1294239567167094785/RZnWEUHBWzmE5a4S7HBoRHvBxTGnmwa4C_tGVg0jjor9I91yNXG7ydPwi2idUTxok-Oi");
         public static Discord DiscordAPITapete = new Discord("https://discord.com/api/webhooks/1344902388175208479/I0AcxtEOiQUzDguf4pND41LEv-9vcCAlwnZrQhkzl_NCqPNCgl-IiTCRUu5Jf4dLG36_");
         public static Discord DiscordAPIVote = new Discord("https://discord.com/api/webhooks/1344903113181757500/iU9bGOTvHy8Op6hH88isdRx6ENvpasdTD9a6NDmtRnU-oAKYShc6IMWoFE8rF0lPqpSD");
