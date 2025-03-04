@@ -311,11 +311,13 @@ namespace COServer.Game.MsgTournaments
                     if (aura != MsgServer.MsgUpdate.Flags.Normal)
                         client.Player.AddFlag(aura, Role.StatusFlagsBigVector32.PermanentFlag, false);
 
-                    client.Player.ConquerPoints += 20000;
+                    client.Inventory.Add(stream, 722178);
+                    client.Inventory.Add(stream, 722178);
+                    client.Inventory.Add(stream, 722178);
                     LastFlag = aura;
                     Winner = client.Player.UID;
-                    MsgSchedules.SendSysMesage("" + client.Player.Name + " Won " + Typ.ToString() + " PK War (" + Level.ToString() + ") , he/she received Top " + Typ.ToString() + " and 20.000 CPs.", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
-                    Program.DiscordAPIwinners.Enqueue("``[" + client.Player.Name + "] Won " + Typ.ToString() + " PK War (" + Level.ToString() + "), he/she received Top " + Typ.ToString() + " and 20.000 CPs.``");
+                    MsgSchedules.SendSysMesage("" + client.Player.Name + " Won " + Typ.ToString() + " PK War (" + Level.ToString() + ") , he/she received Top " + Typ.ToString() + "and 3 SurpriseBoxs.", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
+                    Program.DiscordAPIwinners.Enqueue("``[" + client.Player.Name + "] Won " + Typ.ToString() + " PK War (" + Level.ToString() + "), he/she received Top " + Typ.ToString() + "and 3 SurpriseBoxs.``");
                     client.Teleport(430, 269, 1002, 0);
                 }
             }

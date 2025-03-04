@@ -287,8 +287,8 @@ namespace COServer.Game.MsgTournaments
                     }
                     #region Days
 
-                    #region GuildSurvival
-                    if (Now64.Hour == 20 && Now64.Minute == 30 && Now64.Second == 0)
+                    #region GuildSurvival 21:00
+                    if (Now64.Hour == 21 && Now64.Minute == 00 && Now64.Second == 0)
                     {
                         if (GuildSurvival.Process == ProcesType.Dead)
                         {
@@ -297,7 +297,7 @@ namespace COServer.Game.MsgTournaments
                     }
                     GuildSurvival.CheckUp();
                     #endregion
-                    #region FiveAndOut
+                    #region FiveAndOut 19:00
                     if (Now64.Hour == 19 && Now64.Minute == 0 && Now64.Second == 0)
                     {
                         if (FiveNOut.Process == ProcesType.Dead)
@@ -307,10 +307,10 @@ namespace COServer.Game.MsgTournaments
                     }
                     FiveNOut.CheckUp();
                     #endregion
-                    #region PKDeathMatch
-                    if (Now64.Hour == 20 && (Now64.Minute >= 0 && Now64.Minute <= 19))
+                    #region PKDeathMatch 20:00
+                    if (Now64.Hour == 20 && (Now64.Minute >= 0 && Now64.Minute <= 15))
                     {
-                        if (PkWar.AllowJoin() == false)
+                        if (!PkWar.AllowJoin())
                         {
                             PkWar.Open();
                         }
@@ -376,7 +376,7 @@ namespace COServer.Game.MsgTournaments
                     }
 
                     #endregion 
-                    #region ClassPK
+                    #region ClassPK 22:00
                     if (Now64.Hour == 22 && Now64.Minute == 0)
                     {
                         // Verifica se o evento ainda não foi disparado hoje
@@ -405,7 +405,7 @@ namespace COServer.Game.MsgTournaments
                                 }
                             }
                     }
-                    #endregion
+                    #endregion 
                 }
                 #endregion
                 catch (Exception e)

@@ -154,17 +154,22 @@ namespace COServer.Game.MsgTournaments
                 }
 
                 if (MapPlayers().Length == 1)
-                {
-                    var winner = MapPlayers().First();
-                    winner.Player.ConquerPoints += 100;
-                    var mymsg = "[EVENT]" + winner.Player.Name + " received 100 CPs and 5 ExpBalls from the Five and Out Tournament!";
-                    MsgSchedules.SendSysMesage(mymsg, MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.white);
+                    using (var rec = new ServerSockets.RecycledPacket())
+                    {
+                        var stream = rec.GetStream();
 
-                    winner.GainExpBall(3000, true, Role.Flags.ExperienceEffect.angelwing);
-                    winner.Teleport(428, 378, 1002, 0);
-                    Process = ProcesType.Dead;
+                        var winner = MapPlayers().First();
 
-                }
+                        winner.Inventory.Add(stream, 722178);
+
+                        MsgSchedules.SendSysMesage($"{winner.Player.Name} received a prize for winning FiveNOut, 1 SurpriseBox!", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.yellow);
+                        Program.DiscordAPIwinners.Enqueue("``[" + winner.Player.Name + "] received a prize for winning FiveNOut, 1 SurpriseBox!``");
+
+                        var mymsg = "[EVENT]" + winner.Player.Name + " received 1 SurpriseBox from the Five and Out Tournament!";
+                        MsgSchedules.SendSysMesage(mymsg, MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.white);
+                        winner.Teleport(428, 378, 1002, 0);
+                        Process = ProcesType.Dead;
+                    }
 
                 Time32 Timer = Time32.Now;
                 using (var rec = new ServerSockets.RecycledPacket())
@@ -189,9 +194,8 @@ namespace COServer.Game.MsgTournaments
                                 else
                                 {
                                     user.Player.FiveNOut = 0;
-                                    user.Teleport(428, 378, 1002);
-                                    user.GainExpBall(1200, true, Role.Flags.ExperienceEffect.angelwing);
-                                    var mymsg = "[EVENT]" + user.Player.Name + " has lost all lives in the Five and Out Tournament and received 2 ExpBalls!";
+                                    user.Teleport(428, 378, 1002);            
+                                    var mymsg = "[EVENT]" + user.Player.Name + " has lost all lives in the Five and Out!";
                                     MsgSchedules.SendSysMesage(mymsg, MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.white);
                                 }
                             }

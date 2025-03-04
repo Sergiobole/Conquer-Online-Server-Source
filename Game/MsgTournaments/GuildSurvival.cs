@@ -52,7 +52,7 @@ namespace COServer.Game.MsgTournaments
                 if (!GuildLives.ContainsKey(user.Player.GuildID))
                 {
                     GuildLives[user.Player.GuildID] = 100;
-                }
+                }   
                 return true;
             }
             return false;
@@ -79,8 +79,7 @@ namespace COServer.Game.MsgTournaments
                         SendMapPacket(guildsTitleMsg.GetArray(stream));
 
                         var separatorMsg2 = new MsgServer.MsgMessage("--------------------------------", MsgServer.MsgMessage.MsgColor.yellow, MsgServer.MsgMessage.ChatMode.ContinueRightCorner);
-                        SendMapPacket(separatorMsg.GetArray(stream));
-
+                        SendMapPacket(separatorMsg2.GetArray(stream));
 
                         var players = MapPlayers(); // Chamar MapPlayers() uma vez para otimizar
                         foreach (var guild in GuildLives)
@@ -93,7 +92,7 @@ namespace COServer.Game.MsgTournaments
                             SendMapPacket(lifeMsg.GetArray(stream));
                         }
                         var separatorMsg3 = new MsgServer.MsgMessage("--------------------------------", MsgServer.MsgMessage.MsgColor.yellow, MsgServer.MsgMessage.ChatMode.ContinueRightCorner);
-                        SendMapPacket(separatorMsg.GetArray(stream));
+                        SendMapPacket(separatorMsg3.GetArray(stream));
 
                         string timerText = Process == ProcesType.Idle
                             ? $"[Fight starts in]: {(StartTimer.AddMinutes(3) - DateTime.Now).ToString(@"mm\:ss")}"
@@ -144,11 +143,32 @@ namespace COServer.Game.MsgTournaments
                     if (winnerGuild.Value > 0)
                     {
                         var guildName = "Unknown";
-                        var player = MapPlayers().FirstOrDefault(p => p.Player.GuildID == winnerGuild.Key);
+                        var players = MapPlayers();
+                        var player = players.FirstOrDefault(p => p.Player.GuildID == winnerGuild.Key);
                         if (player != null && player.Player.MyGuild != null)
                             guildName = player.Player.MyGuild.GuildName;
+
                         MsgSchedules.SendSysMesage($"[EVENT] Guild {guildName} won Guild Survival with {winnerGuild.Value} lives remaining!", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.white);
+
+                        // Distribuir prêmios para os jogadores da guilda vencedora
+                        using (var rec = new ServerSockets.RecycledPacket())
+                        {
+                            var stream = rec.GetStream();
+                            foreach (var user in players.Where(p => p.Player.GuildID == winnerGuild.Key))
+                            {
+                                // Adicionar múltiplos itens ao inventário
+                                user.Inventory.Add(stream, 722178); // Primeiro SurpriseBox
+                                user.Inventory.Add(stream, 722178); // Segundo SurpriseBox
+                                                                    // Se quiser mais itens, adicione mais chamadas aqui, por exemplo:
+                                                                    // user.Inventory.Add(stream, outroItemID);
+
+                                MsgSchedules.SendSysMesage($"{user.Player.Name} received a prize for winning Guild Survival, SurpriseBox!", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.yellow);
+                                Program.DiscordAPIwinners.Enqueue("``[" + user.Player.Name + "] received a prize for winning Guild Survival, SurpriseBox!``");
+                            }
+                        }
                     }
+
+                    // Teleportar todos de volta
                     foreach (var user in MapPlayers())
                     {
                         user.Teleport(428, 378, 1002);
@@ -163,10 +183,31 @@ namespace COServer.Game.MsgTournaments
                 {
                     var winnerGuild = aliveGuilds.First();
                     var guildName = "Unknown";
-                    var player = MapPlayers().FirstOrDefault(p => p.Player.GuildID == winnerGuild.Key);
+                    var players = MapPlayers();
+                    var player = players.FirstOrDefault(p => p.Player.GuildID == winnerGuild.Key);
                     if (player != null && player.Player.MyGuild != null)
                         guildName = player.Player.MyGuild.GuildName;
+
                     MsgSchedules.SendSysMesage($"[EVENT] Guild {guildName} won Guild Survival with {winnerGuild.Value} lives remaining!", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.white);
+
+                    // Distribuir prêmios para os jogadores da guilda vencedora
+                    using (var rec = new ServerSockets.RecycledPacket())
+                    {
+                        var stream = rec.GetStream();
+                        foreach (var user in players.Where(p => p.Player.GuildID == winnerGuild.Key))
+                        {
+                            // Adicionar múltiplos itens ao inventário
+                            user.Inventory.Add(stream, 722178); // Primeiro SurpriseBox
+                            user.Inventory.Add(stream, 722178); // Segundo SurpriseBox
+                                                                // Se quiser mais itens, adicione mais chamadas aqui, por exemplo:
+                                                                // user.Inventory.Add(stream, outroItemID);
+
+                            MsgSchedules.SendSysMesage($"{user.Player.Name} received a prize for winning Guild Survival, SurpriseBox!", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.yellow);
+                            Program.DiscordAPIwinners.Enqueue("``[" + user.Player.Name + "] received a prize for winning Guild Survival, SurpriseBox!``");
+                        }
+                    }
+
+                    // Teleportar todos de volta
                     foreach (var user in MapPlayers())
                     {
                         user.Teleport(428, 378, 1002);

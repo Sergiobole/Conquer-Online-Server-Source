@@ -9834,7 +9834,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Welcome to Guild Survival, an epic battle royale for guilds! ")
-                            .AddText("Your guild starts with 100 Lifes. The warm-up begins at 21:30 and lasts until 21:33, where deaths don’t cost lives. ")
+                            .AddText("Your guild starts with 100 Lifes. The warm-up begins at 21:00 and lasts until 21:03, where deaths don’t cost lives. ")
                             .AddText("After that, it’s live—each death deducts a life from your guild. The last guild standing wins! ")
                             .AddOption("Sign me up!", 1)
                             .AddOption("I'll think it over.", 255)
@@ -9853,7 +9853,7 @@ namespace COServer.Game.MsgNpc
                             }
                             else
                             {
-                                data.AddText("Sorry, you can’t join right now. The event runs daily from 21:30 PM to 21:33. Check back then!")
+                                data.AddText("Sorry, you can’t join right now. The event runs daily from 21:00 PM to 21:03. Check back then!")
                                     .AddOption("Okay.", 255)
                                     .FinalizeDialog();
                             }
