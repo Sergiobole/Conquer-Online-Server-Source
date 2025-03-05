@@ -15,7 +15,7 @@ namespace COServer.Game.MsgTournaments
         public static Time32 Stamp = Time32.Now.AddMilliseconds(KernelThread.TournamentsStamp);
         public static Dictionary<TournamentType, ITournament> Tournaments = new Dictionary<TournamentType, ITournament>();
         public static ITournament CurrentTournament;
-
+        internal static GuildSurvival GuildSurvival;
         internal static DateTime LastClassPKStart = DateTime.MinValue;
         internal static Fivenout FiveNOut;
         #region PoleDomination
@@ -57,6 +57,7 @@ namespace COServer.Game.MsgTournaments
             PoleDominationDC = new MsgPoleDominationDC();
             PoleDominationPC = new MsgPoleDominationPC();
             #endregion
+            GuildSurvival = new GuildSurvival();
             FiveNOut = new Fivenout();
             _ExtremeFlagWar = new ExtremeFlagWar();
             _EliteGuildWar = new EliteGuildWar();
@@ -284,7 +285,18 @@ namespace COServer.Game.MsgTournaments
                                 break;
                         }
                     }
-                    #region Day
+                    #region Days
+
+                    #region GuildSurvival
+                    if (Now64.Hour == 20 && Now64.Minute == 30 && Now64.Second == 0)
+                    {
+                        if (GuildSurvival.Process == ProcesType.Dead)
+                        {
+                            GuildSurvival.Open();
+                        }
+                    }
+                    GuildSurvival.CheckUp();
+                    #endregion
                     #region FiveAndOut
                     if (Now64.Hour == 19 && Now64.Minute == 0 && Now64.Second == 0)
                     {

@@ -55,6 +55,7 @@ namespace COServer.Game.MsgNpc
         General500k = 103009,
         ExchangeConv = 13654,
         FiveNOut = 7879,
+        GuildSurvival = 133155,
         FrozenSky = 103004,
         SoulsTrader = 349190,
         MerchantClerk = 817,

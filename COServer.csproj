@@ -238,6 +238,7 @@
     <Compile Include="Game\MsgTournaments\EliteGuildWar.cs" />
     <Compile Include="Game\MsgTournaments\FirePoleWar.cs" />
     <Compile Include="Game\MsgTournaments\ExtremeFlagWar.cs" />
+    <Compile Include="Game\MsgTournaments\GuildSurvival.cs" />
     <Compile Include="Game\MsgTournaments\PoleDominationEvents\MsgPoleDominationAC.cs" />
     <Compile Include="Game\MsgTournaments\PoleDominationEvents\MsgPoleDominationBI.cs" />
     <Compile Include="Game\MsgTournaments\PoleDominationEvents\MsgPoleDominationDC.cs" />
