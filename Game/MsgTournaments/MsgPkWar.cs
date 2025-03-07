@@ -24,7 +24,7 @@ namespace COServer.Game.MsgTournaments
             {
                 Mode = ProcesType.Idle;
                 Map = Database.Server.ServerMaps[MapID];
-                MsgSchedules.SendInvitation("Weekly Pk War", 452, 294, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.WeeklyPKWar);
+                MsgSchedules.SendInvitation("PKDeathMatch Pk War", 421, 362, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.WeeklyPKWar);
                 StartTimer = DateTime.Now;
                 Duration = 15 * 60;
             }
@@ -144,8 +144,8 @@ namespace COServer.Game.MsgTournaments
         {
             WinnerUID = client.Player.UID;
             client.SendSysMesage("You've received " + RewardConquerPoints.ToString() + " CPs. ", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.white);
-            MsgSchedules.SendSysMesage("" + client.Player.Name + " won Weekly PK War , he/she received " + RewardConquerPoints.ToString() + " CPs!", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
-            string reward = "[EVENT]" + client.Player.Name + " has received " + RewardConquerPoints + " from Weekly PK War.";
+            MsgSchedules.SendSysMesage("" + client.Player.Name + " won PKDeathMatch PK War , he/she received " + RewardConquerPoints.ToString() + " CPs!", MsgServer.MsgMessage.ChatMode.TopLeftSystem, MsgServer.MsgMessage.MsgColor.white);
+            string reward = "[EVENT]" + client.Player.Name + " has received " + RewardConquerPoints + " from PKDeathMatch.";
             //Program.DiscordAPI.Enqueue("``{reward}``");
             Database.ServerDatabase.LoginQueue.Enqueue(reward);
             client.Player.ConquerPoints += RewardConquerPoints;

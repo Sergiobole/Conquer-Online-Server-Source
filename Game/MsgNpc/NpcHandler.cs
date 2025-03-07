@@ -9786,57 +9786,37 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        data.AddText("Five and Out is a FastBlade/ScentSword event which depends on your skill. ")
-                            .AddText("If you get hit 5 times you get kicked out. The last man standing wins! ")
-                            .AddOption("Sign~me~up!", 1)
-                             .AddOption("I`ll~think~it~over.", 255).FinalizeDialog();
-
+                        data.AddText("Welcome to FiveandOut, a thrilling event exclusive for Trojans! ")
+                            .AddText("You start with 10 lifes. The warm-up phase begins at 19:00 and lasts until 19:03, where you can fight without losing lives. ")
+                            .AddText("After that, it’s live—each hit costs a life, and the last Trojan standing wins! ")
+                            .AddOption("Sign me up!", 1)
+                            .AddOption("I'll think it over.", 255)
+                            .FinalizeDialog();
                         break;
                     }
                 case 1:
                     {
-                        if (client.Player.TransformInfo != null)
+                        if (client.Player.Class >= 10 && client.Player.Class <= 15)
                         {
-                            data.AddText("You can't join while transformed!")
-        .AddOption("I see. ", 255)
-        .AddAvatar(63).FinalizeDialog();
-                            return;
-                        }
-                        if (MsgCheckLine.CheckLineSpells(client))
-                        {
-                            if (MsgCheckLine.CheckItems(client))
+                            if (MsgSchedules.FiveNOut.Join(client, stream))
                             {
-                                if (MsgSchedules.CurrentTournament.Type == TournamentType.FiveNOut)
-                                {
-                                    if (!MsgSchedules.CurrentTournament.Join(client, stream))
-                                    {
-                                        data.AddText("We're sorry, but you can't enter right now, try again when the tournament starts!")
-       .AddOption("I see. ", 255)
-       .FinalizeDialog();
-                                    }
-                                }
-                                else
-                                {
-                                    data.AddText("We're sorry, but you can't enter right now, try when again when the tournament starts!")
-       .AddOption("I see. ", 255)
-       .FinalizeDialog();
-                                }
-
+                                data.AddText("Welcome to Five and Out! You’re in with 10 lifes. Fight well!")
+                                    .AddOption("Thanks!", 255)
+                                    .FinalizeDialog();
                             }
                             else
                             {
-                                data.AddText("Please use Blade, Sword, or Backsword.")
-              .AddOption("Okay.", 255)
-             .FinalizeDialog();
+                                data.AddText("Sorry, you can’t join right now. The event starts at 19:00 -> 19:03daily. Check back then!")
+                                    .AddOption("Okay.", 255)
+                                    .FinalizeDialog();
                             }
                         }
                         else
                         {
-                            data.AddText("Please learn FastBlade or ScentSword.")
-          .AddOption("Okay.", 255)
-          .FinalizeDialog();
+                            data.AddText("Sorry, this event is only for Trojans! You don’t qualify!")
+                                .AddOption("I see.", 255)
+                                .FinalizeDialog();
                         }
-
                         break;
                     }
             }
@@ -10116,12 +10096,11 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        data.AddText("The Weekly PK War will take place during 20:00 and 20:19 on Friday,")
-                            .AddText("and you'll be admitted into tournament during 20:00 and 20:19, Come! You will be impressed.")
+                        data.AddText("The daily PKDeathMatch event takes place every day from 20:00 to 20:15.")
+                            .AddText("Join us during this time to participate in an exciting battle, where you’ll be admitted to the tournament between 20:00 and 20:15. Come and show your skills! You'll be impressed.")
                             .AddOption("Sign~me~up.", 1)
-                            .AddOption("I'll come later. ", 255)
+                            .AddOption("I'll come later.", 255)
                             .AddAvatar(63).FinalizeDialog();
-
 
                         break;
                     }
@@ -10133,7 +10112,7 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            data.AddText("Please sign up between 20:00 and 20:20 every Saturday.")
+                            data.AddText("Please sign up between 20:00 and 20:15 every.")
                                 .AddOption("I see. ", 255)
                                 .AddAvatar(63).FinalizeDialog();
                         }
@@ -10142,7 +10121,7 @@ namespace COServer.Game.MsgNpc
                         break;
                     }
             }
-        }//TeamDeathMatch
+        }
 
         [NpcAttribute(NpcID.ClassPkWar)]
         public static void NpcClassPkWar(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)

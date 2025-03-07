@@ -17,7 +17,7 @@ namespace COServer.Game.MsgTournaments
         public static ITournament CurrentTournament;
 
         internal static DateTime LastClassPKStart = DateTime.MinValue;
-
+        internal static Fivenout FiveNOut;
         #region PoleDomination
         internal static MsgPoleDomination PoleDomination;
         internal static MsgPoleDominationBI PoleDominationBI;
@@ -57,6 +57,7 @@ namespace COServer.Game.MsgTournaments
             PoleDominationDC = new MsgPoleDominationDC();
             PoleDominationPC = new MsgPoleDominationPC();
             #endregion
+            FiveNOut = new Fivenout();
             _ExtremeFlagWar = new ExtremeFlagWar();
             _EliteGuildWar = new EliteGuildWar();
             //_FirePoleWar = new FirePoleWar();
@@ -259,6 +260,7 @@ namespace COServer.Game.MsgTournaments
                                     Program.DiscordAPIevents.Enqueue($"``Kill hunted has started!``");
                                     break;
                                 }
+
                             //case 9:
                             //    {
                             //        EventsLib.EventManager.teamfreezewar.LastSpawn = DateTime.Now;
@@ -282,21 +284,30 @@ namespace COServer.Game.MsgTournaments
                                 break;
                         }
                     }
-                    #region Days
-
-                    if (Now64.DayOfWeek == DayOfWeek.Friday)
+                    #region Day
+                    #region FiveAndOut
+                    if (Now64.Hour == 19 && Now64.Minute == 0 && Now64.Second == 0)
                     {
-                        if (Now64.Hour == 20 && (Now64.Minute >= 0 && Now64.Minute <= 19))
+                        if (FiveNOut.Process == ProcesType.Dead)
                         {
-                            if (PkWar.AllowJoin() == false)
-                            {
-                                PkWar.Open();
-                            }
+                            FiveNOut.Open();
                         }
                     }
+                    FiveNOut.CheckUp();
+                    #endregion
+                    #region PKDeathMatch
+                    if (Now64.Hour == 20 && (Now64.Minute >= 0 && Now64.Minute <= 19))
+                    {
+                        if (PkWar.AllowJoin() == false)
+                        {
+                            PkWar.Open();
+                        }
+                    }
+                    #endregion
+                    #region GuildWar
                     if (Now64.DayOfWeek == DayOfWeek.Sunday)
                     {
-                        #region GuildWar
+                        
                         if (Now64.Hour >= 14 && Now64.Hour < 17)
                         {
                             if (GuildWar.Proces == ProcesType.Dead)
@@ -336,8 +347,10 @@ namespace COServer.Game.MsgTournaments
                             if (GuildWar.Proces == ProcesType.Alive || GuildWar.Proces == ProcesType.Idle)
                                 GuildWar.CompleteEndGuildWar();
                         }
-                        #endregion
+                        
                     }
+                    #endregion
+                    #region TournamentType
                     if (Now64.Minute == 30)
                     {
                         if (CurrentTournament.Process == ProcesType.Dead)
@@ -349,6 +362,8 @@ namespace COServer.Game.MsgTournaments
 
                         }
                     }
+
+                    #endregion 
                     #region ClassPK
                     if (Now64.Hour == 22 && Now64.Minute == 0)
                     {

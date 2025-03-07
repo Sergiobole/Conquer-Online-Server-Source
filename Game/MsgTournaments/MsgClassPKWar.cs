@@ -6,6 +6,7 @@ namespace COServer.Game.MsgTournaments
 {
     public class MsgClassPKWar
     {
+
         public static string CurrentClass { get; private set; } // Classe do dia
         public const ushort MapID = 1764;
         public const string FilleName = "\\ClassPkWar.ini";

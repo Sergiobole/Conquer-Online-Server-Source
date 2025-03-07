@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using COServer.Game.MsgServer;
 using static COServer.Game.MsgServer.MsgStringPacket;
 
 namespace COServer.Game.MsgTournaments
 {
-    public class Fivenout : ITournament
+    public class Fivenout
     {
-
         public ProcesType Process { get; set; }
         public DateTime StartTimer = new DateTime();
         public DateTime InfoTimer = new DateTime();
-        public uint Seconds = 10;
         public Role.GameMap Map;
         public uint DinamicMap = 0;
         public KillerSystem KillSystem;
-        public TournamentType Type { get; set; }
-        public Fivenout(TournamentType _type)
+
+        public Fivenout()
         {
-            Type = _type;
             Process = ProcesType.Dead;
+            InfoTimer = DateTime.Now; // Inicializa InfoTimer
         }
 
         public void Open()
@@ -30,18 +29,21 @@ namespace COServer.Game.MsgTournaments
                 KillSystem = new KillerSystem();
                 StartTimer = DateTime.Now;
 
-                MsgSchedules.SendInvitation("Five and Out",431, 251, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.Fiveout);
+                MsgSchedules.SendInvitation("Five and Out", 446, 355, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.Fiveout);
+
 
                 if (Map == null)
                 {
                     Map = Database.Server.ServerMaps[700];
                     DinamicMap = Map.GenerateDynamicID();
+
                 }
                 InfoTimer = DateTime.Now;
-                Seconds = 60;
                 Process = ProcesType.Idle;
+
             }
         }
+
         public bool Join(Client.GameClient user, ServerSockets.Packet stream)
         {
             if (Process == ProcesType.Idle)
@@ -50,28 +52,90 @@ namespace COServer.Game.MsgTournaments
                 ushort y = 0;
                 Map.GetRandCoord(ref x, ref y);
                 user.Teleport(x, y, Map.ID, DinamicMap);
-                user.Player.FiveNOut = 5;
+                user.Player.FiveNOut = 10; // 10 vidas conforme NPC
 
-              
                 return true;
             }
+
             return false;
         }
+
         public void CheckUp()
         {
+
+
+            // Só exibe vidas e contador se o mapa estiver inicializado (Idle ou Alive)
+            if (Process != ProcesType.Dead && Map != null)
+            {
+                #region Lives and Timer Display
+                if (DateTime.Now > InfoTimer.AddSeconds(1)) // Atualiza a cada segundo
+                {
+
+                    using (var rec = new ServerSockets.RecycledPacket())
+                    {
+                        var stream = rec.GetStream();
+
+                        string headerText = Process == ProcesType.Idle ? "  [TRAINING]  " : "  [LIVE]  ";
+                        var headerMsg = new MsgServer.MsgMessage(headerText, MsgServer.MsgMessage.MsgColor.yellow, MsgServer.MsgMessage.ChatMode.FirstRightCorner);
+                        SendMapPacket(headerMsg.GetArray(stream));
+
+                        var separatorMsg = new MsgServer.MsgMessage("--------------------------------", MsgServer.MsgMessage.MsgColor.yellow, MsgServer.MsgMessage.ChatMode.ContinueRightCorner);
+                        SendMapPacket(separatorMsg.GetArray(stream));
+
+                        var playersTitleMsg = new MsgServer.MsgMessage("[PLAYERS]              [LIFE]", MsgServer.MsgMessage.MsgColor.yellow, MsgServer.MsgMessage.ChatMode.ContinueRightCorner);
+                        SendMapPacket(playersTitleMsg.GetArray(stream));
+
+                        var players = MapPlayers();
+
+                        foreach (var user in players)
+                        {
+                            var lifeMsg = new MsgServer.MsgMessage($"{user.Player.Name}:              {user.Player.FiveNOut} Lifes", MsgServer.MsgMessage.MsgColor.yellow, MsgServer.MsgMessage.ChatMode.ContinueRightCorner);
+                            SendMapPacket(lifeMsg.GetArray(stream));
+                        }
+
+                        var separatorMsg1 = new MsgServer.MsgMessage("--------------------------------", MsgServer.MsgMessage.MsgColor.yellow, MsgServer.MsgMessage.ChatMode.ContinueRightCorner);
+                        SendMapPacket(separatorMsg.GetArray(stream));
+
+                        string timerText = Process == ProcesType.Idle
+                            ? $"[Fight starts in]: {(StartTimer.AddMinutes(3) - DateTime.Now).ToString(@"mm\:ss")}"
+                            : $"[Time left]: {(StartTimer.AddMinutes(15) - DateTime.Now).ToString(@"mm\:ss")}";
+                        var timerMsg = new MsgServer.MsgMessage(timerText, MsgServer.MsgMessage.MsgColor.yellow, MsgServer.MsgMessage.ChatMode.ContinueRightCorner);
+                        SendMapPacket(timerMsg.GetArray(stream));
+                    }
+                    InfoTimer = DateTime.Now;
+
+                }
+                #endregion
+            }
+
             if (Process == ProcesType.Idle)
             {
-                if (DateTime.Now > StartTimer.AddMinutes(1))
+                if (DateTime.Now > StartTimer.AddMinutes(3))
                 {
                     MsgSchedules.SendSysMesage("Five and Out has started! Signups are now closed.", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.white);
                     Process = ProcesType.Alive;
                     StartTimer = DateTime.Now;
+ 
                 }
-                else if (DateTime.Now > InfoTimer.AddSeconds(10))
+                Time32 Timer = Time32.Now;
+                using (var rec = new ServerSockets.RecycledPacket())
                 {
-                    Seconds -= 10;
-                    MsgSchedules.SendSysMesage("[Five and Out] Fight starts in " + Seconds.ToString() + " seconds.", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.white);
-                    InfoTimer = DateTime.Now;
+                    var stream = rec.GetStream();
+                    foreach (var user in MapPlayers())
+                    {
+                        if (user.Player.Alive == false)
+                        {
+                            if (user.Player.DeadStamp.AddSeconds(4) < Timer)
+                            {
+                                ushort x = 0;
+                                ushort y = 0;
+                                Map.GetRandCoord(ref x, ref y);
+                                user.Teleport(x, y, Map.ID, DinamicMap);
+                                user.Player.Revive(stream);
+
+                            }
+                        }
+                    }
                 }
             }
 
@@ -82,49 +146,86 @@ namespace COServer.Game.MsgTournaments
                     foreach (var user in MapPlayers())
                     {
                         user.Teleport(428, 378, 1002);
+                        MsgSchedules.SendSysMesage($"{user.Player.Name} foi teleportado de volta a Twin City com {user.Player.FiveNOut} vidas restantes.", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.white);
                     }
                     MsgSchedules.SendSysMesage("Five and Out has ended. Players have been teleported back to Twin City.", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.white);
                     Process = ProcesType.Dead;
+
                 }
 
                 if (MapPlayers().Length == 1)
                 {
                     var winner = MapPlayers().First();
-                    //using (var rec = new ServerSockets.RecycledPacket())
-                    //{
-                    //    var stream = rec.GetStream();
-                    //    Role.Player.Reward(winner, stream, " Five(N)Out Tournaments");
-                    //}
                     winner.Player.ConquerPoints += 100;
                     var mymsg = "[EVENT]" + winner.Player.Name + " received 100 CPs and 5 ExpBalls from the Five and Out Tournament!";
-                    MsgSchedules.SendSysMesage(mymsg, Game.MsgServer.MsgMessage.ChatMode.System, Game.MsgServer.MsgMessage.MsgColor.white);
+                    MsgSchedules.SendSysMesage(mymsg, MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.white);
 
                     winner.GainExpBall(3000, true, Role.Flags.ExperienceEffect.angelwing);
                     winner.Teleport(428, 378, 1002, 0);
                     Process = ProcesType.Dead;
+
                 }
 
-
                 Time32 Timer = Time32.Now;
-                foreach (var user in MapPlayers())
+                using (var rec = new ServerSockets.RecycledPacket())
                 {
-                    if (user.Player.Alive == false)
+                    var stream = rec.GetStream();
+                    foreach (var user in MapPlayers())
                     {
-                        if (user.Player.DeadStamp.AddSeconds(4) < Timer)
+                        if (user.Player.Alive == false)
                         {
-                            user.Teleport(428, 378, 1002);
-                            user.GainExpBall(1200, true, Role.Flags.ExperienceEffect.angelwing);
-                            var mymsg = "[EVENT]" + user.Player.Name + " has lost in the Five and Out Tournament and received 2 ExpBalls!";
-                            MsgSchedules.SendSysMesage(mymsg, Game.MsgServer.MsgMessage.ChatMode.System, Game.MsgServer.MsgMessage.MsgColor.white);
-
+                            if (user.Player.DeadStamp.AddSeconds(4) < Timer)
+                            {
+                                if (user.Player.FiveNOut > 1)
+                                {
+                                    user.Player.FiveNOut--;
+                                    ushort x = 0;
+                                    ushort y = 0;
+                                    Map.GetRandCoord(ref x, ref y);
+                                    user.Teleport(x, y, Map.ID, DinamicMap);
+                                    user.Player.Revive(stream);
+                                    MsgSchedules.SendSysMesage($"{user.Player.Name} perdeu uma vida! Vidas restantes: {user.Player.FiveNOut}", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.yellow);
+                                }
+                                else
+                                {
+                                    user.Player.FiveNOut = 0;
+                                    user.Teleport(428, 378, 1002);
+                                    user.GainExpBall(1200, true, Role.Flags.ExperienceEffect.angelwing);
+                                    var mymsg = "[EVENT]" + user.Player.Name + " has lost all lives in the Five and Out Tournament and received 2 ExpBalls!";
+                                    MsgSchedules.SendSysMesage(mymsg, MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.white);
+                                }
+                            }
                         }
                     }
                 }
             }
         }
 
+        private void SendMapPacket(ServerSockets.Packet packet)
+        {
+            var players = MapPlayers();
+            if (players.Length == 0)
+            {
+                return;
+            }
+            foreach (var user in players)
+            {
+                try
+                {
+                    user.Send(packet);
+                }
+                catch (Exception e)
+                {
+                }
+            }
+        }
+
         public Client.GameClient[] MapPlayers()
         {
+            if (Map == null)
+            {
+                return new Client.GameClient[0]; // Retorna array vazio se Map não estiver inicializado
+            }
             return Map.Values.Where(p => p.Player.DynamicID == DinamicMap && p.Player.Map == Map.ID).ToArray();
         }
 
