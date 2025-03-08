@@ -159,7 +159,7 @@ namespace COServer.Game.MsgTournaments
                                 // Adicionar múltiplos itens ao inventário
                                 user.Inventory.Add(stream, 722178); // Primeiro SurpriseBox
                                 user.Inventory.Add(stream, 722178); // Segundo SurpriseBox
-                                                                    // Se quiser mais itens, adicione mais chamadas aqui, por exemplo:
+                                                                    // 
                                                                     // user.Inventory.Add(stream, outroItemID);
 
                                 MsgSchedules.SendSysMesage($"{user.Player.Name} received a prize for winning Guild Survival, SurpriseBox!", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.yellow);
@@ -199,7 +199,7 @@ namespace COServer.Game.MsgTournaments
                             // Adicionar múltiplos itens ao inventário
                             user.Inventory.Add(stream, 722178); // Primeiro SurpriseBox
                             user.Inventory.Add(stream, 722178); // Segundo SurpriseBox
-                                                                // Se quiser mais itens, adicione mais chamadas aqui, por exemplo:
+                                                                // 
                                                                 // user.Inventory.Add(stream, outroItemID);
 
                             MsgSchedules.SendSysMesage($"{user.Player.Name} received a prize for winning Guild Survival, SurpriseBox!", MsgServer.MsgMessage.ChatMode.System, MsgServer.MsgMessage.MsgColor.yellow);

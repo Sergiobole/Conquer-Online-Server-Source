@@ -96,7 +96,7 @@ namespace COServer.Game.MsgTournaments
         }
         public class GuildWarScrore
         {
-            public const int ConquerPointsReward = 150000;
+            public const int ConquerPointsReward = 10000;
 
             public uint GuildID;
             public string Name;
@@ -106,7 +106,7 @@ namespace COServer.Game.MsgTournaments
 
             //for reward
             public int LeaderReward = 1;
-            public int DeputiLeaderReward = 7;
+            public int DeputiLeaderReward = 4;
         }
 
         public List<uint> RewardLeader = new List<uint>();
@@ -217,7 +217,7 @@ namespace COServer.Game.MsgTournaments
 
             RewardDeputiLeader.Clear();
             RewardLeader.Clear();
-            Winner.DeputiLeaderReward = 7;
+            Winner.DeputiLeaderReward = 4;
             Winner.LeaderReward = 1;
 
         }

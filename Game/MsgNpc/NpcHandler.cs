@@ -704,9 +704,9 @@ namespace COServer.Game.MsgNpc
                 case 75:
                     {
                         dialog.AddText("Please make 1 more space in your inventory.").AddAvatar(7); ;
-                        dialog.AddOption("MoonBox = 4.000", 5);
-                        dialog.AddOption("3xExp = 500", 6);
-                        dialog.AddOption("Emereald = 2.000", 7);
+                        //dialog.AddOption("MoonBox = 4.000", 5);
+                        dialog.AddOption("3xExp = 1000", 6);
+                        //dialog.AddOption("Emereald = 2.000", 7);
                         dialog.FinalizeDialog();
                         break;
 
@@ -746,16 +746,16 @@ namespace COServer.Game.MsgNpc
                             dialog.FinalizeDialog();
                             break;
                         }
-                        if (client.Player.OnlinePoints >= 500)
+                        if (client.Player.OnlinePoints >= 1000)
                         {
-                            client.Player.OnlinePoints -= 500;
+                            client.Player.OnlinePoints -= 1000;
                             client.Inventory.Add(stream, 720393, 1, 0, 0, 0, 0, 0, false);
-                            dialog.AddText("You have successfully exchanged 500 Online Points for a 3xExp.").AddAvatar(7);
-                            Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take 3xExp Online Points``");
+                            dialog.AddText("You have successfully exchanged 1000 Online Points for a 3xExp.").AddAvatar(7);
+                            Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take 3xExp Online 1000 Points``");
                         }
                         else
                         {
-                            dialog.AddText("You do not have Online Points.\nYou need 500 Online Points to exchange for a 3xExp.").AddAvatar(7);
+                            dialog.AddText("You do not have Online Points.\nYou need 1000 Online Points to exchange for a 3xExp.").AddAvatar(7);
                         }
 
                         dialog.AddOption("Okay", 255);
@@ -1046,7 +1046,6 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         data.AddText("Welcome [ " + client.Player.Name + " ] \nWe Have Top LastMan War For All Classes Every Hour\n")
-                            .AddText("The Winner Get [ Stone +1 ]")
                             .AddOption("Okey, Enter Me.", 1)
                             .AddOption("I will come later. ", 255)
                             .AddAvatar(63).FinalizeDialog();
@@ -3336,7 +3335,7 @@ namespace COServer.Game.MsgNpc
                         }
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
 
-                        data.AddText(string.Format("You have {0} founds available! Buy more Coins at OrigensCO.com!\n", totalFounds));
+                        data.AddText(string.Format("You have {0} Coins available! Buy more Coins at OrigensCO.com!\n", totalFounds));
                         data.AddOption("1 - [Transfer Coins]", 1);
                         data.AddOption("2 - [VIPs]", 2);
                         data.AddOption("3 - [Prizes]", 3);
@@ -3416,7 +3415,7 @@ namespace COServer.Game.MsgNpc
 
                         Console.WriteLine($"Attempting to transfer {foundsToTransfer} Coins from {client.AccountName(client.Player.Name)} to {recipientPlayerName}");
 
-                        const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                        const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
 
                         try
                         {
@@ -3563,7 +3562,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 7)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3624,7 +3623,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 20)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3700,7 +3699,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 50)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3761,7 +3760,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 10)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3822,7 +3821,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 10)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3883,7 +3882,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 15)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3934,7 +3933,7 @@ namespace COServer.Game.MsgNpc
                     {
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Coins: " + totalFounds);
-                        data.AddText(string.Format("You have {0} Coins, Buy Founds in OrigensCO.com!", totalFounds));
+                        data.AddText(string.Format("You have {0} Coins, Buy Coins in OrigensCO.com!", totalFounds));
                         data.AddOption("1 - [Praying Stones]", 40);
                         data.AddOption("2 - [Power ExpBalls]", 50)
                             .AddOption("Let me check.", 255)
@@ -3985,7 +3984,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 5)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4049,7 +4048,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 7)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4113,7 +4112,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 10)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4189,7 +4188,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 1)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4251,7 +4250,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds <= 0)
                         {
-                            data.AddText("You don't have enough founds");
+                            data.AddText("You don't have enough Coins");
                             data.AddOption("Okay.", 255);
                             data.AddAvatar(63).FinalizeDialog();
                         }
@@ -4282,7 +4281,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 30)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4346,7 +4345,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 30)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4410,7 +4409,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 30)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4465,7 +4464,7 @@ namespace COServer.Game.MsgNpc
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Coins: " + totalFounds);
                         data.AddText(string.Format("You have {0} Coins, Buy Coins in OrigensCO.com!", totalFounds));
-                        data.AddOption("1 - [SurpriseBox = 1 Founds]", 91)
+                        data.AddOption("1 - [SurpriseBox = 1 Coins]", 91)
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
                         break;
@@ -4486,7 +4485,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 1)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4574,7 +4573,7 @@ namespace COServer.Game.MsgNpc
                             break;
                         }
 
-                        client.SendSysMesage("https://www.xtremetop100.com/in.php?site=1132376247", MsgMessage.ChatMode.WebSite, MsgMessage.MsgColor.red, false);
+                        client.SendSysMesage("https://www.xtremetop100.com/in.php?site=1132377051", MsgMessage.ChatMode.WebSite, MsgMessage.MsgColor.red, false);
                         COServer.Game.MsgServer.VoteSystem.AddVote(client.Player.Name, client.Socket.RemoteIp);
 
                         client.SendSysMesage("You have voted successfully! Thank you for your participation.", MsgMessage.ChatMode.System, MsgMessage.MsgColor.Blue, false);
@@ -8581,7 +8580,17 @@ namespace COServer.Game.MsgNpc
 
             switch (Option)
             {
+
                 case 0:
+
+                    {
+                        dialog.Text("Welcome to OrigensCO.com! As a welcome gift, you are entitled to 7 days of free VIP. We recommend claiming it on your Archer for the best experience.")
+                              .AddOption("Claim it now.", 1)
+                              .AddOption("Will create Archer", 255).AddAvatar(10).FinalizeDialog();
+                    }
+
+                    break;
+                case 1:
                     // Se o IP ainda não foi usado para resgatar o VIP, permite o resgate
                     if (!Database.VIPSystem.HasClaimedFreeVip(clientIP))
                     {
@@ -8605,7 +8614,7 @@ namespace COServer.Game.MsgNpc
                     }
                     break;
 
-                case 1:
+                case 2:
                     if (!Database.VIPSystem.HasClaimedFreeVip(clientIP))
                     {
                         Database.VIPSystem.CheckUp(client);
@@ -10357,25 +10366,23 @@ namespace COServer.Game.MsgNpc
                             if (client.Player.TransformInfo != null)
                             {
                                 data.AddText("You cant join while transformed!")
-            .AddOption("I see. ", 255)
-            .AddAvatar(63).FinalizeDialog();
+                                    .AddOption("I see. ", 255)
+                                    .AddAvatar(63).FinalizeDialog();
                                 return;
                             }
                             if (!MsgSchedules.CurrentTournament.Join(client, stream))
                             {
                                 data.AddText("We are sorry , but u can't enter right now , try when tournament start !")
-            .AddOption("I see. ", 255)
-            .AddAvatar(63).FinalizeDialog();
+                                    .AddOption("I see. ", 255)
+                                    .AddAvatar(63).FinalizeDialog();
                             }
                         }
                         else
                         {
                             data.AddText("We are sorry , but u can't enter right now , try when tournament start !")
- .AddOption("I see. ", 255)
- .AddAvatar(63).FinalizeDialog();
+                                .AddOption("I see. ", 255)
+                                .AddAvatar(63).FinalizeDialog();
                         }
-
-
                         break;
                     }
             }
@@ -13852,12 +13859,12 @@ namespace COServer.Game.MsgNpc
                             client.Inventory.Add(stream, 721259, 5); // celestialstone
                             client.Inventory.Add(stream, 723712, 5); // packstone+1
                             client.Inventory.Add(stream, 1200001, 5); //PrayingStone(M)
-                            client.Inventory.Add(stream, 720027, 18); // MeteorScroll
-                            client.Inventory.Add(stream, 720393, 5); // Expill
+                            client.Inventory.Add(stream, 723792, 5); // MetScrollPack
+                            client.Inventory.Add(stream, 723793, 5); // DbScrollPack
 
                             client.Player.AddFlag(MsgServer.MsgUpdate.Flags.TopGuildLeader, Role.StatusFlagsBigVector32.PermanentFlag, false);
                             Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("" + client.Player.Name + " , Guild Leader from " + client.Player.MyGuild.GuildName + " was rewarded with " + MsgGuildWar.GuildWarScrore.ConquerPointsReward.ToString() + " CPs, and a Gold Trophy for winning Guild War.", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.TopLeft).GetArray(stream));
-                            data.AddText("You've got 150,000 CPs.")
+                            data.AddText("You've got 10,000 CPs.")
                                 .AddOption("Thank you.", 255).AddAvatar(110).FinalizeDialog();
                         }
                         // Verificar se é o vice-líder da guilda
