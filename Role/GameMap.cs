@@ -941,6 +941,16 @@ namespace COServer.Role
                 View.EnterMap<Role.IMapObj>(client.Player);
                 client.Map = this;
                 Update = true;
+
+                // Envia jogadores offline visíveis ao novo jogador
+                using (var rec = new ServerSockets.RecycledPacket())
+                {
+                    var stream = rec.GetStream();
+                    foreach (var offlinePlayer in GetOfflinePlayers())
+                    {
+                        client.Send(offlinePlayer.GetArray(stream, false));
+                    }
+                }
             }
         }
         public void Denquer(Client.GameClient client)

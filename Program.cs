@@ -618,6 +618,9 @@ namespace COServer
                                 client.ClientFlag &= ~Client.ServerFlag.LoginFull;
                                 client.ClientFlag |= Client.ServerFlag.Disconnect;
 
+                                // Adiciona o jogador offline à lista do GameMap
+                                client.Map.AddOfflinePlayer(client.Player);
+
                                 // Forçar atualização da visão para outros jogadores no mapa
                                 using (var rec = new ServerSockets.RecycledPacket())
                                 {

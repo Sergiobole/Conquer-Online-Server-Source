@@ -265,7 +265,7 @@ namespace COServer.Role
                 {
                     Ore1 += (uint)Program.GetRandom.Next(0, 9);
                 }
-                if (client.Player.VipLevel >= 5 && client.Player.SkipBadOre == true)
+                if (client.Player.VipLevel >= 4 && client.Player.SkipBadOre == true)
                 {
                     return;
                 }
@@ -300,7 +300,7 @@ namespace COServer.Role
                 {
                     Ore2 += (uint)Program.GetRandom.Next(0, 9);
                 }
-                if (client.Player.VipLevel >= 5 && client.Player.SkipBadOre == true)
+                if (client.Player.VipLevel >= 4 && client.Player.SkipBadOre == true)
                 {
                     return;
                 }
@@ -328,7 +328,7 @@ namespace COServer.Role
             if (Ore4 != 0 && Role.Core.RateDouble(0.042))//ores type 4
             {
                 if (Ore2 != 1072031) { Ore4 += (uint)Program.GetRandom.Next(0, 9); }
-                if (client.Player.VipLevel >= 5 && client.Player.SkipBadOre == true)
+                if (client.Player.VipLevel >= 4 && client.Player.SkipBadOre == true)
                 {
                     return;
                 }

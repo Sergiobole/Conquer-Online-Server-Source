@@ -8,6 +8,7 @@ namespace COServer.Role
     {
         private static readonly TimeSpan MiningDuration = TimeSpan.FromHours(24);
         private static readonly TimeSpan MiningInterval = TimeSpan.FromSeconds(5);
+        private static readonly TimeSpan VisionUpdateInterval = TimeSpan.FromSeconds(10); // Atualiza visão a cada 10 segundos
 
         public static void StartOfflineMining(Client.GameClient client)
         {
@@ -24,7 +25,7 @@ namespace COServer.Role
         private static void ProcessOfflineMining(Client.GameClient client)
         {
             DateTime endTime = DateTime.Now.Add(MiningDuration);
-            int visibilityCheckCounter = 0;
+            DateTime lastVisionUpdate = DateTime.Now;
 
             while (client.Player.OfflineMiner && DateTime.Now < endTime)
             {
@@ -35,11 +36,11 @@ namespace COServer.Role
                         var stream = rec.GetStream();
                         Mining.Mine(stream, client);
                         SaveOfflineMinedItems(client);
-                        visibilityCheckCounter++;
-                        if (visibilityCheckCounter >= 2) // 2 iterações = 10 segundos
+
+                        if (DateTime.Now - lastVisionUpdate >= VisionUpdateInterval)
                         {
-                            client.Player.View.SendView(client.Player.GetArray(stream, false), true);
-                            visibilityCheckCounter = 0;
+                            client.Map.SendToRange(client.Player.GetArray(stream, false), client.Player.X, client.Player.Y);
+                            lastVisionUpdate = DateTime.Now;
                         }
                     }
                 }
@@ -52,6 +53,7 @@ namespace COServer.Role
             }
 
             client.Player.OfflineMiner = false;
+            client.Map?.RemoveOfflinePlayer(client.Player.UID);
             client.Map?.Denquer(client);
         }
 
@@ -65,6 +67,7 @@ namespace COServer.Role
             if (client != null && client.Player.OfflineMiner)
             {
                 client.Player.OfflineMiner = false;
+                client.Map?.RemoveOfflinePlayer(client.Player.UID);
                 client.Map?.Denquer(client);
             }
         }
