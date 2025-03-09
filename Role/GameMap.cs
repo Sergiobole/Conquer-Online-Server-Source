@@ -7,12 +7,15 @@ using System.IO;
 using COServer.Game.MsgServer;
 using COServer.Game.MsgFloorItem;
 using static COServer.Role.Flags;
+using System.Windows.Forms;
 
 namespace COServer.Role
 {
     public class MapView
     {
         const int CELLS_PER_BLOCK = 18;
+
+
 
         private Counter CounterMovement = new Counter(1);
 
@@ -94,6 +97,7 @@ namespace COServer.Role
 
             return true;
         }
+
 
         public IEnumerable<IMapObj> Roles(MapObjectType typ, int X, int Y, Predicate<IMapObj> P = null)
         {
@@ -321,6 +325,8 @@ namespace COServer.Role
     {
         public uint RecordSteedRace = 0;
 
+        private Dictionary<uint, Role.Player> _offlinePlayers = new Dictionary<uint, Role.Player>();
+
         public static sbyte[] XDir = new sbyte[]
         {
             -1, -2, -2, -1, 1, 2, 2, 1,
@@ -335,6 +341,42 @@ namespace COServer.Role
             2,  1, -1, -2, -2, -1, 1, 2,
             1,  1,  0, -1, -1, -1, 0, 1
         };
+
+        // Adiciona um jogador offline à lista
+        public void AddOfflinePlayer(Role.Player player)
+        {
+            lock (_offlinePlayers)
+            {
+                if (!_offlinePlayers.ContainsKey(player.UID))
+                {
+                    _offlinePlayers[player.UID] = player;
+                    Console.WriteLine($"[{DateTime.Now}] {player.Name} adicionado à lista de offline visíveis.");
+                }
+            }
+        }
+
+        // Remove um jogador offline da lista
+        public void RemoveOfflinePlayer(uint uid)
+        {
+            lock (_offlinePlayers)
+            {
+                if (_offlinePlayers.ContainsKey(uid))
+                {
+                    _offlinePlayers.Remove(uid);
+                    Console.WriteLine($"[{DateTime.Now}] Jogador UID {uid} removido da lista de offline visíveis.");
+                }
+            }
+        }
+
+        // Retorna a lista de jogadores offline visíveis
+        public List<Role.Player> GetOfflinePlayers()
+        {
+            lock (_offlinePlayers)
+            {
+                return _offlinePlayers.Values.ToList();
+            }
+        }
+
 
         public static bool IsGate(uint UID)
         {
@@ -388,7 +430,8 @@ namespace COServer.Role
             10137,
             10166,
             1767,
-            1212,//Cleanwatermap
+            1212,
+            1300//
         };
 
         public List<Portal> Portals = new List<Portal>();

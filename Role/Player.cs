@@ -22,6 +22,7 @@ namespace COServer.Role
         public int DepositStone2 = 0;
         public int DepositStone3 = 0;
         public int DepositStone4 = 0;
+        public bool OfflineMiner { get; set; } = false; // Novo campo para mineração offline
 
         #region RobotAuto
         public string SocketedItemsStatus => this.LootSocketedItems ? "[Enabled]" : "[Disabled]";

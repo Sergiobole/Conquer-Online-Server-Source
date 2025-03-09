@@ -340,9 +340,9 @@ namespace COServer.Client
             {
                 client.Player.AddFlag(MsgUpdate.Flags.TopNinja, Role.StatusFlagsBigVector32.PermanentFlag, false);
             }
-            else if (client.Player.VipLevel < 6 && client.Player.ContainFlag(MsgUpdate.Flags.TopNinja))
+            else if (client.Player.VipLevel < 6 && client.Player.ContainFlag(MsgUpdate.Flags.TopPirate))
             {
-                client.Player.RemoveFlag(MsgUpdate.Flags.TopNinja);
+                client.Player.AddFlag(MsgUpdate.Flags.TopPirate, Role.StatusFlagsBigVector32.PermanentFlag, false);
             }
             if (client.Player.Merchant == 1 && client.Player.MerchantApplicationEnd <= DateTime.Now)
             {
@@ -838,39 +838,40 @@ namespace COServer.Client
                     }
                 }
 
-                //#region Anti bot
+                #region Anti bot
 
-                //if (Timer < client.Player.LastAttack.AddSeconds(5))
-                //{
-                //    if (client.MobsKilled > 500 && (DateTime.Now > client.Player.LastSuccessCaptcha.AddMinutes(client.Player.NextCaptcha)))
-                //    {
-                //        if (Timer > client.Player.KillCountCaptchaStamp.AddSeconds(20))
-                //        {
-                //            if (!client.Player.WaitingKillCaptcha)
-                //            {
-                //                client.Player.KillCountCaptchaStamp = Time32.Now;
-                //                client.Player.WaitingKillCaptcha = true;
-                //                client.ActiveNpc = 9999997;
-                //                client.Player.KillCountCaptcha = Role.Core.Random.Next(10000, 50000).ToString();
-                //                using (var rec = new ServerSockets.RecycledPacket())
-                //                {
-                //                    var stream = rec.GetStream();
-                //                    Game.MsgNpc.Dialog dialog = new Game.MsgNpc.Dialog(client, stream);
-                //                    dialog.Text("Input the current text: " + client.Player.KillCountCaptcha + " to verify your humanity.");
-                //                    dialog.AddInput("Captcha message:", (byte)client.Player.KillCountCaptcha.Length);
-                //                    dialog.Option("No thank you.", 255);
-                //                    dialog.AddAvatar(39);
-                //                    dialog.FinalizeDialog();
-                //                    //   client.Send(stream);
-                //                    // client.Player.MessageBox("Click OK to confirm that you`re a human will be disconnected in 1 minute if you dont", new Action<Client.GameClient>(user => user.Player.SolveCaptcha()), null, 60);
-                //                }
-                //            }
-                //            else
-                //                client.Socket.Disconnect();
-                //        }
-                //    }
-                //}
-                //#endregion
+                if (Timer < client.Player.LastAttack.AddSeconds(5)) 
+                {                   
+
+                    if (client.MobsKilled >= 8000)
+                    {
+                        if (Timer > client.Player.KillCountCaptchaStamp.AddSeconds(20))
+                        {
+                            if (!client.Player.WaitingKillCaptcha)
+                            {
+                                client.Player.KillCountCaptchaStamp = Time32.Now;
+                                client.Player.WaitingKillCaptcha = true;
+                                client.ActiveNpc = 9999997;
+                                client.Player.KillCountCaptcha = Role.Core.Random.Next(10000, 99999).ToString();
+                                using (var rec = new ServerSockets.RecycledPacket())
+                                {
+                                    var stream = rec.GetStream();
+                                    Game.MsgNpc.Dialog dialog = new Game.MsgNpc.Dialog(client, stream);
+                                    dialog.Text("Input the current text: " + client.Player.KillCountCaptcha + " to verify your humanity.");
+                                    dialog.AddInput("Captcha message:", (byte)client.Player.KillCountCaptcha.Length);
+                                    dialog.Option("No thank you.", 255);
+                                    dialog.AddAvatar(39);
+                                    dialog.FinalizeDialog();
+                                    //client.Send(stream);
+                                    //client.Player.MessageBox("Click OK to confirm that you`re a human will be disconnected in 1 minute if you dont", new Action<Client.GameClient>(user => user.Player.SolveCaptcha()), null, 60);
+                                }
+                            }
+                            else
+                                client.Socket.Disconnect();
+                        }
+                    }
+                }
+                #endregion
                 if ((client.Player.Map == 1005 || client.Player.Map == 6000)
                         && client.Player.DynamicID == 0
                         && !client.Player.Alive

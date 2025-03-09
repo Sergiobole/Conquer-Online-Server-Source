@@ -95,7 +95,7 @@ namespace COServer.Game.MsgMonster
             }
 
             // Verifica se o Cleanwater deve spawnar a cada 1 hora
-            if ((now - lastCleanwaterSpawnTime).TotalHours >= 30)
+            if ((now - lastCleanwaterSpawnTime).TotalMinutes >= 30)
             {
                 SpawnHandler(1212, 428, 418, 8500, "Cleanwater",
                     "Cleanwater has spawned in " + Database.Server.MapName[1212] + " (428, 418)! Get ready to fight!",

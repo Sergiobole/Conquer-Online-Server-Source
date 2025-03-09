@@ -48,16 +48,16 @@
                 if (attacked.UID == Game.MsgTournaments.MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
                     Game.MsgTournaments.MsgSchedules.GuildWar.UpdateScore(client.Player, obj.Damage);
 
-                if (Game.MsgTournaments.MsgSchedules.CityWar.Process == MsgTournaments.ProcesType.Alive)
-                {
-                    if (Game.MsgTournaments.MsgSchedules.CityWar.CurentWar != null && Game.MsgTournaments.MsgSchedules.CityWar.CurentWar.InWar(client))
-                    {
-                        if (Game.MsgTournaments.MsgSchedules.CityWar.CurentWar.Proces == MsgTournaments.ProcesType.Alive)
-                        {
-                            Game.MsgTournaments.MsgSchedules.CityWar.CurentWar.UpdateScore(client.Player, obj.Damage);
-                        }
-                    }
-                }
+                //if (Game.MsgTournaments.MsgSchedules.CityWar.Process == MsgTournaments.ProcesType.Alive)
+                //{
+                //    if (Game.MsgTournaments.MsgSchedules.CityWar.CurentWar != null && Game.MsgTournaments.MsgSchedules.CityWar.CurentWar.InWar(client))
+                //    {
+                //        if (Game.MsgTournaments.MsgSchedules.CityWar.CurentWar.Proces == MsgTournaments.ProcesType.Alive)
+                //        {
+                //            Game.MsgTournaments.MsgSchedules.CityWar.CurentWar.UpdateScore(client.Player, obj.Damage);
+                //        }
+                //    }
+                //}
                 if (attacked.UID == Game.MsgTournaments.MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)
                     Game.MsgTournaments.MsgSchedules.GuildWar.PoleFundHolder(client.Player, obj.Damage, (uint)attacked.HitPoints, true);
 

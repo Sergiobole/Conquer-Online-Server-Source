@@ -740,7 +740,7 @@ namespace COServer.Database
                // Save(new Action(SystemBannedPC.Save));
 
                 //Save(new Action(ShareVIP.Save));
-                Save(new Action(Game.MsgTournaments.MsgSchedules.CityWar.Save));
+                //Save(new Action(Game.MsgTournaments.MsgSchedules.CityWar.Save));
                 Save(new Action(VoteSystem.Save));
                 Save(new Action(VIPSystem.Save));
                 IniFile = new WindowsAPI.IniFile("");

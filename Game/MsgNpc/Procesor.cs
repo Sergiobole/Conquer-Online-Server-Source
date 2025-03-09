@@ -755,14 +755,14 @@ namespace COServer.Game.MsgNpc
                                 processFolded.Item2(action.client, stream, action.option, action.input, action.npcid);
                             else
                             {
-                                if (action.npcid == (uint)NpcID.CityWars1 || action.npcid == (uint)NpcID.CityWars2
-                                    || action.npcid == (uint)NpcID.CityWars3
-                                    || action.npcid == (uint)NpcID.CityWars4
-                                    || action.npcid == (uint)NpcID.CityWars5)
-                                {
-                                    NpcHandler.CityWars(action.client, stream, action.option, action.input, action.npcid);
+                                //if (action.npcid == (uint)NpcID.CityWars1 || action.npcid == (uint)NpcID.CityWars2
+                                //    || action.npcid == (uint)NpcID.CityWars3
+                                //    || action.npcid == (uint)NpcID.CityWars4
+                                //    || action.npcid == (uint)NpcID.CityWars5)
+                                //{
+                                //    NpcHandler.CityWars(action.client, stream, action.option, action.input, action.npcid);
 
-                                }
+                                //}
                                 if (action.npcid == (uint)NpcID.BlueMouse || action.npcid == (uint)NpcID.BlueMouse2 || action.npcid == (uint)NpcID.BlueMouse3
                                     || action.npcid == (uint)NpcID.BlueMouse4)
                                 {

@@ -44,8 +44,8 @@ namespace COServer.Game.MsgTournaments
         //internal static Top_Black _Top_Black;
         //internal static FirstKiller _FirstKiller;
         //internal static ArenaDuel _ArenaDuel;
-        internal static MsgCityWarAnimation CityWarAnimation;
-        internal static MsgCityWar CityWar;
+        //internal static MsgCityWarAnimation CityWarAnimation;
+        //internal static MsgCityWar CityWar;
         internal static MsgDragonIsland DragonIsland;
         internal static ProjectControl PlayerTop;
         public static bool SpawnDevil = false;
@@ -82,7 +82,7 @@ namespace COServer.Game.MsgTournaments
             CouplesPKWar = new MsgCouples();
             DisCity = new MsgDisCity();
             Squama = new MsgSquama();
-            CityWarAnimation = new MsgCityWarAnimation();
+            //CityWarAnimation = new MsgCityWarAnimation();
             DragonIsland = new MsgDragonIsland(ProcesType.Dead);
             MsgBroadcast.Create();
             PlayerTop = new ProjectControl();
@@ -171,9 +171,9 @@ namespace COServer.Game.MsgTournaments
                         Squama.Open();
                     }
                     Game.MsgMonster.BossesBase.BossesTimer();
-                    if (DateTime.Now.Hour == 21 && DateTime.Now.Minute == 1 || DateTime.Now.Hour == 9 && DateTime.Now.Minute == 1)
-                        CityWar.Open();
-                    CityWar.CheckUp(Now64);
+                    //if (DateTime.Now.Hour == 21 && DateTime.Now.Minute == 1 || DateTime.Now.Hour == 9 && DateTime.Now.Minute == 1)
+                    //    CityWar.Open();
+                    //CityWar.CheckUp(Now64);
                     if (Now64.Minute % 10 == 0 && Now64.Second > 58 && CurrentTournament.Process == ProcesType.Dead)
                     {
                         var rndMsg = SystemMsgs[Program.GetRandom.Next(0, SystemMsgs.Count)];

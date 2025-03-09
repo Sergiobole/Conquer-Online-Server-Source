@@ -19,6 +19,8 @@ namespace COServer.Game.MsgServer
         };
         static List<uint> VeryHighPlus = new List<uint>() // Plusitens 
         {
+
+ 
             113013, 114023, 117003, 118003, 120003, 121003, 130020, 131013, 133003, 134003, 141003, 142003, 150003, 152013, 160013, 410003, 420003, 421003
 
         };

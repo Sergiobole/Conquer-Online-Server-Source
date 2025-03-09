@@ -314,7 +314,7 @@ namespace COServer.Role
             if (Ore3 != 0 && Role.Core.RateDouble(10))//ores type 2
             {
                 if (Ore2 != 1072031) { Ore3 += (uint)Program.GetRandom.Next(0, 9); }
-                if (client.Player.VipLevel >= 5 && client.Player.SkipBadOre == true)
+                if (client.Player.VipLevel >= 4 && client.Player.SkipBadOre == true)
                 {
                     return;
                 }

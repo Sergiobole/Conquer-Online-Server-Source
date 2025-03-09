@@ -9518,43 +9518,43 @@ namespace COServer.Game.MsgNpc
 
         #region Tournaments
 
-        public static void CityWars(Client.GameClient client, ServerSockets.Packet stream, byte Option,
-            string Input, uint id)
-        {
-            Dialog dialog = new Dialog(client, stream);
-            switch (Option)
-            {
-                case 0:
-                    {
-                        dialog.Text("Talent wins games, but teamwork wins championships.\n");
-                        dialog.Text("City Wars is where your Guild can prove who's the best.\n");
-                        dialog.Option("Join.", 1);
-                        dialog.Option("Leave.", 255);
-                        dialog.AddAvatar(123).FinalizeDialog();
-                        break;
-                    }
-                case 1:
-                    {
-                        if (client.Player.MyGuild == null)
-                        {
-                            client.SendSysMesage("Please make a Guild, or join a Guild.");
-                            break;
-                        }
-                        else
-                        {
-                            var War = MsgSchedules.CityWar.GetNpcTournament(id);
-                            if (War != null)
-                                War.Join(client);
-                            else
-                            {
-                                client.SendSysMesage("The event hasn't started yet, come back later.");
-                                break;
-                            }
-                        }
-                        break;
-                    }
-            }
-        }
+        //public static void CityWars(Client.GameClient client, ServerSockets.Packet stream, byte Option,
+        //    string Input, uint id)
+        //{
+        //    Dialog dialog = new Dialog(client, stream);
+        //    switch (Option)
+        //    {
+        //        case 0:
+        //            {
+        //                dialog.Text("Talent wins games, but teamwork wins championships.\n");
+        //                dialog.Text("City Wars is where your Guild can prove who's the best.\n");
+        //                dialog.Option("Join.", 1);
+        //                dialog.Option("Leave.", 255);
+        //                dialog.AddAvatar(123).FinalizeDialog();
+        //                break;
+        //            }
+        //        case 1:
+        //            {
+        //                if (client.Player.MyGuild == null)
+        //                {
+        //                    client.SendSysMesage("Please make a Guild, or join a Guild.");
+        //                    break;
+        //                }
+        //                else
+        //                {
+        //                    var War = MsgSchedules.CityWar.GetNpcTournament(id);
+        //                    if (War != null)
+        //                        War.Join(client);
+        //                    else
+        //                    {
+        //                        client.SendSysMesage("The event hasn't started yet, come back later.");
+        //                        break;
+        //                    }
+        //                }
+        //                break;
+        //            }
+        //    }
+        //}
         [NpcAttribute(NpcID.ExitArena)]
         public static void ExitArena(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
         {
@@ -13847,7 +13847,7 @@ namespace COServer.Game.MsgNpc
                         {
                             if (!client.Inventory.HaveSpace(39))
                             {
-                                data.AddText("Please make more space in your inventory.")
+                                data.AddText("Please make 40 space in your inventory.")
                                     .AddOption("Let me check.", 255).AddAvatar(110).FinalizeDialog();
                                 break;
                             }
@@ -13858,9 +13858,10 @@ namespace COServer.Game.MsgNpc
                             client.Inventory.Add(stream, 2100055, 1); // bronzesilver
                             client.Inventory.Add(stream, 721259, 5); // celestialstone
                             client.Inventory.Add(stream, 723712, 5); // packstone+1
-                            client.Inventory.Add(stream, 1200001, 5); //PrayingStone(M)
-                            client.Inventory.Add(stream, 723792, 5); // MetScrollPack
+                            client.Inventory.Add(stream, 1200001, 2); //PrayingStone(M)
+                            client.Inventory.Add(stream, 723792, 10); // MetScrollPack
                             client.Inventory.Add(stream, 723793, 5); // DbScrollPack
+                            client.Inventory.Add(stream, 723718 , 5); // Class6MoneyBag
 
                             client.Player.AddFlag(MsgServer.MsgUpdate.Flags.TopGuildLeader, Role.StatusFlagsBigVector32.PermanentFlag, false);
                             Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("" + client.Player.Name + " , Guild Leader from " + client.Player.MyGuild.GuildName + " was rewarded with " + MsgGuildWar.GuildWarScrore.ConquerPointsReward.ToString() + " CPs, and a Gold Trophy for winning Guild War.", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.TopLeft).GetArray(stream));

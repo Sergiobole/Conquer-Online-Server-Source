@@ -74,13 +74,13 @@ namespace COServer.Game.MsgMonster
             Unique = new MobRateWatcher(900);
             Elite = new MobRateWatcher(4000);
             Super = new MobRateWatcher(15000);
-            PlusOne = new MobRateWatcher(3000);
+            PlusOne = new MobRateWatcher(3500);
             OneSocketItem = new MobRateWatcher(1000000);
             TwoSocketItem = new MobRateWatcher(2000000);
 
-            OneBless = new MobRateWatcher(50000);
-            ThereBless = new MobRateWatcher(1000000);
-            FiveBless = new MobRateWatcher(2000000);
+            OneBless = new MobRateWatcher(30000000);
+            ThereBless = new MobRateWatcher(80000000);
+            FiveBless = new MobRateWatcher(100000000);
 
             DropHp = new MobRateWatcher(99999999);
             DropMp = new MobRateWatcher(99999999);
@@ -245,11 +245,17 @@ namespace COServer.Game.MsgMonster
         public byte GenerateBless()
         {
             if (ThereBless)
+            {
                 return 3;
+            }
             else if (OneBless)
+            {
                 return 1;
+            }
             else if (FiveBless)
+            {
                 return 5;
+            }
             return 0;
         }
         public byte GenerateSocketCount(uint ItemID)

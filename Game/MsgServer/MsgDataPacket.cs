@@ -502,17 +502,17 @@ namespace COServer.Game.MsgServer
                             client.Teleport(428, 378, 1002);
                         }
 
-                        if (Game.MsgTournaments.MsgSchedules.CityWar.Process == MsgTournaments.ProcesType.Alive)
-                        {
-                            if (Game.MsgTournaments.MsgSchedules.CityWar.CurentWar != null)
-                            {
-                                if (Game.MsgTournaments.MsgSchedules.CityWar.CurentWar.InWar(client))
-                                {
-                                    Game.MsgTournaments.MsgSchedules.CityWar.CurentWar.Teleport(client);
-                                    return;
-                                }
-                            }
-                        }
+                        //if (Game.MsgTournaments.MsgSchedules.CityWar.Process == MsgTournaments.ProcesType.Alive)
+                        //{
+                        //    if (Game.MsgTournaments.MsgSchedules.CityWar.CurentWar != null)
+                        //    {
+                        //        if (Game.MsgTournaments.MsgSchedules.CityWar.CurentWar.InWar(client))
+                        //        {
+                        //            Game.MsgTournaments.MsgSchedules.CityWar.CurentWar.Teleport(client);
+                        //            return;
+                        //        }
+                        //    }
+                        //}
                         if (client.Player.Map == 1011 && client.Player.DynamicID != 0)
                         {
                             client.Teleport(client.Map.Reborn_X, client.Map.Reborn_Y, client.Map.Reborn_Map, client.Player.DynamicID);

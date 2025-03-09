@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using COServer.Role;
 
 namespace COServer.Game.MsgServer
 {
@@ -74,9 +75,24 @@ namespace COServer.Game.MsgServer
                 {
 
                     var login = client.OnLogin;
-                    //MsgLoginClient* login = (MsgLoginClient*)&packet;
 
                     client.ConnectionUID = login.Key;
+
+                    if (client != null && client.Player != null)
+                    {
+                        if (Role.OfflineMiningManager.IsMiningOffline(client.Player.UID))
+                        {
+                            Console.WriteLine($"[{DateTime.Now}] {client.Player.Name} reconectado. Finalizando mineração offline.");
+                            client.SendSysMesage("Você minerou itens offline! Aqui estão os resultados...");
+                            Role.OfflineMiningManager.StopOfflineMining(client);
+                        }
+                    }
+
+                    if (Role.Instance.OfflineVendorManager.IsVendingOffline(client.Player.UID))
+                    {
+                        client.SendSysMesage("Você vendeu itens offline! Verificando resultados...");
+                        Role.Instance.OfflineVendorManager.StopOfflineVending(client.Player.UID);
+                    }
 
 
                     if (Database.SystemBannedAccount.IsBanned(client.ConnectionUID, out BanMessaje))

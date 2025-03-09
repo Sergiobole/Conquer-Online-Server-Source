@@ -244,6 +244,8 @@
     <Compile Include="Game\MsgTournaments\PoleDominationEvents\MsgPoleDominationDC.cs" />
     <Compile Include="Game\MsgTournaments\PoleDominationEvents\MsgPoleDominationPC.cs" />
     <Compile Include="Role\Instance\EffectStatus.cs" />
+    <Compile Include="Role\OfflineMiningManager.cs" />
+    <Compile Include="Role\OfflineVendorManager.cs" />
     <Compile Include="ShowChatItems.cs" />
     <Compile Include="Discord.cs" />
     <Compile Include="EventsLib\BaseEvent.cs" />

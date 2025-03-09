@@ -167,18 +167,18 @@
 
             if (attacked.UID == 890)
             {
-                if (client.Player.MyGuild == null)
-                    return false;
-                var tournament = Game.MsgTournaments.MsgSchedules.CityWar.CurentWar;
-                if (tournament == null)
-                    return false;
+                //if (client.Player.MyGuild == null)
+                //    return false;
+                ////var tournament = Game.MsgTournaments.MsgSchedules.CityWar.CurentWar;
+                //if (tournament == null)
+                //    return false;
 
-                if (!tournament.InWar(client))
-                    return false;
-                if (tournament.Winner == null)
-                    return false;
-                if (tournament.Winner.GuildId == client.Player.GuildID)
-                    return false;
+                //if (!tournament.InWar(client))
+                //    return false;
+                //if (tournament.Winner == null)
+                //    return false;
+                //if (tournament.Winner.GuildId == client.Player.GuildID)
+                //    return false;
 
             }
             if (attacked.UID == Game.MsgTournaments.MsgSchedules.GuildWar.Furnitures[Role.SobNpc.StaticMesh.Pole].UID)

@@ -1448,19 +1448,18 @@ namespace COServer.Game.MsgMonster
             }
         }
 
-        private void DropItem(ServerSockets.Packet stream, uint OwnerItem, Role.GameMap map, uint ItemID, ushort XX, ushort YY, MsgFloorItem.MsgItem.ItemType typ
-            , uint amount, bool special, byte ID_Quality, Client.GameClient user = null, Database.ItemType.DBItem DBItem = null)
+        private void DropItem(ServerSockets.Packet stream, uint OwnerItem, Role.GameMap map, uint ItemID, ushort XX, ushort YY, MsgFloorItem.MsgItem.ItemType typ, uint amount, bool special, byte ID_Quality, Client.GameClient user = null, Database.ItemType.DBItem DBItem = null)
         {
+            
             MsgServer.MsgGameItem DataItem = new MsgServer.MsgGameItem();
-
             DataItem.ITEM_ID = ItemID;
 
+            // Configuração de durabilidade
             if (DataItem.Durability > 100)
             {
                 DataItem.Durability = (ushort)Program.GetRandom.Next(100, DataItem.Durability / 10);
                 DataItem.MaximDurability = DataItem.Durability;
             }
-
             else
             {
                 DataItem.Durability = (ushort)Program.GetRandom.Next(1, 10);
@@ -1468,162 +1467,140 @@ namespace COServer.Game.MsgMonster
             }
 
             DataItem.Color = Role.Flags.Color.Red;
+
             if (typ == MsgFloorItem.MsgItem.ItemType.Item)
             {
                 byte sockets = 0;
                 bool lucky = false;
+
                 if (DataItem.IsEquip)
                 {
                     if (!special)
                     {
-
-                        lucky = (ID_Quality > 7); // q>unique
-                        if (!lucky)
-                            lucky = (DataItem.Plus = Family.ItemGenerator.GeneratePurity()) != 0;
-
-                        if (!lucky)
-                            lucky = (DataItem.Bless = Family.ItemGenerator.GenerateBless()) != 0;
-
-                        if (!lucky)
+                        // Tenta gerar Bless primeiro
+                        byte generatedBless = Family.ItemGenerator.GenerateBless();
+                        if (generatedBless > 0)
                         {
-                            if (DataItem.IsWeapon)
+                            DataItem.Bless = generatedBless;
+                            lucky = true;
+                        }
+                        else // Se não gerou Bless, tenta outros atributos
+                        {
+                            lucky = (ID_Quality > 7) || (DataItem.Plus = Family.ItemGenerator.GeneratePurity()) != 0;
+
+                            if (!lucky && DataItem.IsWeapon)
                             {
                                 sockets = Family.ItemGenerator.GenerateSocketCount(DataItem.ITEM_ID);
-
-                                if (sockets >= 1)
-                                    DataItem.SocketOne = Role.Flags.Gem.EmptySocket;
-                                else if (sockets == 2)
-                                    DataItem.SocketTwo = Role.Flags.Gem.EmptySocket;
+                                if (sockets >= 1) DataItem.SocketOne = Role.Flags.Gem.EmptySocket;
+                                if (sockets >= 2) DataItem.SocketTwo = Role.Flags.Gem.EmptySocket;
                             }
                         }
-
                     }
 
+                    // Processamento VIP para Blessed items
+                    if (DataItem.Bless > 0 && user != null && user.Player.VipLevel == 6)
+                    {
+                        if (user.Player.LootBlessedItems)
+                        {
+                            if (user.Inventory.HaveSpace(2))
+                            {
+                                // Adiciona direto no inventário
+                                user.Inventory.Add(stream, DataItem.ITEM_ID, 1, DataItem.Plus, DataItem.Bless, 0,
+                                                   DataItem.SocketOne, DataItem.SocketTwo, false);
+
+                                // Notificação no Discord
+                                string discordMsg = $"``[VIP LOOT] {user.Player.Name} collected {Database.Server.ItemsBase[ItemID].Name} " +
+                                                     $"(Bless -{DataItem.Bless}) at {map.Name} ({XX},{YY})``";
+
+                                Program.DiscordAPIBlessDrop.Enqueue(discordMsg);
+
+                                user.SendSysMesage($"[Auto Loot] Blessed item collected: {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)}",
+                                                    MsgMessage.ChatMode.Action);
+                                return;
+                            }
+                            else
+                            {
+                                user.SendSysMesage("[ERROR] Inventory full! Blessed item lost.", MsgMessage.ChatMode.System);
+                                user.Player.AddMapEffect(stream, XX, YY, "accession3");
+                            }
+                        }
+                    }
+
+                    // Restante da lógica para outros tipos de itens
                     if (DBItem != null)
                     {
                         DataItem.Durability = (ushort)Program.GetRandom.Next(1, DBItem.Durability / 10 + 10);
                         DataItem.MaximDurability = (ushort)Program.GetRandom.Next(DataItem.Durability, DBItem.Durability);
+                    }
+                }
+            }
 
-                    }
-                    if (user != null && lucky)
+            // Lógica para itens especiais (DragonBall, Meteor, etc.)
+            if (user != null && DataItem.Plus == 0)
+            {
+                if (user.Player.VipLevel >= 5)
+                {
+                    if (DataItem.ITEM_ID == Database.ItemType.DragonBall && user.Player.LootDragonBall)
                     {
-                        if (user.Player.VipLevel == 6)
+                        if (user.Inventory.HaveSpace(1))
                         {
-                            bool vaild = false;
-                            if (user.Player.LootSocketedItems)
-                                if (DataItem.SocketOne != Role.Flags.Gem.NoSocket || DataItem.SocketTwo != Role.Flags.Gem.NoSocket)
-                                    vaild = true;
-                            if (user.Player.LootBlessedItems)
-                                if (DataItem.Bless > 0)
-                                    vaild = true;
-                            if (user.Player.LootPlusItems)
-                                if (DataItem.Plus > 0)
-                                    vaild = true;
-                            if (user.Player.LootQualityItems)
-                                if (ID_Quality > 7)
-                                    vaild = true;
-                            if (vaild)
+                            user.Inventory.Update(DataItem, Role.Instance.AddMode.ADD, stream);
+                            if (user.Inventory.Contain(Database.ItemType.DragonBall, 10) && user.Player.VipLevel == 6)
                             {
-                                if (user.Inventory.HaveSpace(2))
-                                {
-                                    user.Inventory.Add(stream, DataItem.ITEM_ID, 1, DataItem.Plus, DataItem.Bless, 0, DataItem.SocketOne, DataItem.SocketTwo, false);
-                                    user.SendSysMesage($"[Auto Loot VIP] A monster you've killed just dropped a {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)}", MsgMessage.ChatMode.Action);
-                                }
-                                else
-                                {
-                                    user.SendSysMesage("[VIP] Please remove some items from inventory!");
-                                    user.Player.AddMapEffect(stream, XX, YY, "accession3");
-                                }
-                                return;
+                                user.Inventory.Remove(Database.ItemType.DragonBall, 10, stream);
+                                user.Inventory.Add(stream, Database.ItemType.DragonBallScroll, 1);
                             }
                         }
+                        else
+                        {
+                            user.SendSysMesage("[VIP] Inventory full! Remove some items.");
+                            user.Player.AddMapEffect(stream, XX, YY, "accession3");
+                        }
+                        return;
+                    }
+                    else if (DataItem.ITEM_ID == Database.ItemType.Meteor && user.Player.LootMeteorItems)
+                    {
+                        if (user.Inventory.HaveSpace(1))
+                        {
+                            user.Inventory.Update(DataItem, Role.Instance.AddMode.ADD, stream);
+                            if (user.Inventory.Contain(Database.ItemType.Meteor, 10) && user.Player.VipLevel == 6)
+                            {
+                                user.Inventory.Remove(Database.ItemType.Meteor, 10, stream);
+                                user.Inventory.Add(stream, Database.ItemType.MeteorScroll, 1);
+                            }
+                        }
+                        else
+                        {
+                            user.SendSysMesage("[VIP] Inventory full! Remove some items.");
+                            user.Player.AddMapEffect(stream, XX, YY, "accession3");
+                        }
+                        return;
+                    }
+                }
+            }
 
-                        else if (lucky && Role.Core.Rate(20) && user.Player.VipLevel == 0)//jason
-                        {
-                            user.SendSysMesage($"A monster you've killed just dropped a {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)}");
-                        }
-                    }
-                }
-                else
-                {
-                    if (DBItem != null)
-                        DataItem.Durability = DataItem.MaximDurability = DBItem.Durability;
-                }
-            }
-            if (user != null)
-            {
-                if (user != null)
-                {
-                    if (user.Player.VipLevel >= 5)
-                    {
-                        if (DataItem.ITEM_ID == Database.ItemType.DragonBall && user.Player.LootDragonBall)
-                        {
-                            if (user.Inventory.HaveSpace(1))
-                            {
-                                user.Inventory.Update(DataItem, Role.Instance.AddMode.ADD, stream);
-                                if (user.Inventory.Contain(Database.ItemType.DragonBall, 10) && user.Player.VipLevel == 6)
-                                {
-                                    user.Inventory.Remove(Database.ItemType.DragonBall, 10, stream);
-                                    user.Inventory.Add(stream, Database.ItemType.DragonBallScroll, 1);
-                                }
-                            }
-                            else
-                            {
-                                user.SendSysMesage("[VIP] Please remove some items from your inventory!");
-                                user.Player.AddMapEffect(stream, XX, YY, "accession3");
-                            }
-                            return;
-                        }
-                        else if (DataItem.ITEM_ID == Database.ItemType.Meteor && user.Player.LootMeteorItems)
-                        {
-                            if (user.Inventory.HaveSpace(1))
-                            {
-                                user.Inventory.Update(DataItem, Role.Instance.AddMode.ADD, stream);
-                                if (user.Inventory.Contain(Database.ItemType.Meteor, 10) && user.Player.VipLevel == 6)
-                                {
-                                    user.Inventory.Remove(Database.ItemType.Meteor, 10, stream);
-                                    user.Inventory.Add(stream, Database.ItemType.MeteorScroll, 1);
-                                }
-                            }
-                            else
-                            {
-                                user.SendSysMesage("[VIP] Please remove some items from your inventory!");
-                                user.Player.AddMapEffect(stream, XX, YY, "accession3");
-                            }
-                            return;
-                        }
-                    }
-                }
-            }
-            if (DataItem.ITEM_ID == 730002)
-            {
-                DataItem.Plus = 2;
-            }
-            if (DataItem.ITEM_ID == 730003)
-            {
-                DataItem.Plus = 3;
-            }
+            // Lógica de drop normal para itens não-Blessed
             MsgFloorItem.MsgItem DropItem = new MsgFloorItem.MsgItem(DataItem, XX, YY, typ, amount, DynamicID, Map, OwnerItem, true, map);
+
             if (map.EnqueueItem(DropItem))
             {
                 DropItem.SendAll(stream, MsgFloorItem.MsgDropID.Visible);
-            }
-        }
-        public void AddFadeAway(int time, Role.GameMap map)
-        {
-            if (!Alive)
-            {
-                Time32 timer = new Time32(time);
-                if (timer > DeadStamp.AddSeconds(5))
-                {
-                    if (AddFlag(MsgServer.MsgUpdate.Flags.FadeAway, Role.StatusFlagsBigVector32.PermanentFlag, true))
-                    {
-                        FadeAway = timer;
 
-                    }
+                // Adicionando efeito visual e mensagem para itens Plus
+                if (DataItem.Plus > 0 && user != null)
+                {
+
+                    user.Player.AddMapEffect(stream, XX, YY, "accession1");
+
+                    // Mensagem no jogo
+                    string itemName = Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID);
+                    string message = $"Item {itemName} (+{DataItem.Plus}) dropado em {map.Name} ({XX}, {YY})!";
+                    user.SendSysMesage(message, MsgMessage.ChatMode.System);
                 }
             }
+
         }
+
         public unsafe bool RemoveView(int time, Role.GameMap map)
         {
             if (ContainFlag(MsgServer.MsgUpdate.Flags.FadeAway) && State != MobStatus.Respawning)

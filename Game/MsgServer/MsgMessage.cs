@@ -79,6 +79,7 @@ namespace COServer.Game.MsgServer
         public uint MessageUID1 = 0;
         public uint MessageUID2 = 0;
 
+
         public MsgMessage(string _Message, MsgColor _Color, ChatMode _ChatType)
         {
             this.Mesh = 0;
@@ -825,11 +826,11 @@ namespace COServer.Game.MsgServer
 
                                     break;
                                 }
-                            case "ai":
-                                {
-                                    MsgSchedules.CityWar.Open();
-                                    break;
-                                }
+                            //case "ai":
+                            //    {
+                            //        MsgSchedules.CityWar.Open();
+                            //        break;
+                            //    }
                             case "chr":
                                 {
                                     client.CreateBoxDialog("You killed a Heaven Demon and found a Frost CP Pack (69000CPs)!");
@@ -2416,6 +2417,7 @@ namespace COServer.Game.MsgServer
                                     client.Teleport(X, Y, mapid, DinamicID);
                                     break;
                                 }
+
                             case "effectfloor":
                                 {
                                     using (var rec = new ServerSockets.RecycledPacket())
@@ -3538,7 +3540,7 @@ namespace COServer.Game.MsgServer
                         }
                         return true;
                     }
-                    if (client.Player.VipLevel >= 5)
+                    if (client.Player.VipLevel >= 4)
                     {
                         VIPCommands(client, msg);
                         return true;
@@ -3580,7 +3582,7 @@ namespace COServer.Game.MsgServer
                         logs += data[x] + " ";
                     Database.ServerDatabase.LoginQueue.Enqueue(logs);
 
-                    if (client.Player.VipLevel >= 5 && !client.ProjectManager && client.Player.Alive)
+                    if (client.Player.VipLevel >= 4 && !client.ProjectManager && client.Player.Alive)
                     {
                         switch (data[0])
                         {
@@ -3774,7 +3776,7 @@ namespace COServer.Game.MsgServer
                                 }
                             case "vipinfo":
                                 {
-                                    if (client.Player.VipLevel >= 6)
+                                    if (client.Player.VipLevel >= 4)
                                     {
                                         TimeSpan timer1 = new TimeSpan(client.Player.ExpireVip.Ticks);
                                         TimeSpan Now2 = new TimeSpan(DateTime.Now.Ticks);

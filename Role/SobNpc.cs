@@ -216,7 +216,7 @@ namespace COServer.Role
                 {
                     HitPoints = 0;
                 }
-                Game.MsgTournaments.MsgSchedules.CityWar.CurentWar.UpdateScore(killer.Player, Damage);
+                //Game.MsgTournaments.MsgSchedules.CityWar.CurentWar.UpdateScore(killer.Player, Damage);
             }
 
             else if (UID == Game.MsgTournaments.MsgSchedules.GuildWar.Furnitures[StaticMesh.Pole].UID)

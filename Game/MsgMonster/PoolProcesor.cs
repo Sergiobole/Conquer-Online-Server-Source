@@ -98,7 +98,6 @@ namespace COServer.Game.MsgMonster
 
                                 if (!Guard.Alive)
                                 {
-                                    Guard.AddFadeAway(timer.AllMilliseconds, client.Map);
                                     Guard.RemoveView(timer.AllMilliseconds, client.Map);
                                 }
 
@@ -164,7 +163,6 @@ namespace COServer.Game.MsgMonster
                         if (!Mob.Alive)
                         {
                             var now = Time32.Now;
-                            Mob.AddFadeAway(now.AllMilliseconds, client.Map);
                             Mob.RemoveView(now.AllMilliseconds, client.Map);
 
                         }
@@ -196,7 +194,6 @@ namespace COServer.Game.MsgMonster
                         if (!monseter.Alive)
                         {
                             var now = Time32.Now.AllMilliseconds;
-                            monseter.AddFadeAway(now, client.Map);
                             monseter.RemoveView(now, client.Map);
                         }
                         if (Role.Core.GetDistance(map_mob.X, map_mob.Y, client.Player.View.GetPlayer().X, client.Player.View.GetPlayer().Y) < 13)

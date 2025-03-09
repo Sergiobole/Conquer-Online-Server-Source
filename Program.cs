@@ -9,6 +9,7 @@
 using COServer.Cryptography;
 using COServer.EventsLib;
 using COServer.Game.MsgServer;
+using COServer.Role;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -43,6 +44,7 @@ namespace COServer
         public static Discord DiscordAPIVote = new Discord("https://discord.com/api/webhooks/1344903113181757500/iU9bGOTvHy8Op6hH88isdRx6ENvpasdTD9a6NDmtRnU-oAKYShc6IMWoFE8rF0lPqpSD");
         public static Discord DiscordAPISurpriseBox = new Discord("https://discord.com/api/webhooks/1344905879459332137/TZJwOtJmaP9SJ2T5yVwynRguHIArkqikrdjkPx87IRC0woTF3Cfsoz_sFPFll0VSxHbL");
         public static Discord DiscordAPIClainFreeVip = new Discord("https://discord.com/api/webhooks/1344909426737414195/GWySjy2nAZnZ1PCQGcYfmOK-jBlJcmmQrrB2oNLjDD7JwKw8gDUjtYPkN-lWPUW_uYFi");
+        public static Discord DiscordAPIBlessDrop = new Discord("https://discord.com/api/webhooks/1347945521729507328/f1QW8xIVB6M0uRoOS7qX_YJ6p6mhECn9yEPUs2UwYdcFZMqm8VCRrFEzPNdQiOi1dlLa");
         public static ulong CPsHuntedSinceRestart = 0;
         public static List<byte[]> LoadPackets = new List<byte[]>();
         public static List<uint> ProtectMapSpells = new List<uint>() { 1038 };
@@ -164,7 +166,7 @@ namespace COServer
                 GameServer.Open(ServerConfig.IPAddres, ServerConfig.GamePort, ServerConfig.Port_BackLog);
                 TQHandle.Network.MsgServer.Run((ushort)(ServerConfig.GamePort + 1000));
                 new ServerSockets.SocketThread(GameServer);
-                Game.MsgTournaments.MsgSchedules.CityWar = new Game.MsgTournaments.MsgCityWar();
+                //Game.MsgTournaments.MsgSchedules.CityWar = new Game.MsgTournaments.MsgCityWar();
                 EventManager.TimeEvent = DateTime.Now;
                 new KernelThread(1000);
                 new MapGroupThread(100);
@@ -595,32 +597,67 @@ namespace COServer
         }
         public unsafe static void Game_Disconnect(ServerSockets.SecuritySocket obj)
         {
-            // Verifica se o objeto de jogo e o jogador estão presentes
             if (obj.Game != null && obj.Game.Player != null)
             {
                 try
                 {
                     Client.GameClient client;
 
-                    // Tenta obter o cliente associado ao UID do jogador no dicionário GamePoll
                     if (Database.Server.GamePoll.TryGetValue(obj.Game.Player.UID, out client))
                     {
-                        // Verifica se o cliente está marcado como "LoginFull"
                         if ((client.ClientFlag & Client.ServerFlag.LoginFull) == Client.ServerFlag.LoginFull)
                         {
                             Console.WriteLine($"[{DateTime.Now}] {client.Player.Name} has logged out.", ConsoleColor.Red);
 
-                            // Verifica se o jogador tem amigos associados
+                            // Verifica mineração offline (VIP 4+)
+                            if (client.Player.Mining && client.Player.VipLevel >= 4)
+                            {
+                                Console.WriteLine($"[{DateTime.Now}] {client.Player.Name} está minerando offline (VIP {client.Player.VipLevel}). Mantendo no mapa...");
+                                client.Player.OfflineMiner = true;
+                                Role.OfflineMiningManager.StartOfflineMining(client);
+                                client.ClientFlag &= ~Client.ServerFlag.LoginFull;
+                                client.ClientFlag |= Client.ServerFlag.Disconnect;
+
+                                // Forçar atualização da visão para outros jogadores no mapa
+                                using (var rec = new ServerSockets.RecycledPacket())
+                                {
+                                    var stream = rec.GetStream();
+                                    Console.WriteLine($"[{DateTime.Now}] Atualizando visão para {client.Player.Name} no mapa {client.Player.Map}");
+                                    client.Player.View.SendView(client.Player.GetArray(stream, false), true);
+                                }
+                                return;
+                            }
+                            else if (client.Player.Mining && client.Player.VipLevel < 4)
+                            {
+                                Console.WriteLine($"[{DateTime.Now}] {client.Player.Name} está minerando, mas não é VIP 4 ou superior. Desconectando normalmente...");
+                            }
+
+                            // Verifica se o jogador está vendendo
+                            if (client.MyVendor != null && client.MyVendor.InVending)
+                            {
+                                Console.WriteLine($"[{DateTime.Now}] {client.Player.Name} está vendendo offline. Mantendo no mapa...");
+                                Role.Instance.OfflineVendorManager.StartOfflineVending(client);
+                                client.ClientFlag &= ~Client.ServerFlag.LoginFull;
+                                client.ClientFlag |= Client.ServerFlag.Disconnect;
+
+                                // Forçar atualização da visão para outros jogadores no mapa
+                                using (var rec = new ServerSockets.RecycledPacket())
+                                {
+                                    var stream = rec.GetStream();
+                                    Console.WriteLine($"[{DateTime.Now}] Atualizando visão para {client.Player.Name} no mapa {client.Player.Map}");
+                                    client.Player.View.SendView(client.Player.GetArray(stream, false), true);
+                                }
+                                return;
+                            }
+
+                            // Desconexão normal (se não estiver minerando offline nem vendendo)
                             if (client.Player.Associate.Associat.ContainsKey(Role.Instance.Associate.Friends))
                             {
                                 foreach (var fr in client.Player.Associate.Associat[Role.Instance.Associate.Friends].Values)
                                 {
                                     Client.GameClient gameClient;
-
-                                    // Tenta obter o cliente de jogo do amigo no dicionário GamePoll
                                     if (Database.Server.GamePoll.TryGetValue(fr.UID, out gameClient))
                                     {
-                                        // Envia uma mensagem para o amigo informando que o jogador fez logout
                                         gameClient.SendSysMesage("Your friend " + client.Player.Name + " has logged off.", (Game.MsgServer.MsgMessage.ChatMode)2005);
                                     }
                                     else
@@ -636,16 +673,13 @@ namespace COServer
 
                                 try
                                 {
-                                    // Remove a flag de XPList, se presente
                                     if (client.Player.ContainFlag(MsgUpdate.Flags.XPList))
                                     {
                                         client.Player.RemoveFlag(MsgUpdate.Flags.XPList);
                                     }
 
-                                    // Limpa todas as flags do jogador
                                     client.Player.ClearFlags();
 
-                                    // Desfaz todos os bots que estão no mesmo mapa ou no mesmo ID dinâmico do jogador
                                     foreach (var bot in Bots.BotProcessring.Bots.Values.Where(x => x.Bot.Player.Map == client.Player.Map || x.Bot.Player.DynamicID == client.Player.DynamicID))
                                     {
                                         if (bot != null)
@@ -655,42 +689,36 @@ namespace COServer
                                         }
                                     }
 
-                                    // Remove o cliente do time, se estiver em um
                                     if (client.Team != null)
                                     {
                                         client.Team.Remove(client, true);
                                         Console.WriteLine($"[{DateTime.Now}] Client removed from team.");
                                     }
 
-                                    // Para o cliente se estiver vendendo
                                     if (client.IsVendor)
                                     {
                                         client.MyVendor.StopVending(stream);
                                         Console.WriteLine($"[{DateTime.Now}] Vendor stopped.");
                                     }
 
-                                    // Fecha o comércio se estiver em um
                                     if (client.InTrade)
                                     {
                                         client.MyTrade.CloseTrade();
                                         Console.WriteLine($"[{DateTime.Now}] Trade closed.");
                                     }
 
-                                    // Define o status de offline para o membro da guilda, se existir
                                     if (client.Player.MyGuildMember != null)
                                     {
                                         client.Player.MyGuildMember.IsOnline = false;
                                         Console.WriteLine($"[{DateTime.Now}] Guild member set offline.");
                                     }
 
-                                    // Desanexa o pet, se existir
                                     if (client.Pet != null)
                                     {
                                         client.Pet.DeAtach(stream);
                                         Console.WriteLine($"[{DateTime.Now}] Pet detached.");
                                     }
 
-                                    // Para e limpa a interação do jogador com objetos, se existir
                                     if (client.Player.ObjInteraction != null)
                                     {
                                         client.Player.InteractionEffect.AtkType = Game.MsgServer.MsgAttackPacket.AttackID.InteractionStopEffect;
@@ -702,19 +730,16 @@ namespace COServer
                                         Console.WriteLine($"[{DateTime.Now}] Interaction stopped.");
                                     }
 
-                                    // Limpa a visão do jogador
                                     client.Player.View.Clear(stream);
                                     Console.WriteLine($"[{DateTime.Now}] Player view cleared.");
                                 }
                                 catch (Exception e)
                                 {
-                                    // Exibe qualquer exceção ocorrida durante a limpeza
                                     Console.WriteLine($"[{DateTime.Now}] Exception during cleanup: {e}");
                                     client.Player.View.Clear(stream);
                                 }
                                 finally
                                 {
-                                    // Atualiza as flags do cliente para indicar desconexão e enfileira para salvar
                                     client.ClientFlag &= ~Client.ServerFlag.LoginFull;
                                     client.ClientFlag |= Client.ServerFlag.Disconnect;
                                     client.ClientFlag |= Client.ServerFlag.QueuesSave;
@@ -724,10 +749,8 @@ namespace COServer
 
                                 try
                                 {
-                                    // Executa ações adicionais na desconexão
                                     client.Player.Associate.OnDisconnect(stream, client);
 
-                                    // Remove mentor e aprendiz associados
                                     if (client.Player.MyMentor != null)
                                     {
                                         Client.GameClient me;
@@ -766,7 +789,6 @@ namespace COServer
             }
             else if (obj.Game != null)
             {
-                // Se o objeto de jogo estiver presente, mas o jogador não estiver, remove o cliente do GamePoll
                 if (obj.Game.ConnectionUID != 0)
                 {
                     Client.GameClient client;
@@ -781,6 +803,7 @@ namespace COServer
                 }
             }
         }
+
         public static bool NameStrCheck(string name, bool ExceptedSize = true)
         {
             if (name == null)

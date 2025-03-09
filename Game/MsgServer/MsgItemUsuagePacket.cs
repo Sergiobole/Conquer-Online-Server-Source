@@ -5519,6 +5519,23 @@ namespace COServer.Game.MsgServer
                                 client.Inventory.Update(item, Role.Instance.AddMode.REMOVE, stream);
                                 break;
                             }
+
+                        case 780020:
+                            {
+                                if (DateTime.Now > client.Player.ExpireVip)
+                                {
+                                    client.Player.ExpireVip = DateTime.Now;
+                                    client.Player.ExpireVip = client.Player.ExpireVip.AddDays(30);
+                                }
+                                else client.Player.ExpireVip = client.Player.ExpireVip.AddDays(30);
+                                client.Player.VipLevel = 4;
+                                client.Player.SendUpdate(stream, client.Player.VipLevel, MsgUpdate.DataType.VIPLevel);
+                                client.Player.UpdateVip(stream);
+                                client.SendSysMesage("Congratulations! You've received VIPMining (30 Days)!.");
+                                client.Inventory.Update(item, Role.Instance.AddMode.REMOVE, stream);
+                                break;
+                            }
+
                         case 3001322:
                             {
                                 client.Inventory.Update(item, Role.Instance.AddMode.REMOVE, stream);

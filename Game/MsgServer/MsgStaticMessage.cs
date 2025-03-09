@@ -48,7 +48,7 @@ namespace COServer.Game.MsgServer
             Tthief = 10528,
             KingHell = 10529,
             KillTheCapt = 10532,
-            CityWars = 10533,
+            //CityWars = 10533,
             EliteGW = 10534,
             discity = 10535,
             Bosses = 10537,
