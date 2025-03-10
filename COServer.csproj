@@ -217,6 +217,7 @@
     <Compile Include="Database\ServerStats.cs" />
     <Compile Include="Database\ShareVIP.cs" />
     <Compile Include="Database\Shops\ShopFile.cs" />
+    <Compile Include="Database\SocketAttempts.cs" />
     <Compile Include="Database\SystemBanned.cs" />
     <Compile Include="Database\SystemBannedAccount.cs" />
     <Compile Include="Database\TheCrimeTable.cs" />

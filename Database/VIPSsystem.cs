@@ -6,7 +6,7 @@ namespace COServer.Database
 {
     public class VIPSystem
     {
-        private static readonly string ConnectionString = "Server=localhost;Uid=root;Password=Higor157;Database=zq;";
+        private static readonly string ConnectionString = "Server=localhost;Uid=root;Password=Higor147;Database=zq;";
         public class User
         {
             public uint UID;

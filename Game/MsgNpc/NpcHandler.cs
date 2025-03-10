@@ -203,11 +203,20 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        dialog.AddText("Hello [" + client.Player.Name + "] You need the 6 SuperGem to trade for SuperTortoiseGem!\nAre you need:\n[PhoenixGem, RainbowGem, KylinGem, VioletGem, MoonGem, DragonGem]!")
-                         .AddOption("Yes~I~Have.", 1)
-                         .AddOption("Just passing by.")
-                         .AddAvatar(63).FinalizeDialog();
-
+                        dialog.AddText("Greetings, [" + client.Player.Name + "]!\n" +
+                                       "I hold the secret to crafting a Super Tortoise Gem.\n" +
+                                       "Bring me these six Super Gems:\n" +
+                                       "- Phoenix Gem\n" +
+                                       "- Rainbow Gem\n" +
+                                       "- Kylin Gem\n" +
+                                       "- Violet Gem\n" +
+                                       "- Moon Gem\n" +
+                                       "- Dragon Gem\n" +
+                                       "Have you gathered them all?")
+                            .AddOption("Yes, I have them!", 1)
+                            .AddOption("Just passing by.", 255)
+                            .AddAvatar(63)
+                            .FinalizeDialog();
                         break;
                     }
                 case 1:
@@ -232,10 +241,18 @@ namespace COServer.Game.MsgNpc
                         }
                         else
                         {
-                            dialog.Text("You don’t have the 6 necessary Super Gems.\n")
-                                 .AddText("Check ur Gems.")
-                                 .AddOption("Okay.", 255)
-                                 .AddAvatar(211).FinalizeDialog();
+                            dialog.AddText("Oh, [" + client.Player.Name + "], you don’t have all 6 Super Gems!\n" +
+                                           "You’ll need these to craft the Super Tortoise Gem:\n" +
+                                           "- Phoenix Gem\n" +
+                                           "- Rainbow Gem\n" +
+                                           "- Kylin Gem\n" +
+                                           "- Violet Gem\n" +
+                                           "- Moon Gem\n" +
+                                           "- Dragon Gem\n" +
+                                           "Check your inventory and come back!")
+                                .AddOption("Okay.", 255)
+                                .AddAvatar(211)
+                                .FinalizeDialog();
                         }
                         break;
                     }
@@ -251,39 +268,72 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        dialog.AddText("Hello [" + client.Player.Name + "] You need the 6 SuperGems to trade for MiraculousGourd!\nAre you need:\n[PhoenixGem, RainbowGem, KylinGem, VioletGem, MoonGem, DragonGem]!")
-                         .AddOption("Yes~I~Have.", 1)
-                         .AddOption("Just passing by.")
-                         .AddAvatar(63).FinalizeDialog();
-
+                        dialog.AddText("Greetings, [" + client.Player.Name + "]!\n" +
+                                       "I can trade you a Miraculous Gourd, but it’s no small feat.\n" +
+                                       "You’ll need these eight Super Gems:\n" +
+                                       "- Phoenix Gem\n" +
+                                       "- Dragon Gem\n" +
+                                       "- Fury Gem\n" +
+                                       "- Rainbow Gem\n" +
+                                       "- Kylin Gem\n" +
+                                       "- Violet Gem\n" +
+                                       "- Moon Gem\n" +
+                                       "- Tortoise Gem\n" +
+                                       "Do you have them all?")
+                            .AddOption("Yes, I’ve got them!", 1)
+                            .AddOption("Just passing by.", 255)
+                            .AddAvatar(63)
+                            .FinalizeDialog();
                         break;
                     }
                 case 1:
                     {
-                        if (client.Inventory.Contain(700003, 1) && client.Inventory.Contain(700013, 1) && client.Inventory.Contain(700033, 1) && client.Inventory.Contain(700043, 1) && client.Inventory.Contain(700053, 1) && client.Inventory.Contain(700063, 1))
+                        // Verifica se o jogador tem todas as 8 gemas
+                        if (client.Inventory.Contain(700003, 1) && // Phoenix Gem
+                            client.Inventory.Contain(700013, 1) && // Dragon Gem
+                            client.Inventory.Contain(700023, 1) && // Fury Gem
+                            client.Inventory.Contain(700033, 1) && // Rainbow Gem
+                            client.Inventory.Contain(700043, 1) && // Kylin Gem
+                            client.Inventory.Contain(700053, 1) && // Violet Gem
+                            client.Inventory.Contain(700063, 1) && // Moon Gem
+                            client.Inventory.Contain(700073, 1))   // Tortoise Gem
                         {
-
+                            // Remove as 8 gemas do inventário
                             client.Inventory.Remove(700003, 1, stream);
                             client.Inventory.Remove(700013, 1, stream);
+                            client.Inventory.Remove(700023, 1, stream);
                             client.Inventory.Remove(700033, 1, stream);
                             client.Inventory.Remove(700043, 1, stream);
                             client.Inventory.Remove(700053, 1, stream);
                             client.Inventory.Remove(700063, 1, stream);
+                            client.Inventory.Remove(700073, 1, stream);
 
+                            // Adiciona o MiraculousGourd ao inventário
                             client.Inventory.Add(stream, 2100025, 1);
 
-                            // Envia a mensagem global com o nome da recompensa
+                            // Envia a mensagem global
                             Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"[{client.Player.Name}] has claimed MiraculousGourd from MiraculousGourdNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
 
-                            // Envia a mensagem para o Discord através da API
-                            Program.DiscordAPIQuest.Enqueue($"[{client.Player.Name}] has claimed MiraculousGourd from MiraculousGourd!");
+                            // Envia a mensagem para o Discord
+                            Program.DiscordAPIQuest.Enqueue($"[{client.Player.Name}] has claimed MiraculousGourd from MiraculousGourdNPC!");
                         }
                         else
                         {
-                            dialog.Text("You don’t have the 6 necessary Super Gems.\n")
-                                 .AddText("Check ur Gems.")
+                            // Mensagem de erro ajustada para 8 gemas
+                            dialog.Text("You don’t have all 8 Super Gems!\n" +
+                                        "You need:\n" +
+                                        "- Phoenix Gem\n" +
+                                        "- Dragon Gem\n" +
+                                        "- Fury Gem\n" +
+                                        "- Rainbow Gem\n" +
+                                        "- Kylin Gem\n" +
+                                        "- Violet Gem\n" +
+                                        "- Moon Gem\n" +
+                                        "- Tortoise Gem\n" +
+                                        "Check your inventory!")
                                  .AddOption("Okay.", 255)
-                                 .AddAvatar(211).FinalizeDialog();
+                                 .AddAvatar(211)
+                                 .FinalizeDialog();
                         }
                         break;
                     }
@@ -3339,9 +3389,9 @@ namespace COServer.Game.MsgNpc
                         data.AddOption("1 - [Transfer Coins]", 1);
                         data.AddOption("2 - [VIPs]", 2);
                         data.AddOption("3 - [Prizes]", 3);
-                        data.AddOption("4 - [Garments]", 4);
-                        data.AddOption("5 - [Utilitys]", 5);
-                        data.AddOption("6 - [SurpriseBoxs]", 90);
+                        //data.AddOption("4 - [Garments]", 4);
+                        data.AddOption("4 - [Utilitys]", 5);
+                        data.AddOption("5 - [SurpriseBoxs]", 90);
                         data.AddAvatar(63).FinalizeDialog();
                         break;
                     }
@@ -3415,7 +3465,7 @@ namespace COServer.Game.MsgNpc
 
                         Console.WriteLine($"Attempting to transfer {foundsToTransfer} Coins from {client.AccountName(client.Player.Name)} to {recipientPlayerName}");
 
-                        const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
+                        const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
 
                         try
                         {
@@ -3540,8 +3590,9 @@ namespace COServer.Game.MsgNpc
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Coins: " + totalFounds);
                         data.AddText(string.Format("You have {0} Coins, Buy Coins in OrigensCO.com!", totalFounds));
-                        data.AddOption("1 - [7 Day VIP = 7 Coins]", 21);
-                        data.AddOption("2 - [30 Day VIP = 20 Coins]", 22)
+                        data.AddOption("1 - [7 Day VIP6 = 7 Coins]", 21);
+                        data.AddOption("2 - [30 Day VIP6 = 20 Coins]", 22);
+                        data.AddOption("3 - [30 Day VIPMiner = 8 Coins]", 23)
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
                         break;
@@ -3562,7 +3613,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 7)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3623,7 +3674,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 20)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3668,6 +3719,67 @@ namespace COServer.Game.MsgNpc
 
                         break;
                     }
+                case 23:
+                    {
+                        if (!client.Inventory.HaveSpace(1))
+                        {
+                            data.AddText("Please make 1 more space in your inventory.")
+                                .AddOption("Let me check.", 255)
+                                .AddAvatar(63);
+
+                            return; // Use return instead of break to exit the method
+                        }
+
+                        int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
+                        Console.WriteLine("Coins: " + totalFounds);
+
+                        if (totalFounds >= 8)
+                        {
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                            try
+                            {
+                                using (var conn = new MySqlConnection(ConnectionString))
+                                {
+                                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand("UPDATE payments SET founds = @founds WHERE username = @username", conn))
+                                    {
+                                        conn.Open();
+
+                                        // Atualiza os fundos subtraindo 8
+                                        cmd.Parameters.AddWithValue("@founds", totalFounds - 8);
+                                        cmd.Parameters.AddWithValue("@username", client.AccountName(client.Player.Name));
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                // Adiciona o item ao inventário
+                                {
+                                    client.Inventory.Add(stream, 780020, 1, 0, 0, 0, 0, 0, false);
+                                    data.AddText("You have successfully exchanged 8 Coins for a 30-Days VIP Token.")
+                                        .AddOption("Thanks.", 255)
+                                        .AddAvatar(63).FinalizeDialog();
+                                    Program.DiscordAPIfoundslog.Enqueue($"`` {client.Player.Name} : Take VipMiner 30 Days``");
+                                }
+                            }
+                            catch (MySqlException sqlEx)
+                            {
+                                Console.WriteLine("MySQL error: " + sqlEx.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            data.AddText("No have Coins.")
+                            .AddOption("Let me check.", 255)
+                            .AddAvatar(63).FinalizeDialog();
+
+                        }
+
+                        break;
+                    }
                 #endregion
                 #region Prizes Menu Founds
                 case 3:
@@ -3675,10 +3787,10 @@ namespace COServer.Game.MsgNpc
                         int totalFounds = PayPalHandler.getFounds(client.AccountName(client.Player.Name));
                         Console.WriteLine("Founds: " + totalFounds);
                         data.AddText(string.Format("You have {0} Coins, Buy Coins in OrigensCO.com!", totalFounds));
-                        data.AddOption("1 - [GoldPrize = 50 Coins]", 31);
-                        data.AddOption("2 - [MiraculousGourd = 10 Coins]", 32);
-                        data.AddOption("3 - [Sash(M) = 10 Coins]", 33);
-                        data.AddOption("4 - [Sash(L) = 15 Coins]", 34)
+                        //data.AddOption("1 - [GoldPrize = 50 Coins]", 31);
+                        data.AddOption("1 - [MiraculousGourd = 25 Coins]", 32);
+                        data.AddOption("2 - [Sash(M) = 10 Coins]", 33);
+                        data.AddOption("3 - [Sash(L) = 15 Coins]", 34)
                             .AddOption("Let me check.", 255)
                             .AddAvatar(63).FinalizeDialog();
                         break;
@@ -3699,7 +3811,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 50)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3760,7 +3872,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 10)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3821,7 +3933,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 10)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3882,7 +3994,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 15)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3984,7 +4096,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 5)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4048,7 +4160,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 7)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4112,7 +4224,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 10)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4188,7 +4300,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 1)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4281,7 +4393,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 30)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4345,7 +4457,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 30)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4409,7 +4521,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 30)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4485,7 +4597,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 1)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor157;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -19874,7 +19986,6 @@ namespace COServer.Game.MsgNpc
             Dialog data = new Dialog(client, stream);
             switch (Option)
             {
-
                 case 0:
                     {
                         data.AddText("How may I help you?")
@@ -19882,27 +19993,26 @@ namespace COServer.Game.MsgNpc
                             .AddOption("Open socket in weapon.", 2)
                             .AddOption("Never~mind.", 255)
                             .AddAvatar(6).FinalizeDialog();
-
                         break;
                     }
                 case 2:
                     {
                         data.AddText("It costs 1 DragonBalls for the first socket and 5 DragonBalls for the second!")
-                       .AddOption("Left Weapon.", 15)
-                       .AddOption("Right Weapon.", 14)
-                       .AddAvatar(63).FinalizeDialog();
+                            .AddOption("Left Weapon.", 15)
+                            .AddOption("Right Weapon.", 14)
+                            .AddAvatar(63).FinalizeDialog();
                         break;
                     }
                 case 1:
                     {
                         data.AddText("It costs 1 Meteor. If you consider yourself lucky try!)")
-                        .AddOption("Headgear.", 11)
-                        .AddOption("Necklace/Bag.", 12)
-                        .AddOption("Armor.", 13)
-                        .AddOption("Ring/Bracelet.", 16)
-                        .AddOption("Shield.", 15)
-                        .AddOption("Boots.", 18)
-                        .AddOption("Never~mind.", 255)
+                            .AddOption("Headgear.", 11)
+                            .AddOption("Necklace/Bag.", 12)
+                            .AddOption("Armor.", 13)
+                            .AddOption("Ring/Bracelet.", 16)
+                            .AddOption("Shield.", 15)
+                            .AddOption("Boots.", 18)
+                            .AddOption("Never~mind.", 255)
                             .AddAvatar(63)
                             .FinalizeDialog();
                         break;
@@ -19919,7 +20029,7 @@ namespace COServer.Game.MsgNpc
                         if (client.Equipment.TryGetEquip((Role.Flags.ConquerItem)Option - 10, out DataItem))
                         {
                             if (DataItem != null)
-                            {//5--1050002
+                            {
                                 ushort Position = Database.ItemType.ItemPosition(DataItem.ITEM_ID);
                                 if (Database.ItemType.IsArrow(DataItem.ITEM_ID))
                                 {
@@ -19928,31 +20038,31 @@ namespace COServer.Game.MsgNpc
                                 }
                                 if (Database.ItemType.AllowToUpdate((Role.Flags.ConquerItem)Position))
                                 {
-                                    if (Option == 14 || Option == 15 && !Database.ItemType.IsShield(DataItem.ITEM_ID))
+                                    var itemLevel = Database.Server.ItemsBase[DataItem.ITEM_ID].Level;
+
+                                    // Verifica se o nível do jogador é menor que o nível do item
+                                    if (itemLevel > client.Player.Level)
                                     {
+                                        client.SendSysMesage("You cannot open a socket on this item because its level is higher than your character level.");
+                                        return; // Não consome o meteor
+                                    }
+                                    if ((Option == 14 || Option == 15) && !Database.ItemType.IsShield(DataItem.ITEM_ID))
+                                    {
+                                        // Lógica para DragonBalls mantida
                                         if (DataItem.SocketOne == Role.Flags.Gem.NoSocket)
                                         {
-
-                                            if (DataItem.SocketOne == Role.Flags.Gem.NoSocket)
+                                            if (client.Inventory.Contain(Database.ItemType.DragonBall, 1))
                                             {
-                                                if (client.Inventory.Contain(Database.ItemType.DragonBall, 1))
-                                                {
-                                                    DataItem.SocketOne = Role.Flags.Gem.EmptySocket;
-                                                    DataItem.Mode = Role.Flags.ItemMode.Update;
-                                                    DataItem.Send(client, stream);
-                                                    if (DataItem.Position != 0)
-                                                        client.Equipment.QueryEquipment();
-
-                                                    client.Inventory.Remove(Database.ItemType.DragonBall, 1, stream);
-                                                }
-                                                else
-                                                {
-                                                    client.SendSysMesage("Sorry, you don't have 1 DragonBall!");
-                                                }
+                                                DataItem.SocketOne = Role.Flags.Gem.EmptySocket;
+                                                DataItem.Mode = Role.Flags.ItemMode.Update;
+                                                DataItem.Send(client, stream);
+                                                if (DataItem.Position != 0)
+                                                    client.Equipment.QueryEquipment();
+                                                client.Inventory.Remove(Database.ItemType.DragonBall, 1, stream);
                                             }
                                             else
                                             {
-                                                client.SendSysMesage("This weapon already has one socket!");
+                                                client.SendSysMesage("Sorry, you don't have 1 DragonBall!");
                                             }
                                         }
                                         else if (DataItem.SocketTwo == Role.Flags.Gem.NoSocket)
@@ -19965,7 +20075,6 @@ namespace COServer.Game.MsgNpc
                                                 if (DataItem.Position != 0)
                                                     client.Equipment.QueryEquipment();
                                                 client.Inventory.Remove(Database.ItemType.DragonBall, 5, stream);
-
                                             }
                                             else
                                             {
@@ -19975,101 +20084,15 @@ namespace COServer.Game.MsgNpc
                                     }
                                     else
                                     {
+                                        // Carrega as tentativas do banco para este item
+                                        int meteorAttempts = COServer.Database.SocketAttempts.LoadMeteorAttempts(client.Player.UID, DataItem.UID);
+
                                         if (DataItem.SocketOne == Role.Flags.Gem.NoSocket)
-                                        {
-                                            if (DataItem.SocketOne == Role.Flags.Gem.NoSocket)
-                                            {
-                                                if (client.Inventory.Contain(Database.ItemType.Meteor, 1))
-                                                {
-                                                    Random random = new Random();
-                                                    int chance = random.Next(1, 650);
-
-                                                    var itemLevel = Database.Server.ItemsBase[DataItem.ITEM_ID].Level;
-
-                                                    if (itemLevel > client.Player.Level)
-                                                    {
-                                                        client.SendSysMesage("You cannot open a socket on this item because its level is higher than your character level.");
-                                                        return;
-                                                    }
-
-                                                    if (itemLevel >= 110)
-                                                    {
-                                                        client.SendSysMesage("The item is at the maximum level and cannot be modified.");
-                                                        return;
-                                                    }
-
-                                                    client.Inventory.Remove(Database.ItemType.Meteor, 1, stream);
-
-                                                    if (chance == 1)
-                                                    {
-                                                        DataItem.SocketOne = Role.Flags.Gem.EmptySocket;
-                                                        DataItem.Mode = Role.Flags.ItemMode.Update;
-                                                        DataItem.Send(client, stream);
-
-                                                        if (DataItem.Position != 0)
-                                                            client.Equipment.QueryEquipment();
-
-                                                        client.SendSysMesage("Congratulations! You have successfully opened a socket with a 0.14% chance!");
-                                                        Program.DiscordAPIsocket.Enqueue($"``Congratulations! [{client.Player.Name}] You have successfully opened a socket with a 0.14% chance!``");
-                                                    }
-                                                    else
-                                                    {
-                                                        var cost = 1;
-                                                        if (client.Inventory.Contain(Database.ItemType.Meteor, (byte)cost))
-                                                        {
-                                                            client.Inventory.Remove(Database.ItemType.Meteor, (byte)cost, stream);
-
-                                                            bool success = false;
-                                                            uint nextItemId = Database.Server.ItemsBase.UpdateItem(DataItem.ITEM_ID, out success);
-
-                                                            if (success)
-                                                            {
-                                                                DataItem.ITEM_ID = nextItemId;
-                                                                DataItem.Mode = Role.Flags.ItemMode.Update;
-                                                                DataItem.Send(client, stream);
-
-                                                                if (DataItem.Position != 0)
-                                                                    client.Equipment.QueryEquipment();
-
-                                                                client.SendSysMesage("Failed to open a socket.");
-                                                            }
-                                                            else
-                                                            {
-                                                                client.SendSysMesage("Failed to open a socket.");
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            client.SendSysMesage("Sorry, you don't have the required 1 Meteor for open Socket");
-                                                        }
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    client.SendSysMesage("Sorry, you don't have 1 Meteor!");
-                                                }
-                                            }
-                                            else
-                                            {
-                                                // Envia uma mensagem de erro para o cliente se o item já tiver um socket
-                                                client.SendSysMesage("This item already has one socket!");
-                                            }
-                                        }
-
-                                        else if (DataItem.SocketTwo == Role.Flags.Gem.NoSocket)
                                         {
                                             if (client.Inventory.Contain(Database.ItemType.Meteor, 1))
                                             {
                                                 Random random = new Random();
-                                                int chance = random.Next(1, 2555);
-
-                                                var itemLevel = Database.Server.ItemsBase[DataItem.ITEM_ID].Level;
-
-                                                if (itemLevel > client.Player.Level)
-                                                {
-                                                    client.SendSysMesage("You cannot open a socket on this item because its level is higher than your character level.");
-                                                    return;
-                                                }
+                                                int chance = random.Next(1, 500);
 
                                                 if (itemLevel >= 110)
                                                 {
@@ -20077,10 +20100,78 @@ namespace COServer.Game.MsgNpc
                                                     return;
                                                 }
 
-                                                client.Inventory.Remove(Database.ItemType.Meteor, 1, stream);
+                                                // Incrementa as tentativas e salva no banco
+                                                meteorAttempts++;
+                                                COServer.Database.SocketAttempts.SaveMeteorAttempts(client.Player.UID, DataItem.UID, meteorAttempts);
 
                                                 if (chance == 1)
                                                 {
+                                                    // Sucesso no socket
+                                                    client.Inventory.Remove(Database.ItemType.Meteor, 1, stream); // Consome o Meteor aqui
+                                                    DataItem.SocketOne = Role.Flags.Gem.EmptySocket;
+                                                    DataItem.Mode = Role.Flags.ItemMode.Update;
+                                                    DataItem.Send(client, stream);
+
+                                                    if (DataItem.Position != 0)
+                                                        client.Equipment.QueryEquipment();
+
+                                                    client.SendSysMesage("Congratulations! You have successfully opened a socket with a 0.14% chance!");
+                                                    Program.DiscordAPIsocket.Enqueue($"``Congratulations! [{client.Player.Name}] successfully opened a socket on {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)} with a 0.14% chance after {meteorAttempts} Meteor attempts!``");
+
+                                                    // Reseta as tentativas no banco
+                                                    COServer.Database.SocketAttempts.SaveMeteorAttempts(client.Player.UID, DataItem.UID, 0);
+                                                }
+                                                else
+                                                {
+                                                    // Falhou: Tenta atualizar o item para o próximo nível
+                                                    bool success = false;
+                                                    uint nextItemId = Database.Server.ItemsBase.UpdateItem(DataItem.ITEM_ID, out success);
+                                                    int nextItemLevel = Database.Server.ItemsBase[nextItemId].Level; // Obtém o nível do novo item
+
+                                                    if (success && nextItemLevel <= client.Player.Level) // Só consome e atualiza se o nível for válido
+                                                    {
+                                                        client.Inventory.Remove(Database.ItemType.Meteor, 1, stream); // Consome o Meteor aqui
+                                                        DataItem.ITEM_ID = nextItemId;
+                                                        DataItem.Mode = Role.Flags.ItemMode.Update;
+                                                        DataItem.Send(client, stream);
+
+                                                        if (DataItem.Position != 0)
+                                                            client.Equipment.QueryEquipment();
+
+                                                        client.SendSysMesage("Failed to open a socket, but your item has been upgraded!");
+                                                    }
+                                                    else
+                                                    {
+                                                        client.SendSysMesage("Failed to open a socket."); // Não consome o Meteor e não upa
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                client.SendSysMesage("Sorry, you don't have 1 Meteor!");
+                                            }
+                                        }
+                                        else if (DataItem.SocketTwo == Role.Flags.Gem.NoSocket)
+                                        {
+                                            if (client.Inventory.Contain(Database.ItemType.Meteor, 1))
+                                            {
+                                                Random random = new Random();
+                                                int chance = random.Next(1, 3000);
+
+                                                if (itemLevel >= 110)
+                                                {
+                                                    client.SendSysMesage("The item is at the maximum level and cannot be modified.");
+                                                    return;
+                                                }
+
+                                                // Incrementa as tentativas e salva no banco
+                                                meteorAttempts++;
+                                                COServer.Database.SocketAttempts.SaveMeteorAttempts(client.Player.UID, DataItem.UID, meteorAttempts);
+
+                                                if (chance == 1)
+                                                {
+                                                    // Sucesso no socket
+                                                    client.Inventory.Remove(Database.ItemType.Meteor, 1, stream); // Consome o Meteor aqui
                                                     DataItem.SocketTwo = Role.Flags.Gem.EmptySocket;
                                                     DataItem.Mode = Role.Flags.ItemMode.Update;
                                                     DataItem.Send(client, stream);
@@ -20090,43 +20181,39 @@ namespace COServer.Game.MsgNpc
 
                                                     client.SendSysMesage("Congratulations! You've opened a 2nd socket in your item with a 0.05% chance!");
                                                     Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + client.Player.Name + " has opened a 2nd socket in their " + Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID), Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
-                                                    Program.DiscordAPIsocket.Enqueue($"``Congratulations! [{client.Player.Name}] You have successfully opened a second socket with a 0.05% chance!``");
+                                                    Program.DiscordAPIsocket.Enqueue($"``Congratulations! [{client.Player.Name}] successfully opened a second socket on {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)} with a 0.05% chance after {meteorAttempts} Meteor attempts!``");
+
+                                                    // Reseta as tentativas no banco
+                                                    COServer.Database.SocketAttempts.SaveMeteorAttempts(client.Player.UID, DataItem.UID, 0);
                                                 }
                                                 else
                                                 {
-                                                    var cost = 1;
-                                                    if (client.Inventory.Contain(Database.ItemType.Meteor, (byte)cost))
+                                                    // Falhou: Tenta atualizar o item para o próximo nível
+                                                    bool success = false;
+                                                    uint nextItemId = Database.Server.ItemsBase.UpdateItem(DataItem.ITEM_ID, out success);
+                                                    int nextItemLevel = Database.Server.ItemsBase[nextItemId].Level;
+
+                                                    if (success && nextItemLevel <= client.Player.Level)
                                                     {
-                                                        client.Inventory.Remove(Database.ItemType.Meteor, (byte)cost, stream);
+                                                        client.Inventory.Remove(Database.ItemType.Meteor, 1, stream); // Consome o Meteor aqui
+                                                        DataItem.ITEM_ID = nextItemId;
+                                                        DataItem.Mode = Role.Flags.ItemMode.Update;
+                                                        DataItem.Send(client, stream);
 
-                                                        bool success = false;
-                                                        uint nextItemId = Database.Server.ItemsBase.UpdateItem(DataItem.ITEM_ID, out success);
+                                                        if (DataItem.Position != 0)
+                                                            client.Equipment.QueryEquipment();
 
-                                                        if (success)
-                                                        {
-                                                            DataItem.ITEM_ID = nextItemId;
-                                                            DataItem.Mode = Role.Flags.ItemMode.Update;
-                                                            DataItem.Send(client, stream);
-
-                                                            if (DataItem.Position != 0)
-                                                                client.Equipment.QueryEquipment();
-
-                                                            client.SendSysMesage("Failed to open a socket.");
-                                                        }
-                                                        else
-                                                        {
-                                                            client.SendSysMesage("Failed to open a socket.");
-                                                        }
+                                                        client.SendSysMesage("Failed to open a socket, but your item has been upgraded!");
                                                     }
                                                     else
                                                     {
-                                                        client.SendSysMesage("Sorry, you don't have the required 1 Meteor for open Socket.");
+                                                        client.SendSysMesage("Failed to open a socket."); // Não consome o Meteor e não upa
                                                     }
                                                 }
                                             }
                                             else
                                             {
-                                                client.SendSysMesage("Sorry, you don't have 1 Meteor.");
+                                                client.SendSysMesage("Sorry, you don't have 1 Meteor!");
                                             }
                                         }
                                     }
@@ -20144,11 +20231,10 @@ namespace COServer.Game.MsgNpc
                         }
                     }
                     break;
-
-
             }
-
         }
+
+
 
         [NpcAttribute(NpcID.LoveStone)]
         public static void LoveStone(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)

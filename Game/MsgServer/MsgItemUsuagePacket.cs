@@ -5522,16 +5522,28 @@ namespace COServer.Game.MsgServer
 
                         case 780020:
                             {
+                                // Verifica se o jogador já é VIP 6
+                                if (client.Player.VipLevel == 6)
+                                {
+                                    client.SendSysMesage("You already have VIP 6, which is higher than VIPMining (VIP 4)!");
+                                    break; // Sai do case sem aplicar o VIP 4
+                                }
+
+                                // Se não for VIP 6, prossegue com a lógica de adicionar o VIP 4
                                 if (DateTime.Now > client.Player.ExpireVip)
                                 {
                                     client.Player.ExpireVip = DateTime.Now;
                                     client.Player.ExpireVip = client.Player.ExpireVip.AddDays(30);
                                 }
-                                else client.Player.ExpireVip = client.Player.ExpireVip.AddDays(30);
+                                else
+                                {
+                                    client.Player.ExpireVip = client.Player.ExpireVip.AddDays(30);
+                                }
+
                                 client.Player.VipLevel = 4;
                                 client.Player.SendUpdate(stream, client.Player.VipLevel, MsgUpdate.DataType.VIPLevel);
                                 client.Player.UpdateVip(stream);
-                                client.SendSysMesage("Congratulations! You've received VIPMining (30 Days)!.");
+                                client.SendSysMesage("Congratulations! You've received VIPMining (30 Days)!");
                                 client.Inventory.Update(item, Role.Instance.AddMode.REMOVE, stream);
                                 break;
                             }

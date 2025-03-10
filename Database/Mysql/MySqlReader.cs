@@ -13,7 +13,7 @@ namespace COServer.Database
         private DataRow _datarow;
         private int _row;
         const string Table = "table";
-        public const string connectionString = "Server=localhost;Port=3306;Database=zq;Uid=root;Password=Higor157;Persist Security Info=True;Pooling=true; Min Pool Size = 32;  Max Pool Size = 300;";
+        public const string connectionString = "Server=localhost;Port=3306;Database=zq;Uid=root;Password=Higor147;Persist Security Info=True;Pooling=true; Min Pool Size = 32;  Max Pool Size = 300;";
         public MySqlReader(MySqlCommand command)
         {
             if (command.Type == MySqlCommandType.SELECT)

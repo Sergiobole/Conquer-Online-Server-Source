@@ -20,7 +20,7 @@ namespace COServer.Database
         {
             MySqlUsername = "root";
             MySqlHost = "localhost";
-            MySqlPassword = "Higor157";
+            MySqlPassword = "Higor147";
             MySqlDatabase = "zq";
             ConnectionString = "Server=" + MySqlHost + ";Database='" + MySqlDatabase + "';Username='" + MySqlUsername + "';Password='" + MySqlPassword + "';Pooling=true; Max Pool Size = 300; Min Pool Size = 5";
         }

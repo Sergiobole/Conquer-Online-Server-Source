@@ -11,7 +11,7 @@ namespace COServer.Database
 {
     public class ServerDatabase
     {
-        private static string ConnectionString = "Server=localhost;Port=3306;Database=zq;Uid=root;Pwd=Higor157;";
+        private static string ConnectionString = "Server=localhost;Port=3306;Database=zq;Uid=root;Pwd=Higor147;";
 
         public static MYSQLCONNECTION MySqlConnection
         {

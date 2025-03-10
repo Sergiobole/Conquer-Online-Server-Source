@@ -11,7 +11,7 @@ namespace COServer.Game.Data
     public static class MarketRepository
     {
         // Sua string de conexão com o banco de dados
-        public const string ConnectionString = "Server=localhost;Uid=root;Password=Higor157;Database=zq;";
+        public const string ConnectionString = "Server=localhost;Uid=root;Password=Higor147;Database=zq;";
 
         // Método para inserir um item no banco de dados
         public static void InsertMarketItem(MarketItem item)

@@ -59,7 +59,7 @@ namespace COServer.Role
 
         private static void SaveOfflineMinedItems(Client.GameClient client)
         {
-            Console.WriteLine($"[{DateTime.Now}] Item minerado offline por {client.Player.Name} salvo.");
+
         }
 
         public static void StopOfflineMining(Client.GameClient client)

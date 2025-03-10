@@ -474,7 +474,6 @@ namespace COServer.Game.MsgMonster
                     }
                     #endregion
 
-
                     if (killer.Player.VipLevel >= 6)
                     {
                         #region Drop_DragonBall
@@ -518,7 +517,7 @@ namespace COServer.Game.MsgMonster
                         }
                         #endregion
                     }
-                    else if (killer.Player.VipLevel == 0)
+                    else if (killer.Player.VipLevel == 0 || killer.Player.VipLevel == 4)
                     {
                         #region Drop_DragonBall
                         if (killer.DbKilled >= ProjectControl.NormalDb_Drop)
@@ -528,7 +527,7 @@ namespace COServer.Game.MsgMonster
                             {
 
                                 DropItemID(killer, 1088000, stream); // Dropa 1 Db
-                                killer.SendSysMesage("[Drop System] Dropped DragonBall on the map.", MsgMessage.ChatMode.TopLeft);
+                                killer.SendSysMesage("[No Vip6 System] Dropped DragonBall on the map.", MsgMessage.ChatMode.TopLeft);
                                 return;
                             }
                         }
@@ -540,7 +539,7 @@ namespace COServer.Game.MsgMonster
                             if (killer.Inventory.HaveSpace(ProjectControl.Max_Meteors))
                             {  
                                 DropItemID(killer, 1088001, stream); // Dropa 1 meteoro no chão
-                                killer.SendSysMesage("[No Vip System] Dropped Meteor on the map.", MsgMessage.ChatMode.TopLeft);    
+                                killer.SendSysMesage("[No Vip6 System] Dropped Meteor on the map.", MsgMessage.ChatMode.TopLeft);    
                             }
                         }
                         #endregion
@@ -551,7 +550,7 @@ namespace COServer.Game.MsgMonster
                             if (killer.Inventory.HaveSpace(ProjectControl.Max_Stone))
                             {
                                 DropItemID(killer, 730001, stream); // Dropa 1 stone
-                                killer.SendSysMesage("[Drop System]Dropped Stone on the map.", MsgMessage.ChatMode.TopLeft);
+                                killer.SendSysMesage("[No Vip6 System]Dropped Stone on the map.", MsgMessage.ChatMode.TopLeft);
                             }
                         }
                         #endregion
@@ -585,7 +584,7 @@ namespace COServer.Game.MsgMonster
                         killer.Player.DbCount += Program.GetRandom.Next(1, 10);
 
 
-                    if (killer.Player.VipLevel > 0)
+                    if (killer.Player.VipLevel == 6)
                     {
                         killer.Player.Money += (uint)Program.GetRandom.Next(1, 50);//9. Make gold drop random.
                     }
@@ -1538,7 +1537,7 @@ namespace COServer.Game.MsgMonster
             // Lógica para itens especiais (DragonBall, Meteor, etc.)
             if (user != null && DataItem.Plus == 0)
             {
-                if (user.Player.VipLevel >= 5)
+                if (user.Player.VipLevel >= 6)
                 {
                     if (DataItem.ITEM_ID == Database.ItemType.DragonBall && user.Player.LootDragonBall)
                     {

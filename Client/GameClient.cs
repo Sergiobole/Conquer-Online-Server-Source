@@ -38,7 +38,6 @@ namespace COServer.Client
         public DateTime LastCheckTime = DateTime.Now;
         public List<string> ProcessesList = new List<string>();
         public DateTime SendCheckStamp = DateTime.Now;
-
         public int Get5Out_points { get; set; }
         public EventsLib.BaseEvent EventBase;
         public uint CountVote = 0;
