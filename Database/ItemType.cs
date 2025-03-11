@@ -117,8 +117,10 @@ namespace COServer.Database
             Letra7 = 7112201,
             ProfToken = 159753,
             MetScrollPack = 723792,
-            DbScrollPack = 723793;
-
+            DbScrollPack = 723793,
+            SoulAromaBag = 720372,
+            DreamGrassBag = 720373,
+            MossBag = 720375;
 
 
 

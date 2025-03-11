@@ -578,6 +578,7 @@ namespace COServer.Game.MsgNpc
         CollectorZhao = 20777,
         UnknowMan = 3825,
         MillionaireLee = 5004,
+        MillionaireLee2Rbn = 3653,
         GarmentShopKeeper = 6002,
         Confiscator = 4450,
         JailConfiscator = 4542,

@@ -20958,6 +20958,77 @@ namespace COServer.Game.MsgNpc
 
 
         }
+
+        [NpcAttribute(NpcID.MillionaireLee2Rbn)]
+        public static void MillionaireLee2Rbn(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        {
+            Dialog data = new Dialog(client, stream);
+            switch (Option)
+            {
+                case 0:
+                    {
+                        data.AddText("Hunting for treasure is an exciting thing.\n")
+                            .AddText("~Do you want to transform the quest items into packs...")
+                            .AddOption("Soul Aroma Pack.", 1)
+                            .AddOption("Dream Grass Pack.", 2)
+                            .AddOption("Moss Pack.", 3)
+                            .AddOption("Just~passing~by.", 255)
+                            .AddAvatar(7).FinalizeDialog();
+                        break;
+                    }
+                case 1:
+                    {
+                        if (client.Inventory.Contain(722725, 10))
+                        {
+                            client.Inventory.Remove(722725, 10, stream);
+                            client.Inventory.Add(stream, 720372, 1, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);
+                        }
+                        else
+                        {
+                            data.AddText("Sorry, you don`t have 10 Soul Aroma.")
+                            .AddOption("My~bad.", 255)
+                            .AddAvatar(7).FinalizeDialog();
+                        }
+                        break;
+                    }
+
+                case 2:
+                    {
+                        if (client.Inventory.Contain(722724, 10))
+                        {
+                            client.Inventory.Remove(722724, 10, stream);
+                            client.Inventory.Add(stream, 720373, 1, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);
+                        }
+                        else
+                        {
+                            data.AddText("Sorry, you don`t have 10 DreamGrass.")
+                            .AddOption("My~bad.", 255)
+                            .AddAvatar(7).FinalizeDialog();
+                        }
+                        break;
+                    }
+
+                case 3:
+                    {
+                        if (client.Inventory.Contain(722723, 10))
+                        {
+                            client.Inventory.Remove(722723, 10, stream);
+                            client.Inventory.Add(stream, 720375, 1, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true);
+                        }
+                        else
+                        {
+                            data.AddText("Sorry, you don`t have 10 Moss.")
+                            .AddOption("My~bad.", 255)
+                            .AddAvatar(7).FinalizeDialog();
+                        }
+                        break;
+                    }
+
+            }
+
+
+        }
+
         [NpcAttribute(NpcID.UnknowMan)]
         public static void UnknowMan(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
         {

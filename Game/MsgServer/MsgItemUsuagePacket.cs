@@ -2106,6 +2106,8 @@ namespace COServer.Game.MsgServer
                 {
                     switch (item.ITEM_ID)
                     {
+                        //aquigeraritem
+
                         case Database.ItemType.DragonBall:
                             {
                                 if (client.Inventory.HaveSpace(1))
@@ -2138,6 +2140,57 @@ namespace COServer.Game.MsgServer
                                 }
                                 break;
                             }
+                        case Database.ItemType.SoulAroma:
+                            {
+                                if (client.Inventory.HaveSpace(1))
+                                {
+                                    if (client.Inventory.Contain(Database.ItemType.SoulAroma, 10))
+                                    {
+                                        client.Inventory.Remove(Database.ItemType.SoulAroma, 10, stream);
+                                        client.Inventory.Add(stream, Database.ItemType.SoulAromaBag, 1);
+                                    }
+                                }
+                                else
+                                {
+                                    client.SendSysMesage("please free some space from your inventory");
+                                }
+                                break;
+                            }
+                        case Database.ItemType.DreamGrass:
+                            {
+                                if (client.Inventory.HaveSpace(1))
+                                {
+                                    if (client.Inventory.Contain(Database.ItemType.DreamGrass, 10))
+                                    {
+                                        client.Inventory.Remove(Database.ItemType.DreamGrass, 10, stream);
+                                        client.Inventory.Add(stream, Database.ItemType.DreamGrassBag, 1);
+                                    }
+                                }
+                                else
+                                {
+                                    client.SendSysMesage("please free some space from your inventory");
+                                }
+                                break;
+                            }
+                        case Database.ItemType.Moss:
+                            {
+                                if (client.Inventory.HaveSpace(1))
+                                {
+                                    if (client.Inventory.Contain(Database.ItemType.Moss, 10))
+                                    {
+                                        client.Inventory.Remove(Database.ItemType.Moss, 10, stream);
+                                        client.Inventory.Add(stream, Database.ItemType.MossBag, 1);
+                                    }
+                                }
+                                else
+                                {
+                                    client.SendSysMesage("please free some space from your inventory");
+                                }
+                                break;
+                            }
+
+
+
                         case 725018:
                             {
                                 client.Inventory.Update(item, Role.Instance.AddMode.REMOVE, stream);
@@ -5934,6 +5987,49 @@ namespace COServer.Game.MsgServer
                                 }
                                 break;
                             }
+
+                        case 720372:
+                            {
+                                if (client.Inventory.HaveSpace(10))
+                                {
+                                    client.Inventory.Update(item, Role.Instance.AddMode.REMOVE, stream);
+                                    client.Inventory.Add(stream, 722725, 10, 0);
+                                }
+                                else
+                                {
+                                    client.SendSysMesage("Please make 10 more spaces in your inventory.");
+                                }
+                                break;
+                            }  // SoulAromaBag
+                        case 720373:
+                            {
+                                if (client.Inventory.HaveSpace(10))
+                                {
+                                    client.Inventory.Update(item, Role.Instance.AddMode.REMOVE, stream);
+                                    client.Inventory.Add(stream, 722724, 10, 0);
+                                }
+                                else
+                                {
+                                    client.SendSysMesage("Please make 4 more spaces in your inventory.");
+                                }
+                                break;
+                            }  // DreamGrassBag
+                        case 720375:
+                            {
+                                if (client.Inventory.HaveSpace(10))
+                                {
+                                    client.Inventory.Update(item, Role.Instance.AddMode.REMOVE, stream);
+                                    client.Inventory.Add(stream, 722723, 10, 0);
+                                }
+                                else
+                                {
+                                    client.SendSysMesage("Please make 4 more spaces in your inventory.");
+                                }
+                                break;
+                            }  // MossBag
+
+
+
 
                         case 723711://MeteorTearScroll
                             {
