@@ -12,8 +12,6 @@ namespace COServer.Client
 {
     public class PoolProcesses
     {
-
-
         private static bool Valid(GameClient client)
         {
             if (!client.Socket.Alive || client.Player == null
@@ -23,7 +21,6 @@ namespace COServer.Client
             }
             return true;
         }
-
         public static unsafe void AutoHuntThread(Client.GameClient client)
         {
             if (!client.FullLoading)
@@ -38,7 +35,6 @@ namespace COServer.Client
 
             }
         }
-
         public static unsafe void AiThread(Client.GameClient client)
         {
             if (!client.FullLoading)
@@ -843,7 +839,7 @@ namespace COServer.Client
                 if (Timer < client.Player.LastAttack.AddSeconds(5)) 
                 {                   
 
-                    if (client.MobsKilled >= 8000)
+                    if (client.MobsKilled >= 5000)
                     {
                         if (Timer > client.Player.KillCountCaptchaStamp.AddSeconds(20))
                         {

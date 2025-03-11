@@ -38,8 +38,6 @@ namespace COServer.Game.MsgTournaments
             if (Mode == ProcesType.Dead)
             {
                 Mode = ProcesType.Alive;
-                MsgSchedules.SendInvitation("Top_LuckyBox", 328, 257, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.LuckyBox);
-                MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
                 FinishTimer = DateTime.Now.AddMinutes(FinishMinutes);
                 BoxesStamp = DateTime.Now.AddSeconds(40);
             }

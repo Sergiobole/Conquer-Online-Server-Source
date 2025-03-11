@@ -113,8 +113,6 @@ namespace COServer.Game.MsgTournaments
 
                     ResetFurnitures(stream);
                     ScoreList.Clear();
-                    MsgSchedules.SendInvitation("ExtremeFlagWar", 421, 294, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.ExtremeFlagWar);
-                    Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("ExtremeFlagWar has started!", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
                 }
             }
         }

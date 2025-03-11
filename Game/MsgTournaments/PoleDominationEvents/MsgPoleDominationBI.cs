@@ -127,8 +127,6 @@ namespace COServer.Game.MsgTournaments
 
                     ResetFurnitures(stream);
                     ScoreList.Clear();
-                    MsgSchedules.SendInvitation("Bird PoleDomination", 409, 397, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.PoleDomination_BI);
-                    Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("PoleDomination of BI war in ApeCity(Left Gate) has started!", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
                 }
             }
         }
@@ -146,8 +144,6 @@ namespace COServer.Game.MsgTournaments
 
                         ResetFurnitures(stream);
                         ScoreList.Clear();
-                        MsgSchedules.SendInvitation("BirdIsland PoleDomination", 409, 397, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.PoleDomination_BI);
-                        Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("PoleDomination of Bird war in Bird Island(Left Gate) has started!", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
                     }
                 }
             }

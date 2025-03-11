@@ -3169,7 +3169,8 @@ namespace COServer.Game.MsgNpc
                             if (client.Player.ContainFlag(MsgUpdate.Flags.FlashingName) || client.Player.ContainFlag(MsgUpdate.Flags.BlackName))
                                 break;
                             if (!Program.BlockTeleportMap.Contains(client.Player.Map) || Program.ArenaMaps.ContainsValue(client.Player.DynamicID))
-                                client.Teleport(535, 558, 1075);
+                            Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage(client.Player.Name + " has entered the Basilisk cave!", "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                            client.Teleport(143, 209, 1363);
                         }
                         else
                         {
@@ -4704,14 +4705,14 @@ namespace COServer.Game.MsgNpc
                         data.AddText("Dear " + client.Player.Name + ", you currently have [" + client.Player.VotePoints + "] Vote Points.\n")
                             .AddText("Would you like to trade them for some rewards?")
                         
-                        .AddOption("1 - 3xExp (1 VPs)", 17)
+                        //.AddOption("1 - 3xExp (1 VPs)", 17)
                         .AddOption("2 - RTG. (5 VPs)", 11)
                         .AddOption("3 - RDG. (5 VPs)", 12)
                         .AddOption("4 - RPG. (5 VPs)", 13)
                         .AddOption("5 - RVG. (5 VPs)", 14)
                         .AddOption("6 - RMG. (5 VPs)", 15)
                         .AddOption("7 - RRG. (5 VPs)", 16)
-                        .AddOption("Next.", 32) 
+                        //.AddOption("Next.", 32) 
                         .AddAvatar(3).FinalizeDialog();
                         break;
                     }
@@ -4837,7 +4838,7 @@ namespace COServer.Game.MsgNpc
                             .AddText("Would you like to trade them for some rewards?")
 
 
-                        .AddOption("2 - Moonbox. (5 VPs)", 26)
+                        //.AddOption("2 - Moonbox. (5 VPs)", 26)
                         .AddOption("Finish.", 255)
                         .AddAvatar(3).FinalizeDialog();
                         break;
@@ -7645,10 +7646,10 @@ namespace COServer.Game.MsgNpc
                         {
                             data.AddText("You can get Ghost Horns from the Hill Spirits. When you got one i can make an Evil Tooth for you")
                                 .AddOption("i want Evil Tooth", 1)
-                                 .AddOption("I want ImmortalStone", 2)
-                                 .AddOption("Make An ImpureVigor.", 3)
-                                 .AddOption("Teleport~to~Twin~City", 5)
-                       .AddOption("I`ll~think~it~over.", 255).FinalizeDialog();
+                                .AddOption("I want ImmortalStone", 2)
+                                .AddOption("Make An ImpureVigor.", 3)
+                                .AddOption("Teleport~to~Twin~City", 5)
+                                .AddOption("I`ll~think~it~over.", 255).FinalizeDialog();
                         }
                         break;
                     }
@@ -7658,15 +7659,15 @@ namespace COServer.Game.MsgNpc
                             if (!client.Inventory.HaveSpace(1))
                             {
                                 data.AddText("Please make 1 more space in your inventory.")
-                       .AddOption("Let me check.", 255).FinalizeDialog();
+                                    .AddOption("Let me check.", 255).FinalizeDialog();
                                 break;
                             }
-                            if (client.Inventory.Contain(722722, 1, 0))
+                            if (client.Inventory.Contain(722722, 3, 0))
                             {
-                                client.Inventory.Remove(722722, 1, stream);
+                                client.Inventory.Remove(722722, 3, stream);
                                 client.Inventory.Add(stream, 722721);
                                 data.AddText("You successfully exchange the (GhostHorn) for an EvilTooth!")
-                           .AddOption("Thank you.", 255).FinalizeDialog();
+                                     .AddOption("Thank you.", 255).FinalizeDialog();
                             }
                             else
                             {
@@ -7685,9 +7686,9 @@ namespace COServer.Game.MsgNpc
                        .AddOption("Let me check.", 255).FinalizeDialog();
                                 break;
                             }
-                            if (client.Inventory.Contain(722726, 1, 0))
+                            if (client.Inventory.Contain(722726, 3, 0))
                             {
-                                client.Inventory.Remove(722726, 1, stream);
+                                client.Inventory.Remove(722726, 3, stream);
                                 client.Inventory.Add(stream, 722728);
                                 data.AddText("You successfully exchange the FeatherStone for an ImmortalStone!")
                            .AddOption("Thank you.", 255).FinalizeDialog();

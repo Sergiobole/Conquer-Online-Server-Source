@@ -867,172 +867,134 @@ namespace COServer.Game.MsgMonster
                     #endregion
                     #region 2rbQuest
                     if (Map == 1700)
-                    {// first stage -- drop normal moss / dreams / soul
-
+                    {
+                        // Estágio 0: Drop de itens normais
                         if (Family.ID == 3616 || Family.ID == 3602 || Family.ID == 3628 || Family.ID == 3608 || Family.ID == 3624
                             || Family.ID == 3621 || Family.ID == 3606 || Family.ID == 3631 || Family.ID == 3620 || Family.ID == 3625 || Family.ID == 3601 || Family.ID == 3618
                             || Family.ID == 3626 || Family.ID == 3613 || Family.ID == 3609 || Family.ID == 3605 || Family.ID == 3629 || Family.ID == 3604 || Family.ID == 3600
                             || Family.ID == 3622 || Family.ID == 3617 || Family.ID == 3610 || Family.ID == 3612 || Family.ID == 3614)
                         {
-                            if (killer.Player.Quest2rbStage != 1)
+                            if (killer.Player.Quest2rbStage == 0) // Apenas no estágio 1 (antes de iniciar o 2)
                             {
-                                if (Role.Core.Rate(0.001))
-                                {
-                                    DropItemID(killer, Database.ItemType.SoulAroma, stream);
-                                }
-                                if (Role.Core.Rate(0.002))
-                                {
-                                    DropItemID(killer, Database.ItemType.DreamGrass, stream);
-                                }
-                                if (Role.Core.Rate(0.001))
-                                {
-                                    DropItemID(killer, Database.ItemType.Moss, stream);
-                                }
+                                if (Role.Core.Rate(20)) DropItemID(killer, Database.ItemType.SoulAroma, stream);
+                                if (Role.Core.Rate(20)) DropItemID(killer, Database.ItemType.DreamGrass, stream);
+                                if (Role.Core.Rate(20)) DropItemID(killer, Database.ItemType.Moss, stream);
                             }
                         }
-                        else
+                        // Transição do Estágio 1 para o 2
+                        else if (Family.ID == 3632 && killer.Player.UID == aUID)
                         {
-                            if (killer.Player.Quest2rbS2Point >= 70000 && killer.Player.Quest2rbStage == 1)
+                            DropItemID(killer, 722722, stream);
+                        }
+                        else if (Family.ID == 3633 && killer.Player.UID == aUID)
+                        {
+                            DropItemID(killer, 722726, stream);
+                        }
+                        else if (Family.ID == 3634 && killer.Player.UID == aUID)
+                        {
+                            DropItemID(killer, 722729, stream);
+                        }
+                        else if (Family.ID == 3635 && killer.Player.UID == aUID)
+                        {
+                            DropItemID(killer, 722731, stream);
+                            killer.Player.Quest2rbStage += 1; // De 0 para 1, inicia o estágio 2
+                            killer.Player.SendString(stream, MsgStringPacket.StringID.Effect, true, new string[1] { "fire1" });
+                            killer.SendSysMesage("You have completed Stage 1! Stage 2 has begun."); // Mensagem de início
+                            Console.WriteLine($"Quest2rbStage: {killer.Player.Quest2rbStage}");
+                        }
+                        // Estágio 1: Acumular pontos
+
+                        else if (killer.Player.Quest2rbStage == 1)
+                        {
+                            if (killer.Player.Quest2rbS2Point < 70000)
                             {
                                 if (Family.ID == 3611 || Family.ID == 3619 || Family.ID == 3603 || Family.ID == 3615 || Family.ID == 3627 || Family.ID == 3631 || Family.ID == 3607)
                                 {
-                                    if (killer.Player.Quest2rbS2Point < 70000)
-                                    {
-                                        killer.Player.Quest2rbS2Point += 500;
-                                        killer.SendSysMesage($"Stage2 : Raze the mountin of Grievanceto the ground +500 / {killer.Player.Quest2rbS2Point}");
-                                    }
+                                    killer.Player.Quest2rbS2Point += 500;
+                                    killer.SendSysMesage($"Stage 2: Raze the mountain of Grievance to the ground +500 / {killer.Player.Quest2rbS2Point}");
                                 }
                                 else
                                 {
-                                    if (killer.Player.Quest2rbS2Point < 70000)
-                                    {
-                                        killer.Player.Quest2rbS2Point += 20;
-                                        killer.SendSysMesage($"Stage2 : Raze the mountin of Grievanceto the ground +20 / {killer.Player.Quest2rbS2Point}");
-                                    }
-
-                                }
-                            }
-                            else
-                            {
-                                killer.SendSysMesage("you have finish the stage 2 go to talk to Bruce at (602,643)");
-                            }
-
-                        }
-
-
-                        // stage 2 
-                        if (Family.ID == 3632)
-                        {
-                            if (killer.Player.UID == aUID)
-                            {
-                                if (Role.Core.Rate(1))
-                                {
-                                    DropItemID(killer, 722722, stream);
-                                }
-                            }
-                        }
-                        else if (Family.ID == 3633)
-                        {
-                            if (killer.Player.UID == aUID)
-                            {
-                                if (Role.Core.Rate(1))
-                                {
-                                    DropItemID(killer, 722726, stream);
-                                }
-                            }
-                        }
-                        else if (Family.ID == 3634)
-                        {
-                            if (killer.Player.UID == aUID)
-                            {
-                                if (Role.Core.Rate(1))
-                                {
-                                    DropItemID(killer, 722729, stream);
-                                }
-                            }
-                        }
-                        else if (Family.ID == 3635)
-                        {// if some one else kill this monser reset all the quest !
-                            if (killer.Player.UID == aUID)
-                            {
-                                if (Role.Core.Rate(1))
-                                {
-                                    DropItemID(killer, 722731, stream);
-                                    killer.Player.Quest2rbStage += 1;
-                                    killer.Player.SendString(stream, MsgStringPacket.StringID.Effect, true, new string[1] { "fire1" });
+                                    killer.Player.Quest2rbS2Point += 20;
+                                    Console.WriteLine($"Stage 2: Raze the mountain of Grievance to the ground +20 / {killer.Player.Quest2rbS2Point}");
+                                    killer.SendSysMesage($"Stage 2: Raze the mountain of Grievance to the ground +20 / {killer.Player.Quest2rbS2Point}");
                                 }
                             }
                         }
 
-
-                        //third sage
+                        // Estágio 3: Bosses
                         if (killer.Player.Quest2rbStage == 1 && killer.Player.Quest2rbS2Point >= 70000)
                         {
-                            if (Family.ID == 3636 && killer.Player.Quest2rbBossesOrderby == 0) // andrew
+                            if (Family.ID == 3636 && killer.Player.Quest2rbBossesOrderby == 0) // Andrew
                             {
                                 killer.Player.Quest2rbBossesOrderby += 1;
-                                killer.SendSysMesage("Congratulations You'h killed Boss Andrew, now go kill Peter");
+                                killer.SendSysMesage("Congratulations! You've killed Boss Andrew, now go kill Peter");
                             }
-                            else if (Family.ID == 3637 && killer.Player.Quest2rbBossesOrderby == 1) // peter
+                            else if (Family.ID == 3637 && killer.Player.Quest2rbBossesOrderby == 1) // Peter
                             {
                                 killer.Player.Quest2rbBossesOrderby += 1;
-                                killer.SendSysMesage("Congratulations You'h killed Boss Peter, now go kill Philip");
+                                killer.SendSysMesage("Congratulations! You've killed Boss Peter, now go kill Philip");
                             }
-                            else if (Family.ID == 3638 && killer.Player.Quest2rbBossesOrderby == 2) // phillip
+                            else if (Family.ID == 3638 && killer.Player.Quest2rbBossesOrderby == 2) // Philip
                             {
                                 killer.Player.Quest2rbBossesOrderby += 1;
-                                killer.SendSysMesage("Congratulations You'h killed Boss Philip, now go kill Timothy");
+                                killer.SendSysMesage("Congratulations! You've killed Boss Philip, now go kill Timothy");
                             }
                             else if (Family.ID == 3639 && killer.Player.Quest2rbBossesOrderby == 3) // Timothy
                             {
                                 killer.Player.Quest2rbBossesOrderby += 1;
-                                killer.SendSysMesage("Congratulations You'h killed Boss Timothy, now go kill Daphne ");
+                                killer.SendSysMesage("Congratulations! You've killed Boss Timothy, now go kill Daphne");
                             }
                             else if (Family.ID == 3640 && killer.Player.Quest2rbBossesOrderby == 4) // Daphne
                             {
                                 killer.Player.Quest2rbBossesOrderby += 1;
-                                killer.SendSysMesage("Congratulations You'h killed Boss Daphne, now go kill Victoria ");
+                                killer.SendSysMesage("Congratulations! You've killed Boss Daphne, now go kill Victoria");
                             }
                             else if (Family.ID == 3641 && killer.Player.Quest2rbBossesOrderby == 5) // Victoria
                             {
                                 killer.Player.Quest2rbBossesOrderby += 1;
-                                killer.SendSysMesage("Congratulations You'h killed Boss Victoria, now go kill Wayne ");
+                                killer.SendSysMesage("Congratulations! You've killed Boss Victoria, now go kill Wayne");
                             }
                             else if (Family.ID == 3642 && killer.Player.Quest2rbBossesOrderby == 6) // Wayne
                             {
                                 killer.Player.Quest2rbBossesOrderby += 1;
-                                killer.SendSysMesage("Congratulations You'h killed Boss Wayne, now go kill Theodore ");
+                                killer.SendSysMesage("Congratulations! You've killed Boss Wayne, now go kill Theodore");
                             }
                             else if (Family.ID == 3643 && killer.Player.Quest2rbBossesOrderby == 7) // Theodore
                             {
                                 killer.Player.Quest2rbBossesOrderby += 1;
-                                killer.SendSysMesage("Congratulations You'h killed Boss Theodore, now third sage done go talk to Stanley");
+                                killer.SendSysMesage("Congratulations! You've killed Boss Theodore, third stage done, go talk to Stanley");
                                 killer.Player.SendString(stream, MsgStringPacket.StringID.Effect, true, new string[1] { "tj" });
-
                             }
-
-                            else if (killer.Player.Quest2rbBossesOrderby == 8 && Family.ID == 3611 || Family.ID == 3619 || Family.ID == 3603 || Family.ID == 3615 || Family.ID == 3627 || Family.ID == 3631 || Family.ID == 3607)
+                            else if (killer.Player.Quest2rbBossesOrderby == 8 && (Family.ID == 3611 || Family.ID == 3619 || Family.ID == 3603 || Family.ID == 3615 || Family.ID == 3627 || Family.ID == 3631 || Family.ID == 3607))
                             {
                                 DropItemID(killer, 722727, stream);
-                                killer.SendSysMesage("Congratulations You'h killed The Lord, and he dropped SquamaBead go to spawn Satan at(326,342)");
+                                killer.SendSysMesage("Congratulations! You've killed The Lord, and he dropped SquamaBead, go to spawn Satan at (326,342)");
                             }
-                            else if (killer.Player.Quest2rbBossesOrderby == 8 && Family.ID == 3644)//satan
+                            else if (killer.Player.Quest2rbBossesOrderby == 8 && Family.ID == 3644) // Satan
                             {
                                 Database.Server.AddMapMonster(stream, killer.Map, 3645, killer.Player.X, killer.Player.Y, 1, 1, 1);
                             }
-                            else if (killer.Player.Quest2rbBossesOrderby == 8 && Family.ID == 3645)//satan
+                            else if (killer.Player.Quest2rbBossesOrderby == 8 && Family.ID == 3645) // BeastSatan
                             {
                                 Database.Server.AddMapMonster(stream, killer.Map, 3646, killer.Player.X, killer.Player.Y, 1, 1, 1);
                             }
-                            else if (killer.Player.Quest2rbBossesOrderby == 8 && Family.ID == 3646)//Furysatan
+                            else if (killer.Player.Quest2rbBossesOrderby == 8 && Family.ID == 3646) // FurySatan
                             {
                                 if (killer.Player.Quest2rbStage == 1)
                                 {
                                     DropItemID(killer, 723701, stream);
-                                    Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + killer.Player.Name + " he/she finish the 2rb quest .", Game.MsgServer.MsgMessage.MsgColor.yellow, Game.MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
+                                    Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + killer.Player.Name + " he/she finished the 2rb quest.", Game.MsgServer.MsgMessage.MsgColor.yellow, Game.MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
+                                    killer.Player.Quest2rbStage += 1; // De 1 para 2
+                                    killer.SendSysMesage("You Finish The Quest.");
                                 }
-                                killer.Player.Quest2rbStage += 1;// 2!
                             }
+                        }
+
+                        // Mensagem de conclusão do estágio 2
+                        if (killer.Player.Quest2rbStage == 2)
+                        {
+                            killer.SendSysMesage("You Finish The Quest");
                         }
                     }
                     #endregion
@@ -1097,7 +1059,8 @@ namespace COServer.Game.MsgMonster
                     {
                         if (Family.ID == 1) // Pheasant
                         {
-                            if (Role.Core.Rate(0.0001)) // Probabilidade de 1 em 10.000 (0.0001)
+                            if (Role.Core.Rate(0.0001)) // Probabilidade de 1 em
+                                                        // (0.0001)
                             {
                                 if (killer.Player.VipLevel >= 6)
                                 {

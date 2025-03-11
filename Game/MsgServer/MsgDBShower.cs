@@ -37,7 +37,6 @@ namespace COServer.Game.MsgServer
                 PrepareToFinish = false;
                 Process = ProcesType.Idle;
                 StartTimer = DateTime.Now.AddMinutes(1);
-                MsgSchedules.SendInvitation("DBShower", 300, 277, 1002, 0, 60,MsgStaticMessage.Messages.DBShower);
                 if (DinamicID == 0 || BaseMap == null)
                 {
                     BaseMap = Database.Server.ServerMaps[700];

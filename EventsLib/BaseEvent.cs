@@ -39,7 +39,7 @@ using System.Linq;
                     string msg = "";
                     //Program.DiscordAPI.Enqueue($"``{msg}``");
                     var stream = rec.GetStream();
-                    Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"{name} has started, type @pvp to join.", "ALLUSERS", Game.MsgServer.MsgMessage.MsgColor.yellow, Game.MsgServer.MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                    Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"{name} has started, type /pvp to join.", "ALLUSERS", Game.MsgServer.MsgMessage.MsgColor.yellow, Game.MsgServer.MsgMessage.ChatMode.TopLeft).GetArray(stream));
                
                 }
             }

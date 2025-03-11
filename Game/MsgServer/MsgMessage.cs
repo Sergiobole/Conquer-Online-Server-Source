@@ -325,7 +325,6 @@ namespace COServer.Game.MsgServer
                            
                             break;
                         }
-
                     case ChatMode.MsgTrade:
                         {
                             Role.MessageBoard.MessageInfo Info =
@@ -384,7 +383,6 @@ namespace COServer.Game.MsgServer
 
             }
         }
-
         public static unsafe bool ChatCommands(Client.GameClient client, MsgMessage msg)
         {
             try
@@ -396,7 +394,7 @@ namespace COServer.Game.MsgServer
 
                 msg.__Message = msg.__Message.Replace("#60", "").Replace("#61", "").Replace("#62", "").Replace("#63", "").Replace("#64", "").Replace("#65", "").Replace("#66", "").Replace("#67", "").Replace("#68", "");
 
-                if (msg.__Message.StartsWith("@"))
+                if (msg.__Message.StartsWith("/"))
                 {
                     string logs = "[GMLogs]" + client.Player.Name + " ";
 
@@ -523,7 +521,7 @@ namespace COServer.Game.MsgServer
                             case "boss1":
                                 {
                                     MsgMonster.BossesBase.SpawnHandler(1015, 806, 558, 20070, "Snow Banshee", "will appear at " + DateTime.Now.Hour + ":30! Get ready to fight! You only have 5 minutes left!", " has spawned in " +
-                    Database.Server.MapName[1015] + "!", MsgServer.MsgStaticMessage.Messages.SnowBanshee);
+                    Database.Server.MapName[1015] + "!");
                                     break;
                                 }
                             case "event":
@@ -636,17 +634,6 @@ namespace COServer.Game.MsgServer
                                 {
                                     client.Player.SkipBadOre = !client.Player.SkipBadOre;
                                     client.SendSysMesage("VIP Mining : Skill All Ores " + client.Player.SkipBadOre);
-                                    break;
-                                }
-
-                            case "commands":
-                                {
-                                    client.SendSysMesage("@skipore => SkipOres");                                    
-                                    client.SendSysMesage("@scroll tc => Twin City scroll. citys => pc ac bi");
-                                    client.SendSysMesage("@agi => Adjust your Atributtes. @str @vit @spi");
-                                    client.SendSysMesage("@stuck => If stuck, this will help you");
-                                    client.SendSysMesage("@dc => Disconnect from the server");
-                                    client.SendSysMesage("@clear => Clear your inventory");
                                     break;
                                 }
                             case "vip":
@@ -1206,22 +1193,18 @@ namespace COServer.Game.MsgServer
                                     }
                                     break;
                                 }
-                            case "smg":
+                            case "invitegw":
                                 {
-                                    MsgSchedules.SendInvitation("GuildWar", 122, 122, 1002, 0, 60, MsgStaticMessage.Messages.GuildWar);
+                                    MsgSchedules.SendInvitation("GuildWar", 355, 337, 1002, 0, 60, MsgStaticMessage.Messages.GuildWar);
                                     break;
                                 }
-                            case "staticmsg":
+                            case "invitegw2":
                                 {
                                     client.Player.MessageBox("", new Action<Client.GameClient>(
                                         p
                                         =>
-                                        p.Teleport(302, 151, 1002, 0)
-                                        ), null, 60, MsgServer.MsgStaticMessage.Messages.GuildWar);
-
-                                    //MsgSchedules.SendInvitation("GuildWar", "GuildWar", 338, 138, 1002, 0, 60,
-                                    //    MsgServer.MsgStaticMessage.Messages.GuildWar);
-
+                                        p.Teleport(355, 337, 1002, 0)
+                                        ), null, 60, MsgServer.MsgStaticMessage.Messages.GuildWar); 
                                     break;
                                 }
                             case "leave":
@@ -1802,7 +1785,7 @@ namespace COServer.Game.MsgServer
                                 }
 
 
-                            case "trace":
+                            case "irate":
                                 {
                                     foreach (var user in Database.Server.GamePoll.Values)
                                     {
@@ -1815,7 +1798,7 @@ namespace COServer.Game.MsgServer
 
                                     break;
                                 }
-                            case "tpto":
+                            case "mover":
                                 {
                                     foreach (var user in Database.Server.GamePoll.Values)
                                     {
@@ -3572,7 +3555,7 @@ namespace COServer.Game.MsgServer
 
                 msg.__Message = msg.__Message.Replace("#60", "").Replace("#61", "").Replace("#62", "").Replace("#63", "").Replace("#64", "").Replace("#65", "").Replace("#66", "").Replace("#67", "").Replace("#68", "");
 
-                if (msg.__Message.StartsWith("@"))
+                if (msg.__Message.StartsWith("/"))
                 {
                     string logs = "[VIPLogs]" + client.Player.Name + " ";
 
@@ -3842,6 +3825,16 @@ namespace COServer.Game.MsgServer
                                     client.Socket.Disconnect();
                                     break;
                                 }
+                            case "commands":
+                                {
+                                    client.SendSysMesage("@skipore => SkipOres");
+                                    client.SendSysMesage("@scroll tc => Twin City scroll. citys => pc ac bi");
+                                    client.SendSysMesage("@agi => Adjust your Atributtes. @str @vit @spi");
+                                    client.SendSysMesage("@stuck => If stuck, this will help you");
+                                    client.SendSysMesage("@dc => Disconnect from the server");
+                                    client.SendSysMesage("@clear => Clear your inventory");
+                                    break;
+                                }
                         }
                     }
                     return true;
@@ -3863,7 +3856,7 @@ namespace COServer.Game.MsgServer
 
                 msg.__Message = msg.__Message.Replace("#60", "").Replace("#61", "").Replace("#62", "").Replace("#63", "").Replace("#64", "").Replace("#65", "").Replace("#66", "").Replace("#67", "").Replace("#68", "");
 
-                if (msg.__Message.StartsWith("@"))
+                if (msg.__Message.StartsWith("/"))
                 {
                     string logs = "[PlayerLogs]" + client.Player.Name + " ";
 
@@ -3936,6 +3929,7 @@ namespace COServer.Game.MsgServer
                                     EventsLib.EventManager.JoinPVP(client);
                                     break;
                                 }
+
                                 #endregion
                         }
                     }

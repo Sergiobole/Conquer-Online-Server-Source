@@ -128,8 +128,6 @@ namespace COServer.Game.MsgTournaments
 
                     ResetFurnitures(stream);
                     ScoreList.Clear();
-                    MsgSchedules.SendInvitation("Desert PoleDomination", 409, 397, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.PoleDomination_DC);
-                    Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("PoleDomination of Desert war in DesertCity(Left Gate) has started!", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
                 }
             }
         }
@@ -147,8 +145,6 @@ namespace COServer.Game.MsgTournaments
 
                         ResetFurnitures(stream);
                         ScoreList.Clear();
-                        MsgSchedules.SendInvitation("Desert PoleDomination", 409, 397, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.PoleDomination_DC);
-                        Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("PoleDomination of PC war in DesertCity(Left Gate) has started!", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
                     }
                 }
             }

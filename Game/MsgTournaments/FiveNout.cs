@@ -29,7 +29,6 @@ namespace COServer.Game.MsgTournaments
                 KillSystem = new KillerSystem();
                 StartTimer = DateTime.Now;
 
-                MsgSchedules.SendInvitation("Five and Out", 446, 355, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.Fiveout);
 
 
                 if (Map == null)

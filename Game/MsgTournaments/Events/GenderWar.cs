@@ -27,8 +27,6 @@ namespace COServer.Game.MsgTournaments
             {
                 FinishTimer = DateTime.Now.AddMinutes(FinishMinutes);
                 Mode = ProcesType.Alive;
-                MsgSchedules.SendInvitation("FirstKiller", 440, 356, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.GenderWar);
-                MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
             }
         }
         public void CheckUp()
@@ -46,8 +44,6 @@ namespace COServer.Game.MsgTournaments
                 {
                     FinishTimer = DateTime.Now.AddMinutes(FinishMinutes);
                     Mode = ProcesType.Alive;
-                    MsgSchedules.SendInvitation("FirstKiller", 440, 356, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.GenderWar);
-                    MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
                 }
             }
         }

@@ -31,8 +31,6 @@ namespace COServer.Game.MsgTournaments
             if (Mode == ProcesType.Dead)
             {
                 Mode = ProcesType.Alive;
-                MsgSchedules.SendInvitation("Nobility_War", 328, 257, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.DonationWar);
-                MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
 
                 FinishTimer = DateTime.Now.AddMinutes(FinishMinutes);
                 if (!Program.FreePkMap.Contains(King_Map))

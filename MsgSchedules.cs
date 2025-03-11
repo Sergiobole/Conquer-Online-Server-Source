@@ -120,7 +120,6 @@ namespace COServer.Game.MsgTournaments
         }
         static List<string> SystemMsgs = new List<string>() {
             "Guild War will begin at 17:00 on Saturdays, and will end at 17:00 on Sundays.",
-            "Selling/Buying gears for real money or for items in other servers or just the attempt of doing it is forbidden and will result in a permanent ban.",
             "Join our discord server to be in touch with the community and suggest/report stuff.",
             "You can check all of our scheduled events on our website! Make sure you don't miss any of them!",
             "Administrators have [GM/PM] in their names, do not trust anyone else claiming to be a [GM].",
@@ -128,7 +127,7 @@ namespace COServer.Game.MsgTournaments
             "Thanks for supporting OrigensCO! We will keep on working to provide the best for our players!",
             "Talk to OrigensCO NPC in Twin City for information about the game.",
             "Remember to vote! By voting you're helping to increase the community and you can earn some cool rewards for it!",
-            "Top Weekly Voter will receive 10.000 CPs."
+            "Top Weekly Voter will receive 3 SurpriseBox."
         };
         internal static void CheckUp(Time32 clock)
         {
@@ -292,6 +291,7 @@ namespace COServer.Game.MsgTournaments
                     {
                         if (GuildSurvival.Process == ProcesType.Dead)
                         {
+                            SendInvitation("GuildSurvival", 458, 352, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.GuildSurvival);
                             GuildSurvival.Open();
                         }
                     }
@@ -302,6 +302,7 @@ namespace COServer.Game.MsgTournaments
                     {
                         if (FiveNOut.Process == ProcesType.Dead)
                         {
+                            SendInvitation("FiveNOut", 450, 353, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.Fiveout);
                             FiveNOut.Open();
                         }
                     }
@@ -313,6 +314,7 @@ namespace COServer.Game.MsgTournaments
                         if (!PkWar.AllowJoin())
                         {
                             PkWar.Open();
+                            SendInvitation("PKDeathMatch", 439, 362, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.PKDeathMatch);
                         }
                     }
                     #endregion
@@ -382,7 +384,7 @@ namespace COServer.Game.MsgTournaments
                         // Verifica se o evento ainda não foi disparado hoje
                         if (LastClassPKStart.Date != Now64.Date)
                         {
-                            // Reseta o estado do torneio antes de iniciar
+                            SendInvitation("ClassPk", 429, 242, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.ClassPk);
                             ClassPkWar.Stop(); // Para o torneio atual, se estiver rodando
                             ClassPkWar.Start(); // Inicia o torneio com base no dia atual
                             LastClassPKStart = Now64; // Atualiza a última execução

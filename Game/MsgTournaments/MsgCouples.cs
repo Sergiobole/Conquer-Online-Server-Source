@@ -24,7 +24,6 @@ namespace COServer.Game.MsgTournaments
             {
                 KillSystem = new KillerSystem();
                 StartTimer = DateTime.Now;
-                MsgSchedules.SendInvitation("CouplesPk",422, 291, 1002, 0, 60,MsgStaticMessage.Messages.CouplesPK);
 
                 if (Map == null)
                 {

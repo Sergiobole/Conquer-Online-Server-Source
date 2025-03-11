@@ -125,9 +125,7 @@ namespace COServer.Game.MsgTournaments
                     var stream = rec.GetStream();
 
                     ResetFurnitures(stream);
-                    ScoreList.Clear();
-                    MsgSchedules.SendInvitation("ApeCity PoleDomination", 409, 397, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.PoleDomination_AC);
-                    Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("PoleDomination war in ApeCity(Left Gate) has started!", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                    ScoreList.Clear();                  
                 }
             }
         }
@@ -145,8 +143,7 @@ namespace COServer.Game.MsgTournaments
 
                         ResetFurnitures(stream);
                         ScoreList.Clear();
-                        MsgSchedules.SendInvitation("ApeCity PoleDomination", 409, 397, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.PoleDomination_AC);
-                        Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("PoleDomination of Ape war in ApeCity(Left Gate) has started!", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                       
                     }
                 }
             }

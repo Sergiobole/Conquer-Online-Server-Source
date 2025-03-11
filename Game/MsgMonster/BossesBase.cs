@@ -4,12 +4,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using COServer.Game.MsgServer;
 using COServer.Game.MsgTournaments;
 
 namespace COServer.Game.MsgMonster
 {
     public class BossesBase
     {
+        internal static void SendInvitation(string Name, ushort X, ushort Y, ushort map, ushort DinamicID, int Seconds, Game.MsgServer.MsgStaticMessage.Messages messaj = Game.MsgServer.MsgStaticMessage.Messages.None)
+        {
+            string Message = " " + Name + " is about to begin! Will you join it?";
+            using (var rec = new ServerSockets.RecycledPacket())
+            {
+                var stream = rec.GetStream();
+                Program.SendGlobalPackets.Enqueue(new MsgMessage($"{Name} has started!", MsgMessage.MsgColor.yellow, MsgMessage.ChatMode.TopLeftSystem).GetArray(rec.GetStream()));
+
+                var packet = new Game.MsgServer.MsgMessage(Message, MsgServer.MsgMessage.MsgColor.yellow, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream);
+                foreach (var client in Database.Server.GamePoll.Values)
+                {
+                    client.Send(packet);
+                    client.Player.MessageBox(Message, new Action<Client.GameClient>(user => user.Teleport(X, Y, map, DinamicID)), null, Seconds, messaj);
+                }
+            }
+
+            // Envia uma mensagem para o Discord informando que o evento começou
+            Program.DiscordAPIevents.Enqueue($"``{Name} has started!``");
+            Program.DiscordAPI.Enqueue($"`` Server Online ``");
+        }
+
+
 
         public static DateTime lastCleanwaterSpawnTime = DateTime.Now; // Armazena o último spawn do Cleanwater
         public static DateTime lastGanodermaTitanSpawnTime = DateTime.Now; // Armazena o último spawn de Ganoderma e Titan
@@ -32,7 +55,10 @@ namespace COServer.Game.MsgMonster
                         " has spawned in " + Database.Server.MapName[1002] + " (564,792)!",
                         MsgServer.MsgStaticMessage.Messages.TeratoDragon);
 
+
+                    SendInvitation("TeratoDragon", 564, 792, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.TeratoDragon);
                     Program.DiscordAPIevents.Enqueue("``TeratoDragon Spawned in TwinCity(564, 792)!``");
+
                 }
                 else if (Nr == 2)
                 {
@@ -41,6 +67,7 @@ namespace COServer.Game.MsgMonster
                         " has spawned in " + Database.Server.MapName[1000] + " (500,704)!",
                         MsgServer.MsgStaticMessage.Messages.TeratoDragon);
 
+                    SendInvitation("TeratoDragon", 500, 704, 1000, 0, 60, MsgServer.MsgStaticMessage.Messages.TeratoDragon);
                     Program.DiscordAPIevents.Enqueue("``TeratoDragon Spawned in DesertIsland(500, 704)!``");
                 }
                 else if (Nr == 3)
@@ -50,6 +77,7 @@ namespace COServer.Game.MsgMonster
                         " has spawned in " + Database.Server.MapName[1012] + " (568,584)!",
                         MsgServer.MsgStaticMessage.Messages.TeratoDragon);
 
+                    SendInvitation("TeratoDragon", 568, 584, 1020, 0, 60, MsgServer.MsgStaticMessage.Messages.TeratoDragon);
                     Program.DiscordAPIevents.Enqueue("``TeratoDragon Spawned in Ape Island(568, 584)!``");
                 }
                 else if (Nr == 4)
@@ -59,6 +87,7 @@ namespace COServer.Game.MsgMonster
                         " has spawned in " + Database.Server.MapName[1105] + " (799,575)!",
                         MsgServer.MsgStaticMessage.Messages.TeratoDragon);
 
+                    SendInvitation("TeratoDragon", 799, 575, 1015, 0, 60, MsgServer.MsgStaticMessage.Messages.TeratoDragon);
                     Program.DiscordAPIevents.Enqueue("``TeratoDragon Spawned in Bird Island(799, 575)!``");
                 }
                 else if (Nr == 5)
@@ -67,6 +96,7 @@ namespace COServer.Game.MsgMonster
                         "will appear at " + DateTime.Now.Hour + ":30! Get ready to fight! You only have 5 minutes left!",
                         " has spawned in Dragon Island!");
 
+                    SendInvitation("DragonIsland", 48, 38, 1787, 0, 60, MsgServer.MsgStaticMessage.Messages.TeratoDragon);
                     Program.DiscordAPIevents.Enqueue("``Dragon Spawned in DragonIsland(48, 38)!``");
                 }
 
@@ -75,7 +105,18 @@ namespace COServer.Game.MsgMonster
             }
 
             // Verifica se o Ganoderma e o Titan devem spawnar a cada 30 minutos
-            if ((now - lastGanodermaTitanSpawnTime).TotalMinutes >= 45)
+            if ((now.Minute == 15 && now.Second == 0) && (now - lastGanodermaTitanSpawnTime).TotalMinutes >= 60)
+            {
+                SpawnHandler(1011, 655, 799, 3130, "Ganoderma",
+                    "A Ganoderma has spawned in " + Database.Server.MapName[1011] + " (655, 799)! Get ready to fight!",
+                    " has spawned in " + Database.Server.MapName[1011] + " (655, 799)!");
+
+                Program.DiscordAPIevents.Enqueue("``Ganoderma Spawned (655, 799)!``");
+
+                lastGanodermaTitanSpawnTime = now;  // Atualiza o tempo do último spawn de Ganoderma e Titan
+            }
+
+            if ((now.Minute == 21 && now.Second == 0) && (now - lastGanodermaTitanSpawnTime).TotalMinutes >= 60)
             {
                 SpawnHandler(1020, 417, 625, 3134, "Titan",
                     "A Titan has spawned in " + Database.Server.MapName[1020] + " (417, 625)! Get ready to fight!",
@@ -83,15 +124,7 @@ namespace COServer.Game.MsgMonster
 
                 Program.DiscordAPIevents.Enqueue("``Titan Spawned (417, 625)!``");
 
-                SpawnHandler(1011, 655, 799, 3130, "Ganoderma",
-                    "A Ganoderma has spawned in " + Database.Server.MapName[1011] + " (655, 799)! Get ready to fight!",
-                    " has spawned in " + Database.Server.MapName[1011] + " (655, 799)!");
-
-                Program.DiscordAPIevents.Enqueue("``Ganoderma Spawned (655, 799)!``");
-
-                // Atualiza o tempo do último spawn de Ganoderma e Titan
-                lastGanodermaTitanSpawnTime = now;
-
+                lastGanodermaTitanSpawnTime = now;  // Atualiza o tempo do último spawn de Ganoderma e Titan
             }
 
             // Verifica se o Cleanwater deve spawnar a cada 1 hora

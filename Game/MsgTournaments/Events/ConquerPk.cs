@@ -24,8 +24,7 @@ namespace COServer.Game.MsgTournaments
             {
                 FinishTimer = DateTime.Now.AddMinutes(1);
                 Mode = ProcesType.Alive;
-                MsgSchedules.SendInvitation("Top_Conquer", 473, 356, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TopConquer);
-                MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
+
                 if (!Program.FreePkMap.Contains(Map))
                     Program.FreePkMap.Add(Map);
             }
@@ -45,8 +44,7 @@ namespace COServer.Game.MsgTournaments
                 {
                     FinishTimer = DateTime.Now.AddMinutes(1);
                     Mode = ProcesType.Alive;
-                    MsgSchedules.SendInvitation("Top_Conquer", 473, 356, 1002, 0, 60, Game.MsgServer.MsgStaticMessage.Messages.TopConquer);
-                    MsgSchedules.SendSysMesage("" + Title + " has started!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.red);
+
                     if (!Program.FreePkMap.Contains(Map))
                         Program.FreePkMap.Add(Map);
                 }
