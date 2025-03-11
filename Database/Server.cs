@@ -38,7 +38,9 @@ namespace COServer.Database
             { 1002, "TwinCity" },
             { 1000, "DesertCity" },
             { 1020, "ApeMountain" },
+            { 1063, "SnakeKingIsland" },
             { 1001, "MysticCastle" } };
+
 
         public static uint ResetServerDay = 0;
         public static bool ResetedAlready = false;

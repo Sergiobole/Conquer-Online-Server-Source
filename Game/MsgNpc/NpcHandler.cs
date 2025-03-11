@@ -85,7 +85,7 @@ namespace COServer.Game.MsgNpc
                             client.Inventory.Remove(729937, 1, stream);
 
                             string rewardName = "";
-                            switch (Program.GetRandom.Next(1, 5))
+                            switch (Program.GetRandom.Next(1, 4))
                             {
                                 case 1:
                                     client.Inventory.Add(stream, ItemType.Stone_1, 1);
@@ -99,17 +99,13 @@ namespace COServer.Game.MsgNpc
                                     client.Inventory.Add(stream, ItemType.DragonBall, 1);
                                     rewardName = "Dragon Ball";
                                     break;
-                                case 4:
-                                    client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
-                                    rewardName = "Meteor Scroll";
-                                    break;
                             }
 
                             // Envia a mensagem global com o nome da recompensa
                             Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"[{client.Player.Name}] has claimed {rewardName} from EggQuestNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
 
                             // Envia a mensagem para o Discord através da API
-                            Program.DiscordAPIQuest.Enqueue($"[{client.Player.Name}] has claimed {rewardName} from EggQuestNPC!");
+                            Program.DiscordAPIQuest.Enqueue($"```diff\n+ 🥚 {client.Player.Name} claimed {rewardName} from EggQuestNPC!```");
                         }
                         else
                         {
@@ -178,7 +174,7 @@ namespace COServer.Game.MsgNpc
                             Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"[{client.Player.Name}] has claimed {rewardName} from LetterQuestNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
 
                             // Envia a mensagem para o Discord através da API
-                            Program.DiscordAPIQuest.Enqueue($"[{client.Player.Name}] has claimed {rewardName} from LetterQuestNPC!");
+                            Program.DiscordAPIQuest.Enqueue($"```diff\n+ ✉️ {client.Player.Name} claimed {rewardName} from LetterQuestNPC!```");
                         }
                         else
                         {
@@ -237,7 +233,7 @@ namespace COServer.Game.MsgNpc
                             Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"[{client.Player.Name}] has claimed SuperToroiseGem from SuperToroiseGemNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
 
                             // Envia a mensagem para o Discord através da API
-                            Program.DiscordAPIQuest.Enqueue($"[{client.Player.Name}] has claimed SuperToroiseGem from SuperToroiseGemNPC!");
+                            Program.DiscordAPIQuest.Enqueue($"```diff\n+ 🐢 {client.Player.Name} claimed SuperToroiseGem from SuperToroiseGemNPC!```");
                         }
                         else
                         {
@@ -315,7 +311,7 @@ namespace COServer.Game.MsgNpc
                             Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"[{client.Player.Name}] has claimed MiraculousGourd from MiraculousGourdNPC!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
 
                             // Envia a mensagem para o Discord
-                            Program.DiscordAPIQuest.Enqueue($"[{client.Player.Name}] has claimed MiraculousGourd from MiraculousGourdNPC!");
+                            Program.DiscordAPIQuest.Enqueue($"```diff\n+ 🎃 {client.Player.Name} claimed MiraculousGourd from MiraculousGourdNPC!```");
                         }
                         else
                         {
@@ -8684,58 +8680,68 @@ namespace COServer.Game.MsgNpc
 
         #endregion
         #region VIPFREE
+
+
         [NpcAttribute(NpcID.vipfree)]
         public static void vipfree(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
         {
             Dialog dialog = new Dialog(client, stream);
-            // Obtenha o IP do cliente
             string clientIP = client.Socket.RemoteIp;
 
             switch (Option)
             {
-
                 case 0:
-
-                    {
-                        dialog.Text("Welcome to OrigensCO.com! As a welcome gift, you are entitled to 7 days of free VIP. We recommend claiming it on your Archer for the best experience.")
-                              .AddOption("Claim it now.", 1)
-                              .AddOption("Will create Archer", 255).AddAvatar(10).FinalizeDialog();
-                    }
-
+                    dialog.Text("Welcome to OrigensCO.com! As a welcome gift, you are entitled to 7 days of free VIP. We recommend claiming it on your Archer for the best experience.")
+                          .AddOption("Claim it now.", 1)
+                          .AddOption("Will create Archer", 255)
+                          .AddAvatar(10)
+                          .FinalizeDialog();
                     break;
+
                 case 1:
-                    // Se o IP ainda não foi usado para resgatar o VIP, permite o resgate
+                    if (client.Player == null || client.Player.UID == 0)
+                    {
+                        client.SendSysMesage("Account error. Please relogin.");
+                        return;
+                    }
+
                     if (!Database.VIPSystem.HasClaimedFreeVip(clientIP))
                     {
-                        client.Player.ExpireVip = DateTime.Now.AddDays(7);
-                        client.Player.VipLevel = 6;
-                        // Salva na DB com playerId e IP
-                        Database.VIPSystem.SaveVipClaim(client.Player.UID, clientIP);
+                        try
+                        {
+                            client.Player.ExpireVip = DateTime.Now.AddDays(7);
+                            client.Player.VipLevel = 6;
 
-                        dialog.Text("You've claimed VIP6 for 7 days, have fun and enjoy!")
-                              .AddOption("Thank you!", 255)
-                              .FinalizeDialog();
-                        Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage($"Congratulations [{client.Player.Name}] on claiming a free 7-day VIP!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
-                        Program.DiscordAPIClainFreeVip.Enqueue($"```💎 Congratulations [{client.Player.Name}] on claiming a free 7-day VIP```");
-                        
+                            Database.VIPSystem.SaveVipClaim(client.Player.UID, clientIP);
+
+                            dialog.Text("You've claimed VIP6 for 7 days, have fun and enjoy!")
+                                  .AddOption("Thank you!", 255)
+                                  .FinalizeDialog();
+
+                            // Global Announcement
+                            Program.SendGlobalPackets.Enqueue(
+                                new Game.MsgServer.MsgMessage(
+                                    $"Congratulations [{client.Player.Name}] on claiming a free 7-day VIP!",
+                                    Game.MsgServer.MsgMessage.MsgColor.white,
+                                    Game.MsgServer.MsgMessage.ChatMode.System
+                                ).GetArray(stream));
+
+                            // Discord Notification
+                            Program.DiscordAPIClainFreeVip.Enqueue(
+                                $"```diff\n+ 💎 {client.Player.Name} VIP Free Claimed\n" +
+                                $"Expires: {DateTime.Now.AddDays(7):yyyy-MM-dd HH:mm}```"
+                            );
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"[VIP ERROR] {ex.Message}");
+                            client.SendSysMesage("VIP system error. Contact staff.");
+                        }
                     }
                     else
                     {
-                        dialog.Text("You've already claimed free VIP.")
-                              .AddOption("Oh.", 255)
-                              .FinalizeDialog();
-                    }
-                    break;
-
-                case 2:
-                    if (!Database.VIPSystem.HasClaimedFreeVip(clientIP))
-                    {
-                        Database.VIPSystem.CheckUp(client);
-                    }
-                    else
-                    {
-                        dialog.Text("You've already claimed free VIP from this IP.")
-                              .AddOption("Oh.", 255)
+                        dialog.Text("This IP has already claimed the free VIP. Only one claim per IP is allowed.")
+                              .AddOption("Understood", 255)
                               .FinalizeDialog();
                     }
                     break;
@@ -9094,7 +9100,7 @@ namespace COServer.Game.MsgNpc
 
                             // Enviar mensagem global informando sobre a premiação específica
                             Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("" + client.Player.Name + " has killed 100k monsters and has claimed " + rewardName + " from SoulKeeper!", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
-                            Program.DiscordAPIQuest.Enqueue($"[{client.Player.Name}] has claimed {rewardName} from  Soul KeeperNPC!");
+                            Program.DiscordAPIQuest.Enqueue($"```diff\n+ 👻 {client.Player.Name} claimed {rewardName} from Soul KeeperNPC!```");
                         }
                         else
                         {
@@ -20117,8 +20123,10 @@ namespace COServer.Game.MsgNpc
                                                         client.Equipment.QueryEquipment();
 
                                                     client.SendSysMesage("Congratulations! You have successfully opened a socket with a 0.14% chance!");
-                                                    Program.DiscordAPIsocket.Enqueue($"``Congratulations! [{client.Player.Name}] successfully opened a socket on {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)} with a 0.14% chance after {meteorAttempts} Meteor attempts!``");
-
+                                                    Program.DiscordAPIsocket.Enqueue($"```diff\n+ 🎉 {client.Player.Name} Opened a Socket!\n" +
+                                                                                        $"Item: {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)}\n" +
+                                                                                        $"Chance: 0.14%\n" +
+                                                                                        $"Meteor Attempts: {meteorAttempts}```");
                                                     // Reseta as tentativas no banco
                                                     COServer.Database.SocketAttempts.SaveMeteorAttempts(client.Player.UID, DataItem.UID, 0);
                                                 }
@@ -20182,8 +20190,10 @@ namespace COServer.Game.MsgNpc
 
                                                     client.SendSysMesage("Congratulations! You've opened a 2nd socket in your item with a 0.05% chance!");
                                                     Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + client.Player.Name + " has opened a 2nd socket in their " + Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID), Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
-                                                    Program.DiscordAPIsocket.Enqueue($"``Congratulations! [{client.Player.Name}] successfully opened a second socket on {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)} with a 0.05% chance after {meteorAttempts} Meteor attempts!``");
-
+                                                    Program.DiscordAPIsocket.Enqueue($"```diff\n+ 🎉 {client.Player.Name} Opened a Second Socket!\n" +
+                                                                                    $"Item: {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)}\n" +
+                                                                                    $"Chance: 0.05%\n" +
+                                                                                    $"Meteor Attempts: {meteorAttempts}```");
                                                     // Reseta as tentativas no banco
                                                     COServer.Database.SocketAttempts.SaveMeteorAttempts(client.Player.UID, DataItem.UID, 0);
                                                 }
@@ -22568,7 +22578,6 @@ namespace COServer.Game.MsgNpc
 
         public static void Warehause(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
         {
-            //if (client.ActiveNpc == (uint)NpcID.WHTwin)
             {
                 Dialog data = new Dialog(client, stream);
                 switch (Option)

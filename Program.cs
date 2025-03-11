@@ -39,12 +39,13 @@ namespace COServer
         public static Discord DiscordAPILotery = new Discord("https://discord.com/api/webhooks/1294239212224385064/Ov086-5kATJBFwBnRMNB6RreLdCEr4gjzvXjCkhwGskfShbQhJywUsNPvh4HhiFMsrZT");
         public static Discord DiscordAPIRedDrop = new Discord("https://discord.com/api/webhooks/1344901857507545160/jo29SM0a5-G0jQ-SDLNMxsWgYPqvYe-InBgkk8ltP-Q11Clh5NPFg-VpyhP5RcCZtYnf");
         public static Discord DiscordAPIwinners = new Discord("https://discord.com/api/webhooks/1346216518521852057/m3yJrq-OXLUlGXI-zcjGru8h65UbUriLdCUiynjeea0vtkbmpjOwxBtK_p-cGdQg9pIB");
-        public static Discord DiscordAPIplus = new Discord("https://discord.com/api/webhooks/1294239567167094785/RZnWEUHBWzmE5a4S7HBoRHvBxTGnmwa4C_tGVg0jjor9I91yNXG7ydPwi2idUTxok-Oi");
+        public static Discord DiscordAPIplus = new Discord("https://discord.com/api/webhooks/1349117915449917481/XH3leGRYIC8R50ZhHXOK3pv0NpBWDgvy5YVuj7dCWWtSTshcK1O6NbxPKclLVt14IWMg");
         public static Discord DiscordAPITapete = new Discord("https://discord.com/api/webhooks/1344902388175208479/I0AcxtEOiQUzDguf4pND41LEv-9vcCAlwnZrQhkzl_NCqPNCgl-IiTCRUu5Jf4dLG36_");
         public static Discord DiscordAPIVote = new Discord("https://discord.com/api/webhooks/1344903113181757500/iU9bGOTvHy8Op6hH88isdRx6ENvpasdTD9a6NDmtRnU-oAKYShc6IMWoFE8rF0lPqpSD");
         public static Discord DiscordAPISurpriseBox = new Discord("https://discord.com/api/webhooks/1344905879459332137/TZJwOtJmaP9SJ2T5yVwynRguHIArkqikrdjkPx87IRC0woTF3Cfsoz_sFPFll0VSxHbL");
         public static Discord DiscordAPIClainFreeVip = new Discord("https://discord.com/api/webhooks/1344909426737414195/GWySjy2nAZnZ1PCQGcYfmOK-jBlJcmmQrrB2oNLjDD7JwKw8gDUjtYPkN-lWPUW_uYFi");
         public static Discord DiscordAPIBlessDrop = new Discord("https://discord.com/api/webhooks/1347945521729507328/f1QW8xIVB6M0uRoOS7qX_YJ6p6mhECn9yEPUs2UwYdcFZMqm8VCRrFEzPNdQiOi1dlLa");
+        public static Discord DiscordAPI2rbnQuest = new Discord("https://discord.com/api/webhooks/1349052577982971944/WwgeAgJzVvb2Qmh3q9wVXRDV0p2CoUSMwWSDnoa4Zvq0KB6o8x_oopqKDazy1Jlf4NpE");
         public static ulong CPsHuntedSinceRestart = 0;
         public static List<byte[]> LoadPackets = new List<byte[]>();
         public static List<uint> ProtectMapSpells = new List<uint>() { 1038 };

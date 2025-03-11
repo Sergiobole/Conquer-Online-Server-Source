@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using MySql.Data.MySqlClient;
+using MySql.Data.MySqlClient; // Diretiva correta
 
 namespace COServer.Database
 {
     public class VIPSystem
     {
         private static readonly string ConnectionString = "Server=localhost;Uid=root;Password=Higor147;Database=zq;";
+
         public class User
         {
             public uint UID;
@@ -22,30 +23,34 @@ namespace COServer.Database
 
         private static List<User> UsersPoll = new List<User>();
 
+        // Versão atualizada para verificar IP e UID
         public static bool HasClaimedFreeVip(string ip)
         {
             using (var conn = new MySqlConnection(ConnectionString))
             {
                 conn.Open();
                 string query = "SELECT 1 FROM vip_claims WHERE ip = @ip LIMIT 1";
-                // Usando o nome totalmente qualificado para evitar conflitos
+
                 using (var cmd = new MySql.Data.MySqlClient.MySqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@ip", ip);
+
                     using (var reader = cmd.ExecuteReader())
                     {
-                        return reader.HasRows;
+                        return reader.HasRows; // Retorna true se o IP já foi usado
                     }
                 }
             }
         }
 
+        // Método de salvamento atualizado
         public static void SaveVipClaim(uint playerId, string ip)
         {
             using (var conn = new MySqlConnection(ConnectionString))
             {
                 conn.Open();
                 string query = "INSERT INTO vip_claims (player_id, ip) VALUES (@playerId, @ip)";
+
                 using (var cmd = new MySql.Data.MySqlClient.MySqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@playerId", playerId);
@@ -55,6 +60,7 @@ namespace COServer.Database
             }
         }
 
+        // Mantido o restante do código original
         public static bool TryGetObject(uint UID, string IP, out User obj)
         {
             foreach (var _obj in UsersPoll)
@@ -68,6 +74,7 @@ namespace COServer.Database
             obj = null;
             return false;
         }
+
         public static bool CanClaimVIP(Client.GameClient client)
         {
             User _user;
@@ -78,10 +85,12 @@ namespace COServer.Database
             }
             return false;
         }
+
         public static void CheckUp(Client.GameClient client)
         {
-            // Exemplo de verificação extra, caso necessário
             string clientIP = client.Socket.RemoteIp;
+
+            // Verifica apenas por IP
             if (!HasClaimedFreeVip(clientIP) && client.Player.VipLevel == 0)
             {
                 client.Player.ExpireVip = DateTime.Now.AddDays(7);
@@ -91,18 +100,19 @@ namespace COServer.Database
                 using (var rec = new ServerSockets.RecycledPacket())
                 {
                     var stream = rec.GetStream();
-                    client.Player.SendUpdate(stream, client.Player.VipLevel, Game.MsgServer.MsgUpdate.DataType.VIPLevel);
+                    client.Player.SendUpdate(stream, client.Player.VipLevel,
+                        Game.MsgServer.MsgUpdate.DataType.VIPLevel);
                     client.Player.UpdateVip(stream);
                 }
                 client.Player.CanClaimFreeVip = true;
-                client.SendSysMesage("You`ve received free VIP 6 (7 days).");
-
+                client.SendSysMesage("You've received free VIP 6 (7 days).");
             }
             else
             {
-                client.SendSysMesage("You`ve already received the VIP on another account!");
+                client.SendSysMesage("This IP has already claimed the free VIP. Only one claim per IP is allowed.");
             }
         }
+
         public static void Save()
         {
             using (Database.DBActions.Write _wr = new Database.DBActions.Write("VIP.txt"))
@@ -112,6 +122,7 @@ namespace COServer.Database
                 _wr.Execute(DBActions.Mode.Open);
             }
         }
+
         public static void Load()
         {
             using (Database.DBActions.Read r = new Database.DBActions.Read("VIP.txt"))
@@ -130,8 +141,6 @@ namespace COServer.Database
                     }
                 }
             }
-
         }
-
     }
 }

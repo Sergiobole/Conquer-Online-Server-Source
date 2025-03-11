@@ -661,7 +661,7 @@ namespace COServer.Game.MsgMonster
                             for (ushort i = 0; i < 10; i++)
                                 DropItemNull(Database.ItemType.Meteor, stream);
 
-                            for (ushort i = 0; i < 5; i++)
+                            for (ushort i = 0; i < 3; i++)
                                 DropItemNull(Database.ItemType.DragonBall, stream);
 
                             if (Role.Core.Rate(5))
@@ -876,9 +876,9 @@ namespace COServer.Game.MsgMonster
                         {
                             if (killer.Player.Quest2rbStage == 0) // Apenas no estágio 1 (antes de iniciar o 2)
                             {
-                                if (Role.Core.Rate(20)) DropItemID(killer, Database.ItemType.SoulAroma, stream);
-                                if (Role.Core.Rate(20)) DropItemID(killer, Database.ItemType.DreamGrass, stream);
-                                if (Role.Core.Rate(20)) DropItemID(killer, Database.ItemType.Moss, stream);
+                                if (Role.Core.Rate(5)) DropItemID(killer, Database.ItemType.SoulAroma, stream);
+                                if (Role.Core.Rate(5)) DropItemID(killer, Database.ItemType.DreamGrass, stream);
+                                if (Role.Core.Rate(5)) DropItemID(killer, Database.ItemType.Moss, stream);
                             }
                         }
                         // Transição do Estágio 1 para o 2
@@ -969,7 +969,7 @@ namespace COServer.Game.MsgMonster
                             else if (killer.Player.Quest2rbBossesOrderby == 8 && (Family.ID == 3611 || Family.ID == 3619 || Family.ID == 3603 || Family.ID == 3615 || Family.ID == 3627 || Family.ID == 3631 || Family.ID == 3607))
                             {
                                 DropItemID(killer, 722727, stream);
-                                killer.SendSysMesage("Congratulations! You've killed The Lord, and he dropped SquamaBead, go to spawn Satan at (326,342)");
+                                killer.SendSysMesage("Congratulations! You've killed The Lord, and he dropped SquamaBead, go to kill Satan at (337,341)");
                             }
                             else if (killer.Player.Quest2rbBossesOrderby == 8 && Family.ID == 3644) // Satan
                             {
@@ -985,6 +985,9 @@ namespace COServer.Game.MsgMonster
                                 {
                                     DropItemID(killer, 723701, stream);
                                     Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + killer.Player.Name + " he/she finished the 2rb quest.", Game.MsgServer.MsgMessage.MsgColor.yellow, Game.MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
+                                    Program.DiscordAPI2rbnQuest.Enqueue($"```diff\n+ 🎉 {killer.Player.Name} Completed the 2RB Quest\n" +
+                                                                             $"Time: {DateTime.Now:yyyy-MM-dd HH:mm}```");
+                                    killer.Player.SendString(stream, MsgStringPacket.StringID.Effect, true, new string[1] { "fire1" });
                                     killer.Player.Quest2rbStage += 1; // De 1 para 2
                                     killer.SendSysMesage("You Finish The Quest.");
                                 }
@@ -1471,8 +1474,12 @@ namespace COServer.Game.MsgMonster
                                                    DataItem.SocketOne, DataItem.SocketTwo, false);
 
                                 // Notificação no Discord
-                                string discordMsg = $"``[VIP LOOT] {user.Player.Name} collected {Database.Server.ItemsBase[ItemID].Name} " +
-                                                     $"(Bless -{DataItem.Bless}) at {map.Name} ({XX},{YY})``";
+                                string discordMsg =
+                                                        $"```diff\n+ 🎁 {user.Player.Name} Collected an Item!\n" +
+                                                        $"Item: {Database.Server.ItemsBase[ItemID].Name}\n" +
+                                                        $"Bless: -{DataItem.Bless}\n" +
+                                                        $"Location: {map.Name} ({XX},{YY})\n" +
+                                                        $"Time: {DateTime.Now:yyyy-MM-dd HH:mm}```";
 
                                 Program.DiscordAPIBlessDrop.Enqueue(discordMsg);
 

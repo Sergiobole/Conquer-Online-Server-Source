@@ -18,6 +18,7 @@ namespace COServer.Game.MsgTournaments
         internal static GuildSurvival GuildSurvival;
         internal static DateTime LastClassPKStart = DateTime.MinValue;
         internal static Fivenout FiveNOut;
+        internal static bool DisCityInvitationSent = false; // Variável de controle 
         #region PoleDomination
         internal static MsgPoleDomination PoleDomination;
         internal static MsgPoleDominationBI PoleDominationBI;
@@ -146,8 +147,17 @@ namespace COServer.Game.MsgTournaments
                         ClassPkWar.Stop(); // Reseta o torneio para o próximo dia
                     }
 
-                    if ((Now64.Hour == 7 && Now64.Minute == 30 || Now64.Hour == 17 && Now64.Minute == 30))
+                    if ((Now64.Hour == 12 && Now64.Minute == 30 || Now64.Hour == 0 && Now64.Minute == 30))
+                    {
+                        Console.WriteLine($"Tentando abrir DisCity em {Now64}");
+                        if (!DisCityInvitationSent)
+                        {
+                            MsgSchedules.SendInvitation("DisCity", 533, 484, 1020, 0, 60, MsgServer.MsgStaticMessage.Messages.discity);
+                            DisCityInvitationSent = true;
+                        }
                         DisCity.Open();
+                        Console.WriteLine($"DisCity.Open() chamado. Modo atual: {DisCity}");
+                    }
                     CurrentTournament.CheckUp();
                     DisCity.CheckUp();
                     PkWar.CheckUp();
@@ -285,7 +295,6 @@ namespace COServer.Game.MsgTournaments
                         }
                     }
                     #region Days
-
                     #region GuildSurvival 21:00
                     if (Now64.Hour == 21 && Now64.Minute == 00 && Now64.Second == 0)
                     {
@@ -365,15 +374,13 @@ namespace COServer.Game.MsgTournaments
                     }
                     #endregion
                     #region TournamentType
-                    if (Now64.Minute == 30)
+                    if (Now64.Minute == 40)
                     {
                         if (CurrentTournament.Process == ProcesType.Dead)
                         {
                             CurrentTournament = Tournaments[TournamentType.TreasureThief];
                             CurrentTournament.Open();
                             Console.WriteLine("Started Tournament " + CurrentTournament.Type.ToString(), ConsoleColor.Yellow);
-
-
                         }
                     }
 
@@ -386,6 +393,7 @@ namespace COServer.Game.MsgTournaments
                         {
                             SendInvitation("ClassPk", 429, 242, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.ClassPk);
                             ClassPkWar.Stop(); // Para o torneio atual, se estiver rodando
+                            DisCityInvitationSent = false;
                             ClassPkWar.Start(); // Inicia o torneio com base no dia atual
                             LastClassPKStart = Now64; // Atualiza a última execução
                         }

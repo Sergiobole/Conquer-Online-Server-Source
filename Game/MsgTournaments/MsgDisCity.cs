@@ -34,26 +34,66 @@ namespace COServer.Game.MsgTournaments
 
         public void CreateMaps()
         {
-            if (Map1 == null) Map1 = Database.Server.ServerMaps[2021];
-            if (Map2 == null) Map2 = Database.Server.ServerMaps[2022];
-            if (Map3 == null) Map3 = Database.Server.ServerMaps[2023];
-            if (Map4 == null) Map4 = Database.Server.ServerMaps[2024];
+            if (Map1 == null)
+            {
+                if (Database.Server.ServerMaps.ContainsKey(2021))
+                {
+                    Map1 = Database.Server.ServerMaps[2021];
+                    Console.WriteLine("Map1 (ID 2021) inicializado com sucesso.");
+                }
+                else
+                    Console.WriteLine("Map1 (ID 2021) não encontrado em ServerMaps.");
+            }
+
+            if (Map2 == null)
+            {
+                if (Database.Server.ServerMaps.ContainsKey(2022))
+                {
+                    Map2 = Database.Server.ServerMaps[2022];
+                    Console.WriteLine("Map2 (ID 2022) inicializado com sucesso.");
+                }
+                else
+                    Console.WriteLine("Map2 (ID 2022) não encontrado em ServerMaps.");
+            }
+
+            if (Map3 == null)
+            {
+                if (Database.Server.ServerMaps.ContainsKey(2023))
+                {
+                    Map3 = Database.Server.ServerMaps[2023];
+                    Console.WriteLine("Map3 (ID 2023) inicializado com sucesso.");
+                }
+                else
+                    Console.WriteLine("Map3 (ID 2023) não encontrado em ServerMaps.");
+            }
+
+            if (Map4 == null)
+            {
+                if (Database.Server.ServerMaps.ContainsKey(2024))
+                {
+                    Map4 = Database.Server.ServerMaps[2024];
+                    Console.WriteLine("Map4 (ID 2024) inicializado com sucesso.");
+                }
+                else
+                    Console.WriteLine("Map4 (ID 2024) não encontrado em ServerMaps.");
+            }
         }
 
         public void Open()
         {
             if (Mode == ProcesType.Dead)
             {
+                Console.WriteLine("DisCity event is opening...");
                 RewardPlayers.Clear();
                 CreateMaps();
-                Mode = ProcesType.Idle;
-
-                MsgSchedules.SendInvitation("DisCity", 533, 484, 1020, 0, 60, MsgServer.MsgStaticMessage.Messages.discity);
-
-
+                Mode = ProcesType.Idle; // Certifique-se de que o modo está sendo definido como Idle
                 FinishTime = DateTime.Now.AddMinutes(5);
                 PlayersMap2 = PlayersMap3 = 0;
                 TeleportToMap4 = DateTime.Now.AddMinutes(25);
+            }
+            else
+            {
+                Console.WriteLine($"DisCity event is already open. Current mode: {Mode}");
             }
         }
 
@@ -63,10 +103,10 @@ namespace COServer.Game.MsgTournaments
             {
                 if (DateTime.Now > FinishTime)
                 {
+                    Console.WriteLine("DisCity finalizando...");
                     FinishTime = DateTime.Now.AddMinutes(60);
 
                     MsgSchedules.SendSysMesage("Dis City has started, all players receive experience worth x5 ExpBalls! Signups are now closed.", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.white);
-
 
                     Mode = ProcesType.Alive;
 
@@ -85,7 +125,7 @@ namespace COServer.Game.MsgTournaments
                         using (var rec = new ServerSockets.RecycledPacket())
                         {
                             var stream = rec.GetStream();
-                            Database.Server.AddMapMonster(stream, Map4, 66432, 143, 146, 18, 18, 1,0,true, MsgFloorItem.MsgItemPacket.EffectMonsters.EarthquakeAndNight);
+                            Database.Server.AddMapMonster(stream, Map4, 66432, 143, 146, 18, 18, 1, 0, true, MsgFloorItem.MsgItemPacket.EffectMonsters.EarthquakeAndNight);
                         }
                     }
                     TeleportToMap4 = DateTime.Now.AddMinutes(9999);
@@ -96,13 +136,12 @@ namespace COServer.Game.MsgTournaments
                             user.Teleport(151, 278, Map4.ID);
 
                             MsgSchedules.SendSysMesage("All players of Dis City Stage 3 have teleported to Stage 4!", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.white);
-
-
                         }
                     }
                 }
                 if (DateTime.Now > FinishTime)
                 {
+                    Console.WriteLine("DisCity finalizado. Teleportando jogadores de volta...");
                     foreach (var user in Database.Server.GamePoll.Values)
                     {
                         if (user.Player.Map == Map3.ID || user.Player.Map == Map4.ID || user.Player.Map == Map2.ID || user.Player.Map == Map1.ID)
@@ -111,7 +150,7 @@ namespace COServer.Game.MsgTournaments
                             MsgSchedules.SendSysMesage("Dis City has ended. All players of Dis City have been teleported back to Ape City.", MsgServer.MsgMessage.ChatMode.Center, MsgServer.MsgMessage.MsgColor.white);
                         }
                     }
-                    Mode = ProcesType.Dead;
+                    Mode = ProcesType.Dead; // Reinicia o modo para Dead
                 }
             }
         }

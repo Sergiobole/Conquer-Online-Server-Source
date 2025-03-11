@@ -148,7 +148,7 @@ namespace COServer.Game.MsgMonster
             {
                 Mob.RespawnTime = Random.Next(100, 200);
             }
-            if (Mob.ID == 2700 || Mob.ID == 2699 || Mob.ID == 7022 || Mob.ID == 2164 || Mob.ID == 2165 || Mob.ID == 3102)
+            if (Mob.ID == 2700 || Mob.ID == 2699 || Mob.ID == 7022 || Mob.ID == 2164 || Mob.ID == 2165)
             {
                 Mob.RespawnTime = rest_secs;
             }

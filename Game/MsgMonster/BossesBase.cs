@@ -37,13 +37,13 @@ namespace COServer.Game.MsgMonster
         public static DateTime lastCleanwaterSpawnTime = DateTime.Now; // Armazena o último spawn do Cleanwater
         public static DateTime lastGanodermaTitanSpawnTime = DateTime.Now; // Armazena o último spawn de Ganoderma e Titan
         public static DateTime lastSpawnTime = DateTime.Now; // Armazena o último spawn dos outros bosses
-
+        public static DateTime lastSnakeKingSpawnTime = DateTime.Now; // Armazena o último spawn do Sna
         public static void BossesTimer()
         {
             DateTime now = DateTime.Now;
 
-            // Verifica se o spawn dos bosses regulares (TeratoDragon e Dragon) deve ocorrer a cada 1 hora
-            if ((now - lastSpawnTime).TotalHours >= 1)
+            // TeratoDragon: Spawna toda virada de hora (xx:00)
+            if (now.Minute == 0 && now.Second == 0)
             {
                 Random R = new Random();
                 int Nr = R.Next(1, 6); // Sorteio de local, agora com 6 opções
@@ -54,11 +54,8 @@ namespace COServer.Game.MsgMonster
                         "will appear at " + now.Hour + ":00! Get ready to fight! You only have 5 minutes!",
                         " has spawned in " + Database.Server.MapName[1002] + " (564,792)!",
                         MsgServer.MsgStaticMessage.Messages.TeratoDragon);
-
-
                     SendInvitation("TeratoDragon", 564, 792, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.TeratoDragon);
-                    Program.DiscordAPIevents.Enqueue("``TeratoDragon Spawned in TwinCity(564, 792)!``");
-
+                    Program.DiscordAPIevents.Enqueue("`TeratoDragon Spawned in TwinCity(564, 792)!");
                 }
                 else if (Nr == 2)
                 {
@@ -66,9 +63,8 @@ namespace COServer.Game.MsgMonster
                         "will appear at " + now.Hour + ":00! Get ready to fight! You only have 5 minutes!",
                         " has spawned in " + Database.Server.MapName[1000] + " (500,704)!",
                         MsgServer.MsgStaticMessage.Messages.TeratoDragon);
-
                     SendInvitation("TeratoDragon", 500, 704, 1000, 0, 60, MsgServer.MsgStaticMessage.Messages.TeratoDragon);
-                    Program.DiscordAPIevents.Enqueue("``TeratoDragon Spawned in DesertIsland(500, 704)!``");
+                    Program.DiscordAPIevents.Enqueue("`TeratoDragon Spawned in DesertIsland(500, 704)!");
                 }
                 else if (Nr == 3)
                 {
@@ -76,9 +72,8 @@ namespace COServer.Game.MsgMonster
                         "will appear at " + now.Hour + ":00! Get ready to fight! You only have 5 minutes!",
                         " has spawned in " + Database.Server.MapName[1012] + " (568,584)!",
                         MsgServer.MsgStaticMessage.Messages.TeratoDragon);
-
                     SendInvitation("TeratoDragon", 568, 584, 1020, 0, 60, MsgServer.MsgStaticMessage.Messages.TeratoDragon);
-                    Program.DiscordAPIevents.Enqueue("``TeratoDragon Spawned in Ape Island(568, 584)!``");
+                    Program.DiscordAPIevents.Enqueue("`TeratoDragon Spawned in Ape Island(568, 584)!");
                 }
                 else if (Nr == 4)
                 {
@@ -86,56 +81,55 @@ namespace COServer.Game.MsgMonster
                         "will appear at " + now.Hour + ":00! Get ready to fight! You only have 5 minutes!",
                         " has spawned in " + Database.Server.MapName[1105] + " (799,575)!",
                         MsgServer.MsgStaticMessage.Messages.TeratoDragon);
-
                     SendInvitation("TeratoDragon", 799, 575, 1015, 0, 60, MsgServer.MsgStaticMessage.Messages.TeratoDragon);
-                    Program.DiscordAPIevents.Enqueue("``TeratoDragon Spawned in Bird Island(799, 575)!``");
+                    Program.DiscordAPIevents.Enqueue("`TeratoDragon Spawned in Bird Island(799, 575)!");
                 }
                 else if (Nr == 5)
                 {
-                    MsgMonster.BossesBase.SpawnHandler(1787, 48, 38, 20070, "Dragon",
-                        "will appear at " + DateTime.Now.Hour + ":30! Get ready to fight! You only have 5 minutes left!",
+                    SpawnHandler(1787, 48, 38, 20070, "Dragon",
+                        "will appear at " + now.Hour + ":00! Get ready to fight! You only have 5 minutes left!",
                         " has spawned in Dragon Island!");
-
                     SendInvitation("DragonIsland", 48, 38, 1787, 0, 60, MsgServer.MsgStaticMessage.Messages.TeratoDragon);
-                    Program.DiscordAPIevents.Enqueue("``Dragon Spawned in DragonIsland(48, 38)!``");
+                    Program.DiscordAPIevents.Enqueue("`Dragon Spawned in DragonIsland(48, 38)!");
                 }
-
-                // Atualiza o tempo do último spawn
-                lastSpawnTime = now;
             }
 
-            // Verifica se o Ganoderma e o Titan devem spawnar a cada 30 minutos
-            if ((now.Minute == 15 && now.Second == 0) && (now - lastGanodermaTitanSpawnTime).TotalMinutes >= 60)
+            // Ganoderma: Spawna às xx:15 a cada hora
+            if (now.Minute == 15 && now.Second == 0 && (now - lastGanodermaTitanSpawnTime).TotalMinutes >= 60)
             {
                 SpawnHandler(1011, 655, 799, 3130, "Ganoderma",
                     "A Ganoderma has spawned in " + Database.Server.MapName[1011] + " (655, 799)! Get ready to fight!",
                     " has spawned in " + Database.Server.MapName[1011] + " (655, 799)!");
-
-                Program.DiscordAPIevents.Enqueue("``Ganoderma Spawned (655, 799)!``");
-
-                lastGanodermaTitanSpawnTime = now;  // Atualiza o tempo do último spawn de Ganoderma e Titan
+                Program.DiscordAPIevents.Enqueue("`Ganoderma Spawned (655, 799)!");
+                lastGanodermaTitanSpawnTime = now;
             }
 
-            if ((now.Minute == 21 && now.Second == 0) && (now - lastGanodermaTitanSpawnTime).TotalMinutes >= 60)
+            // Titan: Spawna às xx:21 a cada hora
+            if (now.Minute == 21 && now.Second == 0 && (now - lastGanodermaTitanSpawnTime).TotalMinutes >= 60)
             {
                 SpawnHandler(1020, 417, 625, 3134, "Titan",
                     "A Titan has spawned in " + Database.Server.MapName[1020] + " (417, 625)! Get ready to fight!",
                     " has spawned in " + Database.Server.MapName[1020] + " (417, 625)!");
-
-                Program.DiscordAPIevents.Enqueue("``Titan Spawned (417, 625)!``");
-
-                lastGanodermaTitanSpawnTime = now;  // Atualiza o tempo do último spawn de Ganoderma e Titan
+                Program.DiscordAPIevents.Enqueue("`Titan Spawned (417, 625)!");
+                lastGanodermaTitanSpawnTime = now;
             }
 
-            // Verifica se o Cleanwater deve spawnar a cada 1 hora
-            if ((now - lastCleanwaterSpawnTime).TotalMinutes >= 30)
+            // Cleanwater: Spawna a cada 30 minutos (xx:00 e xx:30)
+            if (now.Minute % 30 == 0 && now.Second == 0)
             {
                 SpawnHandler(1212, 428, 418, 8500, "Cleanwater",
                     "Cleanwater has spawned in " + Database.Server.MapName[1212] + " (428, 418)! Get ready to fight!",
                     " has spawned in " + Database.Server.MapName[1212] + " (428, 418)!");
-                Program.DiscordAPIevents.Enqueue("``Cleanwater Spawned in map 1212 (428, 418)!``");
+                Program.DiscordAPIevents.Enqueue("`Cleanwater Spawned in map 1212 (428, 418)!");
+            }
 
-                lastCleanwaterSpawnTime = now;
+            // SnakeKing: Spawna toda virada de hora (xx:00)
+            if (now.Minute == 0 && now.Second == 0)
+            {
+                SpawnHandler(1063, 84, 64, 3102, "SnakeKing",
+                    "SnakeKing has spawned in " + Database.Server.MapName[1063] + " (84, 64)! Get ready to fight!",
+                    " has spawned in " + Database.Server.MapName[1063] + " (84, 64)!");
+                Program.DiscordAPIevents.Enqueue("`SnakeKing Spawned (84, 64)!");
             }
         }
 
@@ -149,14 +143,6 @@ namespace COServer.Game.MsgMonster
                     var stream = rec.GetStream();
                     Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage(MonsterName + Msg, "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
                     Database.Server.AddMapMonster(stream, Map, MobID, X, Y, 1, 1, 1);
-                }
-            }
-            else
-            {
-                using (var rec = new ServerSockets.RecycledPacket())
-                {
-                    var stream = rec.GetStream();
-                    Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage(MonsterName + Msg, "ALLUSERS", "Server", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
                 }
             }
         }

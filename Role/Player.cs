@@ -1034,7 +1034,10 @@ namespace COServer.Role
                         foreach (var item in ItemsDrop.Values)
                             DropItem(item, (ushort)(x + 2), (ushort)(y + 2), stream);
                     }
-                    Program.DiscordAPIRedDrop.Enqueue($"``[{Name}] has been captured by [" + killer.Name + "] and drop your item!! ``");
+                    Program.DiscordAPIRedDrop.Enqueue($"```diff\n- 🚩 {Name} Was Captured!\n" +
+                                                    $"Killer: {killer.Name}\n" +
+                                                    $"Item Dropped: Yes\n" +
+                                                    $"Time: {DateTime.Now:yyyy-MM-dd HH:mm}```");
                 }
             }
             catch (Exception e) { Console.WriteLine(e.ToString()); }
