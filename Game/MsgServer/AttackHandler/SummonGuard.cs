@@ -11,7 +11,7 @@ namespace COServer.Game.MsgServer.AttackHandler
         public unsafe static void Execute(Client.GameClient user, InteractQuery Attack, ServerSockets.Packet stream,
             Dictionary<ushort, Database.MagicType.Magic> DBSpells)
         {
-            if (user.Player.Map == 1036 || user.Player.Map == 1004)
+            if (user.Player.Map == 1036 || user.Player.Map == 1004 || user.Player.Map == 1601)
                 return;
             if (user.Pet != null)
             {

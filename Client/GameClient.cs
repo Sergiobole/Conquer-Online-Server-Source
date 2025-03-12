@@ -1059,6 +1059,10 @@ namespace COServer.Client
                 Player.TransformInfo.FinishTransform();
             if (MapID == 1036 && Player.ContainFlag(MsgUpdate.Flags.Cyclone))
                 Player.RemoveFlag(MsgUpdate.Flags.Cyclone);
+            if (MapID == 1601 && Player.ContainFlag(MsgUpdate.Flags.Cyclone))
+                Player.RemoveFlag(MsgUpdate.Flags.Cyclone);
+            if (MapID == 1601 && Player.TransformInfo != null)
+                Player.TransformInfo.FinishTransform();
             if (!ProjectManager)
             {
                 if (Player.Map == 6001 && CanTeleport == false)

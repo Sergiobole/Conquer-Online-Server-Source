@@ -7,7 +7,7 @@ namespace COServer.Game.MsgServer.AttackHandler
         public unsafe static void Execute(Client.GameClient user, InteractQuery Attack, ServerSockets.Packet stream, Dictionary<ushort, Database.MagicType.Magic> DBSpells)
         {
             if (user.Player.ContainFlag(MsgUpdate.Flags.Fly) || user.Player.ContainFlag(MsgUpdate.Flags.Ride) ||
-                user.Player.Map == 1005 || user.Player.Map == 700 || user.Player.Map == 1036 || user.Player.Map == 1780)
+                user.Player.Map == 1005 || user.Player.Map == 700 || user.Player.Map == 1036 || user.Player.Map == 1780 ||  user.Player.Map == 1780 || user.Player.Map == 1601)
             {
                 return;
             }

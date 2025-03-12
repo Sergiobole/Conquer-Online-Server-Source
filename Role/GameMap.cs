@@ -431,7 +431,8 @@ namespace COServer.Role
             10166,
             1767,
             1212,
-            1300//
+            1300,
+            1571,
         };
 
         public List<Portal> Portals = new List<Portal>();
@@ -751,6 +752,7 @@ namespace COServer.Role
         public MapTypeFlags TypeStatus { get; set; }
         public static void LoadMaps()
         {
+            Database.Server.ServerMaps.Clear(); // Limpa o dicionário antes de carregar
             using (var gamemap = new BinaryReader(new FileStream(Path.Combine(Program.ServerConfig.CO2Folder, "ini/gamemap.dat"), FileMode.Open)))
             {
                 var amount = gamemap.ReadInt32();
@@ -841,7 +843,7 @@ namespace COServer.Role
                     LoadMap(44463, mapFile, 10090);
                 }
             }
-            Console.WriteLine("\tLoaded " + Database.Server.ServerMaps.Count + " maps");
+            Console.WriteLine("\tLoaded " + Database.Server.ServerMaps.Count + "maps");
             GC.Collect();
 
         }
@@ -857,10 +859,10 @@ namespace COServer.Role
         {
             try
             {
+                Console.WriteLine($"Tentando carregar mapa {id} com arquivo {mapFile} e baseid {baseid}");
                 GameMap ourInst;
                 using (var rdr = new BinaryReader(new FileStream(Path.Combine(Program.ServerConfig.CO2Folder, mapFile), FileMode.Open)))
                 {
-
                     rdr.ReadBytes(268);
                     ourInst = new GameMap(rdr.ReadInt32(), rdr.ReadInt32(), id);
                     ourInst.MonstersColletion = new Game.MsgMonster.MobCollection((uint)id);
@@ -877,7 +879,6 @@ namespace COServer.Role
                     {
                         for (int x = 0; x < ourInst.bounds.Width; x++)
                         {
-
                             ourInst.cells[x, y] = (rdr.ReadInt16() == 0) ? MapFlagType.Valid : MapFlagType.None;
                             if (id == 1038)
                             {
@@ -889,12 +890,19 @@ namespace COServer.Role
                                 rdr.ReadInt16();
                                 rdr.ReadInt16();
                             }
-
                         }
                         rdr.ReadInt32();
                     }
                 }
-                Database.Server.ServerMaps.Add((ushort)id, ourInst);
+                if (!Database.Server.ServerMaps.ContainsKey((ushort)id))
+                {
+                    Database.Server.ServerMaps.Add((ushort)id, ourInst);
+                    Console.WriteLine($"Mapa {id} adicionado ao ServerMaps");
+                }
+                else
+                {
+                    Console.WriteLine($"Mapa {id} já existe em ServerMaps, ignorando adição");
+                }
 
                 int info = baseid != 0 ? (int)baseid : (int)id;
 
@@ -911,7 +919,7 @@ namespace COServer.Role
             }
             catch (FileNotFoundException)
             {
-                //Console.WriteLine("\tMap not found: " + id + " - " + mapFile + "");
+                Console.WriteLine("\tMap not found: " + id + " - " + mapFile + "");
             }
             catch (Exception e)
             {

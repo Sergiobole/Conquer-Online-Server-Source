@@ -46,6 +46,7 @@ namespace COServer.Database
         public static bool ResetedAlready = false;
         public static WindowsAPI.IniFile Pets;
         public static List<uint> Dmg1Maps = new List<uint>() { 1767 };
+        public static List<uint> Dmg2Maps = new List<uint>() { 1601 };
         public static unsafe void Reset(Time32 Clock)
         {
             if (Clock > Program.ResetStamp)

@@ -144,9 +144,11 @@ namespace COServer.Game.MsgServer
 
         }
 
+
         [PacketAttribute(GamePackets.Chat)]
         public unsafe static void MsgHandler(Client.GameClient client, ServerSockets.Packet packet)
         {
+
             MsgMessage msg = new MsgMessage();
             msg.Deserialize(packet);
             if (!ChatCommands(client, msg))
@@ -385,6 +387,7 @@ namespace COServer.Game.MsgServer
         }
         public static unsafe bool ChatCommands(Client.GameClient client, MsgMessage msg)
         {
+
             try
             {
 
@@ -1080,9 +1083,10 @@ namespace COServer.Game.MsgServer
                                     using (var rec = new ServerSockets.RecycledPacket())
                                     {
                                         var stream = rec.GetStream();
-                                        Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage(data[1], "ALLUSERS", MsgColor.red, ChatMode.Center).GetArray(stream));
-                                        Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage(data[1], "ALLUSERS", MsgColor.red, ChatMode.BroadcastMessage).GetArray(stream));
-                                        Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage(data[1], "ALLUSERS", MsgColor.red, ChatMode.System).GetArray(stream));
+                                        string message = string.Join(" ", data.Skip(1));
+                                        Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage(message, "ALLUSERS", MsgColor.red, ChatMode.Center).GetArray(stream));
+                                        Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage(message, "ALLUSERS", MsgColor.red, ChatMode.BroadcastMessage).GetArray(stream));
+                                        Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage(message, "ALLUSERS", MsgColor.red, ChatMode.System).GetArray(stream));
                                     }
                                     break;
                                 }
@@ -1111,6 +1115,15 @@ namespace COServer.Game.MsgServer
                                     break;
 
                                 }
+                            case "beginmatamata":
+                                MsgSchedules.eventMataMata.StartMatch(client);
+                                break;
+                            case "startmatamata":
+                                MsgSchedules.eventMataMata.StartEvent(client);
+                                break;
+                            case "moveall":
+                                MsgSchedules.eventMataMata.MoveAllPlayers(client);
+                                break;
                             case "dd":
                                 {
                                     byte[] buf = new byte[]
@@ -2338,7 +2351,10 @@ namespace COServer.Game.MsgServer
                                     client.SendSysMesage("Welcome to OrigensCO!", ChatMode.TopLeftSystem);
                                     break;
                                 }
-                            case "sempercastle":
+
+                                //mapa para o matamata
+
+                            case "matamata":
                                 {
                                     client.Teleport(200, 200, 1601);
                                     client.Player.MessageBox("Welcome back to Fifty Shades of Semper ;)", null, null);
@@ -2368,11 +2384,6 @@ namespace COServer.Game.MsgServer
                                     if (!ushort.TryParse(data[3], out Y))
                                     {
                                         client.SendSysMesage("Invalid Y!");
-                                        break;
-                                    }
-                                    if (mapid == 1601)
-                                    {
-                                        client.SendSysMesage("You can't go there, it's Semper's office.");
                                         break;
                                     }
                                     uint DinamicID = 0;
@@ -3835,6 +3846,9 @@ namespace COServer.Game.MsgServer
                                     client.SendSysMesage("@clear => Clear your inventory");
                                     break;
                                 }
+                            case "queroir":
+                                MsgSchedules.eventMataMata.JoinEvent(client);
+                                break;
                         }
                     }
                     return true;
@@ -3923,6 +3937,10 @@ namespace COServer.Game.MsgServer
                                     client.Socket.Disconnect();
                                     break;
                                 }
+                            case "queroir":
+                                MsgSchedules.eventMataMata.JoinEvent(client);
+                                break;
+
                             #region /joinpvp
                             case "pvp":
                                 {

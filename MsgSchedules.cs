@@ -18,6 +18,7 @@ namespace COServer.Game.MsgTournaments
         internal static GuildSurvival GuildSurvival;
         internal static DateTime LastClassPKStart = DateTime.MinValue;
         internal static Fivenout FiveNOut;
+        internal static MataMata eventMataMata;
         internal static bool DisCityInvitationSent = false; // Variável de controle 
         #region PoleDomination
         internal static MsgPoleDomination PoleDomination;
@@ -50,6 +51,7 @@ namespace COServer.Game.MsgTournaments
         internal static MsgDragonIsland DragonIsland;
         internal static ProjectControl PlayerTop;
         public static bool SpawnDevil = false;
+
         internal static void Create()
         {
             #region PoleDomination
@@ -58,8 +60,10 @@ namespace COServer.Game.MsgTournaments
             PoleDominationDC = new MsgPoleDominationDC();
             PoleDominationPC = new MsgPoleDominationPC();
             #endregion
+
             GuildSurvival = new GuildSurvival();
             FiveNOut = new Fivenout();
+            eventMataMata = new MataMata();
             _ExtremeFlagWar = new ExtremeFlagWar();
             _EliteGuildWar = new EliteGuildWar();
             //_FirePoleWar = new FirePoleWar();
@@ -315,6 +319,7 @@ namespace COServer.Game.MsgTournaments
                             FiveNOut.Open();
                         }
                     }
+                    eventMataMata.CheckUp();
                     FiveNOut.CheckUp();
                     #endregion
                     #region PKDeathMatch 20:00

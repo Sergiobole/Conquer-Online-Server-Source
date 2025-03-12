@@ -649,6 +649,9 @@ namespace COServer.Role.Instance
                     case 1787:
                         Name = "Dungeon3F";
                         break;
+                    case 1571:
+                        Name = "MataMataFight";
+                        break;
                     case 1791:
                         Name = "RoseGarden";
                         break;

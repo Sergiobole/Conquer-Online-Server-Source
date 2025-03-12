@@ -1134,6 +1134,13 @@ namespace COServer.Game.MsgServer
                     return;
                 }
             }
+            if (user.Player.Map == 1601)
+            {
+                if (Attack.SpellID != (ushort)Role.Flags.SpellID.Bless)
+                {
+                    return;
+                }
+            }
             if (user.Player.OnTransform)
                 return;
             MsgServer.AttackHandler.CheckAttack.CheckGemEffects.TryngEffect(user);

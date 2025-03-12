@@ -169,6 +169,8 @@ namespace COServer.EventsLib
                 Program.FreePkMap.Add(1767);
             if (!Program.BlockAttackMap.Contains(1767))
                 Program.BlockAttackMap.Add(1767);
+            if (!Program.BlockAttackMap.Contains(1601))
+                Program.BlockAttackMap.Add(1601);
             using (var rec = new ServerSockets.RecycledPacket())
             {
                 var stream = rec.GetStream();

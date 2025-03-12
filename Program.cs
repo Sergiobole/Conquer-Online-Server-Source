@@ -46,6 +46,7 @@ namespace COServer
         public static Discord DiscordAPIClainFreeVip = new Discord("https://discord.com/api/webhooks/1344909426737414195/GWySjy2nAZnZ1PCQGcYfmOK-jBlJcmmQrrB2oNLjDD7JwKw8gDUjtYPkN-lWPUW_uYFi");
         public static Discord DiscordAPIBlessDrop = new Discord("https://discord.com/api/webhooks/1347945521729507328/f1QW8xIVB6M0uRoOS7qX_YJ6p6mhECn9yEPUs2UwYdcFZMqm8VCRrFEzPNdQiOi1dlLa");
         public static Discord DiscordAPI2rbnQuest = new Discord("https://discord.com/api/webhooks/1349052577982971944/WwgeAgJzVvb2Qmh3q9wVXRDV0p2CoUSMwWSDnoa4Zvq0KB6o8x_oopqKDazy1Jlf4NpE");
+        public static Discord DiscordAPIMataMata = new Discord("https://discord.com/api/webhooks/1349414685094445127/RI3lbtEOpfJJ2eIwNHDV36kiTK58De310SnQFa6XmcRyYeYyPUWP8n5-9c1QkTUe3tHv");
         public static ulong CPsHuntedSinceRestart = 0;
         public static List<byte[]> LoadPackets = new List<byte[]>();
         public static List<uint> ProtectMapSpells = new List<uint>() { 1038 };
@@ -55,11 +56,11 @@ namespace COServer
         public static List<uint> SsFbMap = new List<uint>();
         public static bool OnMainternance = false;
         public static Cryptography.TransferCipher transferCipher;
-        public static List<uint> MapDC = new List<uint>() { 1036, 1017, 1081, 2060, 9972, 1080, 3820, 3954, 1806, 1508, 1768, 1505, 1506, 1509, 1508, 1507, 1801, 1780, 1779, 3071, 1068, 3830, 3831, 3832, 3834, 3826, 3827, 3828, 3829, 3833, 3825, 1036, 1201, 4000, 4003, 4006, 4008, 4009 };
+        public static List<uint> MapDC = new List<uint>() { 1036, 1017, 1081, 2060, 9972, 1080, 3820, 3954, 1806, 1508, 1768, 1505, 1506, 1509, 1508, 1801, 1780, 1779, 3071, 1068, 3830, 3831, 3832, 3834, 3826, 3827, 3828, 3829, 3833, 3825, 1601, 1201, 4000, 4003, 4006, 4008, 4009 };
         public static List<uint> RevivePoint = new List<uint>() { 1201, 1202 };
         public static List<uint> NoDropItems = new List<uint>() { 1764, 700, 1780, 3820, 1005 };
         public static List<uint> FreePkMap = new List<uint>() { 50, 51, 52, 53, 2071, 3998, 3071, 6000, 6001, 1505, 1005, 1038, 700, 1508, 1201, 1767 };
-        public static List<uint> BlockAttackMap = new List<uint>() { 9999, 1700, 1202, 3825, 3830, 3831, 3832, 3834, 3826, 3827, 3828, 3829, 3833, 9995, 1068, 4020, 4000, 4003, 4006, 4008, 4009, 1860, 1858, 1801, 1780, 1779/*Ghost Map*/, 9972, 1806, 3954, 3081, 1036, 1004, 1008, 601, 1006, 1511, 1039, 700, 1002 };
+        public static List<uint> BlockAttackMap = new List<uint>() { 9999, 1700, 1202, 3825, 3830, 3831, 3832, 3834, 3826, 3827, 3828, 3829, 3833, 9995, 1068, 4020, 4000, 4003, 4006, 4008, 4009, 1860, 1858, 1801, 1780, 1779/*Ghost Map*/, 9972, 1806, 3954, 3081, 1036, 1601, 1004, 1008, 601, 1006, 1511, 1039, 700, 1002 };
         public static List<uint> BlockTeleportMap = new List<uint>() { 601, 1043, 1044, 1045, 1046, 1047, 1048, 1049, 1780, 1202, 6000, 6001, 1005, 700, 1860, 3852, 1768, 1038 };
         public static Role.Instance.Nobility.NobilityRanking NobilityRanking = new Role.Instance.Nobility.NobilityRanking();
         public static Role.Instance.Flowers.FlowersRankingToday FlowersRankToday = new Role.Instance.Flowers.FlowersRankingToday();

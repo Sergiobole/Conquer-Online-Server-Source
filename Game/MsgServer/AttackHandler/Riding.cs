@@ -16,7 +16,7 @@ namespace COServer.Game.MsgServer.AttackHandler
                     user.SendSysMesage("You can`t use this skill right now !");
                     return;
                 }
-                if (user.Player.Map == 1860 || user.Player.Map == 1005 || user.Player.Map == 1036 || user.Player.Map == 2071 || user.Player.Map == 1764 || user.Player.Map == 1858 || user.Player.Map == 8881 || user.Player.Map == 8880 || user.Player.Map == 1038 || user.Player.Map == 700 || MsgTournaments.MsgSchedules.CurrentTournament.InTournament(user))
+                if (user.Player.Map == 1860 || user.Player.Map == 1005 || user.Player.Map == 1601 || user.Player.Map == 1036 || user.Player.Map == 2071 || user.Player.Map == 1764 || user.Player.Map == 1858 || user.Player.Map == 8881 || user.Player.Map == 8880 || user.Player.Map == 1038 || user.Player.Map == 700 || MsgTournaments.MsgSchedules.CurrentTournament.InTournament(user))
                 {
                     user.SendSysMesage("You can't use this skill on this map.");
                     return;
