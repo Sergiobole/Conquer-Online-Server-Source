@@ -9,7 +9,7 @@ namespace COServer
 {
     public class PayPalHandler
     {
-        public const string ConnectionString = "Server=localhost;username=root;password=123456789;database=zq;";
+        public const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
         public static int getFounds(string username)
         {
             int founds = 0;
