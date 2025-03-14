@@ -8698,11 +8698,11 @@ namespace COServer.Game.MsgNpc
             switch (Option)
             {
                 case 0:
-                    dialog.Text("Welcome to OrigensCO.com! As a welcome gift, you are entitled to 7 days of free VIP. We recommend claiming it on your Archer for the best experience.")
-                          .AddOption("Claim it now.", 1)
-                          .AddOption("Will create Archer", 255)
-                          .AddAvatar(10)
-                          .FinalizeDialog();
+                    dialog.Text("Bem-vindo ao OrigensCO!\nHoje é dia de lançamento, pegando level 100 você recebe VIP6 de 15 dias e 2 surprise box!\nPromoção 24 horas!.")
+                                  .AddOption("Resgatar agora.", 1)
+                                  .AddOption("Vou criar um Acher", 255)
+                                  .AddAvatar(10)
+                                  .FinalizeDialog();
                     break;
 
                 case 1:
@@ -8714,8 +8714,8 @@ namespace COServer.Game.MsgNpc
 
                     if (client.Player.Level < 100) // Verifica se o jogador tem nível 100 ou mais
                     {
-                        dialog.Text("You need to be at least level 100 to claim the free VIP.")
-                              .AddOption("Understood", 255)
+                        dialog.Text("Você precisa estar level 100 para resgatar o VIP gratuito.")
+                              .AddOption("Entendi", 255)
                               .FinalizeDialog();
                         return;
                     }
@@ -8724,19 +8724,21 @@ namespace COServer.Game.MsgNpc
                     {
                         try
                         {
-                            client.Player.ExpireVip = DateTime.Now.AddDays(7);
+                            client.Player.ExpireVip = DateTime.Now.AddDays(15);
                             client.Player.VipLevel = 6;
+                            client.Inventory.Add(stream, 722178, 2, 0, 0, 0, 0, 0, false);
 
                             Database.VIPSystem.SaveVipClaim(client.Player.UID, clientIP);
 
-                            dialog.Text("You've claimed VIP6 for 7 days, have fun and enjoy!")
-                                  .AddOption("Thank you!", 255)
+
+                            dialog.Text("Você resgatou VIP6 por 15 dias e 2 Surprise Box! Divirta-se!")
+                                  .AddOption("Obrigado!", 255)
                                   .FinalizeDialog();
 
                             // Global Announcement
                             Program.SendGlobalPackets.Enqueue(
                                 new Game.MsgServer.MsgMessage(
-                                    $"Congratulations [{client.Player.Name}] on claiming a free 7-day VIP!",
+                                    $"Congratulations [{client.Player.Name}] on claiming a free 15-day VIP!",
                                     Game.MsgServer.MsgMessage.MsgColor.white,
                                     Game.MsgServer.MsgMessage.ChatMode.System
                                 ).GetArray(stream));
@@ -8744,7 +8746,7 @@ namespace COServer.Game.MsgNpc
                             // Discord Notification
                             Program.DiscordAPIClainFreeVip.Enqueue(
                                 $"```diff\n+ 💎 {client.Player.Name} VIP Free Claimed\n" +
-                                $"Expires: {DateTime.Now.AddDays(7):yyyy-MM-dd HH:mm}```"
+                                $"Expires: {DateTime.Now.AddDays(15):yyyy-MM-dd HH:mm}```"
                             );
                         }
                         catch (Exception ex)
@@ -8755,8 +8757,8 @@ namespace COServer.Game.MsgNpc
                     }
                     else
                     {
-                        dialog.Text("This IP has already claimed the free VIP. Only one claim per IP is allowed.")
-                              .AddOption("Understood", 255)
+                        dialog.Text("Você já resgatou o VIP gratuito. Apenas uma solicitação é permitida.")
+                              .AddOption("Entendi", 255)
                               .FinalizeDialog();
                     }
                     break;

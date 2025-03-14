@@ -70,7 +70,7 @@ namespace COServer.Game.MsgServer
             }
             else if (chance <= 4) 
             {
-                byte randomValue = Convert.ToByte(Role.Core.Random.Next(3, 5));
+                byte randomValue = Convert.ToByte(Role.Core.Random.Next(2, 3));
                 reward = VeryHighPlus[Role.Core.Random.Next(0, VeryHighPlus.Count)];
 
                 client.Inventory.Add(stream, reward, 1, randomValue, 0, 0, 0, 0, false);

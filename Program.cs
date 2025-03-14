@@ -30,7 +30,7 @@ namespace COServer
 
         public static VoteRank VoteRank;
         public static List<EventsLib.BaseEvent> Events = new List<EventsLib.BaseEvent>();
-        public static Discord DiscordAPI = new Discord("https://discord.com/api/webhooks/1294239949230571551/QiLYvAcTWpHW2PS4SsXIl0nRi6pUNc2wG8Z_jiUlUvWvGnnFJBSczFUt14X-TnUVn8ia");
+        public static Discord DiscordAPI = new Discord("https://discord.com/api/webhooks/1350119432281653260/_9LEa3oSPi0NVSw0RmSPAHgVyS6cDgk6GqN4DWCLLs3xh1NFFc2cOeex22nJRxnZ-RNR");
         public static Discord DiscordAPIsocket = new Discord("https://discord.com/api/webhooks/1344900319850659890/xWx54eysEH7nrth7hI8Z_5eeAvCNuPr1I4C5dMy9aANACwriRDR7nDGZZknMYBWULvKR");
         public static Discord DiscordAPIevents = new Discord("https://discord.com/api/webhooks/1344900809166422086/NgpmlUFSejpvg6hfGiPvLvroWs1i8qykVB5NA00p9FRgxQypyVf3Q9_ouPTDxU1vyWOO");
         public static Discord DiscordAPIworld = new Discord("https://discord.com/api/webhooks/1344902820616339486/ltKy_GfRDxjpnfFn8w2A5J7-ZYHQU-235E9EPKWxcgDibyBrGcX4mJJsCCoBR3lDEexw");

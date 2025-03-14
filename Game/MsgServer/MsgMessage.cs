@@ -636,7 +636,7 @@ namespace COServer.Game.MsgServer
                             case "trash":
                                 {
                                     client.Player.TrashGold = !client.Player.TrashGold;
-                                    client.SendSysMesage("VIP Drop Gold: " + (client.Player.TrashGold ? "Enabled" : "Disabled"));
+                                    client.SendSysMesage("VIP Drop Gold: " + (client.Player.TrashGold ? "Enabled" : "Disabled"), MsgMessage.ChatMode.TopLeftSystem);
                                     break;
                                 }
                             case "skipore":
@@ -3596,7 +3596,7 @@ namespace COServer.Game.MsgServer
                             case "trash":
                                 {
                                     client.Player.TrashGold = !client.Player.TrashGold;
-                                    client.SendSysMesage("VIP Drop Gold: " + (client.Player.TrashGold ? "Enabled" : "Disabled"));
+                                    client.SendSysMesage("VIP Drop Gold: " + (client.Player.TrashGold ? "Enabled" : "Disabled"), MsgMessage.ChatMode.TopLeftSystem);
                                     break;
                                 }
                             case "skipore":

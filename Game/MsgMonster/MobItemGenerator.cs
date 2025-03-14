@@ -74,7 +74,7 @@ namespace COServer.Game.MsgMonster
             Unique = new MobRateWatcher(900);
             Elite = new MobRateWatcher(4000);
             Super = new MobRateWatcher(15000);
-            PlusOne = new MobRateWatcher(2500);
+            PlusOne = new MobRateWatcher(2000);
             OneSocketItem = new MobRateWatcher(1000000);
             TwoSocketItem = new MobRateWatcher(2000000);
 
