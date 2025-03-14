@@ -633,6 +633,12 @@ namespace COServer.Game.MsgServer
                                     }
                                     break;
                                 }
+                            case "trash":
+                                {
+                                    client.Player.TrashGold = !client.Player.TrashGold;
+                                    client.SendSysMesage("VIP Drop Gold: " + (client.Player.TrashGold ? "Enabled" : "Disabled"));
+                                    break;
+                                }
                             case "skipore":
                                 {
                                     client.Player.SkipBadOre = !client.Player.SkipBadOre;
@@ -3587,6 +3593,12 @@ namespace COServer.Game.MsgServer
                                     break;
                                 }
                             #endregion
+                            case "trash":
+                                {
+                                    client.Player.TrashGold = !client.Player.TrashGold;
+                                    client.SendSysMesage("VIP Drop Gold: " + (client.Player.TrashGold ? "Enabled" : "Disabled"));
+                                    break;
+                                }
                             case "skipore":
                                 {
                                     client.Player.SkipBadOre = !client.Player.SkipBadOre;
@@ -3849,6 +3861,7 @@ namespace COServer.Game.MsgServer
                             case "queroir":
                                 MsgSchedules.eventMataMata.JoinEvent(client);
                                 break;
+
                         }
                     }
                     return true;

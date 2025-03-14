@@ -3389,11 +3389,18 @@ namespace COServer.Game.MsgNpc
                         //data.AddOption("4 - [Garments]", 4);
                         data.AddOption("4 - [Utilitys]", 5);
                         data.AddOption("5 - [SurpriseBoxs]", 90);
+                        data.AddOption("6 - [Buy Coins]", 89);
                         data.AddAvatar(63).FinalizeDialog();
                         break;
                     }
                 #endregion
+                case 89:
+                    {
+                        client.SendSysMesage("https://origensco.com/Login/Login", MsgMessage.ChatMode.WebSite, MsgMessage.MsgColor.red, false);
+                        break;
+                    }
                 #region Transferencia Menu Founds
+
                 case 1:
                     {
                         data.AddText("Insert the amount of Coins that you want to transfer to another player.");
@@ -3462,7 +3469,7 @@ namespace COServer.Game.MsgNpc
 
                         Console.WriteLine($"Attempting to transfer {foundsToTransfer} Coins from {client.AccountName(client.Player.Name)} to {recipientPlayerName}");
 
-                        const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                        const string ConnectionString = "Server=localhost;username=root;password=Higor123*;database=zq;";
 
                         try
                         {
@@ -3610,7 +3617,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 7)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor123*;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3671,7 +3678,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 20)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor123*;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3732,7 +3739,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 8)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor123*;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3808,7 +3815,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 50)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor123*;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3869,7 +3876,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 10)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor123*;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3930,7 +3937,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 10)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor123*;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -3991,7 +3998,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 15)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor123*;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4093,7 +4100,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 5)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor123*;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4157,7 +4164,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 7)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor123*;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4221,7 +4228,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 10)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor123*;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4297,7 +4304,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 1)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor123*;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4390,7 +4397,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 30)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor123*;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4454,7 +4461,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 30)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor123*;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4518,7 +4525,7 @@ namespace COServer.Game.MsgNpc
                         if (totalFounds >= 30)
                         {
 
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor123*;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -4594,7 +4601,7 @@ namespace COServer.Game.MsgNpc
 
                         if (totalFounds >= 1)
                         {
-                            const string ConnectionString = "Server=localhost;username=root;password=Higor147;database=zq;";
+                            const string ConnectionString = "Server=localhost;username=root;password=Higor123*;database=zq;";
                             try
                             {
                                 using (var conn = new MySqlConnection(ConnectionString))
@@ -8705,6 +8712,14 @@ namespace COServer.Game.MsgNpc
                         return;
                     }
 
+                    if (client.Player.Level < 100) // Verifica se o jogador tem nível 100 ou mais
+                    {
+                        dialog.Text("You need to be at least level 100 to claim the free VIP.")
+                              .AddOption("Understood", 255)
+                              .FinalizeDialog();
+                        return;
+                    }
+
                     if (!Database.VIPSystem.HasClaimedFreeVip(clientIP))
                     {
                         try
@@ -8747,6 +8762,7 @@ namespace COServer.Game.MsgNpc
                     break;
             }
         }
+
 
         #endregion
         #region EggEvent
@@ -9357,13 +9373,12 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        dialog.Text("I'm here to help players throughout their experience while playing OrigensCO!\n");
-                        dialog.Text("I'll give my best on answering the most common questions, but I must advise you to either contact a PM or");
-                        dialog.Text(" visit OrigensCO.com or our Discord server for more information!\n");
-                        dialog.Text("So, what do you want to know?\n");
-                        dialog.Option("1 - How to get started?", 1);
-                        dialog.AddOption("3 - Give me Vip-AutoLoot.", 55);
-                        dialog.Option("Next.", 32);
+                        dialog.Text("Welcome to OrigensCO!\n");
+                        dialog.Text("For more info, visit OrigensCO.com or join our Discord.\n");
+                        dialog.Option("1 - Whatsapp Group", 1);
+                        dialog.Option("2 - Buy Coins", 2);
+                        dialog.Option("2 - Discord Group", 3);
+                        dialog.AddOption("3 - Give me AutoLoot.", 55);
                         dialog.AddAvatar(71).FinalizeDialog();
                         break;
                     }
@@ -9373,234 +9388,19 @@ namespace COServer.Game.MsgNpc
                         client.Inventory.Add(stream, 720374, 1, 0, 0, 0, 0, 0, true);
                         break;
                     }
-
-                #region VIP Share
-                /*   case 29:
-                       {
-                           if (client.Player.VipLevel >= 6 && client.Player.ExpireVip > DateTime.Now.AddDays(2))
-                           {
-                               dialog.Text("do you wish to share your VIPLevel?.");
-                               dialog.AddInput("Name", 30);
-                               dialog.Option("Later.", 255);
-                           }
-                           else
-                           {
-                               dialog.Text("Only vip6 can be shared.");
-                               dialog.Option("i see.", 255);
-                           }
-                           dialog.AddAvatar(255).FinalizeDialog();
-                           break;
-                       }
-                   case 30:
-                       {
-                           Client.GameClient shared = Client.GameClient.CharacterFromName(Input);
-                           if (shared != null)
-                           {
-                               client.Player.MessageBox("You are about to share VIP4 for until " + client.Player.ExpireVip.ToShortDateString() + " to " + shared.Player.Name + " are you sure?",
-                               new Action<Client.GameClient>(p =>
-                               {
-                                   shared.Player.MessageBox(p.Player.Name + " Want to share VIP4 that will ends on " + p.Player.ExpireVip.ToShortDateString() + " do you agree?",
-                                        new Action<Client.GameClient>(s =>
-                                        {
-                                            if (Database.ShareVIP.Add(new Database.ShareVIP.Client { UID = p.Player.UID, ShareUID = s.Player.UID, ShareLevel = 4, ShareEnds = p.Player.ExpireVip, ShareName = s.Player.Name }))
-                                            {
-                                                s.Player.SendUpdate(stream, client.Player.VipLevel, MsgUpdate.DataType.VIPLevel);
-                                                p.Player.MessageBox("VIP Sharing process has been successfully completed", null, null);
-                                                s.Player.MessageBox("VIP Sharing process has been successfully completed", null, null);
-                                            }
-                                            else
-                                            {
-                                                p.Player.MessageBox("VIP Sharing process has been failed", null, null);
-                                                s.Player.MessageBox("VIP Sharing process has been failed", null, null);
-                                            }
-                                        }), null);
-
-                               }), null);
-                           }
-                           break;
-                       }*/
-                #endregion
-                case 10:
-                    {
-                        dialog.AddText("You have " + client.Player.OnlinePoints + " OPs.\n")
-                              .AddText("Below are some of our rewards.")
-                              .AddOption("1~ExpBall~Experience~(5~OPS)", 11)
-                              .AddOption("1~Hour~VIP6~(12~OPS)", 12)
-                       //     .AddOption("RareGarment(24~OPS)", 13)
-                          //  .AddOption("2Hour~LuckyTime (12~OPS)", 14)
-                              .AddOption("x4~Experience~1~Hour~(10~PS)", 15)
-                              .AddOption("Thank you.", 255)
-                              .AddAvatar(71).FinalizeDialog();
-
-
-                        break;
-                    }
-                #region OnlinePoint
-                case 15:
-                    {
-                        if (client.Player.OnlinePoints >= 10)
-                        {
-                            client.Player.OnlinePoints -= 10;
-                            client.Player.RateExp = 4;
-                            client.Player.DExpTime = 3600;
-                            client.Player.CreateExtraExpPacket(stream);
-                            client.SendSysMesage("You got x4 Experience for 1 hour.", MsgMessage.ChatMode.System, MsgMessage.MsgColor.red);
-                        }
-                        else
-                        {
-                            dialog.AddText("Sorry, but you don`t have enough OPs.")
-                                  .AddOption("Ah ok.", 255)
-                                  .AddAvatar(63).FinalizeDialog();
-                        }
-
-                        break;
-                    }
-                case 11:
-                    {
-                        if (client.Player.OnlinePoints >= 5)
-                        {
-                            client.Player.OnlinePoints -= 5;
-                            client.GainExpBall(900, true, Role.Flags.ExperienceEffect.angelwing);
-                        }
-                        else
-                        {
-                            dialog.AddText("Sorry, but you don`t have enough OPs.")
-                                  .AddOption("Ah ok.", 255)
-                                  .AddAvatar(63).FinalizeDialog();
-                        }
-
-                        break;
-                    }
-                case 12:
-                    {
-                        if (client.Player.VipLevel == 6)
-                        {
-                            client.SendSysMesage("You already have VIP 6 status.", MsgMessage.ChatMode.System);
-                            break;
-                        }
-                        if (client.Player.OnlinePoints >= 12)
-                        {
-                            client.Player.OnlinePoints -= 12;
-                            if (DateTime.Now > client.Player.ExpireVip)
-                                client.Player.ExpireVip = DateTime.Now.AddMinutes(60);
-                            else
-                                client.Player.ExpireVip = client.Player.ExpireVip.AddMinutes(60);
-
-                            client.Player.VipLevel = 6;
-
-                            client.Player.SendUpdate(stream, client.Player.VipLevel, MsgUpdate.DataType.VIPLevel);
-
-                            client.Player.UpdateVip(stream);
-
-                            client.SendSysMesage("You`ve received VIP 6 for 1 hour.");
-                        }
-                        else
-                        {
-                            dialog.AddText("Sorry, but you don`t have enough Online Hours.")
-                                  .AddOption("Ah ok.", 255)
-                                  .AddAvatar(63).FinalizeDialog();
-                        }
-
-
-                        break;
-                    }
-                case 13:
-                    {
-                        if (client.Player.OnlinePoints >= 24)
-                        {
-                            if (!client.Inventory.HaveSpace(1))
-                            {
-                                dialog.AddText("Please make 1 more space in your inventory.")
-                                    .AddOption("Let me check.", 255)
-                                    .AddAvatar(63).FinalizeDialog();
-                                break;
-                            }
-                            client.Player.OnlinePoints -= 24;
-                            Database.ItemType.DBItem aitem;
-                            while (true)
-                            {
-                                var array = Database.ItemType.Garments.Values.ToArray();
-                                aitem = array[Program.GetRandom.Next(0, array.Length)];
-                                client.Inventory.Add(stream, aitem.ID, 1, 0, 0, 0, Role.Flags.Gem.NoSocket, Role.Flags.Gem.NoSocket, true, Role.Flags.ItemEffect.None, true);
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            dialog.AddText("Sorry, but you don`t have enough Online Hours.")
-                                  .AddOption("Ah ok.", 255)
-                                  .AddAvatar(63).FinalizeDialog();
-                        }
-
-
-                        break;
-                    }
-                case 14:
-                    {
-                        if (client.Player.BlessTime > 120000 * 60)
-                        {
-                            dialog.AddText("Sorry, you've reached the limit! Come back after you've used all your Lucky Time.")
-                                  .AddOption("Okay.", 255)
-                                  .AddAvatar(63).FinalizeDialog();
-                            break;
-                        }
-                        if (client.Player.OnlinePoints >= 12)
-                        {
-                            client.Player.OnlinePoints -= 12;
-                            client.Player.BlessTime += 120000 * 60;
-                            client.SendSysMesage("You're now getting 2 hours of Lucky Time.", MsgMessage.ChatMode.Action);
-
-                            client.Player.SendUpdate(stream, client.Player.BlessTime, Game.MsgServer.MsgUpdate.DataType.LuckyTimeTimer);
-                        }
-                        else
-                        {
-                            dialog.AddText("Sorry, but you don`t have enough Online Points.")
-                                  .AddOption("Ah ok.", 255)
-                                  .AddAvatar(63).FinalizeDialog();
-                        }
-
-
-                        break;
-                    }
-                #endregion
-                case 7:
-                    {
-                        dialog.AddText("Thank you for your support! To show our appreciation you can receive 1 hour of VIP for voting.")
-                            .AddOption("Vote now.", 8)
-                            //.AddOption("Main Menu.", 30)
-                            .AddOption("Thank you.", 255)
-                            .AddAvatar(71).FinalizeDialog();
-
-
-                        break;
-                    }
-                case 8:
-                    {
-                        if (Database.VoteSystem.CanVote(client))
-                        {
-                            client.SendSysMesage(Program.ServerConfig.XtremeTopLink, MsgMessage.ChatMode.WebSite, MsgMessage.MsgColor.white);
-                            client.Player.StartVote = true;
-                            client.Player.VotePoints += 1;
-                            client.Player.StartVoteStamp = Time32.Now.AddMinutes(2);
-                            client.SendSysMesage("Please wait for the system to check your vote.");
-                        }
-                        else
-                        {
-                            dialog.AddText("You've already claimed your reward for voting. You may only vote once every 12 hour per IP address.")
-                                  .AddOption("I~see.", 255)
-                                  .AddAvatar(71).FinalizeDialog();
-                        }
-
-
-                        break;
-                    }
                 case 1:
                     {
-                        dialog.AddText("The best way to get started on this server is to get power leveled by a higher-level player.\n")
-                        .AddText("Your first character should be an archer so that you will be able to hunt and build your own set.\n")
-                        .AddText("You will receive some equipment on promotions that you can use as starting gears.\n")
-                        .AddText("Warriors are also great for leveling, and Trojans can be reborned into archers to maximize your hunting experience with a cyclone archer.")
-                        .AddOption("Okay!", 255).AddAvatar(71).FinalizeDialog();
+                        client.SendSysMesage("https://chat.whatsapp.com/GJPB1Kvspkd3YpKxfQoujR", MsgMessage.ChatMode.WebSite, MsgMessage.MsgColor.red, false);
+                        break;
+                    }
+                case 2:
+                    {
+                        client.SendSysMesage("https://origensco.com/Login/Login", MsgMessage.ChatMode.WebSite, MsgMessage.MsgColor.red, false);
+                        break;
+                    }
+                case 3:
+                    {
+                        client.SendSysMesage("https://discord.gg/NS4Wzagdx2", MsgMessage.ChatMode.WebSite, MsgMessage.MsgColor.red, false);
                         break;
                     }
 
@@ -20121,7 +19921,7 @@ namespace COServer.Game.MsgNpc
 
                                                     if (DataItem.Position != 0)
                                                         client.Equipment.QueryEquipment();
-
+                                                    client.Player.SendString(stream, MsgStringPacket.StringID.Effect, true, new string[1] { "fire1" });
                                                     client.SendSysMesage("Congratulations! You have successfully opened a socket with a 0.14% chance!");
                                                     Program.DiscordAPIsocket.Enqueue($"```diff\n+ 🎉 {client.Player.Name} Opened a Socket!\n" +
                                                                                         $"Item: {Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID)}\n" +
@@ -20165,7 +19965,7 @@ namespace COServer.Game.MsgNpc
                                             if (client.Inventory.Contain(Database.ItemType.Meteor, 1))
                                             {
                                                 Random random = new Random();
-                                                int chance = random.Next(1, 3000);
+                                                int chance = random.Next(1, 2500);
 
                                                 if (itemLevel >= 110)
                                                 {
@@ -20187,7 +19987,7 @@ namespace COServer.Game.MsgNpc
 
                                                     if (DataItem.Position != 0)
                                                         client.Equipment.QueryEquipment();
-
+                                                    client.Player.SendString(stream, MsgStringPacket.StringID.Effect, true, new string[1] { "fire1" });
                                                     client.SendSysMesage("Congratulations! You've opened a 2nd socket in your item with a 0.05% chance!");
                                                     Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("Congratulations! " + client.Player.Name + " has opened a 2nd socket in their " + Database.Server.ItemsBase.GetItemName(DataItem.ITEM_ID), Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.Center).GetArray(stream));
                                                     Program.DiscordAPIsocket.Enqueue($"```diff\n+ 🎉 {client.Player.Name} Opened a Second Socket!\n" +

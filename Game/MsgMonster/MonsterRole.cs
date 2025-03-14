@@ -285,192 +285,99 @@ namespace COServer.Game.MsgMonster
 
 
                     }
-                    if (Role.Core.Rate(2, 20000))
-                        DropItemID(killer, 1088000, stream, 6);
 
                     #region EggOrLetter [Quest]
-                    uint ItemType = (uint)Program.GetRandom.Next(1, 4); 
+                    uint ItemType = (uint)Program.GetRandom.Next(1, 4);
                     uint EggCouler = (uint)Program.GetRandom.Next(1, 4);
                     uint LetraCauler = (uint)Program.GetRandom.Next(1, 8);
 
-                    if (killer.MobsKilled > 3000)
+                    if (killer.MobsKilled % 3000 == 0 && killer.MobsKilled > 0) // Drop a cada 3000 kills sem resetar o contador
                     {
                         switch (ItemType)
                         {
                             #region Ovos
                             case 1:
-                                // Sorteio entre ovos
                                 switch (EggCouler)
                                 {
-                                    #region VertEgg
                                     case 1:
-                                        {
-                                            if (killer.Player.VipLevel >= 6)
-                                            {
-                                                killer.Inventory.Add(stream, 729935, 1);
-                                            }
-                                            else
-                                            {
-                                                DropItemID(killer, 729935   , stream, 6);
-                                            }
-                                            break;
-                                        }
-                                    #endregion
-                                    #region PurpleEgg
+                                        if (killer.Player.VipLevel >= 6)
+                                            killer.Inventory.Add(stream, 729935, 1);
+                                        else
+                                            DropItemID(killer, 729935, stream, 6);
+                                        break;
                                     case 2:
-                                        {
-                                            if (killer.Player.VipLevel >= 6)
-                                            {
-                                                killer.Inventory.Add(stream, 729936, 1);
-                                            }
-                                            else
-                                            {
-                                                DropItemID(killer, 729936, stream, 6);
-                                            }
-                                            break;
-                                        }
-                                    #endregion
-                                    #region RubyEgg
+                                        if (killer.Player.VipLevel >= 6)
+                                            killer.Inventory.Add(stream, 729936, 1);
+                                        else
+                                            DropItemID(killer, 729936, stream, 6);
+                                        break;
                                     case 3:
-                                        {
-                                            if (killer.Player.VipLevel >= 6)
-                                            {
-                                                killer.Inventory.Add(stream, 729937, 1);
-                                            }
-                                            else
-                                            {
-                                                DropItemID(killer, 729937, stream, 6);
-                                            }
-                                            break;
-                                        }
-                                        #endregion
+                                        if (killer.Player.VipLevel >= 6)
+                                            killer.Inventory.Add(stream, 729937, 1);
+                                        else
+                                            DropItemID(killer, 729937, stream, 6);
+                                        break;
                                 }
                                 break;
                             #endregion
                             #region Letras
                             case 2:
-                                // Sorteio entre letras
                                 switch (LetraCauler)
                                 {
-                                    #region Letras1
                                     case 1:
-                                        {
-                                            if (killer.Player.VipLevel >= 6)
-                                            {
-                                                killer.Inventory.Add(stream, 7112141, 1);
-                                            }
-                                            else
-                                            {
-                                                DropItemID(killer, 7112141, stream, 6);
-                                            }
-                                            break;
-                                        }
-                                    #endregion
-                                    #region Letra2
+                                        if (killer.Player.VipLevel >= 6)
+                                            killer.Inventory.Add(stream, 7112141, 1);
+                                        else
+                                            DropItemID(killer, 7112141, stream, 6);
+                                        break;
                                     case 2:
-                                        {
-                                            if (killer.Player.VipLevel >= 6)
-                                            {
-                                                killer.Inventory.Add(stream, 7112151, 1);
-                                            }
-                                            else
-                                            {
-                                                DropItemID(killer, 7112151, stream, 6);
-                                            }
-                                            break;
-                                        }
-                                    #endregion
-                                    #region Letra3
+                                        if (killer.Player.VipLevel >= 6)
+                                            killer.Inventory.Add(stream, 7112151, 1);
+                                        else
+                                            DropItemID(killer, 7112151, stream, 6);
+                                        break;
                                     case 3:
-                                        {
-                                            if (killer.Player.VipLevel >= 6)
-                                            {
-                                                killer.Inventory.Add(stream, 7112161, 1);
-                                            }
-                                            else
-                                            {
-                                                DropItemID(killer, 7112161, stream, 6);
-                                            }
-                                            break;
-                                        }
-                                    #endregion
-                                    #region Letra4
+                                        if (killer.Player.VipLevel >= 6)
+                                            killer.Inventory.Add(stream, 7112161, 1);
+                                        else
+                                            DropItemID(killer, 7112161, stream, 6);
+                                        break;
                                     case 4:
-                                        {
-                                            if (killer.Player.VipLevel >= 6)
-                                            {
-                                                killer.Inventory.Add(stream, 7112171, 1);
-                                            }
-                                            else
-                                            {
-                                                DropItemID(killer, 7112171, stream, 6);
-                                            }
-                                            break;
-                                        }
-                                    #endregion
-                                    #region Letra5
+                                        if (killer.Player.VipLevel >= 6)
+                                            killer.Inventory.Add(stream, 7112171, 1);
+                                        else
+                                            DropItemID(killer, 7112171, stream, 6);
+                                        break;
                                     case 5:
-                                        {
-                                            if (killer.Player.VipLevel >= 6)
-                                            {
-                                                killer.Inventory.Add(stream, 7112181, 1);
-                                            }
-                                            else
-                                            {
-                                                DropItemID(killer, 7112181, stream, 6);
-                                            }
-                                            break;
-                                        }
-                                    #endregion
-                                    #region Letra6
+                                        if (killer.Player.VipLevel >= 6)
+                                            killer.Inventory.Add(stream, 7112181, 1);
+                                        else
+                                            DropItemID(killer, 7112181, stream, 6);
+                                        break;
                                     case 6:
-                                        {
-                                            if (killer.Player.VipLevel >= 6)
-                                            {
-                                                killer.Inventory.Add(stream, 7112191, 1);
-                                            }
-                                            else
-                                            {
-                                                DropItemID(killer, 7112191, stream, 6);
-                                            }
-                                            break;
-                                        }
-                                    #endregion
-                                    #region Letra7
+                                        if (killer.Player.VipLevel >= 6)
+                                            killer.Inventory.Add(stream, 7112191, 1);
+                                        else
+                                            DropItemID(killer, 7112191, stream, 6);
+                                        break;
                                     case 7:
-                                        {
-                                            if (killer.Player.VipLevel >= 6)
-                                            {
-                                                killer.Inventory.Add(stream, 7112201, 1);
-                                            }
-                                            else
-                                            {
-                                                DropItemID(killer, 7112201, stream, 6);
-                                            }
-                                            break;
-                                        }
-                                        #endregion
+                                        if (killer.Player.VipLevel >= 6)
+                                            killer.Inventory.Add(stream, 7112201, 1);
+                                        else
+                                            DropItemID(killer, 7112201, stream, 6);
+                                        break;
                                 }
                                 break;
                             #endregion
                             #region ProfToken
                             case 3:
-                                {
-                                    if (killer.Player.VipLevel >= 6)
-                                    {
-                                        killer.Inventory.Add(stream, 159753, 1);
-                                    }
-                                    else
-                                    {
-                                        DropItemID(killer, 159753, stream, 6);
-                                    }
-                                    break;
-                                }
+                                if (killer.Player.VipLevel >= 6)
+                                    killer.Inventory.Add(stream, 159753, 1);
+                                else
+                                    DropItemID(killer, 159753, stream, 6);
+                                break;
                                 #endregion
                         }
-
-                        // Resetar o contador de mobs após o drop
-                        killer.MobsKilled = 0;
                     }
                     #endregion
 
@@ -561,10 +468,6 @@ namespace COServer.Game.MsgMonster
                     killer.MobsKilled++;
                     killer.TotalMobsKilled++;
 
-                    if (killer.TotalMobsKilled % 100 == 0)
-                    {
-                        killer.SendSysMesage("You`ve killed " + killer.TotalMobsKilled + " so far, when you reach 100,000 you can visit SoulKeeper in Twin City to claim a prize!", MsgMessage.ChatMode.TopLeft);
-                    }
                     if (Map == 5550)
                     {
                         killer.TotalMobsLevel++;
@@ -1298,7 +1201,6 @@ namespace COServer.Game.MsgMonster
                                     if (Map == 1002)
                                     {
                                         Amount = Family.ItemGenerator.GenerateGold(out ItemID, false, true);
-
                                     }
                                     else
                                     {
@@ -1307,7 +1209,11 @@ namespace COServer.Game.MsgMonster
                                         else
                                             Amount = Family.ItemGenerator.GenerateGold(out ItemID);
                                     }
-                                    DropItem(stream, killer.Player.UID, killer.Map, ItemID, xx, yy, MsgFloorItem.MsgItem.ItemType.Money, Amount, false, 0); ///dropgold
+                                    // Só dropar o gold se CanDropGold for true
+                                    if (killer.Player.TrashGold)
+                                    {
+                                        DropItem(stream, killer.Player.UID, killer.Map, ItemID, xx, yy, MsgFloorItem.MsgItem.ItemType.Money, Amount, false, 0); ///dropgold
+                                    }
                                 }
                             }
                         }

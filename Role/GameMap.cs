@@ -859,7 +859,6 @@ namespace COServer.Role
         {
             try
             {
-                Console.WriteLine($"Tentando carregar mapa {id} com arquivo {mapFile} e baseid {baseid}");
                 GameMap ourInst;
                 using (var rdr = new BinaryReader(new FileStream(Path.Combine(Program.ServerConfig.CO2Folder, mapFile), FileMode.Open)))
                 {
@@ -897,7 +896,6 @@ namespace COServer.Role
                 if (!Database.Server.ServerMaps.ContainsKey((ushort)id))
                 {
                     Database.Server.ServerMaps.Add((ushort)id, ourInst);
-                    Console.WriteLine($"Mapa {id} adicionado ao ServerMaps");
                 }
                 else
                 {

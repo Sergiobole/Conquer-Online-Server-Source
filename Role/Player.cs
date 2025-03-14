@@ -142,6 +142,8 @@ namespace COServer.Role
             Database.ServerDatabase.LoginQueue.Enqueue(mymsg);
 
         }
+
+        public bool TrashGold { get; set; } = true;
         public byte Quest2rbStage = 0;
         public uint Quest2rbS2Point = 0;
         public byte Quest2rbBossesOrderby = 0;
@@ -250,6 +252,7 @@ namespace COServer.Role
 
         public Time32 LastAttack;
         public Time32 KillCountCaptchaStamp;
+        public bool CaptchaShown { get; set; }
         public bool WaitingKillCaptcha;
         public string KillCountCaptcha;
         public uint KillerPkPoints = 0;
@@ -2035,7 +2038,6 @@ namespace COServer.Role
 
         internal void SolveCaptcha()
         {
-            Owner.MobsKilled = 0;
             WaitingKillCaptcha = false;
             KillCountCaptcha = "";
             LastSuccessCaptcha = DateTime.Now;

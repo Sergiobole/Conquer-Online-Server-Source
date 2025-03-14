@@ -6,17 +6,16 @@ namespace COServer.Game.MsgServer
 {
     public class SurpriseBox
     {
-        static List<uint> VeryHigh1Socket = new List<uint>() // itens 1 socket.
-        {
-            113013, 114023, 117003, 118003, 120003, 121003, 130020, 131013, 133003, 134003, 141003, 142003, 150003, 152013, 160013, 410003, 420003, 421003
-
-        };
-
         static List<uint> VeryHigh2Socket = new List<uint>() // itens 2 socket.
         {
             113013, 114023, 117003, 118003, 120003, 121003, 130020, 131013, 133003, 134003, 141003, 142003, 150003, 152013, 160013, 410003, 420003, 421003
 
         };
+        static List<uint> VeryHigh1Socket = new List<uint>() // itens 1 socket.
+        {
+            113013, 114023, 117003, 118003, 120003, 121003, 130020, 131013, 133003, 134003, 141003, 142003, 150003, 152013, 160013, 410003, 420003, 421003
+
+        };        
         static List<uint> VeryHighPlus = new List<uint>() // Plusitens 
         {
 
@@ -34,12 +33,14 @@ namespace COServer.Game.MsgServer
             723712, 723711, 723700, 700001, 700011, 700021, 700031, 700041, 700051, 700061, 700071
         };
 
+
+
         public static void GetReward(GameClient client, ServerSockets.Packet stream)
         {
             uint reward;
             int chance = Role.Core.Random.Next(1, 101); 
 
-            if (chance <= 0.2) 
+            if (chance <= 0.000000000000002) 
             {
                 Role.Flags.Gem socktwo = Role.Flags.Gem.EmptySocket;
                 Role.Flags.Gem sockone = Role.Flags.Gem.EmptySocket;
