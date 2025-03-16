@@ -932,7 +932,7 @@ namespace COServer.Game.MsgMonster
                     {
                         if (Family.ID == 0015)
                         {
-                            if (Role.Core.Rate(0.005))
+                            if (Role.Core.Rate(10))
                             {
                                 DropItemID(killer, 1080001, stream);
                                 killer.SendSysMesage("Emerald dropped!", MsgMessage.ChatMode.TopLeft);
@@ -983,80 +983,80 @@ namespace COServer.Game.MsgMonster
 
                     #region Garmet-3
 
-                    // Sistema de drop baseado no mapa e na família dos monstros
-                    if (Map == 1002) // Twin City
-                    {
-                        if (Family.ID == 1) // Pheasant
-                        {
-                            if (Role.Core.Rate(0.0001)) // Probabilidade de 1 em
-                                                        // (0.0001)
-                            {
-                                if (killer.Player.VipLevel >= 6)
-                                {
-                                    killer.Inventory.Add(stream, 2000050, 1); // Adiciona o item diretamente ao inventário se for VIP 6.
-                                }
-                                else
-                                {
-                                    DropItemID(killer, 2000050, stream); // Dropa o item no mapa se não for VIP 6.
-                                }
-                                Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found GarmertQuestToken1 in TwinCity!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
-                            }
-                        }
-                    }
-                    else if (Map == 1020) // Ape Mountain
-                    {
-                        if (Family.ID == 10) // Macaque
-                        {
-                            if (Role.Core.Rate(0.0000333)) // Probabilidade de 1 em 30.000 (0.0000333)
-                            {
-                                if (killer.Player.VipLevel >= 6)
-                                {
-                                    killer.Inventory.Add(stream, 2000051, 1); // Adiciona o item diretamente ao inventário se for VIP 6.
-                                }
-                                else
-                                {
-                                    DropItemID(killer, 2000051, stream); // Dropa o item no mapa se não for VIP 6.
-                                }
-                                Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found GarmertQuestToken2 in ApeMountain!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
-                            }
-                        }
-                    }
-                    else if (Map == 1011) // Phoenix Castle
-                    {
-                        if (Family.ID == 7) // Bandit
-                        {
-                            if (Role.Core.Rate(0.0000333)) // Probabilidade de 1 em 30.000 (0.0000333)
-                            {
-                                if (killer.Player.VipLevel >= 6)
-                                {
-                                    killer.Inventory.Add(stream, 2000053, 1); // Adiciona o item diretamente ao inventário se for VIP 6.
-                                }
-                                else
-                                {
-                                    DropItemID(killer, 2000053, stream); // Dropa o item no mapa se não for VIP 6.
-                                }
-                                Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found GarmertQuestToken3 in PhoenixCastle!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
-                            }
-                        }
-                    }
-                    else if (Map == 1015) // Bird Island
-                    {
-                        if (Family.ID == 18) // Birdman
-                        {
-                            if (Role.Core.Rate(0.00002)) // Probabilidade de 1 em 50.000 (0.00002)
-                            {
-                                if (killer.Player.VipLevel >= 6)
-                                {
-                                    killer.Inventory.Add(stream, 2000054, 1); // Adiciona o item diretamente ao inventário se for VIP 6.
-                                }
-                                else
-                                {
-                                    DropItemID(killer, 2000054, stream); // Dropa o item no mapa se não for VIP 6.
-                                }
-                                Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found GarmertQuestToken4 in Bird Island!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
-                            }
-                        }
-                    }
+                    //// Sistema de drop baseado no mapa e na família dos monstros
+                    //if (Map == 1002) // Twin City
+                    //{
+                    //    if (Family.ID == 1) // Pheasant
+                    //    {
+                    //        if (Role.Core.Rate(0.0001)) // Probabilidade de 1 em
+                    //                                    // (0.0001)
+                    //        {
+                    //            if (killer.Player.VipLevel >= 6)
+                    //            {
+                    //                killer.Inventory.Add(stream, 2000050, 1); // Adiciona o item diretamente ao inventário se for VIP 6.
+                    //            }
+                    //            else
+                    //            {
+                    //                DropItemID(killer, 2000050, stream); // Dropa o item no mapa se não for VIP 6.
+                    //            }
+                    //            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found GarmertQuestToken1 in TwinCity!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                    //        }
+                    //    }
+                    //}
+                    //else if (Map == 1020) // Ape Mountain
+                    //{
+                    //    if (Family.ID == 10) // Macaque
+                    //    {
+                    //        if (Role.Core.Rate(0.0000333)) // Probabilidade de 1 em 30.000 (0.0000333)
+                    //        {
+                    //            if (killer.Player.VipLevel >= 6)
+                    //            {
+                    //                killer.Inventory.Add(stream, 2000051, 1); // Adiciona o item diretamente ao inventário se for VIP 6.
+                    //            }
+                    //            else
+                    //            {
+                    //                DropItemID(killer, 2000051, stream); // Dropa o item no mapa se não for VIP 6.
+                    //            }
+                    //            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found GarmertQuestToken2 in ApeMountain!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                    //        }
+                    //    }
+                    //}
+                    //else if (Map == 1011) // Phoenix Castle
+                    //{
+                    //    if (Family.ID == 7) // Bandit
+                    //    {
+                    //        if (Role.Core.Rate(0.0000333)) // Probabilidade de 1 em 30.000 (0.0000333)
+                    //        {
+                    //            if (killer.Player.VipLevel >= 6)
+                    //            {
+                    //                killer.Inventory.Add(stream, 2000053, 1); // Adiciona o item diretamente ao inventário se for VIP 6.
+                    //            }
+                    //            else
+                    //            {
+                    //                DropItemID(killer, 2000053, stream); // Dropa o item no mapa se não for VIP 6.
+                    //            }
+                    //            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found GarmertQuestToken3 in PhoenixCastle!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                    //        }
+                    //    }
+                    //}
+                    //else if (Map == 1015) // Bird Island
+                    //{
+                    //    if (Family.ID == 18) // Birdman
+                    //    {
+                    //        if (Role.Core.Rate(0.00002)) // Probabilidade de 1 em 50.000 (0.00002)
+                    //        {
+                    //            if (killer.Player.VipLevel >= 6)
+                    //            {
+                    //                killer.Inventory.Add(stream, 2000054, 1); // Adiciona o item diretamente ao inventário se for VIP 6.
+                    //            }
+                    //            else
+                    //            {
+                    //                DropItemID(killer, 2000054, stream); // Dropa o item no mapa se não for VIP 6.
+                    //            }
+                    //            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found GarmertQuestToken4 in Bird Island!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                    //        }
+                    //    }
+                    //}
                     #endregion
 
                     #region Titan GonoDerma
@@ -1344,7 +1344,6 @@ namespace COServer.Game.MsgMonster
 
         private void DropItem(ServerSockets.Packet stream, uint OwnerItem, Role.GameMap map, uint ItemID, ushort XX, ushort YY, MsgFloorItem.MsgItem.ItemType typ, uint amount, bool special, byte ID_Quality, Client.GameClient user = null, Database.ItemType.DBItem DBItem = null)
         {
-            
             MsgServer.MsgGameItem DataItem = new MsgServer.MsgGameItem();
             DataItem.ITEM_ID = ItemID;
 
@@ -1404,7 +1403,7 @@ namespace COServer.Game.MsgMonster
 
                                 // Notificação no Discord
                                 string discordMsg =
-                                                        $"```diff\n+ 🎁 {user.Player.Name} Collected an Item!\n" +
+                                                $"```diff\n+ 🎁 {user.Player.Name} Collected an Item!\n" +
                                                         $"Item: {Database.Server.ItemsBase[ItemID].Name}\n" +
                                                         $"Bless: -{DataItem.Bless}\n" +
                                                         $"Location: {map.Name} ({XX},{YY})\n" +
@@ -1477,6 +1476,21 @@ namespace COServer.Game.MsgMonster
                 }
             }
 
+            // Verificação do filtro de lixo após definir atributos
+            if (user != null && user.Player.TrashItems)
+            {
+                // Verifica se o item é lixo (sem atributos especiais)
+                bool isTrash = DataItem.Bless == 0 && DataItem.Plus == 0 &&
+                               DataItem.SocketOne == Role.Flags.Gem.NoSocket &&
+                               DataItem.SocketTwo == Role.Flags.Gem.NoSocket;
+
+                // Se for lixo, cancela o drop
+                if (isTrash)
+                {
+                    return;
+                }
+            }
+
             // Lógica de drop normal para itens não-Blessed
             MsgFloorItem.MsgItem DropItem = new MsgFloorItem.MsgItem(DataItem, XX, YY, typ, amount, DynamicID, Map, OwnerItem, true, map);
 
@@ -1487,7 +1501,6 @@ namespace COServer.Game.MsgMonster
                 // Adicionando efeito visual e mensagem para itens Plus
                 if (DataItem.Plus > 0 && user != null)
                 {
-
                     user.Player.AddMapEffect(stream, XX, YY, "accession1");
 
                     // Mensagem no jogo
@@ -1496,8 +1509,8 @@ namespace COServer.Game.MsgMonster
                     user.SendSysMesage(message, MsgMessage.ChatMode.System);
                 }
             }
-
         }
+
 
         public unsafe bool RemoveView(int time, Role.GameMap map)
         {

@@ -126,11 +126,9 @@ namespace COServer.Game.MsgTournaments
         static List<string> SystemMsgs = new List<string>() {
             "Guild War will begin at 17:00 on Saturdays, and will end at 17:00 on Sundays.",
             "Join our discord server to be in touch with the community and suggest/report stuff.",
-            "You can check all of our scheduled events on our website! Make sure you don't miss any of them!",
+            " /rolescale /scale /trash use the commands!",
             "Administrators have [GM/PM] in their names, do not trust anyone else claiming to be a [GM].",
-            "Make sure you keep yourself updated about the server and all the changes introduced! These can be seen on our website!",
             "Thanks for supporting OrigensCO! We will keep on working to provide the best for our players!",
-            "Talk to OrigensCO NPC in Twin City for information about the game.",
             "Remember to vote! By voting you're helping to increase the community and you can earn some cool rewards for it!",
             "Top Weekly Voter will receive 3 SurpriseBox."
         };

@@ -144,6 +144,7 @@ namespace COServer.Role
         }
 
         public bool TrashGold { get; set; } = true;
+        public bool TrashItems { get; set; } = false;
         public byte Quest2rbStage = 0;
         public uint Quest2rbS2Point = 0;
         public byte Quest2rbBossesOrderby = 0;

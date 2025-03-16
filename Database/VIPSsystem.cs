@@ -91,25 +91,9 @@ namespace COServer.Database
             string clientIP = client.Socket.RemoteIp;
 
             // Verifica apenas por IP
-            if (!HasClaimedFreeVip(clientIP) && client.Player.VipLevel == 0)
+            if (!HasClaimedFreeVip(clientIP))
             {
-                client.Player.ExpireVip = DateTime.Now.AddDays(7);
-                client.Player.VipLevel = 6;
-                SaveVipClaim(client.Player.UID, clientIP);
-
-                using (var rec = new ServerSockets.RecycledPacket())
-                {
-                    var stream = rec.GetStream();
-                    client.Player.SendUpdate(stream, client.Player.VipLevel,
-                        Game.MsgServer.MsgUpdate.DataType.VIPLevel);
-                    client.Player.UpdateVip(stream);
-                }
-                client.Player.CanClaimFreeVip = true;
-                client.SendSysMesage("You've received free VIP 6 (7 days).");
-            }
-            else
-            {
-                client.SendSysMesage("This IP has already claimed the free VIP. Only one claim per IP is allowed.");
+                client.Player.CanClaimFreeVip = true; // Apenas marca que o jogador pode resgatar no NPC
             }
         }
 
@@ -121,7 +105,7 @@ namespace COServer.Database
                     _wr.Add(_obj.ToString());
                 _wr.Execute(DBActions.Mode.Open);
             }
-        }
+        }   
 
         public static void Load()
         {

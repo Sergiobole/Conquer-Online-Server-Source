@@ -636,7 +636,9 @@ namespace COServer.Game.MsgServer
                             case "trash":
                                 {
                                     client.Player.TrashGold = !client.Player.TrashGold;
+                                    client.Player.TrashItems = !client.Player.TrashItems; // Nova flag para ignorar itens lixo
                                     client.SendSysMesage("VIP Drop Gold: " + (client.Player.TrashGold ? "Enabled" : "Disabled"), MsgMessage.ChatMode.TopLeftSystem);
+                                    client.SendSysMesage("VIP Drop Trash Items: " + (client.Player.TrashItems ? "Enabled" : "Disabled"), MsgMessage.ChatMode.TopLeftSystem);
                                     break;
                                 }
                             case "skipore":
@@ -3596,7 +3598,9 @@ namespace COServer.Game.MsgServer
                             case "trash":
                                 {
                                     client.Player.TrashGold = !client.Player.TrashGold;
+                                    client.Player.TrashItems = !client.Player.TrashItems; // Nova flag para ignorar itens lixo
                                     client.SendSysMesage("VIP Drop Gold: " + (client.Player.TrashGold ? "Enabled" : "Disabled"), MsgMessage.ChatMode.TopLeftSystem);
+                                    client.SendSysMesage("VIP Drop Trash Items: " + (client.Player.TrashItems ? "Enabled" : "Disabled"), MsgMessage.ChatMode.TopLeftSystem);
                                     break;
                                 }
                             case "skipore":

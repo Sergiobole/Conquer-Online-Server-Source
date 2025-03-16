@@ -113,9 +113,8 @@ namespace COServer.Game.MsgTournaments
 
                     ResetFurnitures(stream);
                     ScoreList.Clear();
-                    MsgSchedules.SendInvitation("EliteGuildWar", 421, 294, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.None);
-                    Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("EliteGuildWar has started!", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
                 }
+                    
             }
         }
         public void CheckUp()

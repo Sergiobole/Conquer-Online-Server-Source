@@ -102,19 +102,6 @@ namespace COServer.Game.MsgTournaments
             ShuffleGuildScores();
             Mode = ProcesType.Dead;
             ScoreList.Clear();
-            using (var rec = new ServerSockets.RecycledPacket())
-            {
-                string msg = "";
-                if (Winner.Name != "None" && Winner.Score != 100)
-                    msg = "Congratulations to " + Winner.Name + ", they've won the PoleDomination of PC with a score of " + Winner.Score.ToString();
-                else msg = "PoleDomination of PC has ended with no winner.";
-                //Program.DiscordAPI.Enqueue("``{msg}``");
-
-                var stream = rec.GetStream();
-                Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage(msg, MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
-                Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage(msg, MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.BroadcastMessage).GetArray(stream));
-            }
-
             RewardLeader.Clear();
             Winner.LeaderReward = 1;
         }
@@ -147,8 +134,7 @@ namespace COServer.Game.MsgTournaments
                         var stream = rec.GetStream();
 
                         ResetFurnitures(stream);
-                        ScoreList.Clear();   
-                        Program.SendGlobalPackets.Enqueue(new MsgServer.MsgMessage("PoleDomination of PC war in PhoenixCastle(Left Gate) has started!", MsgServer.MsgMessage.MsgColor.white, MsgServer.MsgMessage.ChatMode.System).GetArray(stream));
+                        ScoreList.Clear();                           
                     }
                 }
             }

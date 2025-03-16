@@ -24,9 +24,6 @@ namespace COServer.Role.Instance
         public static void StartOfflineVending(Client.GameClient client)
         {
             if (client == null || client.MyVendor == null || !client.MyVendor.InVending) return;
-
-            Console.WriteLine($"[{DateTime.Now}] Venda offline iniciada para {client.Player.Name} (UID: {client.Player.UID})");
-
             var state = new OfflineVendorState
             {
                 Client = client,
@@ -53,8 +50,6 @@ namespace COServer.Role.Instance
             {
                 try
                 {
-                    // Simula a venda (a lógica real de compra por outros jogadores já existe no sistema)
-                    Console.WriteLine($"[{DateTime.Now}] {state.Client.Player.Name} continua vendendo offline...");
                     // Aqui você pode verificar vendas reais ou simular compras para teste
                     await Task.Delay(CheckInterval);
                 }
@@ -72,7 +67,6 @@ namespace COServer.Role.Instance
                     var stream = rec.GetStream();
                     removedState.Vendor.StopVending(stream); // Remove o NPC do mapa
                 }
-                Console.WriteLine($"[{DateTime.Now}] Venda offline de {state.Client.Player.Name} concluída.");
             }
         }
 
@@ -86,7 +80,6 @@ namespace COServer.Role.Instance
                     var stream = rec.GetStream();
                     state.Vendor.StopVending(stream); // Remove o NPC do mapa
                 }
-                Console.WriteLine($"[{DateTime.Now}] Venda offline parada para UID {playerId}.");
             }
         }
 

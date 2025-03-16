@@ -836,29 +836,33 @@ namespace COServer.Client
 
                 #region Anti bot
 
-                if (Timer < client.Player.LastAttack.AddSeconds(5)) 
-                {                  
+                if (Timer < client.Player.LastAttack.AddSeconds(5))
+                {
+
                     if (client.MobsKilled >= 1000)
                     {
                         if (Timer > client.Player.KillCountCaptchaStamp.AddMinutes(10))
                         {
                             if (!client.Player.WaitingKillCaptcha)
                             {
-                                client.Player.KillCountCaptchaStamp = Time32.Now;
-                                client.Player.WaitingKillCaptcha = true;
-                                client.ActiveNpc = 9999997;
-                                client.Player.KillCountCaptcha = Role.Core.Random.Next(10, 100).ToString();
-
-                                using (var rec = new ServerSockets.RecycledPacket())
+                                if (client.Player.Map != 1039) // Verifica se o jogador NÃO está no mapa 1039
                                 {
-                                    var stream = rec.GetStream();
-                                    Game.MsgNpc.Dialog dialog = new Game.MsgNpc.Dialog(client, stream);
-                                    dialog.Text("Input the current text: " + client.Player.KillCountCaptcha + " to verify your humanity.");
-                                    dialog.AddInput("Captcha message:", (byte)client.Player.KillCountCaptcha.Length);
-                                    dialog.Option("No thank you.", 255);
-                                    dialog.AddAvatar(39);
-                                    dialog.FinalizeDialog();
-                                    //client.Send(stream);
+                                    client.Player.KillCountCaptchaStamp = Time32.Now;
+                                    client.Player.WaitingKillCaptcha = true;
+                                    client.ActiveNpc = 9999997;
+                                    client.Player.KillCountCaptcha = Role.Core.Random.Next(10, 100).ToString();
+
+                                    using (var rec = new ServerSockets.RecycledPacket())
+                                    {
+                                        var stream = rec.GetStream();
+                                        Game.MsgNpc.Dialog dialog = new Game.MsgNpc.Dialog(client, stream);
+                                        dialog.Text("Input the current text: " + client.Player.KillCountCaptcha + " to verify your humanity.");
+                                        dialog.AddInput("Captcha message:", (byte)client.Player.KillCountCaptcha.Length);
+                                        dialog.Option("No thank you.", 255);
+                                        dialog.AddAvatar(39);
+                                        dialog.FinalizeDialog();
+                                        //client.Send(stream);
+                                    }
                                 }
                             }
                             else

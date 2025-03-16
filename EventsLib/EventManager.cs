@@ -175,7 +175,7 @@ namespace COServer.EventsLib
             {
                 var stream = rec.GetStream();
 
-                Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("The signups for " + NextEvent + " has started. Type @pvp to signup.", "ALLUSERS", "PVPEvents", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.TopLeft).GetArray(stream));
+                Program.SendGlobalPackets.Enqueue(new Game.MsgServer.MsgMessage("The signups for " + NextEvent + " has started. Type /pvp to signup.", "ALLUSERS", "PVPEvents", Game.MsgServer.MsgMessage.MsgColor.white, Game.MsgServer.MsgMessage.ChatMode.TopLeft).GetArray(stream));
             }
             if (NextEvent == dragonwar.name)
                 dragonwar.ChooseKing = true;
