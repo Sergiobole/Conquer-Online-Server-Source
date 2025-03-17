@@ -5,6 +5,7 @@ namespace COServer.Game.MsgNpc
 {
     public enum NpcID : uint
     {
+        StoreGem = 431232,
         Garmert3Npc = 2000555,
         MiraculosQuest = 147147,
         letterquest = 15975,
@@ -45,6 +46,8 @@ namespace COServer.Game.MsgNpc
         AllTournaments = 909909,
         BaslikOut = 909901,
         BaslikIn = 909900,
+        Cwnpcjoin = 15538,
+        Cwnpcquit = 15539,
         RemoveBound = 5056,
         OnlinePointsReward = 15581,
         VotePointsReward = 15580,

@@ -120,7 +120,19 @@ namespace COServer.Database
             DbScrollPack = 723793,
             SoulAromaBag = 720372,
             DreamGrassBag = 720373,
-            MossBag = 720375;
+            MossBag = 720375,
+            NormalPhoenixGem = 700001,
+            NormalDragonGem = 700011,
+            NormalFuryGem = 700021,
+            NormalRainbowGem = 700031,
+            NormalKylinGem = 700041,
+            NormalVioletGem = 700051,
+            NormalMoonGem = 700061,
+            NormalTortoiseGem = 700071; 
+
+
+
+
 
 
 

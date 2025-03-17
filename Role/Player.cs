@@ -22,6 +22,15 @@ namespace COServer.Role
         public int DepositStone2 = 0;
         public int DepositStone3 = 0;
         public int DepositStone4 = 0;
+        public int NormalPhoenixGem = 0;
+        public int NormalDragonGem = 0;
+        public int NormalFuryGem = 0;
+        public int NormalRainbowGem = 0;
+        public int NormalKylinGem = 0;
+        public int NormalVioletGem = 0;
+        public int NormalMoonGem = 0;
+        public int NormalTortoiseGem = 0;
+
         public bool OfflineMiner { get; set; } = false; // Novo campo para mineração offline
 
         #region RobotAuto

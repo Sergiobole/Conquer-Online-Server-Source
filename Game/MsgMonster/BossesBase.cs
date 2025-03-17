@@ -61,7 +61,7 @@ namespace COServer.Game.MsgMonster
                 }
                 else if (Nr == 2)
                 {
-                    SpawnHandler(1000, 459, 704, 20060, "TeratoDragon",
+                    SpawnHandler(1000, 293, 459, 20060, "TeratoDragon",
                         "will appear at " + now.Hour + ":00! Get ready to fight! You only have 5 minutes!",
                         " has spawned in " + Database.Server.MapName[1000] + " (293,459)!",
                         MsgServer.MsgStaticMessage.Messages.TeratoDragon);
@@ -96,25 +96,32 @@ namespace COServer.Game.MsgMonster
                 }
             }
 
-            // Atualize a seção dos bosses para:
-            // Ganoderma: Spawna às xx:15 de toda hora
-            if (now.Minute == 15 && now.Second == 0 && now.Subtract(lastGanodermaSpawnTime).TotalMinutes >= 60)
+            // Ganoderma: Spawna às XX:15 de toda hora
+            if (now.Minute == 15 && now.Second == 0)
             {
-                SpawnHandler(1011, 655, 799, 3130, "Ganoderma",
-                    "A Ganoderma has spawned in " + Database.Server.MapName[1011] + " (655, 799)! Get ready to fight!",
-                    " has spawned in " + Database.Server.MapName[1011] + " (655, 799)!");
-                Program.DiscordAPIevents.Enqueue("```Ganoderma Spawned (655, 799)!```");
-                lastGanodermaSpawnTime = now;
+                var map = Database.Server.ServerMaps[1011];
+                if (!map.ContainMobID(3130))
+                {
+                    SpawnHandler(1011, 655, 799, 3130, "Ganoderma",
+                        "A Ganoderma has spawned...",
+                        " has spawned...");
+                    lastGanodermaSpawnTime = now;
+                    Program.DiscordAPIevents.Enqueue("```Ganoderma Spawned (655),(799)...```");
+                }
             }
 
-            // Titan: Spawna às xx:21 de toda hora
-            if (now.Minute == 21 && now.Second == 0 && now.Subtract(lastTitanSpawnTime).TotalMinutes >= 60)
+            // Titan: Spawna às XX:21 de toda hora
+            if (now.Minute == 21 && now.Second == 0)
             {
-                SpawnHandler(1020, 417, 625, 3134, "Titan",
-                    "A Titan has spawned in " + Database.Server.MapName[1020] + " (417, 625)! Get ready to fight!",
-                    " has spawned in " + Database.Server.MapName[1020] + " (417, 625)!");
-                Program.DiscordAPIevents.Enqueue("```Titan Spawned (417, 625)!```");
-                lastTitanSpawnTime = now;
+                var map = Database.Server.ServerMaps[1020];
+                if (!map.ContainMobID(3134))
+                {
+                    SpawnHandler(1020, 417, 625, 3134, "Titan",
+                        "A Titan has spawned...",
+                        " has spawned...");
+                    lastTitanSpawnTime = now;
+                    Program.DiscordAPIevents.Enqueue("```Titan Spawned (417),(625)...```");
+                }
             }
 
             // Cleanwater: Spawna a cada 30 minutos (xx:00 e xx:30)
@@ -123,7 +130,7 @@ namespace COServer.Game.MsgMonster
                 SpawnHandler(1212, 428, 418, 8500, "Cleanwater",
                     "Cleanwater has spawned in " + Database.Server.MapName[1212] + " (428, 418)! Get ready to fight!",
                     " has spawned in " + Database.Server.MapName[1212] + " (428, 418)!");
-                Program.DiscordAPIevents.Enqueue("```Cleanwater Spawned in map 1212 (428, 418)!```");
+                Program.DiscordAPIevents.Enqueue("```Cleanwater Spawned (428, 418)!```");
             }
 
             // SnakeKing: Spawna toda virada de hora (xx:00)

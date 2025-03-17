@@ -175,48 +175,49 @@ namespace COServer.Game.MsgMonster
             uint dwItemSort = 0;
             uint dwItemLev = 0;
 
-            int nRand = Program.GetRandom.Next(0, 1200);// % 100;
-            if (nRand >= 10 && nRand < 20) // 0.17%
+            int nRand = Program.GetRandom.Next(0, 1200);
+
+            if (nRand < 200) // 16.67% - Botas
             {
                 dwItemSort = 160;
                 dwItemLev = Family.DropBoots;
             }
-            else if (nRand >= 20 && nRand < 50) // 0.25%
+            else if (nRand < 400) // 16.67% - Colares
             {
                 dwItemSort = NecklaceType[Program.GetRandom.Next(0, NecklaceType.Length)];
                 dwItemLev = Family.DropNecklace;
             }
-            else if (nRand >= 50 && nRand < 100) // 4.17%
+            else if (nRand < 600) // 16.67% - Anéis
             {
                 dwItemSort = RingType[Program.GetRandom.Next(0, RingType.Length)];
                 dwItemLev = Family.DropRing;
             }
-            else if (nRand >= 100 && nRand < 400) // 25%
+            else if (nRand < 800) // 16.67% - Capacetes
             {
                 dwItemSort = ArmetType[Program.GetRandom.Next(0, ArmetType.Length)];
                 dwItemLev = Family.DropArmet;
             }
-            else if (nRand >= 400 && nRand < 700) // 25%
+            else if (nRand < 1000) // 16.67% - Armaduras
             {
                 dwItemSort = ArmorType[Program.GetRandom.Next(0, ArmorType.Length)];
                 dwItemLev = Family.DropArmor;
             }
-            else // 45%
+            else // 16.67% - Armas (divididas em subtipos)
             {
-                int nRate = Program.GetRandom.Next(0, 1000) % 100;
-                if (nRate >= 10 && nRate < 20) // 20% of 45% (= 9%) - Backswords
+                int nRate = Program.GetRandom.Next(0, 100);
+                if (nRate < 33) // 5.56% - Backswords
                 {
                     dwItemSort = 421;
                 }
-                else if (nRate >= 40 && nRate < 80)	// 40% of 45% (= 18%) - One handers
+                else if (nRate < 66) // 5.56% - One handers
                 {
                     dwItemSort = OneHanderType[Program.GetRandom.Next(0, OneHanderType.Length)];
                     dwItemLev = Family.DropWeapon;
                 }
-                else if (nRate >= 80 && nRate < 100)// 20% of 45% (= 9%) - Two handers (and shield)
+                else // 5.56% - Two handers ou Shield
                 {
                     dwItemSort = TwoHanderType[Program.GetRandom.Next(0, TwoHanderType.Length)];
-                    dwItemLev = ((dwItemSort == 900) ? Family.DropShield : Family.DropWeapon);
+                    dwItemLev = (dwItemSort == 900) ? Family.DropShield : Family.DropWeapon;
                 }
             }
             if (dwItemLev != 99)

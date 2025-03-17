@@ -51,6 +51,7 @@ namespace COServer.Game.MsgTournaments
         internal static MsgDragonIsland DragonIsland;
         internal static ProjectControl PlayerTop;
         public static bool SpawnDevil = false;
+        static bool pkDeathMatchStarted = false;
 
         internal static void Create()
         {
@@ -323,11 +324,16 @@ namespace COServer.Game.MsgTournaments
                     #region PKDeathMatch 20:00
                     if (Now64.Hour == 20 && (Now64.Minute >= 0 && Now64.Minute <= 15))
                     {
-                        if (!PkWar.AllowJoin())
+                        if (!PkWar.AllowJoin() && !pkDeathMatchStarted)
                         {
+                            pkDeathMatchStarted = true; // Marca que já foi iniciado
                             PkWar.Open();
                             SendInvitation("PKDeathMatch", 439, 362, 1002, 0, 60, MsgServer.MsgStaticMessage.Messages.PKDeathMatch);
                         }
+                    }
+                    else
+                    {
+                        pkDeathMatchStarted = false; // Reseta flag quando o horário do evento termina
                     }
                     #endregion
                     #region GuildWar

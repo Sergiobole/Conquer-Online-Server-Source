@@ -71,17 +71,14 @@ namespace COServer.EventsLib
                     using (var rec = new ServerSockets.RecycledPacket())
                     {
                         var stream = rec.GetStream();
-                        Console.WriteLine(winnerG + " has won the Guilds Death Match, and won 2000 CPs!");
                         Program.SendGlobalPackets.Enqueue(
-                            new Game.MsgServer.MsgMessage(winnerG + " has won the Guilds Death Match, and all players won 2.000CPs and PowerExpBall!", "ALLUSERS", "[EVENT]", Game.MsgServer.MsgMessage.MsgColor.white, (Game.MsgServer.MsgMessage.ChatMode)2000).GetArray(stream));
-                        Program.DiscordAPIwinners.Enqueue("``[" + winnerG + "] has won the Guilds Death Match, and all players won 2.000CPs and PowerExpBall!!``");
+                            new Game.MsgServer.MsgMessage(winnerG + " has won the Guilds Death Match, and all players won PowerExpBall!", "ALLUSERS", "[EVENT]", Game.MsgServer.MsgMessage.MsgColor.white, (Game.MsgServer.MsgMessage.ChatMode)2000).GetArray(stream));
+                        Program.DiscordAPIwinners.Enqueue("``[" + winnerG + "] has won the Guilds Death Match, and all players won PowerExpBall!!``");
                     }
 
                     // Presentear todos os jogadores que estão no mapa do evento e são da guilda vencedora
                     foreach (var c in Database.Server.GamePoll.Values.Where(e => e.Player.Map == map && e.Player.MyGuild != null && e.Player.MyGuild.GuildName == winnerG))
                     {
-                        c.Player.ConquerPoints += 2000; // Adiciona os Conquer Points
-
                         // Adiciona o item ao inventário do jogador
                         using (var rec = new ServerSockets.RecycledPacket())
                         {

@@ -6,6 +6,7 @@ using MYSQLCOMMAND = MySql.Data.MySqlClient.MySqlCommand;
 using MYSQLREADER = MySql.Data.MySqlClient.MySqlDataReader;
 using MYSQLCONNECTION = MySql.Data.MySqlClient.MySqlConnection;
 using System.Windows.Forms;
+using COServer.Database.DBActions;
 
 namespace COServer.Database
 {
@@ -226,6 +227,17 @@ namespace COServer.Database
                 write.Write<int>("Character", "DepositStone2", client.Player.DepositStone2);
                 write.Write<int>("Character", "DepositStone3", client.Player.DepositStone3);
                 write.Write<int>("Character", "DepositStone4", client.Player.DepositStone4);
+
+                write.Write<int>("Character", "NormalPhoenixGem", client.Player.NormalPhoenixGem);
+                write.Write<int>("Character", "NormalDragonGem", client.Player.NormalDragonGem);
+                write.Write<int>("Character", "NormalFuryGem", client.Player.NormalFuryGem);
+                write.Write<int>("Character", "NormalRainbowGem", client.Player.NormalRainbowGem);
+                write.Write<int>("Character", "NormalKylinGem", client.Player.NormalKylinGem);
+                write.Write<int>("Character", "NormalVioletGem", client.Player.NormalVioletGem);
+                write.Write<int>("Character", "NormalMoonGem", client.Player.NormalMoonGem);
+                write.Write<int>("Character", "NormalTortoiseGem", client.Player.NormalTortoiseGem);
+
+
                 SaveClientItems(client);
                 SaveClientSpells(client);
                 SaveClientProfs(client);
@@ -449,17 +461,23 @@ namespace COServer.Database
             client.Player.PlayerHasItemTime = reader.ReadBool("Character", "PlayerHasItemTime", false);
             client.Player.claimsilvercup = reader.ReadBool("Character", "claimsilvercup", false);
             client.Player.CanClaimFreeVip = reader.ReadBool("Character", "CanClaimFreeVip", false);
-
-
             client.Player.DepositMets = reader.ReadInt32("Character", "DepositMets", 0);
             client.Player.DepositSMets = reader.ReadInt32("Character", "DepositSMets", 0);
             client.Player.DepositDbs = reader.ReadInt32("Character", "DepositDbs", 0);
             client.Player.DepositSDbs = reader.ReadInt32("Character", "DepositSDbs", 0);
-
             client.Player.DepositStone1 = reader.ReadInt32("Character", "DepositStone1", 0);
             client.Player.DepositStone2 = reader.ReadInt32("Character", "DepositStone2", 0);
             client.Player.DepositStone3 = reader.ReadInt32("Character", "DepositStone3", 0);
             client.Player.DepositStone4 = reader.ReadInt32("Character", "DepositStone4", 0);
+
+            client.Player.NormalPhoenixGem = reader.ReadInt32("Character", "NormalPhoenixGem", 0);
+            client.Player.NormalDragonGem = reader.ReadInt32("Character", "NormalDragonGem", 0);
+            client.Player.NormalFuryGem = reader.ReadInt32("Character", "NormalFuryGem", 0);
+            client.Player.NormalRainbowGem = reader.ReadInt32("Character", "NormalRainbowGem", 0);
+            client.Player.NormalKylinGem = reader.ReadInt32("Character", "NormalKylinGem", 0);
+            client.Player.NormalVioletGem = reader.ReadInt32("Character", "NormalVioletGem", 0);
+            client.Player.NormalMoonGem = reader.ReadInt32("Character", "NormalMoonGem", 0);
+            client.Player.NormalTortoiseGem = reader.ReadInt32("Character", "NormalTortoiseGem", 0);
 
 
             LoadClientItems(client);

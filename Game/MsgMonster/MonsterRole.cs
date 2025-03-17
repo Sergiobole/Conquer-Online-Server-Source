@@ -563,17 +563,11 @@ namespace COServer.Game.MsgMonster
                     #region CleanWater
                     if (Map == 1212 && Family.ID == 8500)
                     {
-                        if (Role.Core.Rate(40)) 
+                        if (Role.Core.Rate(50)) 
                         {
                             DropItemID(killer, Database.ItemType.CleanWater, stream);
                             Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a ClearWater in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
                             Program.DiscordAPIwinners.Enqueue($"``[{killer.Player.Name}] found a ClearWater in WaterLord(428,418)!``");
-                        }
-                        else if (Role.Core.Rate(60)) 
-                        {
-                            DropItemID(killer, Database.ItemType.MeteorScroll, stream);
-                            Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a MeteorScroll in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
-                            Program.DiscordAPIwinners.Enqueue($"``[{killer.Player.Name}] found a MeteorScroll in WaterLord(428,418)!``");
                         }
                     }
                     #endregion
