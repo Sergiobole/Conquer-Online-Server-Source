@@ -134,11 +134,13 @@ namespace COServer.Game.MsgMonster
             }
 
             // SnakeKing: Spawna toda virada de hora (xx:00)
-            if (now.Minute == 0 && now.Second == 0)
+            if (now.Minute == 40 && now.Second == 0 && (now - lastSnakeKingSpawnTime).TotalMinutes >= 60)
             {
                 SpawnHandler(1063, 84, 64, 3102, "SnakeKing",
                     "SnakeKing has spawned in " + Database.Server.MapName[1063] + " (84, 64)! Get ready to fight!",
                     " has spawned in " + Database.Server.MapName[1063] + " (84, 64)!");
+
+                lastSnakeKingSpawnTime = now; // Atualiza o tempo do último spawn
                 Program.DiscordAPIevents.Enqueue("```SnakeKing Spawned (84, 64)!```");
             }
         }

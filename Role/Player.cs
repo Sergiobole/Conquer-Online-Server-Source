@@ -30,6 +30,7 @@ namespace COServer.Role
         public int NormalVioletGem = 0;
         public int NormalMoonGem = 0;
         public int NormalTortoiseGem = 0;
+        public uint TreasureBoxesPoint = 0;
 
         public bool OfflineMiner { get; set; } = false; // Novo campo para mineração offline
 
@@ -61,6 +62,7 @@ namespace COServer.Role
         public DateTime RemoveStamp;
         public bool RemoveAfter;
         public bool SkipBadOre = false;
+
         public static byte LotteryEntry(byte vipLevel)
         {
             byte chance = 0;
@@ -2001,7 +2003,6 @@ namespace COServer.Role
             return (uint)Database.TutorInfo.ShareBattle(this.Owner, (int)target_battlepower);
         }
         public uint CurrentTreasureBoxes = 0;
-        public uint TreasureBoxesPoint = 0;
         public byte QuestLevel = 0;
 
         public string Mac = "";

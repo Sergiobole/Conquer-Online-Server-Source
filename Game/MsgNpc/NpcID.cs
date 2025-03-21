@@ -5,6 +5,7 @@ namespace COServer.Game.MsgNpc
 {
     public enum NpcID : uint
     {
+        SuperDropNPC = 431233,
         StoreGem = 431232,
         Garmert3Npc = 2000555,
         MiraculosQuest = 147147,

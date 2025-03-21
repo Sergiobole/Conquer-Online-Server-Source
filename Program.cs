@@ -56,7 +56,7 @@ namespace COServer
         public static List<uint> SsFbMap = new List<uint>();
         public static bool OnMainternance = false;
         public static Cryptography.TransferCipher transferCipher;
-        public static List<uint> MapDC = new List<uint>() { 1036, 1017, 1081, 2060, 9972, 1080, 3820, 3954, 1806, 1508, 1768, 1505, 1506, 1509, 1508, 1801, 1780, 1779, 3071, 1068, 3830, 3831, 3832, 3834, 3826, 3827, 3828, 3829, 3833, 3825, 1601, 1201, 4000, 4003, 4006, 4008, 4009 };
+        public static List<uint> MapDC = new List<uint>() { 1572, 1036, 1017, 1081, 2060, 9972, 1080, 3820, 3954, 1806, 1508, 1768, 1505, 1506, 1509, 1508, 1801, 1780, 1779, 3071, 1068, 3830, 3831, 3832, 3834, 3826, 3827, 3828, 3829, 3833, 3825, 1601, 1201, 4000, 4003, 4006, 4008, 4009 };
         public static List<uint> RevivePoint = new List<uint>() { 1201, 1202 };
         public static List<uint> NoDropItems = new List<uint>() { 1764, 700, 1780, 3820, 1005 };
         public static List<uint> FreePkMap = new List<uint>() { 50, 51, 52, 53, 2071, 3998, 3071, 6000, 6001, 1505, 1005, 1038, 700, 1508, 1201, 1767 };

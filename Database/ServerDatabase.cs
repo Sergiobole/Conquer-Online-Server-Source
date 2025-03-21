@@ -29,7 +29,6 @@ namespace COServer.Database
             {
                 if (DateTime.Now.DayOfYear != client.Player.Day)
                 {
-                    client.Player.TreasureBoxesPoint = 0;
                     client.Player.QuestLevel = 5;
                     client.TotalMobsLevel = 0;
                     client.TotalMobsKilled = 0;
@@ -113,7 +112,7 @@ namespace COServer.Database
                         client.Player.Y = 378;
                     }
 
-                    if (client.Player.Map == 1036 || client.Player.Map == 1039)
+                    if (client.Player.Map == 1036 || client.Player.Map == 1039 || client.Player.Map == 1572) // Mapa 1572 incluso
                     {
                         client.Player.Map = 1002;
                         client.Player.X = 428;

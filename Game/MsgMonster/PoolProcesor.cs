@@ -229,8 +229,5 @@ namespace COServer.Game.MsgMonster
             }
 
         }
-
-
-
     }
 }

@@ -49,9 +49,9 @@ namespace COServer.Game.MsgTournaments
         }
         public bool Join(Client.GameClient user, ServerSockets.Packet stream)
         {
-            if (user.Player.Level < 80)
+            if (user.Player.Level < 15)
             {
-                user.SendSysMesage("Need to be level 80 at least.");
+                user.SendSysMesage("Need to be level 15 at least.");
                 return false;
             }
             if (Process == ProcesType.Alive)

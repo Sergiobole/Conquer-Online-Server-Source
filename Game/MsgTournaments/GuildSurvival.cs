@@ -157,7 +157,8 @@ namespace COServer.Game.MsgTournaments
                             foreach (var user in players.Where(p => p.Player.GuildID == winnerGuild.Key))
                             {
                                 // Adicionar múltiplos itens ao inventário
-                                user.Inventory.Add(stream, 722178); // Primeiro SurpriseBox
+                                user.Inventory.Add(stream, 722178); // Primeiro
+                                                                    // 
                                 user.Inventory.Add(stream, 722178); // Segundo SurpriseBox
                                                                     // 
                                                                     // user.Inventory.Add(stream, outroItemID);

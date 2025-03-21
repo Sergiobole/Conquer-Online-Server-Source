@@ -231,6 +231,7 @@
     <Compile Include="Game\Models\MarketItem.cs" />
     <Compile Include="Game\Models\VotesModels.cs" />
     <Compile Include="Game\MsgServer\InviteManager.cs" />
+    <Compile Include="Game\MsgServer\SuperDrop.cs" />
     <Compile Include="Game\MsgServer\VendorDiscordNotifier.cs" />
     <Compile Include="Game\MsgServer\VoteSystem.cs" />
     <Compile Include="Game\MsgTournaments\Events\Ss_Fb.cs" />

@@ -144,6 +144,21 @@ namespace COServer.Game.MsgTournaments
                     if (!Database.Server.FullLoading)
                         return;
 
+                    // Dentro do try:
+                    bool isSuperDropTime = (Now64.Hour == 12 && Now64.Minute >= 30 && Now64.Minute < 40) ||
+                                           (Now64.Hour == 22 && Now64.Minute >= 30 && Now64.Minute < 40);
+
+                    if (!isSuperDropTime)
+                    {
+                        var superDropPlayers = Database.Server.GamePoll.Values
+                            .Where(c => c.Player.Map == 1572).ToList();
+
+                        foreach (var client in superDropPlayers)
+                        {
+                            client.Teleport(428, 378, 1002); // Twin City
+                            client.SendSysMesage("O SuperDrop terminou. Volte ao NPC!", MsgMessage.ChatMode.TopLeft);
+                        }
+                    }
                     // Reseta o ClassPK se o dia mudou
                     if (LastClassPKStart.Date != Now64.Date && LastClassPKStart != DateTime.MinValue)
                     {
@@ -383,7 +398,7 @@ namespace COServer.Game.MsgTournaments
                     }
                     #endregion
                     #region TournamentType
-                    if (Now64.Minute == 40)
+                    if (Now64.Minute == 20)
                     {
                         if (CurrentTournament.Process == ProcesType.Dead)
                         {

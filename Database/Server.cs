@@ -76,7 +76,6 @@ namespace COServer.Database
 
                             foreach (var client in GamePoll.Values)
                             {
-                                client.Player.TreasureBoxesPoint = 0;
                                 client.Player.QuestLevel = 5;
                                 client.TotalMobsLevel = 0;
                                 client.TotalMobsKilled = 0;

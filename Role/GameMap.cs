@@ -433,6 +433,7 @@ namespace COServer.Role
             1212,
             1300,
             1571,
+            1572,
         };
 
         public List<Portal> Portals = new List<Portal>();

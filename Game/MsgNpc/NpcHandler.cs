@@ -88,16 +88,16 @@ namespace COServer.Game.MsgNpc
                             switch (Program.GetRandom.Next(1, 4))
                             {
                                 case 1:
-                                    client.Inventory.Add(stream, ItemType.Stone_1, 1);
-                                    rewardName = "Stone +1";
+                                    client.Inventory.Add(stream, ItemType.Stone_2, 1);
+                                    rewardName = "Stone +2";
                                     break;
                                 case 2:
                                     client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
                                     rewardName = "Meteor Scroll";
                                     break;
                                 case 3:
-                                    client.Inventory.Add(stream, ItemType.DragonBall, 1);
-                                    rewardName = "Dragon Ball";
+                                    client.Inventory.Add(stream, ItemType.Stone_1, 1);
+                                    rewardName = "Stone +1";
                                     break;
                             }
 
@@ -150,23 +150,19 @@ namespace COServer.Game.MsgNpc
 
 
                             string rewardName = "";
-                            switch (Program.GetRandom.Next(1, 5))
+                            switch (Program.GetRandom.Next(1, 4))
                             {
                                 case 1:
-                                    client.Inventory.Add(stream, ItemType.Stone_1, 1);
-                                    rewardName = "Stone +1";
+                                    client.Inventory.Add(stream, ItemType.Stone_2, 1);
+                                    rewardName = "Stone +2";
                                     break;
                                 case 2:
                                     client.Inventory.Add(stream, ItemType.MeteorScroll, 1);
                                     rewardName = "Meteor Scroll";
                                     break;
                                 case 3:
-                                    client.Inventory.Add(stream, ItemType.DragonBall, 1);
-                                    rewardName = "Dragon Ball";
-                                    break;
-                                case 4:
-                                    client.Inventory.Add(stream, ItemType.Meteor, 1);
-                                    rewardName = "Meteor";
+                                    client.Inventory.Add(stream, ItemType.Stone_1, 1);
+                                    rewardName = "Stone +1";
                                     break;
                             }
 
@@ -520,7 +516,7 @@ namespace COServer.Game.MsgNpc
                 case 0:
                     {
                         // Exibe o diálogo inicial com os pontos online do usuário e uma opção para trocar por um token VIP de 7 dias
-                        dialog.AddText($"You will earn 1 OnlinePoint for every minute you stay online in Twin City.\nIn other maps, you will earn 0.5 points per minute.\nYou currently have [ {client.Player.OnlinePoints} ] OnlinePoints.").AddAvatar(7);
+                        dialog.AddText($"Você ganhará 1 OnlinePoint para cada minuto que permanecer online em Twin City.\nEm outros mapas, você ganhará 0.5 pontos por minuto.\nAtualmente, você tem [ {client.Player.OnlinePoints} ] OnlinePoints.").AddAvatar(7);
                         dialog.AddOption("1 - [Vips] ", 45);
                         dialog.AddOption("2 - [PrayingStones] ", 55);
                         dialog.AddOption("3 - [DBScroll / MetScroll] ", 65);
@@ -5704,13 +5700,15 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        dialog.AddText("The ProfToken is an extremely miraculous item.\n")
-                        .AddText("It can upgrade the proficiency of weapons very fast.\n")
-                        .AddText("What would you like to improve?")
-                        .AddOption("One handed weapon.", 1)
+                        dialog.AddText("O ProfToken é um item extremamente importante!.\n")
+                        .AddText("Ele pode melhorar a proficiência de armas de forma muito rápida.\n")
+                        .AddText("Para proficiências até o nível 12: 10 tokens\n")
+                        .AddText("Para níveis acima de 12: 40 tokens por nível\n")
+                        .AddText("O que você gostaria de melhorar?")
+                        .AddOption("One handed weapon.", 1)  // Mantido em inglês conforme solicitado
                         .AddOption("Two handed weapon.", 3)
                         .AddOption("Other.", 5)
-                        .AddOption("Just passing by.", 255).AddAvatar(65).FinalizeDialog();
+                        .AddOption("Apenas passando.", 255).AddAvatar(65).FinalizeDialog();
                         break;
                     }
                 case 1:
@@ -5729,12 +5727,10 @@ namespace COServer.Game.MsgNpc
                 case 2:
                     {
                         dialog.AddText("Which one handed proficiency?");
-                        //    dialog.AddOption("PrayerBead.", 61);
                         dialog.AddOption("Hammer.", 46);
                         dialog.AddOption("Club.", 48);
                         dialog.AddOption("Scepter.", 184);
                         dialog.AddOption("Dagger.", 150);
-                        //  dialog.AddOption("Katana.", 60);
                         dialog.AddOption("Next Page.", 6);
                         dialog.AddOption("Back.", 1);
                         dialog.AddOption("Nothing, sorry.", 255);
@@ -5745,8 +5741,6 @@ namespace COServer.Game.MsgNpc
                     {
                         dialog.AddText("Which one handed proficiency?");
                         dialog.AddOption("Axe.", 45);
-                        //    dialog.AddOption("Rapier.", 62);
-                        //     dialog.AddOption("Pistol.", 63);
                         dialog.AddOption("Back.", 2);
                         dialog.AddAvatar(65).FinalizeDialog();
                         break;
@@ -5791,45 +5785,38 @@ namespace COServer.Game.MsgNpc
                         {
                             var myprof = client.MyProfs.ClientProf[client.UplevelProficiency];
 
-                            // Verifica se o nível da proficiência já é 12
-                            if (myprof.Level >= 12)
+                            // Verifica se o nível máximo (20) foi atingido
+                            if (myprof.Level >= 20)
                             {
                                 dialog.AddText("This weapon proficiency can't be leveled up anymore.");
                                 dialog.AddOption("Oh.", 255).AddAvatar(65).FinalizeDialog();
                                 return;
                             }
 
-                            // Verifica se o jogador tem pelo menos 10 ProfTokens (ID 159753) no inventário
-                            client.UplevelProficiency = 0;
-                            if (client.Inventory.Contain(159753, 10))
-                            {
-                                // Remove 10 ProfTokens do inventário do jogador
-                                client.Inventory.Remove(159753, 10, stream);
+                            // Calcula a quantidade de tokens necessários
+                            uint requiredTokens = (uint)(myprof.Level >= 12 ? 40 : 10);
 
-                                // Envia mensagem de sucesso ao jogador
+                            client.UplevelProficiency = 0;
+                            if (client.Inventory.Contain(159753, requiredTokens))
+                            {
+                                client.Inventory.Remove(159753, requiredTokens, stream);
                                 client.SendSysMesage("You've successfully leveled your weapon proficiency.", Game.MsgServer.MsgMessage.ChatMode.System);
 
-                                // Aumenta o nível da proficiência e reseta a experiência
                                 myprof.Level++;
                                 myprof.Experience = 0;
 
-                                // Envia atualização da proficiência para o cliente
                                 client.Send(stream.ProficiencyCreate(myprof.ID, myprof.Level, myprof.Experience, client.Player.UID));
-                                break;
                             }
                             else
                             {
-                                // Informa ao jogador que ele não tem ProfTokens suficientes
-                                dialog.AddText("You don't have enough ProfTokens, you need 10 to level up.");
+                                dialog.AddText($"You don't have enough ProfTokens, you need {requiredTokens} to level up.");
                                 dialog.AddOption("Sorry.", 255).AddAvatar(65).FinalizeDialog();
                             }
                         }
                         else
                         {
-                            // Informa que o jogador não conhece essa proficiência
                             dialog.AddText("You don't know this proficiency.");
                             dialog.AddOption("Okay.", 255).AddAvatar(65).FinalizeDialog();
-                            break;
                         }
                         break;
                     }
@@ -5839,6 +5826,7 @@ namespace COServer.Game.MsgNpc
                         if (Option == 255) return;
                         ushort prof = 0;
 
+                        // Lógica de atribuição de prof (mantida igual)
                         if (Option == 62)
                             prof = 611;
                         else if (Option == 150)
@@ -5859,36 +5847,32 @@ namespace COServer.Game.MsgNpc
 
                         if (prof == 600) prof++;
 
-                        // Verifica se o jogador conhece a proficiência selecionada
                         if (client.MyProfs.ClientProf.ContainsKey(prof))
                         {
                             var myprof = client.MyProfs.ClientProf[prof];
 
-                            // Verifica se o nível da proficiência já é 12
-                            if (myprof.Level >= 12)
+                            // Verifica se atingiu o nível máximo (20)
+                            if (myprof.Level >= 20)
                             {
                                 dialog.AddText("This weapon proficiency can't be leveled up anymore.");
                                 dialog.AddOption("Oh.", 255).AddAvatar(65).FinalizeDialog();
                                 return;
                             }
 
-                            // Define a proficiência que será upada
-                            client.UplevelProficiency = prof;
+                            // Calcula tokens necessários baseado no nível atual
+                            int requiredTokens = myprof.Level >= 12 ? 40 : 10;
 
-                            // Informa ao jogador que precisa de 10 ProfTokens para upar a proficiência
-                            dialog.AddText("I need 10 ProfTokens to be able to level up this weapon proficiency.");
+                            client.UplevelProficiency = prof;
+                            dialog.AddText($"I need {requiredTokens} ProfTokens to level up this proficiency.");
                             dialog.AddOption("Here you go.", 100);
                             dialog.AddOption("Never~mind.", 255).AddAvatar(65).FinalizeDialog();
-                            break;
                         }
                         else
                         {
-                            // Informa que o jogador não conhece essa proficiência
                             dialog.AddText("You don't know this proficiency.");
-                            dialog.AddOption("Okay.", 255);
-                            dialog.AddAvatar(65).FinalizeDialog();
-                            break;
+                            dialog.AddOption("Okay.", 255).AddAvatar(65).FinalizeDialog();
                         }
+                        break;
                     }
             }
         }
@@ -9695,12 +9679,8 @@ namespace COServer.Game.MsgNpc
                                     rewardName = "MeteorScroll";
                                     break;
                                 case 4:
-                                    client.Inventory.Add(stream, ItemType.DragonBall, 1);
-                                    rewardName = "Dragon Ball ";
-                                    break;
-                                case 5:
-                                    client.Inventory.Add(stream, ItemType.MeteorTear, 1);
-                                    rewardName = "Meteor ";
+                                    client.Inventory.Add(stream, ItemType.Stone_2, 1);
+                                    rewardName = "Stone +2";
                                     break;
                             }
 
@@ -9963,12 +9943,12 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        dialog.Text("Welcome to OrigensCO!\n");
-                        dialog.Text("For more info, visit OrigensCO.com or join our Discord.\n");
-                        dialog.Option("1 - Whatsapp Group", 1);
-                        dialog.Option("2 - Buy Coins", 2);
-                        dialog.Option("2 - Discord Group", 3);
-                        dialog.AddOption("3 - Give me AutoLoot.", 55);
+                        dialog.Text("Bem-vindo ao OrigensCO!\n");
+                        dialog.Text("Para mais informações, visite OrigensCO.com ou entre no nosso Discord.\n");
+                        dialog.Option("1 - Grupo do Whatsapp", 1);
+                        dialog.Option("2 - Comprar Coins", 2);
+                        dialog.Option("3 - Grupo do Discord", 3);
+                        dialog.AddOption("4 - VIP AutoLoot.", 55);
                         dialog.AddAvatar(71).FinalizeDialog();
                         break;
                     }
@@ -10399,13 +10379,11 @@ namespace COServer.Game.MsgNpc
             {
                 case 0:
                     {
-                        data.AddText("I've lost all my treasure chests inside the map when I was doing the quest! Now you'll need to find them for me!\n All Times [XX:30] Start!")
-                            .AddOption("Sign~me~up!", 1)
-                            .AddOption("Exchange your points.", 2)
-                            .AddOption("Maybe later.", 255)
+                        data.AddText("Eu perdi todos os meus baús do tesouro dentro do mapa quando estava fazendo a missão!\nAgora você precisará encontrá-los para mim!\nTodos as Horas [xx:20] Começa!")
+                            .AddOption("Quero participar!", 1)
+                            .AddOption("Trocar seus pontos.", 2)
+                            .AddOption("Talvez mais tarde.", 255)
                             .AddAvatar(3).FinalizeDialog();
-
-
                         break;
                     }
                 case 1:
@@ -10414,50 +10392,45 @@ namespace COServer.Game.MsgNpc
                         {
                             if (!MsgSchedules.CurrentTournament.Join(client, stream))
                             {
-                                data.AddText("We're sorry, but you can't enter right now, try again when the tournament starts!")
-                                    .AddOption("I see.", 255)
+                                data.AddText("Desculpe, mas você não pode entrar agora, tente novamente quando o evento começar!")
+                                    .AddOption("Entendi.", 255)
                                     .AddAvatar(3).FinalizeDialog();
                             }
                         }
                         else
                         {
-                            data.AddText("We're sorry, but you can't enter right now, try again when the tournament starts!")
-                                .AddOption("I see.", 255)
+                            data.AddText("Desculpe, mas você não pode entrar agora, tente novamente quando o evento começar!")
+                                .AddOption("Entendi.", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
-
-
-
                         break;
                     }
                 case 2:
                     {
-                        data.AddText("Exchange your Treasure Points for great rewards!\n")
-                            .AddText($"You have: {client.Player.TreasureBoxesPoint} points.\n")
-                            .AddText("Points will reset every day, so be sure to spend your points.")
-                            .AddOption("Exchange points!", 3)
-                            .AddOption("Never~mind.", 255).AddAvatar(3).FinalizeDialog();
+                        data.AddText("Troque seus Pontos do Tesouro por recompensas!\n")
+                            .AddText($"Você tem: {client.Player.TreasureBoxesPoint} pontos.\n")
+                            .AddOption("Trocar pontos!", 3)
+                            .AddOption("Deixa pra lá.", 255).AddAvatar(3).FinalizeDialog();
                         break;
                     }
                 case 3:
                     {
                         if (client.Player.TreasureBoxesPoint > 0)
                         {
-                            data.AddText($"Select your reward:")
-                                .AddOption("MeteorScroll - 30 Points.", 4)
-                                .AddOption("Emerald - 40 Points.", 5)
-                                .AddOption("DragonBall - 40 Points.", 6)
-                                .AddOption("LifeFruitBasket - 50 Points.", 7)
-                                .AddOption("MoonBox - 150 Points.", 8)
-                                .AddOption("Stone +2 - 100 Points.", 9)
-                                .AddOption("PowerEXPBall - 150 Points.", 10)
-                                .AddOption("Never~mind.", 255).AddAvatar(3).FinalizeDialog();
+                            data.AddText($"Selecione sua recompensa:")
+                                .AddOption("Meteor Scroll - 30 Pontos.", 4)
+                                .AddOption("Esmerald - 20 Pontos.", 5)
+                                .AddOption("DragonBall - 40 Pontos.", 6)
+                                .AddOption("LifeFrutyBasquet - 50 Pontos.", 7)
+                                .AddOption("MoonBox - 300 Pontos.", 8)
+                                .AddOption("PowerEXPBall - 150 Pontos.", 10)
+                                .AddOption("Deixa pra lá.", 255).AddAvatar(3).FinalizeDialog();
                             break;
                         }
                         else
                         {
-                            data.AddText($"Sorry, you don't have enough Treasure Points, you have: {client.Player.TreasureBoxesPoint} points!")
-                                .AddOption("I~see.", 255)
+                            data.AddText($"Desculpe, você não tem pontos suficientes. Você tem: {client.Player.TreasureBoxesPoint} pontos!")
+                                .AddOption("Entendi.", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
                         break;
@@ -10468,14 +10441,14 @@ namespace COServer.Game.MsgNpc
                         {
                             client.Player.TreasureBoxesPoint -= 30;
                             client.Inventory.Add(stream, Database.ItemType.MeteorScroll, 1);
-                            data.AddText($"You've received 1 MeteorScroll! You now have: {client.Player.TreasureBoxesPoint} points!")
-                                .AddOption("Thanks!", 255)
+                            data.AddText($"Você recebeu 1 MeteorScroll! Agora você tem: {client.Player.TreasureBoxesPoint} pontos!")
+                                .AddOption("Obrigado!", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
                         else
                         {
-                            data.AddText($"Sorry, you don't have enough Treasure Points, you have: {client.Player.TreasureBoxesPoint} points!")
-                                .AddOption("I~see.", 255)
+                            data.AddText($"Desculpe, você não tem pontos suficientes. Você tem: {client.Player.TreasureBoxesPoint} pontos!")
+                                .AddOption("Entendi.", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
                         break;
@@ -10486,14 +10459,14 @@ namespace COServer.Game.MsgNpc
                         {
                             client.Player.TreasureBoxesPoint -= 20;
                             client.Inventory.Add(stream, 1080001, 1, 0, 0, 0, 0, 0, false);
-                            data.AddText($"You've received 1 Emerald! You now have: {client.Player.TreasureBoxesPoint} points!")
-                                .AddOption("Thanks!", 255)
+                            data.AddText($"Você recebeu 1 Esmerald! Agora você tem: {client.Player.TreasureBoxesPoint} pontos!")
+                                .AddOption("Obrigado!", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
                         else
                         {
-                            data.AddText($"Sorry, you don't have enough Treasure Points, you have: {client.Player.TreasureBoxesPoint} points!")
-                                .AddOption("I~see.", 255)
+                            data.AddText($"Desculpe, você não tem pontos suficientes. Você tem: {client.Player.TreasureBoxesPoint} pontos!")
+                                .AddOption("Entendi.", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
                         break;
@@ -10504,14 +10477,14 @@ namespace COServer.Game.MsgNpc
                         {
                             client.Player.TreasureBoxesPoint -= 40;
                             client.Inventory.Add(stream, 1088000, 1, 0, 0, 0, 0, 0, false);
-                            data.AddText($"You've received 1 DragonBall! You now have: {client.Player.TreasureBoxesPoint} points!")
-                                .AddOption("Thanks!", 255)
+                            data.AddText($"Você recebeu 1 DB! Agora você tem: {client.Player.TreasureBoxesPoint} pontos!")
+                                .AddOption("Obrigado!", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
                         else
                         {
-                            data.AddText($"Sorry, you don't have enough Treasure Points, you have: {client.Player.TreasureBoxesPoint} points!")
-                                .AddOption("I~see.", 255)
+                            data.AddText($"Desculpe, você não tem pontos suficientes. Você tem: {client.Player.TreasureBoxesPoint} pontos!")
+                                .AddOption("Entendi.", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
                         break;
@@ -10522,50 +10495,32 @@ namespace COServer.Game.MsgNpc
                         {
                             client.Player.TreasureBoxesPoint -= 50;
                             client.Inventory.Add(stream, 723725, 1, 0, 0, 0, 0, 0, false);
-                            data.AddText($"You've received 1 LifeFruitBasket! You now have: {client.Player.TreasureBoxesPoint} points!")
-                                .AddOption("Thanks!", 255)
+                            data.AddText($"Você recebeu 1 LifeFrutyBasquet! Agora você tem: {client.Player.TreasureBoxesPoint} pontos!")
+                                .AddOption("Obrigado!", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
                         else
                         {
-                            data.AddText($"Sorry, you don't have enough Treasure Points, you have: {client.Player.TreasureBoxesPoint} points!")
-                                .AddOption("I~see.", 255)
+                            data.AddText($"Desculpe, você não tem pontos suficientes. Você tem: {client.Player.TreasureBoxesPoint} pontos!")
+                                .AddOption("Entendi.", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
                         break;
                     }
                 case 8:
                     {
-                        if (client.Player.TreasureBoxesPoint >= 150)
+                        if (client.Player.TreasureBoxesPoint >= 300)
                         {
-                            client.Player.TreasureBoxesPoint -= 150;
+                            client.Player.TreasureBoxesPoint -= 300;
                             client.Inventory.Add(stream, 721080, 1, 0, 0, 0, 0, 0, false);
-                            data.AddText($"You've received 1 MoonBox! You now have: {client.Player.TreasureBoxesPoint} points!")
-                                .AddOption("Thanks!", 255)
+                            data.AddText($"Você recebeu 1 MoonBox! Agora você tem: {client.Player.TreasureBoxesPoint} pontos!")
+                                .AddOption("Obrigado!", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
                         else
                         {
-                            data.AddText($"Sorry, you don't have enough Treasure Points, you have: {client.Player.TreasureBoxesPoint} points!")
-                                .AddOption("I~see.", 255)
-                                .AddAvatar(3).FinalizeDialog();
-                        }
-                        break;
-                    }
-                case 9:
-                    {
-                        if (client.Player.TreasureBoxesPoint >= 100)
-                        {
-                            client.Player.TreasureBoxesPoint -= 100;
-                            client.Inventory.Add(stream, 730002, 1, 0, 0, 0, 0, 0, false);
-                            data.AddText($"You've received 1 Stone +2! You now have: {client.Player.TreasureBoxesPoint} points!")
-                                .AddOption("Thanks!", 255)
-                                .AddAvatar(3).FinalizeDialog();
-                        }
-                        else
-                        {
-                            data.AddText($"Sorry, you don't have enough Treasure Points, you have: {client.Player.TreasureBoxesPoint} points!")
-                                .AddOption("I~see.", 255)
+                            data.AddText($"Desculpe, você não tem pontos suficientes. Você tem: {client.Player.TreasureBoxesPoint} pontos!")
+                                .AddOption("Entendi.", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
                         break;
@@ -10576,21 +10531,21 @@ namespace COServer.Game.MsgNpc
                         {
                             client.Player.TreasureBoxesPoint -= 150;
                             client.Inventory.Add(stream, 722057, 1, 0, 0, 0, 0, 0, false);
-                            data.AddText($"You've received 1 PowerExp! You now have: {client.Player.TreasureBoxesPoint} points!")
-                                .AddOption("Thanks!", 255)
+                            data.AddText($"Você recebeu 1 PowerExpBall! Agora você tem: {client.Player.TreasureBoxesPoint} pontos!")
+                                .AddOption("Obrigado!", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
                         else
                         {
-                            data.AddText($"Sorry, you don't have enough Treasure Points, you have: {client.Player.TreasureBoxesPoint} points!")
-                                .AddOption("I~see.", 255)
+                            data.AddText($"Desculpe, você não tem pontos suficientes. Você tem: {client.Player.TreasureBoxesPoint} pontos!")
+                                .AddOption("Entendi.", 255)
                                 .AddAvatar(3).FinalizeDialog();
                         }
                         break;
                     }
-
             }
         }
+
 
         [NpcAttribute(NpcID.PkWarQuit)]
         public static void PkWarQuit(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
@@ -22943,7 +22898,68 @@ namespace COServer.Game.MsgNpc
         }
 
         #endregion
+        #region SuperDrop
+        [NpcAttribute(NpcID.SuperDropNPC)]
+        public static void SuperDropNPC(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
+        {
+            Dialog data = new Dialog(client, stream);
 
+            // Horários do SuperDrop: 12:30-12:40 e 22:30-22:40
+            DateTime now = DateTime.Now;
+            bool isSuperDropTime = (now.Hour == 12 && now.Minute >= 30 && now.Minute < 40) ||
+                                   (now.Hour == 22 && now.Minute >= 30 && now.Minute < 40);
+
+            switch (Option)
+            {
+                case 0:
+                    {
+                        data.AddText("O SuperDrop rola duas vezes por dia: às 12:30 e às 22:30!\n")
+                            .AddText("Cada drop dura 10 minutos, e custa 1k Cp pra entrar!\n");
+                        if (isSuperDropTime)
+                        {
+                            data.AddText("O SuperDrop tá rolando agora! Quer entrar?\n");
+                            data.AddOption("Quero participar!", 1);
+                        }
+                        else
+                        {
+                            data.AddText("Mas agora não é a hora. Volta às 12:30 ou 22:30!\n");
+                        }
+                        data.AddOption("Talvez depois.", 255)
+                            .FinalizeDialog();
+                        break;
+                    }
+                case 1:
+                    {
+                        if (!isSuperDropTime)
+                        {
+                            data.AddText("Desculpa, o SuperDrop só rola às 12:30 ou 22:30. Volta no horário certo!\n")
+                                .AddOption("Beleza.", 255)
+                                .FinalizeDialog();
+                        }
+                        else if (client.Player.ConquerPoints < 1000)
+                        {
+                            data.AddText("Você precisa de 1.000 CPs pra entrar, e você não tem o suficiente!\n")
+                                .AddOption("Vou pegar mais.", 255)
+                                .FinalizeDialog();
+                        }
+                        else
+                        {
+                            client.Player.ConquerPoints -= 1000;
+                            client.Teleport(212, 142, 1572); // Teleporta diretamente sem salvar localização
+                            client.Player.TrashGold = false;
+                            client.Player.TrashItems = true;
+
+                            data.AddText("Beleza! Você pagou 1.000 CPs e tá dentro do SuperDrop!\n")
+                                .AddText("Aproveita os 10 minutos. Boa sorte!")
+                                .AddOption("Valeu!", 255)
+                                .FinalizeDialog();
+                        }
+                        break;
+                    }
+            }
+        }
+
+        #endregion
         [NpcAttribute(NpcID.DesertTeleporter)]
         public static void DesertTeleporter(Client.GameClient client, ServerSockets.Packet stream, byte Option, string Input, uint id)
         {

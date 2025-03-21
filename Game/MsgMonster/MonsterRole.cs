@@ -81,9 +81,13 @@ namespace COServer.Game.MsgMonster
                 {
                     return true;
                 }
+                else
+                {
+                    // Adia o respawn se o tile estiver ocupado
+                    RespawnStamp = Now.AddMilliseconds(5000);  // Atraso de 5 segundos
+                }
             }
             return false;
-
         }
 
         public void Respawn(bool SendEffect = true)
@@ -91,6 +95,10 @@ namespace COServer.Game.MsgMonster
             using (var rev = new ServerSockets.RecycledPacket())
             {
                 var stream = rev.GetStream();
+
+                // Atualiza a posição para o ponto de respawn original
+                X = RespawnX;
+                Y = RespawnY;
 
                 ClearFlags(false);
 
@@ -107,6 +115,7 @@ namespace COServer.Game.MsgMonster
 
                 Send(stream.ActionCreate(&action));
 
+                // Envia a nova posição
                 Send(GetArray(stream, false));
 
                 if (SendEffect)
@@ -122,13 +131,6 @@ namespace COServer.Game.MsgMonster
                     stream = Upd.Append(stream, Game.MsgServer.MsgUpdate.DataType.Hitpoints, HitPoints);
                     Send(Upd.GetArray(stream));
                 }
-                /*  if (Family.MaxHealth > 0)
-                  {
-                      Game.MsgServer.MsgUpdate Upd = new Game.MsgServer.MsgUpdate(stream, UID, 2);
-                      stream = Upd.Append(stream, Game.MsgServer.MsgUpdate.DataType.MaxHitpoints, Family.MaxHealth);
-                      stream = Upd.Append(stream, Game.MsgServer.MsgUpdate.DataType.Hitpoints, HitPoints);
-                      Send(Upd.GetArray(stream));
-                  }*/
             }
         }
         public void SendSysMesage(string Messaj, Game.MsgServer.MsgMessage.ChatMode ChatType = Game.MsgServer.MsgMessage.ChatMode.TopLeft
@@ -209,6 +211,17 @@ namespace COServer.Game.MsgMonster
                     GMap.View.LeaveMap<Role.IMapObj>(this);
                     if (GMap.IsFlagPresent(X, Y, Role.MapFlagType.Monster))
                         GMap.cells[X, Y] &= ~Role.MapFlagType.Monster;
+
+                    Game.MsgServer.ActionQuery removeAction = new Game.MsgServer.ActionQuery()
+                    {
+                        ObjId = UID,
+                        Type = MsgServer.ActionType.RemoveEntity
+                    };
+                    Send(stream.ActionCreate(&removeAction));
+                }
+                else
+                {
+                    AddFlag(MsgUpdate.Flags.FadeAway, 10, false); // Efeito visual de morte
                 }
 
                 if (Map == 3935)
@@ -563,7 +576,7 @@ namespace COServer.Game.MsgMonster
                     #region CleanWater
                     if (Map == 1212 && Family.ID == 8500)
                     {
-                        if (Role.Core.Rate(50)) 
+                        if (Role.Core.Rate(50))
                         {
                             DropItemID(killer, Database.ItemType.CleanWater, stream);
                             Program.SendGlobalPackets.Enqueue(new MsgMessage($"Congratulations! {killer.Player.Name} found a ClearWater in WaterLord(428,418)!", MsgMessage.MsgColor.white, MsgMessage.ChatMode.TopLeft).GetArray(stream));
@@ -571,6 +584,26 @@ namespace COServer.Game.MsgMonster
                         }
                     }
                     #endregion
+                    #region SuperDrop
+                    if (GameMap.ID == 1572 && this.Family.ID == 110)
+                    {
+                        if (Role.Core.Rate(0.003)) // 0.003% de chance (muito raro)
+                        {
+                            MsgFloorItem.MsgItem dropItem = SuperDrop.GenerateSuperDropItem(
+                                stream, killer, GameMap, this.X, this.Y, this.DynamicID
+                            );
+                            if (GameMap.EnqueueItem(dropItem))
+                            {
+                                dropItem.SendAll(stream, MsgFloorItem.MsgDropID.Visible);
+
+                                // Adicionando efeito visual na coordenada do item
+                                killer.Player.AddMapEffect(stream, this.X, this.Y, "accession1");
+
+                            }
+                        }
+                    }
+                    #endregion
+
                     #region Bosses 
                     if (Map == 1787)
                     {
