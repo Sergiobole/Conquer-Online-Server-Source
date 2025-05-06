@@ -1,8 +1,8 @@
-# Conquer Online - Servidor Privado
+# Conquer Online - Servidor Source
 
 ## Sobre o Projeto
 
-Este projeto é a criação e desenvolvimento de um servidor privado de **Conquer Online**, utilizando a versão **5517**, mas com diversas modificações e melhorias. O servidor foi projetado para oferecer uma experiência clássica de Conquer, com ajustes modernos e correções de bugs, proporcionando um gameplay mais estável e divertido.
+Este projeto é a criação e desenvolvimento de um servidor source de **Conquer Online**, utilizando a versão **5517**, mas com diversas modificações e melhorias. O servidor foi projetado para oferecer uma experiência clássica de Conquer, com ajustes modernos e correções de bugs, proporcionando um gameplay mais estável e divertido.
 
 O projeto está estruturado em dois componentes principais:
 1. **Account Server (AccServer)**: Responsável pela autenticação e gerenciamento de contas.
