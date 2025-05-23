@@ -1,6 +1,6 @@
 # Source Conquer Online 5095 / 5517 - Servidor Privado em C# (Open Source)
 
-Este repositório é fruto de anos de trabalho, testes e melhorias em uma **source completa para servidor privado de Conquer Online**, originalmente baseada na versão 5517 e compatível com o cliente clássico **versão 5095**. Desenvolvida inteiramente em **C#**, essa base tem sido utilizada por mim como ferramenta de estudo e aprimoramento técnico no desenvolvimento de servidores.
+**source completa para servidor privado de Conquer Online**, originalmente baseada na versão 5517 e compatível com o cliente clássico **versão 5095**. Desenvolvida inteiramente em **C#**, essa base tem sido utilizada por mim como ferramenta de estudo e aprimoramento técnico no desenvolvimento de servidores.
 
 ## Sobre o Projeto
 
