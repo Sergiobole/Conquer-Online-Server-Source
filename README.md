@@ -38,12 +38,12 @@ Database/      - Arquivo .zq com estrutura MySQL para uso direto
 
 ## Recursos Implementados
 
-- Login e criação de conta
-- Spawns e teleports clássicos
-- Eventos automáticos (PVP, boss, guild)
-- Loja online com suporte a pagamentos
-- Correção de bugs comuns do 5095
-- Sistema de PK, ranks, drops, sockets e upgrades
+- 🛒 **Offline Market** – Sistema de comércio funcionando mesmo com o personagem desconectado.
+- ⛏️ **Offline Miner** – Mineração automática enquanto o jogador está offline.
+- 💬 **Integração com Discord (Discord API)** – Atualizações e interações conectadas ao servidor do Discord.
+- 🕐 **Online Points** – Sistema de pontos por tempo online.
+- 💎 **Sistema VIP** – Benefícios exclusivos para jogadores VIP.
+- 🔩 **Socket System** – Sistema completo de sockets para itens.
 
 ## Principais Palavras-Chave (SEO)
 
