@@ -1,98 +1,75 @@
-# Conquer Online - Servidor Source
+# Source Conquer Online 5095 / 5517 - Servidor Privado em C# (Open Source)
+
+Este repositório é fruto de anos de trabalho, testes e melhorias em uma **source completa para servidor privado de Conquer Online**, originalmente baseada na versão 5517 e compatível com o cliente clássico **versão 5095**. Desenvolvida inteiramente em **C#**, essa base tem sido utilizada por mim como ferramenta de estudo e aprimoramento técnico no desenvolvimento de servidores.
 
 ## Sobre o Projeto
 
-Este projeto é a criação e desenvolvimento de um servidor source de **Conquer Online**, utilizando a versão **5517**, mas com diversas modificações e melhorias. O servidor foi projetado para oferecer uma experiência clássica de Conquer, com ajustes modernos e correções de bugs, proporcionando um gameplay mais estável e divertido.
-
-O projeto está estruturado em dois componentes principais:
-1. **Account Server (AccServer)**: Responsável pela autenticação e gerenciamento de contas.
-2. **Game Server (GameServer)**: Responsável pela lógica do jogo, interações e eventos dentro do servidor.
-
----
-
-## Configuração
-
-### 1. Alterações no `AccServer`
-Dentro do arquivo de configuração do **AccServer**, é necessário ajustar a conexão com o banco de dados. 
-
-- Abra o arquivo de configuração no **AccServer** e altere a string de conexão para:
-  Database=zq;Uid=root;Password=123456789
-Onde:
-- **Database**: é o nome do banco de dados.
-- **Uid**: usuário para acesso ao banco de dados.
-- **Password**: senha do banco de dados.
-
-### 2. Alterações no `GameServer`
-No **GameServer**, o arquivo de configuração também requer ajustes na senha e no nome da base de dados. 
-
-- Procure por `Higor123*` dentro do código e altere para a senha que você configurou no **AccServer** e **AppServer**.
-- Também altere o nome da base de dados para coincidir com a configuração que você usou no **AccServer**.
-
-Após realizar essas alterações, **build** o projeto e inicie os servidores normalmente.
-
-### 3. Banco de Dados
-O banco de dados necessário para o servidor é o arquivo **`.zq`**. Após clonar o repositório, siga os seguintes passos para configurar o banco de dados:
-
-1. Abra o **Navicat** (ou qualquer outro cliente MySQL).
-2. Importe o arquivo **`.zq`** para o banco de dados.
-3. Certifique-se de que a configuração de usuário e senha esteja correta para que a conexão com o banco de dados funcione.
-
----
-
-## Funcionalidades
-
-✅ **Servidor Estável**: Baseado na versão 5095, com todas as funcionalidades do Conquer Online clássico.
-
-✅ **Correções e Melhorias**: Diversos bugs corrigidos, incluindo melhorias no desempenho e estabilidade.
-
-✅ **Eventos Programados**: Sistema de eventos configurado para proporcionar uma experiência de jogo mais dinâmica e competitiva.
-
-✅ **Sistema de Loja Online**: Integração com **Assas** e outras formas de pagamento para facilitar a compra de créditos no jogo.
-
----
+- Baseado na versão 5517, mas com compatibilidade total com o cliente 5095
+- Código escrito em C#
+- Contém AccServer (autenticação) e GameServer (lógica do jogo)
+- Repleto de correções, otimizações e melhorias de estabilidade
+- Sistema de eventos automáticos, shop, PvP, guilds, etc.
+- Banco de dados MySQL incluso no formato `.zq`
 
 ## Estrutura do Projeto
 
-📂 **AccServer/** → Gerenciamento de contas, autenticação e banco de dados.
+```
+AccServer/     - Servidor de autenticação (login, conexão com DB)
+GameServer/    - Toda lógica do jogo, eventos, controle de players
+Database/      - Arquivo .zq com estrutura MySQL para uso direto
+```
 
-📂 **GameServer/** → Lógica do jogo, controle de eventos e interação entre jogadores.
+## Requisitos
 
-📂 **Database/** → Estrutura de banco de dados, incluindo as tabelas e a configuração de usuários.
+- Visual Studio
+- Cliente Conquer Online versão 5095
+- MySQL ou MariaDB
+- Navicat (ou similar) para importar o banco de dados `.zq`
+
+## Como Rodar
+
+1. Clone este repositório
+2. No `AccServer`, edite a string de conexão:
+   - Exemplo: `Database=zq;Uid=root;Password=123456789`
+3. No `GameServer`, altere a senha `Higor123*` para a mesma senha do banco
+4. Importe o banco de dados `.zq` no MySQL (recomendo Navicat)
+5. Compile os projetos no Visual Studio
+6. Execute `AccServer.exe` e `GameServer.exe`
+
+## Recursos Implementados
+
+- Login e criação de conta
+- Spawns e teleports clássicos
+- Eventos automáticos (PVP, boss, guild)
+- Loja online com suporte a pagamentos
+- Correção de bugs comuns do 5095
+- Sistema de PK, ranks, drops, sockets e upgrades
+
+## Principais Palavras-Chave (SEO)
+
+- Source Conquer Online 5095
+- Servidor privado Conquer Classic
+- Conquer 5095 Open Source
+- Criar servidor Conquer Online
+- C# Conquer Server
+- GitHub Conquer Online
+
+## Licença e Uso
+
+Este projeto é open-source e pode ser utilizado para fins de **estudo**, **desenvolvimento próprio**, **educação**.
+
+Não é permitida a revenda do projeto.
+
+## Contato e Portfólio
+
+Caso tenha interesse em conversar sobre o projeto, colaborar ou contratar serviços de desenvolvimento:
+
+- GitHub: https://github.com/cnthigu
+- LinkedIn: https://linkedin.com/in/higor-cnt-vinicius
+- E-mail: higorzen77@gmail.com
+
+## Contribua ou Deixe uma Estrela
+
+Se este projeto foi útil para você, considere deixar uma estrela ⭐ aqui no GitHub. Isso ajuda a manter o projeto ativo e visível para mais pessoas.
 
 ---
-
-## Como Rodar o Projeto
-
-1. **Configuração do Banco de Dados**:
- - Certifique-se de que você tenha o banco de dados configurado corretamente (MySQL ou MariaDB).
- - Após clonar o repositório, use o **Navicat** ou outro cliente MySQL para importar o banco de dados **`.zq`**.
-
-2. **Build do Projeto**:
- - Compile e execute os projetos **AccServer** e **GameServer**.
- - Acesse o **GameServer** e **AccServer** para confirmar se estão funcionando corretamente.
-
----
-
-## Habilidades Demonstradas
-
-🚀 Desenvolvimento de **servidor privado** de **Conquer Online** com **C#**.
-
-🔧 **Correções de bugs** e **melhorias** na experiência de jogo.
-
-🛠️ **Integração de sistemas** e gerenciamento de servidores de jogos.
-
----
-
-## Contato
-
-Se precisar de mais informações ou quiser discutir o projeto, entre em contato comigo:
-
-📧 **E-mail:** [higorzen77](mailto:higorzen77@gmail.com)
-
-🐙 **GitHub:** [github.com/cnthigu](https://github.com/cnthigu)
-
-🔗 **LinkedIn:** [linkedin.com/in/higor-cnt-viniciusl](www.linkedin.com/in/higor-cnt-vinicius)
-
----
-
-🔹 **Gostou do projeto?** Considere deixar uma ⭐ para apoiar o desenvolvimento!
