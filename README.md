@@ -44,6 +44,7 @@ Database/      - Arquivo .zq com estrutura MySQL para uso direto
 - 🕐 **Online Points** – Sistema de pontos por tempo online.
 - 💎 **Sistema VIP** – Benefícios exclusivos para jogadores VIP.
 - 🔩 **Socket System** – Sistema completo de sockets para itens.
+Entre outras infinidades de coisas!
 
 ## Principais Palavras-Chave (SEO)
 
