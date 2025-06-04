@@ -176,15 +176,15 @@ namespace COServer
                 System.Console.ForegroundColor = ConsoleColor.Yellow;
                 System.Console.WriteLine("  ");
                 System.Console.WriteLine("  ");
-                System.Console.WriteLine("   ██████╗ █████╗ ██████╗ ███╗   ██╗██╗ █████╗ ████████╗ ██████╗ ");
-                System.Console.WriteLine("  ██╔════╝██╔══██╗██╔══██╗████╗  ██║██║██╔══██╗╚══██╔══╝██╔═══██╗");
-                System.Console.WriteLine("  ██║     ███████║██████╔╝██╔██╗ ██║██ ███████║   ██║   ██║   ██║");
-                System.Console.WriteLine("  ██║     ██╔══██║██╔═══╝ ██║╚██╗██║██ ██╔══██║   ██║   ██║   ██║");
-                System.Console.WriteLine("  ╚██████╗██║  ██║██║     ██║ ╚████║██║██║  ██║   ██║   ╚██████╔╝");
-                System.Console.WriteLine("   ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═══╝╚═╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ");
+                System.Console.WriteLine("   █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█		");
+                System.Console.WriteLine("   █░░╦─╦╔╗╦─╔╗╔╗╔╦╗╔╗░░█		");
+                System.Console.WriteLine("   █░░║║║╠─║─║─║║║║║╠─░░█		");
+                System.Console.WriteLine("   █░░╚╩╝╚╝╚╝╚╝╚╝╩─╩╚╝░░█		");
+                System.Console.WriteLine("   █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█		");
                 System.Console.WriteLine("  ");
                 System.Console.WriteLine("  ");
-                Console.WriteLine("[Source Carniato] Servidor iniciado com sucesso! Aguardando conexões...");
+                Console.WriteLine("The server is ready for incoming connections!\n", ConsoleColor.Green);
+                DiscordAPI.Enqueue("``OrigensCO is now online, you can login!``");
                 using (Database.MySqlCommand cmd = new Database.MySqlCommand(Database.MySqlCommandType.SELECT).Select("configuration"))
                 {
                     using (Database.MySqlReader r = new Database.MySqlReader(cmd))

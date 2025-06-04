@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="COServer.exe" size="1828352">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="COServer.exe" size="1827840">
       <assemblyIdentity name="COServer" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>qGCLWWuvPA9QX5GELjjGWHxRcmZ77mkcHQk7RQUyz2s=</dsig:DigestValue>
+        <dsig:DigestValue>+HJ7paiei3gRyd37iwALoBUF4DTJDl51WfpGsW4PjOQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
