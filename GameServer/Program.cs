@@ -1,11 +1,4 @@
-﻿/* end tour
- * hi , i'm ahmed aka jason this is the last backup from conquer vision project
- * based on csv3 - csv2 thanks for infamous
- * world conquer too for some packet struct
- * that source was 6609 developed by alex sorin and downgraded to 5517 by supernova conquerzone project
- * then downgraded to 5135 by me jason with @mustafa 3 days help :))) 
- */
-
+﻿
 using COServer.Cryptography;
 using COServer.EventsLib;
 using COServer.Game.MsgServer;
@@ -176,15 +169,15 @@ namespace COServer
                 System.Console.ForegroundColor = ConsoleColor.Yellow;
                 System.Console.WriteLine("  ");
                 System.Console.WriteLine("  ");
-                System.Console.WriteLine("   █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█		");
-                System.Console.WriteLine("   █░░╦─╦╔╗╦─╔╗╔╗╔╦╗╔╗░░█		");
-                System.Console.WriteLine("   █░░║║║╠─║─║─║║║║║╠─░░█		");
-                System.Console.WriteLine("   █░░╚╩╝╚╝╚╝╚╝╚╝╩─╩╚╝░░█		");
-                System.Console.WriteLine("   █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█		");
+                System.Console.WriteLine("   ██████╗ █████╗ ██████╗ ███╗   ██╗██╗██████╗ ████████╗ ██████╗ ");
+                System.Console.WriteLine("  ██╔════╝██╔══██╗██╔══██╗████╗  ██║██║██╔══██╗╚══██╔══╝██╔═══██╗");
+                System.Console.WriteLine("  ██║     ███████║██████╔╝██╔██╗ ██║██║███████║   ██║   ██║   ██║");
+                System.Console.WriteLine("  ██║     ██╔══██║██╔═══╝ ██║╚██╗██║██║██╔══██║   ██║   ██║   ██║");
+                System.Console.WriteLine("  ╚██████╗██║  ██║██║     ██║ ╚████║██║██║  ██║   ██║   ╚██████╔╝");
+                System.Console.WriteLine("   ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═══╝╚═╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝    ");
                 System.Console.WriteLine("  ");
                 System.Console.WriteLine("  ");
-                Console.WriteLine("The server is ready for incoming connections!\n", ConsoleColor.Green);
-                DiscordAPI.Enqueue("``OrigensCO is now online, you can login!``");
+                Console.WriteLine("[Source Carniato] Servidor iniciado com sucesso! Aguardando conexões...!\n", ConsoleColor.Green);
                 using (Database.MySqlCommand cmd = new Database.MySqlCommand(Database.MySqlCommandType.SELECT).Select("configuration"))
                 {
                     using (Database.MySqlReader r = new Database.MySqlReader(cmd))
