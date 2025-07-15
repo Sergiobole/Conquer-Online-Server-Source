@@ -6,7 +6,7 @@ namespace COServer.Game.Data
 {
     internal class VoteRepository
     {
-        public const string ConnectionString = "Server=localhost;Uid=root;Password=Higor123*;Database=zq;";
+        public const string ConnectionString = "Server=localhost;Uid=root;Password=;Database=zq;";
 
         // Retorna o último voto do jogador
         public static VotesModels GetLastVote(string playerName)

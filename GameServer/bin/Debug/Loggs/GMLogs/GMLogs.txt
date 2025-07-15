@@ -6777,3 +6777,66 @@
 [GMLogs]Satélite move tw 
 [GMLogs]Satélite scroll ti 
 [GMLogs]Satélite scroll tw 
+[GMLogs]gjhhkjhk[PM] cps 10 
+[GMLogs]gjhhkjhk[PM] level 130 
+[GMLogs]gjhhkjhk[PM] arrows 
+[GMLogs]gjhhkjhk[PM] tele 5000 50 50 
+[GMLogs]gjhhkjhk[PM] chgmap 5000 50 50 
+[GMLogs]gjhhkjhk[PM] awardmagic 1045 4 
+[GMLogs]gjhhkjhk[PM] bc 1 
+[GMLogs]gjhhkjhk[PM] bringall 
+[GMLogs]gjhhkjhk[PM] bring all 
+[GMLogs]gjhhkjhk[PM] scroll tc 
+[GMLogs]gjhhkjhk[PM] teleport 5000 43 73 
+[GMLogs]gjhhkjhk[PM] teleport 5000 43 73 
+[GMLogs]gjhhkjhk[PM] give xxFastBoy itemeffect 
+[GMLogs]gjhhkjhk[PM] dropevent 20 
+[GMLogs]gjhhkjhk[PM] dropevent 
+[GMLogs]gjhhkjhk[PM] awarditem 2100075 GoldPrize 
+[GMLogs]gjhhkjhk[PM] item SkyBlade Super 12 7 255 13 13 
+[GMLogs]gjhhkjhk[PM] pro 15 trojan master 
+[GMLogs]gjhhkjhk[PM] pro 15 
+[GMLogs]gjhhkjhk[PM] job 15 
+[GMLogs]gjhhkjhk[PM] prof 15 
+[GMLogs]gjhhkjhk[PM] class 15 
+[GMLogs]gjhhkjhk[PM] class 135 
+[GMLogs]gjhhkjhk[PM] level 140 
+[GMLogs]gjhhkjhk[PM] awarditem 191405 
+[GMLogs]gjhhkjhk[PM] level 140 
+[GMLogs]gjhhkjhk[PM] class 25 
+[GMLogs]gjhhkjhk[PM] class 15 
+[GMLogs]gjhhkjhk[PM] clear 
+[GMLogs]gjhhkjhk[PM] level 140 
+[GMLogs]gjhhkjhk[PM] vit 200 
+[GMLogs]gjhhkjhk[PM] prof 410 20 
+[GMLogs]gjhhkjhk[PM] item GMRobe Fixed 12 7 255 123 123 
+[GMLogs]gjhhkjhk[PM] prof 410 20 
+[GMLogs]gjhhkjhk[PM] money 999999999 
+[GMLogs]gjhhkjhk[PM] cps 999999999 
+[GMLogs]gjhhkjhk[PM] money 999999999 
+[GMLogs]gjhhkjhk[PM] money 999999999 
+[GMLogs]gjhhkjhk[PM] money 999999999 
+[GMLogs]gjhhkjhk[PM] money 999999999 
+[GMLogs]gjhhkjhk[PM] money 999999999 
+[GMLogs]gjhhkjhk[PM] money 999999999 
+[GMLogs]gjhhkjhk[PM] money 999999999 
+[GMLogs]gjhhkjhk[PM] money 999999999 
+[GMLogs]gjhhkjhk[PM] item SupremeSword Super 12 7 255 3 3 
+[GMLogs]gjhhkjhk[PM] cps 0 
+[GMLogs]gjhhkjhk[PM] life 
+[GMLogs]gjhhkjhk[PM] cps 999999999 
+[GMLogs]Fivework[PM] tele 5000 50 50 
+[GMLogs]Fivework[PM] life 
+[GMLogs]Fivework[PM] item 500003 0 0 0 0 0 
+[GMLogs]Fivework[PM] max_attack 9999999 
+[GMLogs]Fivework[PM] max_attack 9999999 
+[GMLogs]Fivework[PM] max_attack 9999999 
+[GMLogs]Fivework[PM] max_attack 9999999 
+[GMLogs]Fivework[PM] max_attack 9999999 
+[GMLogs]Fivework[PM] max_attack 9999999 
+[GMLogs]Fivework[PM] max_attack 9999999 
+[GMLogs]Fivework[PM] item 2100095 0 0 0 0 0 
+[GMLogs]Fivework[PM] max_attack 9999999 
+[GMLogs]Fivework[PM] pvp 
+[GMLogs]Fivework[PM] trash 
+[GMLogs]Fivework[PM] item 1050002 0 0 0 0 0 

@@ -1,0 +1,14 @@
+E:\Conquer\Conquer - Source e Cliente\Conquer-Online-Server-Source\AccServer\bin\Debug\AccServer.exe.config
+E:\Conquer\Conquer - Source e Cliente\Conquer-Online-Server-Source\AccServer\bin\Debug\AccServer.exe
+E:\Conquer\Conquer - Source e Cliente\Conquer-Online-Server-Source\AccServer\bin\Debug\AccServer.pdb
+E:\Conquer\Conquer - Source e Cliente\Conquer-Online-Server-Source\AccServer\bin\Debug\BouncyCastle.Crypto.dll
+E:\Conquer\Conquer - Source e Cliente\Conquer-Online-Server-Source\AccServer\bin\Debug\Renci.SshNet.dll
+E:\Conquer\Conquer - Source e Cliente\Conquer-Online-Server-Source\AccServer\bin\Debug\System.Numerics.Vectors.dll
+E:\Conquer\Conquer - Source e Cliente\Conquer-Online-Server-Source\AccServer\bin\Debug\Renci.SshNet.xml
+E:\Conquer\Conquer - Source e Cliente\Conquer-Online-Server-Source\AccServer\obj\Debug\AccServer.csproj.AssemblyReference.cache
+E:\Conquer\Conquer - Source e Cliente\Conquer-Online-Server-Source\AccServer\obj\Debug\AccServer.csproj.SuggestedBindingRedirects.cache
+E:\Conquer\Conquer - Source e Cliente\Conquer-Online-Server-Source\AccServer\obj\Debug\AccServer.exe.config
+E:\Conquer\Conquer - Source e Cliente\Conquer-Online-Server-Source\AccServer\obj\Debug\AccServer.csproj.CoreCompileInputs.cache
+E:\Conquer\Conquer - Source e Cliente\Conquer-Online-Server-Source\AccServer\obj\Debug\AccServer.csproj.Up2Date
+E:\Conquer\Conquer - Source e Cliente\Conquer-Online-Server-Source\AccServer\obj\Debug\AccServer.exe
+E:\Conquer\Conquer - Source e Cliente\Conquer-Online-Server-Source\AccServer\obj\Debug\AccServer.pdb

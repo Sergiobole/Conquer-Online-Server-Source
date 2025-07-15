@@ -1,0 +1,5 @@
+[Chat]gjhhkjhk[PM] to All  @cps 0
+[Chat]gjhhkjhk[PM] to All  @cps 10
+[Chat]gjhhkjhk[PM] to All  /cps 10
+[Chat]gjhhkjhk[PM] to All  /level 130
+[Chat]gjhhkjhk[PM] to All  /arrows

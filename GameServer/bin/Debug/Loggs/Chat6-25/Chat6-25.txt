@@ -1,0 +1,69 @@
+[Chat]gjhhkjhk[PM] to All  /tele 5000 50 50
+[Chat]gjhhkjhk[PM] to All  /chgmap 5000 50 50
+[Chat]gjhhkjhk[PM] to All  /awardmagic 1045 4
+[Chat]gjhhkjhk[PM] to All  /bc 1
+[Chat]gjhhkjhk[PM] to All  /bringall
+[Chat]gjhhkjhk[PM] to All  /bring all
+[Chat]gjhhkjhk[PM] to All  /scroll tc
+[Chat]gjhhkjhk[PM] to All  /teleport 5000 43 73
+[Chat]gjhhkjhk[PM] to All  /teleport 5000 43 73
+[Chat]gjhhkjhk[PM] to All  @teleport 5000 43 73
+[Chat]gjhhkjhk[PM] to All  /give xxFastBoy itemeffect
+[Chat]gjhhkjhk[PM] to All  /dropevent 20
+[Chat]gjhhkjhk[PM] to All  /dropevent
+[Chat]gjhhkjhk[PM] to All  /awarditem 2100075 GoldPrize
+[Chat]gjhhkjhk[PM] to All  @item SkyBlade Super 12 7 255 13 13
+[Chat]gjhhkjhk[PM] to All  /item SkyBlade Super 12 7 255 13 13
+[Chat]gjhhkjhk[PM] to All  /pro 15 trojan master
+[Chat]gjhhkjhk[PM] to All  /pro 15
+[Chat]gjhhkjhk[PM] to All  /job 15
+[Chat]gjhhkjhk[PM] to All  /prof 15
+[Chat]gjhhkjhk[PM] to All  /class 15
+[Chat]gjhhkjhk[PM] to All  /class 135
+[Chat]gjhhkjhk[PM] to All  /level 140
+[Chat]gjhhkjhk[PM] to All  /awarditem 191405
+[Chat]gjhhkjhk[PM] to All  /level 140
+[Chat]gjhhkjhk[PM] to All  /class 25
+[Chat]gjhhkjhk[PM] to All  /class 15
+[Chat]gjhhkjhk[PM] to All  /clear
+[Chat]gjhhkjhk[PM] to All  /level 140
+[Chat]gjhhkjhk[PM] to All  /vit 200
+[Chat]gjhhkjhk[PM] to All  /prof 410 20
+[Chat]gjhhkjhk[PM] to All  @item GMRobe Fixed 12 7 255 123 123
+[Chat]gjhhkjhk[PM] to All  /item GMRobe Fixed 12 7 255 123 123
+[Chat]gjhhkjhk[PM] to All  /prof 410 20
+[Chat]gjhhkjhk[PM] to All  prof 410 20
+[Chat]gjhhkjhk[PM] to All  @prof 410 20
+[Chat]gjhhkjhk[PM] to All  @cps 9999999
+[Chat]gjhhkjhk[PM] to All  @cps 9999999999999
+[Chat]gjhhkjhk[PM] to All  @cps 999999999
+[Chat]gjhhkjhk[PM] to All  @money 999999999
+[Chat]gjhhkjhk[PM] to All  /money 999999999
+[Chat]gjhhkjhk[PM] to All  /cps 999999999
+[Chat]gjhhkjhk[PM] to All  /money 999999999
+[Chat]gjhhkjhk[PM] to All  /money 999999999
+[Chat]gjhhkjhk[PM] to All  /money 999999999
+[Chat]gjhhkjhk[PM] to All  /money 999999999
+[Chat]gjhhkjhk[PM] to All  /money 999999999
+[Chat]gjhhkjhk[PM] to All  /money 999999999
+[Chat]gjhhkjhk[PM] to All  /money 999999999
+[Chat]gjhhkjhk[PM] to All  /money 999999999
+[Chat]gjhhkjhk[PM] to All  /item SupremeSword Super 12 7 255 3 3
+[Chat]gjhhkjhk[PM] to All  /cps 0
+[Chat]gjhhkjhk[PM] to All  /life
+[Chat]gjhhkjhk[PM] to All  /cps 999999999
+[Chat]Fivework[PM] to All  /tele 5000 50 50
+[Chat]Fivework[PM] to All  /life
+[Chat]Fivework[PM] to All  /item 500003 0 0 0 0 0
+[Chat]Fivework[PM] to All  /max_attack 9999999
+[Chat]Fivework[PM] to All  /max_attack 9999999
+[Chat]Fivework[PM] to All  /max_attack 9999999
+[Chat]Fivework[PM] to All  /max_attack 9999999
+[Chat]Fivework[PM] to All  /max_attack 9999999
+[Chat]Fivework[PM] to All  /max_attack 9999999
+[Chat]Fivework[PM] to All  /max_attack 9999999
+[Chat]Fivework[PM] to All  /item 2100095 0 0 0 0 0
+[Chat]Fivework[PM] to All  /max_attack 9999999
+[Chat]Fivework[PM] to All  /pvp
+[Chat]Fivework[PM] to All  /trash
+[Chat]Fivework[PM] to All  /item 1050002 0 0 0 0 0
